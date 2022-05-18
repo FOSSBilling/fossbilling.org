@@ -1,0 +1,54 @@
+---
+title: Install using Docker (recommended)
+sidebar_position: 0
+description: This guide will help you install FOSSBilling on a Docker container
+---
+
+# :whale: Install using Docker
+Docker is the recommended way to install FOSSBilling. It's easy to use, and it's free.
+
+:::caution
+
+This guide will build FOSSBilling from the master branch. It should be okay if you're planning to use it for testing or development. Be careful when using in production.
+
+:::
+
+## But wait... What is Docker?
+Docker containers isolate the app from the host system and solve the "it works on my machine" headache. With this method, everyone using Docker runs virtually the same environment as the others. This is a great way to ensure that everyone has the same environment, thus making it less likely to have problems.
+
+Docker also lets you run multiple containers on the same machine with different configurations. To learn more about containers, we strongly advise you to read Docker's [explanation](https://www.docker.com/resources/what-container/) first.
+
+## Instructions
+Before going further, please make sure you have Git, Docker Engine, Docker Compose and [GNU Make](https://www.gnu.org/software/make/) installed. Git and GNU Make will likely come pre-installed on most Linux distributions. To install the Docker Engine, visit Docker's [installation page](https://docs.docker.com/engine/install/). To install Docker Compose, visit Docker's [compose installation page](https://docs.docker.com/compose/install/).
+
+Also make sure you have root access to the server.
+
+### Clone the repository
+To get started, you need to clone the repository first. Cloning will download the latest version of our source code. You can do this by running the following command:
+
+```bash
+git clone https://github.com/fossbilling/fossbilling
+```
+
+### Navigate to the cloned directory
+You can now navigate to the cloned directory by running the following command:
+
+```bash
+cd fossbilling
+```
+
+### Run the installation script
+:::note
+
+To use the installer, you need to be a superuser. Switch to the root user using `sudo su` or add the sudo prefix to the next command.
+
+:::
+
+
+To start our installer script, run the following command:
+
+```bash
+make all
+```
+
+### Post-installation steps
