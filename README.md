@@ -1,7 +1,7 @@
 # FOSSBilling documentation
-<div align="center">
-![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling/main)
-</div>
+
+[![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling/main)](https://github.com/fossbilling/docs/actions/workflows)
+
 FOSSBilling's official documentation. Built using [Docusaurus 2](https://docusaurus.io/), hosted on Cloudflare Pages and can be reached by visiting [https://docs.fossbilling.org](https://docs.fossbilling.org).
 
 ### Installation
