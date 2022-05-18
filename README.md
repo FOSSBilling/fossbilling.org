@@ -1,6 +1,8 @@
-# Website
-
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+# FOSSBilling documentation
+<div align="center">
+![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling/main)
+</div>
+FOSSBilling's official documentation. Built using [Docusaurus 2](https://docusaurus.io/), hosted on Cloudflare Pages and can be reached by visiting [https://docs.fossbilling.org](https://docs.fossbilling.org).
 
 ### Installation
 
@@ -22,20 +24,4 @@ This command starts a local development server and opens up a browser window. Mo
 $ yarn build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-### Deployment
-
-Using SSH:
-
-```
-$ USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+This command generates static content into the `build` directory and can be served using any static contents hosting service. Cloudflare Pages will automatically run this command and serve the website.
