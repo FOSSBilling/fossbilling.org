@@ -48,7 +48,7 @@ const config = {
       announcementBar: {
         id: 'contribute',
         content:
-          '<b>We are looking for new people to join our team, join <a href="https://fossbilling.org/discord">our Discord server</a> if you are interested.</b>',
+          '<b>We are looking for new people to join our team, join <a href="https://fossbilling.org/discord" target="_blank">our Discord server</a> if you are interested.</b>',
         backgroundColor: '#4cb3d4',
         textColor: '#fafafa',
         isCloseable: false,
