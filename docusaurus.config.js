@@ -32,7 +32,7 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/fossbilling/docs/blob/master/',
+            'https://github.com/fossbilling/docs/blob/main/',
         },
         blog: false,
         theme: {
@@ -48,7 +48,7 @@ const config = {
       announcementBar: {
         id: 'contribute',
         content:
-          '<b>We are looking for new people to join our team, visit <a href="/contribute">this page</a> if you are interested.</b>',
+          '<b>We are looking for new people to join our team, join <a href="https://fossbilling.org/discord">our Discord server</a> if you are interested.</b>',
         backgroundColor: '#4cb3d4',
         textColor: '#fafafa',
         isCloseable: false,
