@@ -44,7 +44,32 @@ const config = {
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
+    {
+      algolia: {
+        // Algolia DocSearch configuration. See https://docusaurus.io/docs/search#using-algolia-docsearch for full documentation
+        // The application ID provided by Algolia
+        appId: 'YOUR_APP_ID',
+  
+        // Public API key: it is safe to commit it
+        apiKey: 'YOUR_SEARCH_API_KEY',
+  
+        indexName: 'YOUR_INDEX_NAME',
+  
+        // Optional: Ensures that search results are relevant to the current language and version.
+        contextualSearch: true,
+  
+        // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+        externalUrlRegex: 'fossbilling\.org|github\.com',
+  
+        // Optional: Algolia search parameters
+        searchParameters: {},
+  
+        // Optional: path for search page that enabled by default (`false` to disable it)
+        searchPagePath: 'search',
+
+        // The text that appears in the search box input when there is no query.
+        placeholder: 'Search our documentation'
+      },
       announcementBar: {
         id: 'contribute',
         content:
@@ -103,7 +128,7 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-    }),
+    },
 };
 
 module.exports = config;
