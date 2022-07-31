@@ -48,12 +48,12 @@ const config = {
       algolia: {
         // Algolia DocSearch configuration. See https://docusaurus.io/docs/search#using-algolia-docsearch for full documentation
         // The application ID provided by Algolia
-        appId: 'YOUR_APP_ID',
+        appId: 'F4VVX366PN',
   
         // Public API key: it is safe to commit it
-        apiKey: 'YOUR_SEARCH_API_KEY',
+        apiKey: 'd2e44ef06cc9ad30c4cb582e93e5753e',
   
-        indexName: 'YOUR_INDEX_NAME',
+        indexName: 'fossbilling',
   
         // Optional: Ensures that search results are relevant to the current language and version.
         contextualSearch: true,
