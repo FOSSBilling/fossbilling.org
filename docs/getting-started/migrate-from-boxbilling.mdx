@@ -1,0 +1,43 @@
+---
+title: Migrate from BoxBilling
+sidebar_position: 3
+description: This guide will help you migrate from BoxBilling to FOSSBilling
+---
+
+# :gear: Migrate from BoxBilling
+
+:::info
+
+A more coplete migration guide is in progress. At this moment there are no major breaking changes between the last BB release and current FOSSBilling preview builds and you should not have any problems if you follow these guidelines.
+
+:::
+
+The FOSSBilling project was forked from BoxBilling in 2022. FOSSBilling aims to provide a more stable and secure open source billing platform with a clear roadmap and more transparent governance. 
+
+If you have previously used BoxBilling and want to migrate to FOSSBilling then you can, and we aim to make the process as simple and painless as possible. 
+
+## Instructions
+
+:::caution
+
+Before you do anything, make sure that you make a full backup (or two) of both the database and all files in your current BB installation. 
+
+:::
+
+### Download the latest preview build
+
+Download the latest preview build of FOSSBilling from GitHub using this link: [Latest Preview Build](https://fossbilling.org/downloads/preview)
+
+### Prepare your exising installation
+
+Make a full backup of your database and all of the existing files and folders in your BoxBilling install. 
+
+Remove the 'bb-vendor' and 'bb-themes' folders.
+
+### Upload and extract the FOSSBilling files
+
+Upload and extract the contents of the preview build archive over the files in your existing BB install. 
+
+#### Copy your old configuration file
+
+Copy the contents of your old configuration file (database name, etc.) into the FOSSBilling configuration file. 
