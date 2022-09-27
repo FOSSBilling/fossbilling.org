@@ -92,7 +92,7 @@ const config = {
             position: 'left',
           },
           {
-            href: 'https://opencollective.com/FOSSBilling',
+            href: 'https://github.com/sponsors/FOSSBilling',
             label: 'Donate',
             position: 'left',
           },
