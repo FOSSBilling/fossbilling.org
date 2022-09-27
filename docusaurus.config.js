@@ -152,7 +152,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © 2022 The FOSSBilling Team.`,
+        copyright: `<a href="https://github.com/FOSSBilling/fossbilling.org" target="_blank">Help us improve the website!</a><br />Copyright © 2022 The FOSSBilling Team.`,
       },
       prism: {
         theme: lightCodeTheme,
