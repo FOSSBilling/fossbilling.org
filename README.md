@@ -1,8 +1,8 @@
-# FOSSBilling documentation
+# fossbilling.org
 
-[![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling/main)](https://github.com/fossbilling/docs/actions/workflows)
+[![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling.org/main)](https://github.com/fossbilling/fossbilling.org/actions/workflows)
 
-FOSSBilling's official documentation. Built using [Docusaurus 2](https://docusaurus.io/), hosted on Cloudflare Pages and can be reached by visiting [https://docs.fossbilling.org](https://docs.fossbilling.org).
+FOSSBilling's website and documentation. Built using [Docusaurus 2](https://docusaurus.io/), hosted on Cloudflare Pages and can be reached by visiting [https://fossbilling.org](fossbilling.org).
 
 ### Installation
 

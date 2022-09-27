@@ -6,8 +6,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'FOSSBilling Documentation',
-  url: 'https://docs.fossbilling.org',
+  title: 'FOSSBilling',
+  url: 'https://fossbilling.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -27,12 +27,12 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          routeBasePath: '/',
-          breadcrumbs: false,
+          routeBasePath: '/docs',
+          breadcrumbs: true,
           sidebarPath: require.resolve('./sidebars.js'),
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/fossbilling/docs/blob/main/',
+            'https://github.com/fossbilling/fossbilling.org/blob/main/',
         },
         blog: false,
         theme: {
@@ -59,7 +59,7 @@ const config = {
         contextualSearch: true,
   
         // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
-        externalUrlRegex: 'fossbilling\.org|github\.com',
+        externalUrlRegex: 'github\.com',
   
         // Optional: Algolia search parameters
         searchParameters: {},
@@ -71,28 +71,45 @@ const config = {
         placeholder: 'Search our documentation'
       },
       announcementBar: {
-        id: 'contribute',
+        id: 'announcementBar-1', // Increment on change
         content:
-          '<b>We are looking for new people to join our team, join <a href="https://fossbilling.org/discord" target="_blank">our Discord server</a> if you are interested.</b>',
-        backgroundColor: '#4cb3d4',
+          '<b>We are looking for new people to join the community, join <a href="https://fossbilling.org/discord" target="_blank">our Discord server</a> if you are interested.</b>',
+        backgroundColor: '#0081c5',
         textColor: '#fafafa',
-        isCloseable: false,
+        isCloseable: true,
       },
       navbar: {
-        title: 'FOSSBilling Documentation',
         logo: {
           alt: 'FOSSBilling logo',
-          src: 'img/fossbilling.png',
+          src: 'img/logo-black.svg',
+          srcDark: 'img/logo-white.svg',
         },
         items: [
+          // Left
+          {
+            href: '/docs',
+            label: 'Docs',
+            position: 'left',
+          },
+          {
+            href: 'https://opencollective.com/FOSSBilling',
+            label: 'Donate',
+            position: 'left',
+          },
+          // Right
           {
             type: 'localeDropdown',
             position: 'right',
-          },
-          {
-            href: 'https://github.com/fossbilling',
-            label: 'GitHub',
-            position: 'right',
+            dropdownItemsAfter: [
+              {
+                type: 'html',
+                value: '<hr style="margin: 0.3rem 0;">',
+              },
+              {
+                href: 'https://translate.fossbilling.org',
+                label: 'Help us translate',
+              },
+            ],
           },
         ],
       },
@@ -100,15 +117,20 @@ const config = {
         style: 'dark',
         links: [
           {
+            title: 'Get started',
+            items: [
+              {
+                label: 'Installation',
+                href: '/docs/category/getting-started',
+              },
+            ],
+          },
+          {
             title: 'Community',
             items: [
               {
                 label: 'Discord',
                 href: 'https://fossbilling.org/discord',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/fossbilling',
               },
             ],
           },
@@ -116,19 +138,41 @@ const config = {
             title: 'More',
             items: [
               {
+                label: 'Open Collective',
+                href: 'https://opencollective.com/FOSSBilling',
+              },
+              {
                 label: 'GitHub',
-                href: 'https://github.com/fossbilling/fossbilling',
+                href: 'https://github.com/FOSSBilling/FOSSBilling',
+              },
+              {
+                label: 'Twitter',
+                href: 'https://twitter.com/FOSSBilling',
               },
             ],
           },
         ],
-        copyright: `FOSSBilling`,
+        copyright: `Copyright © 2022 The FOSSBilling Team.`,
       },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
     },
-};
+
+    plugins: [
+      [
+        '@docusaurus/plugin-client-redirects',
+        {
+          redirects: [
+            {
+              to: '/docs/category/getting-started',
+              from: '/docs/getting-started',
+            },
+          ],
+        },
+      ],
+    ],
+  };
 
 module.exports = config;
