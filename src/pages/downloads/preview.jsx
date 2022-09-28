@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Preview() {
     React.useEffect(() => {
-        window.location.href = 'https://fossbilling-public.s3.eu-central-1.amazonaws.com/FOSSBilling-preview.tar';
+        window.location.href = 'https://s4-ams-fossbilling.nl-ams1.upcloudobjects.com/releases/FOSSBilling-preview.tar';
       }, []);
       return null;
     };
