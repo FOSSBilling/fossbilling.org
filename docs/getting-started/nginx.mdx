@@ -23,3 +23,30 @@ You will need to have the following installed. Please take a moment now to make 
 ## Instructions
 
 ### Create a server block (virtual host) for your website
+* Locate the following directory /etc/nginx/sites-available
+* Create a file (Can be named whatever you want, i.e fossbilling.conf) 
+* Copy this config from fossbilling https://github.com/FOSSBilling/FOSSBilling/blob/main/data/nginx.conf
+* Edit the config to match your needs (Replace server name, add the PHP Fast CGI Pass, replace `fastcgi_pass php;` with `fastcgi_pass unix:/run/php/phpx.x-fpm.sock;` or any of the examples shown below ) 
+* fastcgi_pass unix:/var/run/phpx.x-fpm.sock; , fastcgi_pass unix:/var/run/php/phpx.x-fpm.sock;
+* Change anything else you may need (SSL certificates, Changing ports, etc)  
+* Change servername to your domain (i.e fossbilling.vm) 
+* Run sudo systemctl restart nginx
+### Installing Foss Billing
+* Navigate to your domain that was setup prior (i.e fossbilling.vm) and navigate to the install page (i.e fossbilling.vm/install) 
+* Ensure the following has public write access, /var/www/.../src/bb-config.php, /var/www/.../src/bb-data/cache, /var/www/.../src/bb-data/log, /var/www/.../src/bb-data/uploads.
+* Setup the database under the database tab
+* Continue with Installation and setup
+* Make var/www/.../src/bb-config.php Write only
+* Setup the admin username and password
+* Click Finish and you are done!
+### Configuring Foss Billing
+
+
+
+## Website not redirecting to HTTPS fix
+
+### Website HTTPS Redirect Fix
+* Locate /var/www/.../src/bb-config.php
+* Locate `'url' => 'http://yourdomain.com/'` 
+* Replace 'http' with 'https'
+* Restart nginx ` sudo systemctl restart nginx ` 
