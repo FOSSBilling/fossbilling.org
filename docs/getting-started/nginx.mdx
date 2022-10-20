@@ -9,17 +9,50 @@ nginx is a pretty popular pretty popular web server that can also be used as a r
 
 :::info
 
-This guide will install the latest **release**. If you're planning to contribute to the development of FOSSBilling, it's strongly advised to build FOSSBilling from the master branch instead.
+This guide will install the latest **preview release**. If you're planning to contribute to the development of FOSSBilling, it's strongly advised to build FOSSBilling from the master branch instead.
 
 :::
 
 ## Prerequisites
 You will need to have the following installed. Please take a moment now to make sure you are ready:
-* nginx ([guide](https://www.digitalocean.com/community/tutorial_collections/how-to-install-nginx). Please skip the "Setting Up Server Blocks" part, we'll cover that in this guide)
-* PHP 8.0 and later ([guide to install 8.1 on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-php-8-1-and-set-up-a-local-development-environment-on-ubuntu-22-04))
+* nginx [guide](https://www.digitalocean.com/community/tutorial_collections/how-to-install-nginx). Please skip the "Setting Up Server Blocks" part, we'll cover that in this guide)
+* PHP 8.0 or later [guide to install 8.1 on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-php-8-1-and-set-up-a-local-development-environment-on-ubuntu-22-04))
 * The following PHP extensions (the guide above also has a section that covers installing PHP extensions): `pdo_mysql`, `curl`, `zlib`, `gettext`, `openssl`
 * MariaDB 10.3 or later, or MySQL 8 or later ([guide to install MariaDB](https://www.digitalocean.com/community/tutorial_collections/how-to-install-mariadb)) 
 
 ## Instructions
 
+:::info
+
+If you need help writing your nginx config file, or just want to check what you have, then you can use the [Configuration file generator](https://config.fossbilling.org/)
+ 
+:::
+
 ### Create a server block (virtual host) for your website
+* Locate the following directory: `/etc/nginx/sites-available`
+* Create an empty config file (i.e `fossbilling.conf`) 
+* Copy the example config from [GitHub](https://github.com/FOSSBilling/FOSSBilling/blob/main/data/nginx.conf)
+* Edit the config to match your needs (Replace server name, add the PHP Fast CGI Pass, replace `fastcgi_pass php;` with `fastcgi_pass unix:/run/php/phpx.x-fpm.sock;` or any of the examples shown below) 
+* fastcgi_pass unix:/var/run/phpx.x-fpm.sock; , fastcgi_pass unix:/var/run/php/phpx.x-fpm.sock;
+* Change anything else you may need (SSL certificates, changing ports, etc)  
+* Change servername to your domain (i.e fossbilling.example.com) 
+* Run `sudo systemctl restart nginx`
+### Installing FOSSBilling
+* Navigate to  to the install page on your domain (i.e fossbilling.example.com/install) 
+* Ensure the following have public write access, `/var/www/.../src/bb-config.php`, `/var/www/.../src/bb-data/cache`, `/var/www/.../src/bb-data/log`, `/var/www/.../src/bb-data/uploads`
+* Setup the database under the database tab
+* Continue with Installation and setup
+* Make `/var/www/.../src/bb-config.php` read only
+* Setup the admin username and password
+* Click Finish and you are done!
+### Configuring FOSSBilling
+
+
+
+## HTTP / HTTPS
+
+### FOSSBilling Displays Strangely / Mixed Content Warning
+* Locate /var/www/.../src/bb-config.php
+* Locate `'url' => 'http://example.com/'` 
+* Replace 'http' with 'https'
+* Restart nginx ` sudo systemctl restart nginx ` 
