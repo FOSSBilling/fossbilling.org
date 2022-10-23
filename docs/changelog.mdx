@@ -1,0 +1,50 @@
+---
+title: Changelog
+sidebar_position: 3
+---
+
+# Changelog
+## From BoxBilling 4.22.1.5
+### Security
+ - Don't send admin password in plain text email.
+ - Prevent cron from paying deposit invoice with credits
+ - Use the cryptographically secure `random_int()`
+ - Properly define password requirements and enforce it
+ - Various security improvements
+
+### Bug Fixes
+- Fixed database port not being used during installation
+- Fixed database can't contain a hyphen
+- Fixed issues with Centova Cast module
+- Fixed issues with Plesk module
+- Fixed issues with SolusVM module
+- Fixed bugs with PDF generator
+- Improved support for SVG images with PDF generation
+- Fixed error with service domain manage page
+- Changed storage engine to InnoDB
+- General bugfixes and improved compatibility with the latest PHP versions
+- Fixed issue with the admin theme not changing
+
+### Breaking Changes
+- Dropped the forum module
+- Drops the "BoxBilling" and "Bootstrap" themes
+- Rename templates to native Twig extension (`.html.twig` instead of `.phtml`)
+- Migrated to Twig version 3
+
+### Refactors
+- Replaced TFPDF with dompdf for PDF generation
+- Refactor OrderButton module to use more theme assets instead of overriding
+- Completely new admin theme
+
+### Other
+- Lots of dependency updates
+- Add 4 new events
+- Added HTTPS support to the DirectAdmin module
+- Pointed the update checker to the new repository
+- Code style improvements
+- Replaced references to BoxBilling
+- Improve nginx config
+- Various Changes to Defaults
+- Improved docker support
+- Default to Huraga Green
+- Replaced PT Sans with IBM Plex Sans
