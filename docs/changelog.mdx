@@ -11,6 +11,7 @@ sidebar_position: 3
  - Use the cryptographically secure `random_int()`
  - Properly define password requirements and enforce it
  - Various security improvements
+ - Sanitize and validate email addresses
 
 ### Bug Fixes
 - Fixed database port not being used during installation
@@ -27,7 +28,7 @@ sidebar_position: 3
 
 ### Breaking Changes
 - Dropped the forum module
-- Drops the "BoxBilling" and "Bootstrap" themes
+- Dropped the "BoxBilling" and "Bootstrap" themes
 - Rename templates to native Twig extension (`.html.twig` instead of `.phtml`)
 - Migrated to Twig version 3
 
@@ -35,6 +36,10 @@ sidebar_position: 3
 - Replaced TFPDF with dompdf for PDF generation
 - Refactor OrderButton module to use more theme assets instead of overriding
 - Completely new admin theme
+
+### New Features
+- Introduced the ability for FOSSBilling to migrate configuration files.
+- Created new `validateAndSanitizeEmail` tool.
 
 ### Other
 - Lots of dependency updates
@@ -48,3 +53,5 @@ sidebar_position: 3
 - Improved docker support
 - Default to Huraga Green
 - Replaced PT Sans with IBM Plex Sans
+- Renamed "blog" to "news"
+- Added toggles for the sidebar links to news and knowledge base
