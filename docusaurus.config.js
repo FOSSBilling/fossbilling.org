@@ -29,7 +29,7 @@ const config = {
         docs: {
           routeBasePath: '/docs',
           breadcrumbs: true,
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve('./sidebars.ts'),
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/fossbilling/fossbilling.org/blob/main/',
