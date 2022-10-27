@@ -56,6 +56,21 @@ You can either do this using either of the following methods:
 * Copy your old 'bb-config.php' file from your backup to the new directory.
   * If copying the old configuration file, you need to change `locale_date_format` to `'l, d F o'` and change `locale_time_format` to `' G:i:s'` (please note the space before the 'G')
 
+### Make required changes in the database
+Due to changes in the system, you need to update your email templates.
+From:
+```
+{% filter markdown %}
+<TEMPLATE CONTENT>
+{% endfilter %}
+```
+to
+```
+{% apply markdown %}
+<TEMPLATE CONTENT>
+{% endapply %}
+```
+
 ### Run bb-update
 
 Run the bb-update script.

@@ -12,6 +12,7 @@ sidebar_position: 3
  - Properly define password requirements and enforce it
  - Various security improvements
  - Sanitize and validate email addresses
+ - Removed obsolete file manager. It had security vulnerabilities and many bugs.
 
 ### Bug Fixes
 - Fixed database port not being used during installation
@@ -25,6 +26,9 @@ sidebar_position: 3
 - Changed storage engine to InnoDB
 - General bugfixes and improved compatibility with the latest PHP versions
 - Fixed issue with the admin theme not changing
+- Fixed issues when trying to update a client that didn't have all information set
+- Fixed issues with custom pages on nginx
+- Fixed issues when validating international domains
 
 ### Breaking Changes
 - Dropped the forum module
