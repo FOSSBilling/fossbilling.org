@@ -2,7 +2,7 @@
 
 [![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling.org/main)](https://github.com/fossbilling/fossbilling.org/actions/workflows)
 
-FOSSBilling's website and documentation. Built using [Docusaurus 2](https://docusaurus.io/), hosted on Cloudflare Pages and can be reached by visiting [https://fossbilling.org](fossbilling.org).
+FOSSBilling's website and documentation. Built using [Docusaurus 2](https://docusaurus.io/), hosted on Cloudflare Pages and can be reached by visiting [fossbilling.org](https://fossbilling.org).
 
 ### Installation
 
