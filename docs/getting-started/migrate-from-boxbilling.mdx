@@ -52,9 +52,9 @@ Upload and extract the contents of the preview build archive over the files in y
 
 You can either do this using either of the following methods:
 
+* **Recommended:** log into the admin panel, go to the "Update FOSSBilling" and use the "Migrate configuration" tool.
+  * Note: if you are using custom values for `locale_date_format` or `locale_time_format`, you will need to manually update these to the [datetime format](https://www.php.net/manual/en/datetime.format.php)
 * Rename 'bb-config-sample.php' to 'bb-config.php' and then copy the values from your old configuration file (database name, etc.) into the new configuration file. 
-* Copy your old 'bb-config.php' file from your backup to the new directory.
-  * If copying the old configuration file, you need to change `locale_date_format` to `'l, d F o'` and change `locale_time_format` to `' G:i:s'` (please note the space before the 'G')
 
 ### Make required changes in the database
 Due to changes in the system, you need to update your email templates.

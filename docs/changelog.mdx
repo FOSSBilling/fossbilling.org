@@ -29,6 +29,7 @@ sidebar_position: 3
 - Fixed issues when trying to update a client that didn't have all information set
 - Fixed issues with custom pages on nginx
 - Fixed issues when validating international domains
+- Fixed port selection with the Vritualmin manager
 
 ### Breaking Changes
 - Dropped the forum module
@@ -42,8 +43,11 @@ sidebar_position: 3
 - Completely new admin theme
 
 ### New Features
-- Introduced the ability for FOSSBilling to migrate configuration files.
+- Introduced the ability for FOSSBilling to migrate configuration files. - This can be manually run from the "Update FOSSBilling" screen
 - Created new `validateAndSanitizeEmail` tool.
+- FOSSBilling will automatically execute cron when you log into the admin panel (as long as it hasn't been executed in at least 15 minutes. Can be disabled via the `disable_auto_cron` option in the config file)
+- FOSSBilling will log a stacktrace when an exception is thrown with debug on. (`log_stacktrace` and `stacktrace_length` in the config file)
+- FOSSBilling has a new maintanance mode which can be configured and enabled via the config file
 
 ### Other
 - Lots of dependency updates
