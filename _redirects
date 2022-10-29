@@ -1,5 +1,11 @@
-/bug-report https://github.com/FOSSBilling/FOSSBilling/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D 301
-/discord https://discord.com/invite/bVjMZSgtbY 301
-/donate https://github.com/sponsors/FOSSBilling 301
-/feature-request https://github.com/FOSSBilling/FOSSBilling/issues/new?assignees=&labels=feature+request&template=feature_request.md&title=%5BFeature+Request%5D 301
-/downloads/preview https://s4-fossb-2.fi-hel2.upcloudobjects.com/releases/FOSSBilling-preview.tar 301
+/bug-report /bug-report/ 301
+/discord /discord/ 301
+/donate /donate/ 301
+/feature-request /feature-request/ 301
+/downloads/preview /downloads/preview/ 301
+
+/bug-report/ https://github.com/FOSSBilling/FOSSBilling/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D 301
+/discord/ https://discord.com/invite/bVjMZSgtbY 301
+/donate/ https://github.com/sponsors/FOSSBilling 301
+/feature-request/ https://github.com/FOSSBilling/FOSSBilling/issues/new?assignees=&labels=feature+request&template=feature_request.md&title=%5BFeature+Request%5D 301
+/downloads/preview/ https://s4-fossb-2.fi-hel2.upcloudobjects.com/releases/FOSSBilling-preview.tar 301
