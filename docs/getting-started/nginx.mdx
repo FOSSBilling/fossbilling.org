@@ -30,13 +30,14 @@ If you need help writing your nginx config file, or just want to check what you 
 
 ### Create a server block (virtual host) for your website
 * Locate the following directory: `/etc/nginx/sites-available`
-* Create an empty config file (i.e `fossbilling.conf`) 
-* Copy the example config from [GitHub](https://github.com/FOSSBilling/FOSSBilling/blob/main/data/nginx.conf)
-* Edit the config to match your needs (Replace server name, add the PHP Fast CGI Pass, replace `fastcgi_pass php;` with `fastcgi_pass unix:/run/php/phpx.x-fpm.sock;` or any of the examples shown below) 
+* Create an empty config file (i.e `fossbilling.conf`)
+* Generate a configuration file for yourself using our new [configuration generator](https://config.fossbilling.org) or copy the example config from [GitHub](https://github.com/FOSSBilling/FOSSBilling/blob/main/data/nginx.conf)
+* Edit the config to match your needs (Replace server name, add the PHP Fast CGI Pass, replace `fastcgi_pass php;` with `fastcgi_pass unix:/run/php/phpx.x-fpm.sock;` or any of the examples shown below)
 * fastcgi_pass unix:/var/run/phpx.x-fpm.sock; , fastcgi_pass unix:/var/run/php/phpx.x-fpm.sock;
-* Change anything else you may need (SSL certificates, changing ports, etc)  
-* Change servername to your domain (i.e fossbilling.example.com) 
+* Change anything else you may need (SSL certificates, changing ports, etc)
+* Change servername to your domain (i.e fossbilling.example.com)
 * Run `sudo systemctl restart nginx`
+
 ### Installing FOSSBilling
 * Download the latest [FOSSBilling preview](https://fossbilling.org/downloads/preview) and then upload the files in the archive to the public directory of the site on your server, keeping the file structure as it is inside the archive.  
 * Navigate to  to the install page on your domain (i.e fossbilling.example.com/install) 
