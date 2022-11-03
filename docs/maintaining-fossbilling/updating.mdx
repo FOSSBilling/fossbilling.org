@@ -1,0 +1,23 @@
+
+---
+title: Updating FOSSBilling
+sidebar_position: 1
+description: This guide describes how to update your FOSSBilling installation.
+---
+
+# ⚙️ Updating FOSSBilling
+There are two main ways to update FOSSBilling: manually or automatically.
+Before performing either option, it is recommended to create a backup of both your database and the files to your FOSSBilling installation. 
+
+## Using the Automatic Updater (Recommended) 
+
+ - FOSSBilling can handle the update process automatically for you. This can be accessed by logging into your admin panel and going to `extensions` --> `overview` --> `Update FOSSBilling`. 
+ - This will update FOSSBilling using whatever branch is set in the configuration file.  (preview or release) 
+	 - The default option for this configuration will depend on if you have installed a preview or a release version of , but it can be changed at anytime. (more information can be found on the [config documentation](https://fossbilling.org/docs/customizing-fossbilling/config))
+
+## Manually Updating FOSSBilling
+
+ 1. Download the latest version of FOSSBilling
+ 2. Extract the latest release on-top of your existing installation, overriding existing files
+ 3. Run yourdomain.com/foss-update.php
+ 4. Log in to the admin panel and go to `extensions` --> `overview` --> `Update FOSSBilling`.  Then run the `Migrate configuration` option to ensure your configuration is up-to-date.
