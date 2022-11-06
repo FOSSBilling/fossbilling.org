@@ -123,6 +123,10 @@ const config = {
                 label: 'Installation',
                 href: '/docs/category/getting-started',
               },
+              {
+                label: 'Web server configuration',
+                href: 'https://config.fossbilling.org',
+              },
             ],
           },
           {
