@@ -6,4 +6,12 @@ title: How we handle payments
 
 FOSSBilling does not directly handle any payment processing and card info is **NOT** stored in the FOSSBilling interface. 
 
-Paymnents are processed using third-party payment processors, i.e. Paypal, Stripe, Bitcart.
+Paymnents are processed using third-party payment processors, i.e. PayPal, Stripe, Bitcart.
+
+Currently PayPal and Stripe integrations are working, althogh there may be some issues with card payments that require 3DS, these should be resolved in the near future. 
+
+The Bitcart integration is also working, and is maintained directly by Bitcart.
+
+You can find a list of working modules here: [Working extensions and payment providers](https://fossbilling.org/docs/extensions) and we will keep that updated as more modules are tested and found to be working. 
+
+If you need to use another payment processer, then first check the [existing issues](https://github.com/FOSSBilling/FOSSBilling/issues) and either add your comments to an existing request if one exists or start a new issue if not. If you have the ability, then please feel free to build an integration and we'd appreciate it if you would contribute the code back to FOSSBilling. 
