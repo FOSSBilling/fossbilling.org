@@ -6,8 +6,8 @@ sidebar_position: 5
 # Changelog
 ## From BoxBilling 4.22.1.5
 ### Security
- - Don't send admin password in plain text email.
- - Prevent cron from paying deposit invoice with credits
+ - Don't send the admin password in plain text email.
+ - Prevent cron from paying deposit invoices with credits
  - Use the cryptographically secure `random_int()`
  - Properly define password requirements and enforce it
  - Various security improvements
@@ -20,19 +20,19 @@ sidebar_position: 5
 - Fixed database can't contain a hyphen
 - Fixed issues with Centova Cast module
 - Fixed issues with Plesk module
-- Fixed issues with SolusVM module
-- Fixed bugs with PDF generator
+- Fixed issues with the SolusVM module
+- Fixed bugs with the PDF generator
 - Improved support for SVG images with PDF generation
 - Fixed error with service domain manage page
 - Changed storage engine to InnoDB
 - General bugfixes and improved compatibility with the latest PHP versions
 - Fixed issue with the admin theme not changing
-- Fixed issues when trying to update a client that didn't have all information set
+- Fixed issues when trying to update a client that didn't have all the information set
 - Fixed issues with custom pages on nginx
 - Fixed issues when validating international domains
 - Fixed port selection with the Virtualmin manager
 - Fixed issues that could potentially cause FOSSBilling to infinitely attempt to resend emails if there is an error.
-- Fixed issues with both the VestaCP and HestiaCP  integrations.
+- Fixed issues with both the VestaCP and HestiaCP integrations.
 
 ### Breaking Changes
 - Dropped the forum module
@@ -42,20 +42,20 @@ sidebar_position: 5
 
 ### Refactors
 - Replaced TFPDF with dompdf for PDF generation
-- Refactor OrderButton module to use more theme assets instead of overriding
+- Refactor the OrderButton module to use more theme assets instead of overriding
 - Completely new admin theme
 
 ### New Features
 - Introduced the ability for FOSSBilling to migrate configuration files. - This can be manually run from the "Update FOSSBilling" screen
-- Created new `validateAndSanitizeEmail` tool.
+- Created a new `validateAndSanitizeEmail` tool.
 - FOSSBilling will automatically execute cron when you log into the admin panel (as long as it hasn't been executed in at least 15 minutes. Can be disabled via the `disable_auto_cron` option in the config file)
-- FOSSBilling will log a stack trace when an exception is thrown with debug on. (`log_stacktrace` and `stacktrace_length` in the config file)
+- FOSSBilling will log a stack trace when an exception is thrown with debugging on. (`log_stacktrace` and `stacktrace_length` in the config file)
 - FOSSBilling has a new maintenance mode which can be configured and enabled via the config file.
 - FOSSBilling can now switch between release and preview branches for the automatic update tool.
 - FOSSBilling will display a helpful message if you are using Apache without a .htaccess file.
 - Added support for strikethrough in markdown. (`~~strikethrough~~`)
 - Added the custom invoice text to the PDF invoice.
-- Completely added rewritten plex integration
+- Completely rewritten the Plesk integration.
 
 ### Other
 - Lots of dependency updates
