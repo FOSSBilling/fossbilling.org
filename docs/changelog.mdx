@@ -13,7 +13,7 @@ sidebar_position: 5
  - Various security improvements
  - Sanitize and validate email addresses
  - Removed obsolete file manager. It had security vulnerabilities and many bugs.
- - Default config for nginx will now properly block direct access to sensitive files. 
+ - Default config for nginx will now properly block direct access to sensitive files.
 
 ### Bug Fixes
 - Fixed database port not being used during installation
@@ -31,6 +31,8 @@ sidebar_position: 5
 - Fixed issues with custom pages on nginx
 - Fixed issues when validating international domains
 - Fixed port selection with the Virtualmin manager
+- Fixed issues that could potentially cause FOSSBilling to infinitely attempt to resend emails if there is an error.
+- Fixed issues with both the VestaCP and HestiaCP  integrations.
 
 ### Breaking Changes
 - Dropped the forum module
@@ -47,10 +49,13 @@ sidebar_position: 5
 - Introduced the ability for FOSSBilling to migrate configuration files. - This can be manually run from the "Update FOSSBilling" screen
 - Created new `validateAndSanitizeEmail` tool.
 - FOSSBilling will automatically execute cron when you log into the admin panel (as long as it hasn't been executed in at least 15 minutes. Can be disabled via the `disable_auto_cron` option in the config file)
-- FOSSBilling will log a stacktrace when an exception is thrown with debug on. (`log_stacktrace` and `stacktrace_length` in the config file)
+- FOSSBilling will log a stack trace when an exception is thrown with debug on. (`log_stacktrace` and `stacktrace_length` in the config file)
 - FOSSBilling has a new maintenance mode which can be configured and enabled via the config file.
 - FOSSBilling can now switch between release and preview branches for the automatic update tool.
 - FOSSBilling will display a helpful message if you are using Apache without a .htaccess file.
+- Added support for strikethrough in markdown. (`~~strikethrough~~`)
+- Added the custom invoice text to the PDF invoice.
+- Completely added rewritten plex integration
 
 ### Other
 - Lots of dependency updates
@@ -66,3 +71,4 @@ sidebar_position: 5
 - Replaced PT Sans with IBM Plex Sans
 - Renamed "blog" to "news"
 - Added toggles for the sidebar links to news and knowledge base
+- Rewrote `emptyFolder()` to be cleaner and simpler.
