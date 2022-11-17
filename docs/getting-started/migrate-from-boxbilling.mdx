@@ -54,22 +54,7 @@ You can either do this using either of the following methods:
 
 * **Recommended:** log into the admin panel, go to the "Update FOSSBilling" and use the "Migrate configuration" tool.
   * Note: if you are using custom values for `locale_date_format` or `locale_time_format`, you will need to manually update these to the [datetime format](https://www.php.net/manual/en/datetime.format.php)
-* Rename 'bb-config-sample.php' to 'bb-config.php' and then copy the values from your old configuration file (database name, etc.) into the new configuration file. 
-
-### Make required changes in the database
-Due to changes in the system, you need to update your email templates.
-From:
-```
-{% filter markdown %}
-<TEMPLATE CONTENT>
-{% endfilter %}
-```
-to
-```
-{% apply markdown %}
-<TEMPLATE CONTENT>
-{% endapply %}
-```
+* **Not Recommended** Rename 'bb-config-sample.php' to 'bb-config.php' and then copy the values from your old configuration file (database name, etc.) into the new configuration file. 
 
 ### Run bb-update
 
