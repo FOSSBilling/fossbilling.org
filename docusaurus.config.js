@@ -136,6 +136,15 @@ const config = {
                 label: 'Discord',
                 href: 'https://fossbilling.org/discord',
               },
+              {
+                label: 'Twitter',
+                href: 'https://twitter.com/FOSSBilling',
+              },
+              {
+                label: 'Mastodon',
+                href: 'https://fosstodon.org/@fossbilling',
+                rel: 'me',
+              },
             ],
           },
           {
@@ -148,10 +157,6 @@ const config = {
               {
                 label: 'GitHub',
                 href: 'https://github.com/FOSSBilling/FOSSBilling',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/FOSSBilling',
               },
             ],
           },
