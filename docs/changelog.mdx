@@ -4,7 +4,8 @@ sidebar_position: 5
 ---
 
 # Changelog
-## From BoxBilling 4.22.1.5
+## Version 0.1.0 (12-2-2022)
+Note: this changelog is compared to BoxBilling version 4.22.1.5
 ### Security
  - Don't send the admin password in plain text email.
  - Prevent cron from paying deposit invoices with credits
@@ -33,17 +34,22 @@ sidebar_position: 5
 - Fixed port selection with the Virtualmin manager
 - Fixed issues that could potentially cause FOSSBilling to infinitely attempt to resend emails if there is an error.
 - Fixed issues with both the VestaCP and HestiaCP integrations.
+- Prevent domain orders from being completed without selecting the "years"
+- Removed the "API" tab from the staff members list due to bugs and security concerns.
 
 ### Breaking Changes
 - Dropped the forum module
 - Dropped the "BoxBilling" and "Bootstrap" themes
 - Rename templates to native Twig extension (`.html.twig` instead of `.phtml`)
 - Migrated to Twig version 3
+- Removed the "bb" prefix from folders and path variables.
+- The SolusVM and Centova Cast have been removed from the core software.
 
 ### Refactors
 - Replaced TFPDF with dompdf for PDF generation
 - Refactor the OrderButton module to use more theme assets instead of overriding
 - Completely new admin theme
+- Completely rewritten the Plesk integration.
 
 ### New Features
 - Introduced the ability for FOSSBilling to migrate configuration files. - This can be manually run from the "Update FOSSBilling" screen
@@ -55,7 +61,8 @@ sidebar_position: 5
 - FOSSBilling will display a helpful message if you are using Apache without a .htaccess file.
 - Added support for strikethrough in markdown. (`~~strikethrough~~`)
 - Added the custom invoice text to the PDF invoice.
-- Completely rewritten the Plesk integration.
+- Very basic support for an extension store inside of FOSSBilling.
+- Added a new setting for a dark variant of your companies logo that will be used with dark mode. 
 
 ### Other
 - Lots of dependency updates
