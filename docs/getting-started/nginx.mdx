@@ -41,17 +41,17 @@ If you need help writing your nginx config file, or just want to check what you 
 ### Installing FOSSBilling
 * Download the latest [FOSSBilling preview](https://fossbilling.org/downloads/preview) and then upload the files in the archive to the public directory of the site on your server, keeping the file structure as it is inside the archive.  
 * Navigate to  to the install page on your domain (i.e fossbilling.example.com/install) 
-* Ensure the following have public write access, `/var/www/.../src/bb-config.php`, `/var/www/.../src/bb-data/cache`, `/var/www/.../src/bb-data/log`, `/var/www/.../src/bb-data/uploads`
+* Ensure the following have public write access, `/var/www/.../src/config.php`, `/var/www/.../src/data/cache`, `/var/www/.../src/data/log`, `/var/www/.../src/data/uploads`
 * Setup the database under the database tab
 * Continue with Installation and setup
-* Make `/var/www/.../src/bb-config.php` read only
+* Make `/var/www/.../src/config.php` read only
 * Setup the admin username and password
 * Click Finish and you are done!
 
 ## Common Problems
 
 ### FOSSBilling Displays Strangely / Mixed Content Warning
-* Locate /var/www/.../src/bb-config.php
+* Locate /var/www/.../src/config.php
 * Locate `'url' => 'http://example.com/'` 
 * Replace 'http' with 'https'
 * Restart nginx ` sudo systemctl restart nginx ` 
