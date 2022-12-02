@@ -24,11 +24,11 @@ function HomepageHeader() {
       </h1>
         <p className="hero__subtitle">Free and open-source billing and client management solution.</p>
         <div className={styles.buttons}>
-          <a
+          <Link
             className="button button--secondary button--lg"
-            href="https://fossbilling.org/downloads/preview">
-            Download the latest preview
-          </a>
+            to="downloads">
+            Download FOSSBilling
+          </Link>
         </div>
       </div>
     </header>

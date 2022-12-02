@@ -92,6 +92,11 @@ const config = {
             position: 'left',
           },
           {
+            href: '/downloads',
+            label: 'Downloads',
+            position: 'left',
+          },
+          {
             href: 'https://github.com/sponsors/FOSSBilling',
             label: 'Donate',
             position: 'left',
@@ -177,6 +182,10 @@ const config = {
             {
               to: '/docs/category/getting-started',
               from: '/docs/getting-started',
+            },
+            {
+              to: '/downloads',
+              from: '/download',
             },
           ],
         },
