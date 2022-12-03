@@ -15,8 +15,8 @@ This guide will install the latest **preview release**. If you're planning to co
 
 ## Prerequisites
 You will need to have the following installed. Please take a moment now to make sure you are ready:
-* **nginx** [Install guide](https://www.digitalocean.com/community/tutorial_collections/how-to-install-nginx). Please skip the "Setting Up Server Blocks" part, we'll cover that in this guide)
-* **PHP 8.0** or later [Guide to install 8.1 on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-php-8-1-and-set-up-a-local-development-environment-on-ubuntu-22-04))
+* **nginx** ([Install guide](https://www.digitalocean.com/community/tutorial_collections/how-to-install-nginx)). Please skip the "Setting Up Server Blocks" part, we'll cover that in this guide)
+* **PHP 8.0** or later ([Guide to install 8.1 on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-php-8-1-and-set-up-a-local-development-environment-on-ubuntu-22-04))
 * The following PHP extensions (the guide above also has a section that covers installing PHP extensions): `pdo_mysql`, `curl`, `zlib`, `gettext`, `openssl`
 * **MariaDB 10.3** or later, or **MySQL 8** or later ([guide to install MariaDB](https://www.digitalocean.com/community/tutorial_collections/how-to-install-mariadb)) 
 
@@ -39,7 +39,7 @@ If you need help writing your nginx config file, or just want to check what you 
 * Run `sudo systemctl restart nginx`
 
 ### Installing FOSSBilling
-* Download the latest [FOSSBilling preview](https://fossbilling.org/downloads/preview) and then upload the files in the archive to the public directory of the site on your server, keeping the file structure as it is inside the archive.  
+* Download the latest [FOSSBilling release](https://fossbilling.org/downloads/stable) and then upload the files in the archive to the public directory of the site on your server, keeping the file structure as it is inside the archive.  
 * Navigate to  to the install page on your domain (i.e fossbilling.example.com/install) 
 * Ensure the following have public write access, `/var/www/.../src/config.php`, `/var/www/.../src/data/cache`, `/var/www/.../src/data/log`, `/var/www/.../src/data/uploads`
 * Setup the database under the database tab
