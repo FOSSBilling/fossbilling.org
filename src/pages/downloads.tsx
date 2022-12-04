@@ -15,8 +15,8 @@ function Header() {
         <div className={styles.buttons}>
           <a
             className="button button--secondary button--lg"
-            href="https://github.com/FOSSBilling/FOSSBilling/releases/download/0.1.0/FOSSBilling.zip">
-            Download v0.1.0
+            href="https://fossbilling.org/downloads/stable">
+            Download v0.1.1
           </a>
         </div>
       </div>
