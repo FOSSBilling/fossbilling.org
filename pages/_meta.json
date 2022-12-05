@@ -1,0 +1,27 @@
+{
+  "*": {
+    "type": "page"
+  },
+
+  "index": {
+    "title": "FOSSBilling",
+    "display": "hidden",
+    "theme": {
+      "layout": "raw"
+    }
+  },
+  "docs": {
+    "title": "Documentation"
+  },
+  "downloads": {
+    "title": "Downloads",
+    "theme": {
+      "layout": "raw"
+    }
+  },
+  "donate": {
+    "title": "Donate",
+    "href": "https://fossbilling.org/donate",
+    "newWindow": true
+  }
+}

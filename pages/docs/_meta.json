@@ -1,0 +1,35 @@
+{
+  "index": {
+    "title": "Introduction"
+  },
+  "getting-started": {
+    "title": "Getting started"
+  },
+  "maintaining-fossbilling": {
+    "title": "Maintaining FOSSBilling"
+  },
+  "customizing-fossbilling": {
+    "title": "Customizing FOSSBilling"
+  },
+  "security": {
+    "title": "Security"
+  },
+  "under-the-hood": {
+    "title": "Under the hood"
+  },
+  "faq": {
+    "title": "FAQ"
+  },
+  "contribution-handbook": {
+    "title": "Contribution handbook"
+  },
+  "changelog": {
+    "title": "Changelog"
+  },
+  "troubleshooting": {
+    "title": "Troubleshooting"
+  },
+  "extensions": {
+    "title": "Working extensions and payment modules"
+  }
+}

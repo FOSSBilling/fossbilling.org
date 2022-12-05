@@ -2,26 +2,21 @@
 
 [![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling.org/main)](https://github.com/fossbilling/fossbilling.org/actions/workflows)
 
-FOSSBilling's website and documentation. Built using [Docusaurus 2](https://docusaurus.io/), hosted on Cloudflare Pages and can be reached by visiting [fossbilling.org](https://fossbilling.org).
+FOSSBilling's website and documentation. Built using [Nextra](https://nextra.site/), hosted on Vercel and can be reached by visiting [fossbilling.org](https://fossbilling.org).
 
-### Installation
+## Installation
 
 ```
 $ npm i
 ```
 
-### Local Development
+## Local Development
 
 ```
-$ npm run start
+$ npm run dev
 ```
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
-### Build
-
-```
-$ npm run build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service. Cloudflare Pages will automatically run this command and serve the website.
+## Acknowledgements
+This website uses some components from the [Nextra website](https://nextra.site). Nextra is an awesome project and they generously published both the package and their website under the MIT license. You can find the source code of their website [here](https://github.com/shuding/nextra/tree/main/docs).
