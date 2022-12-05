@@ -32,6 +32,27 @@ export default {
     sidebar: {
         defaultMenuCollapseLevel: 1
     },
+    head: (
+      <>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta httpEquiv="Content-Language" content="en" />
+        <meta
+          name="description"
+          content="FOSSBilling is the free and open-source solution for efficient billing and client management."
+        />
+        <meta
+          name="og:description"
+          content="FOSSBilling is the free and open-source solution for efficient billing and client management."
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="" />
+        <meta name="twitter:site:domain" content="fossbilling.org" />
+        <meta name="twitter:url" content="https://fossbilling.org" />
+        <meta name="og:title" content="FOSSBilling" />
+        <meta name="og:image" content="" />
+        <meta name="apple-mobile-web-app-title" content="FOSSBilling" />
+      </>
+    ),
     footer: {
         text: () => {
          return (
