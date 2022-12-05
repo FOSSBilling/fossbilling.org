@@ -1,7 +1,6 @@
 {
   "docker": "Install using Docker",
   "nginx": "Install on an nginx server",
-  "cPanel": "Install on a cPanel server",
-  "plesk": "Install on a Plesk server",
+  "shared": "Install on cPanel or Plesk",
   "migrate-from-boxbilling": "Migrate from BoxBilling"
 }

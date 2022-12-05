@@ -32,6 +32,16 @@
             "source": "/downloads/preview",
             "destination": "https://s4-fossb-2.fi-hel2.upcloudobjects.com/releases/FOSSBilling-preview.zip",
             "permanent": true
+          },
+          {
+            "source": "/docs/getting-started/cPanel",
+            "destination": "/docs/getting-started/shared",
+            "permanent": true
+          },
+          {
+            "source": "/docs/getting-started/plesk",
+            "destination": "/docs/getting-started/shared",
+            "permanent": true
           }
       ]
 }

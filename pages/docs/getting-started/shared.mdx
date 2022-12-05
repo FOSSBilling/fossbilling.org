@@ -1,0 +1,161 @@
+---
+title: Install on shared hosting
+description: This guide will help you install FOSSBilling on shared hosting software, such as cPanel or Plesk.
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleInfo, faPersonDigging, faServer, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { Callout, Tab, Tabs } from 'nextra-theme-docs'
+
+# <FontAwesomeIcon icon={faServer} /> Install on shared hosting (cPanel, Plesk, etc.)
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+    This article needs visual improvements. If you can provide screenshots or other helpful visuals, please help us improve it using the **"Edit this page"** button in the sidebar. Thanks!
+</Callout>
+Shared hosting is a type of web hosting where multiple websites reside on the same server. This is a popular option for individuals and small businesses because it is often the most affordable and easy to set up.
+
+The most popular shared hosting platforms are cPanel and Plesk. This guide will help you install FOSSBilling on either of them.
+
+## Requisities
+Most of the shared hosting plans that support PHP 8.0 or higher should work. However, FOSSBilling depends on the following PHP extensions and won't work without them enabled:
+- `pdo_mysql`
+- `curl`
+- `zlib`
+- `gettext`
+- `openssl`
+
+You also need to have a MySQL database in a MariaDB server running version 10.3 or later, or in a MySQL server running version 8 or later.
+
+These requisities likely are already met by your hosting provider. The installer will check for them and let you know if you need to enable any of them.
+
+## Instructions
+
+### Download the latest release
+Download the latest release of FOSSBilling from the [downloads page](/downloads). In the next step, you will upload the files to your web server.
+
+### Upload the files to your web server
+Connect to your web server using an FTP client or the file manager provided by your hosting provider. Upload the files to the public directory of your website. It usually is the `public_html` or the `htdocs` directory.
+
+You can either extract the files from the downloaded archive to your computer and upload them, or upload the archive and extract it on the server. If you have access to the online file manager provided by cPanel or Plesk, doing the second should be easier and faster.
+
+### Set permissions for caching directories
+<Tabs items={['cPanel', 'Plesk']}>
+  <Tab>
+    - Log in to your cPanel account and click on the "File Manager" icon in the "Files" section.
+    - In the file manager, navigate to the `data` directory.
+    - If the `cache` directory does not exist, create it.
+    - Right-click on the `cache` folder and select "Change Permissions" from the menu.
+    - In the "Change Permissions" window, you will see a series of checkboxes that correspond to the different types of permissions (read, write, and execute) for the folder's owner, the folder's group, and other users.
+    - Set the permissions for the folder to `777`. This will allow the cache folder to be read, written, and executed by all users.
+    - Once you have set the permissions, click the "Change Permissions" button to save your changes.
+  </Tab>
+  <Tab>
+    - Log in to your Plesk account and go to the "Files" section.
+    - In the "Files" section, click on the "File Manager" icon.
+    - In the file manager, navigate to the `data` directory.
+    - If the `cache` directory does not exist, create it.
+    - Right-click on the `cache` folder and select "Properties" from the menu.
+    - In the "Properties" window, click on the "Permissions" tab.
+    - In the "Permissions" tab, you will see a series of checkboxes that correspond to the different types of permissions (read, write, and execute) for the folder's owner, the folder's group, and other users.
+    - Set the permissions for the folder to `777`. This will allow the cache folder to be read, written, and executed by all users.
+    - Once you have set the permissions, click the "OK" button to save your changes.
+  </Tab>
+</Tabs>
+
+### Create a MySQL database
+<Tabs items={['cPanel', 'Plesk']}>
+  <Tab>
+    - Log in to your cPanel account and go to the "Databases" section.
+    - In the "Databases" section, click on the "MySQL Databases" icon.
+    - In the MySQL Databases page, scroll down to the "Create New Database" section and enter a name for your new database in the "Database Name" field. Then, click the "Create Database" button.
+    - The new database will be created and added to the list of databases in your cPanel account.
+    - Next, you need to create a new user that will be attached to the database. Scroll down to the "Add New User" section and enter the username and password for the new user in the appropriate fields. Make sure this password is strong. Using a password manager might help. Then, click the "Create User" button.
+    - The new user will be created and added to the list of users in your cPanel account.
+    - Finally, you need to attach the new user to the database. Scroll down to the "Add User To Database" section, select the new user and the database from the dropdown menus, and click the "Add" button.
+    - The user will be added to the database and granted the appropriate permissions. You can now continue.
+  </Tab>
+  <Tab>
+    - Log in to your Plesk account and go to the "Databases" section.
+    - In the "Databases" section, click on the "Add New Database" button.
+    - In the "Add New Database" page, enter a name for your new database in the "Database Name" field and select "MySQL" as the database type. Then, click the "OK" button.
+    - The new database will be created and added to the list of databases in your Plesk account.
+    - Next, you need to create a new user that will be attached to the database. In the "Add New Database" page, enter the username and password for the new user in the appropriate fields. Make sure this password is strong. Using a password manager might help. Then, click the "OK" button.
+    - The new user will be created and added to the list of users in your Plesk account.
+    - Finally, you need to attach the new user to the database. In the "Add New Database" page, select the new user and the database from the dropdown menus, and click the "OK" button.
+    - The user will be added to the database and granted the appropriate permissions. You can now continue.
+  </Tab>
+</Tabs>
+
+### Install using the web installer
+- Open your web browser and go to the "/install" path in your domain. For example, if your domain is "fossbilling.org", you would go to "https://fossbilling.org/install" in your web browser.
+- You should see the FOSSBilling installer. Follow the instructions on the screen to complete the installation.
+- Use the database credentials you created in the previous step to connect to the database.
+
+### Remove the installer
+Once you have completed the installation, you should remove the installer from your web server. This is to prevent anyone from accessing it and installing FOSSBilling on your server again. Running the installer again will overwrite your existing installation, so make sure you don't keep the installer existing in your web server.
+
+The installer is located in the `install` directory. You can use your FTP client or the online file manager provided by your hosting provider to delete the directory.
+
+### Post-installation steps
+#### Secure your configuration file
+Adjusting the permissions of your configuration file ensures that only authorized users have access to the file. By setting the permissions to allow only the owner to write to the file, you can prevent unauthorized users from modifying the file and potentially causing problems with your website or application.
+
+<Tabs items={['cPanel', 'Plesk']}>
+  <Tab>
+    - Log in to your cPanel account and go to the "Files" section.
+    - In the "Files" section, click on the "File Manager" icon.
+    - In the file manager, navigate to the directory where you set up FOSSBilling.
+    - Right-click on the `config.php` file and select "Change Permissions" from the menu.
+    - In the "Change Permissions" window, you will see a series of checkboxes that correspond to the different types of permissions (read, write, and execute) for the file's owner, the file's group, and other users.
+    - To set the chmod 644 for the file, check the boxes next to "Read" and "Write" under the "Owner" column, and uncheck the boxes next to "Write" and "Execute" under the "Group" and "Other" columns. This will set the file permissions to allow the owner to read and write to the file, and to allow all other users to only read the file.
+    - Once you have set the permissions, click the "Change Permissions" button to save your changes.
+    - The file's permissions will now be updated.
+  </Tab>
+  <Tab>
+    - Log in to your Plesk account and go to the "Files" section.
+    - In the "Files" section, click on the "File Manager" icon.
+    - In the file manager, navigate to the directory where you set up FOSSBilling.
+    - Right-click on the `config.php` file and select "Properties" from the menu.
+    - In the "Properties" window, click on the "Permissions" tab.
+    - In the "Permissions" tab, you will see a series of checkboxes that correspond to the different types of permissions (read, write, and execute) for the file's owner, the file's group, and other users.
+    - To set the chmod 644 for the file, check the boxes next to "Read" and "Write" under the "Owner" column, and uncheck the boxes next to "Write" and "Execute" under the "Group" and "Other" columns. This will set the file permissions to allow the owner to read and write to the file, and to allow all other users to only read the file.
+    - Once you have set the permissions, click the "OK" button to save your changes.
+    - The file's permissions will now be updated.
+  </Tab>
+</Tabs>
+
+#### Rename the htaccess file
+<Callout type="warning" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
+  Not renaming the htaccess file will prevent FOSSBilling from working properly.
+  
+  If you don't rename the file, you will see a 404 error when you try to access any page other than the main page.
+</Callout>
+
+In some cases, the installer fails to automatically rename the `.htaccess` file. If this is the case, you will need to rename the file manually.
+
+Use your FTP client or the online file manager provided by your hosting provider to rename the `htaccess.txt` file to `.htaccess`. You should keep the dot at the beginning of the file name. After you renamed it, you might see it disappear from the file manager. This is normal. The file is still there, but it is hidden.
+
+To confirm that the file was renamed successfully, you can enable the "Show hidden files" option in your file manager and check if it's named correctly.
+
+#### Set up cron jobs
+FOSSBilling uses cron jobs to run scheduled tasks. Cron jobs are important because they allow you to automate repetitive tasks that would otherwise need to be performed manually. This can save time and effort, and help ensure that tasks are performed consistently and accurately.
+Not setting up cron jobs will prevent FOSSBilling from working properly.
+
+You should first learn where the cron job script is located on your server. To do this, you can log into your admin panel and go to the "Scheduled jobs" page in the settings. In this page, you should see the path and the command that you need to use to set up the cron job.
+
+<Tabs items={['cPanel', 'Plesk']}>
+  <Tab>
+    - Log in to your cPanel account and go to the "Advanced" section.
+    - In the "Advanced" section, click on the "Cron Jobs" icon.
+    - In the "Cron Jobs" page, scroll down to the "Add New Cron Job" section.
+    - In the "Command" field, enter the command you found in the "Scheduled jobs" page.
+    - Click the "Add New Cron Job" button.
+    - The cron jobs should now work. You can check the "Scheduled jobs" page in your admin panel to see when was the last time they were successfully executed.
+  </Tab>
+  <Tab>
+    - Log in to your Plesk account and go to the "Scheduled Tasks" section.
+    - In the "Scheduled Tasks" section, click on the "Add New Task" button.
+    - In the "Add new task" page, enter the command you found in the "Scheduled jobs" page.
+    - Click the "OK" button.
+    - The cron jobs should now work. You can check the "Scheduled jobs" page in your admin panel to see when was the last time they were successfully executed.
+  </Tab>
+</Tabs>
