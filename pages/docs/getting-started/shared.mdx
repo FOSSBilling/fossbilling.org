@@ -91,6 +91,10 @@ You can either extract the files from the downloaded archive to your computer an
 - Use the database credentials you created in the previous step to connect to the database.
 
 ### Remove the installer
+<Callout type="error" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
+  For security purposes, you must remove the installer before you can access your FOSSBilling installation.
+</Callout>
+
 Once you have completed the installation, you should remove the installer from your web server. This is to prevent anyone from accessing it and installing FOSSBilling on your server again. Running the installer again will overwrite your existing installation, so make sure you don't keep the installer existing in your web server.
 
 The installer is located in the `install` directory. You can use your FTP client or the online file manager provided by your hosting provider to delete the directory.
