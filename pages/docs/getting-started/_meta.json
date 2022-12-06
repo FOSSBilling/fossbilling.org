@@ -2,5 +2,6 @@
   "shared": "Install on cPanel or Plesk",
   "nginx": "Install on an nginx server",
   "docker": "Install using Docker",
+  "softaculous": "Install using Softaculous",
   "migrate-from-boxbilling": "Migrate from BoxBilling"
 }
