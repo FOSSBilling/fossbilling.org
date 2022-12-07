@@ -4,6 +4,22 @@ title: Changelog
 
 # Changelog
 
+## Version 0.2.0 (12-7-2022)
+This release adds protection against CSRF attacks. This change will break outdated modules.
+It's highly discouraged to disable this protection, but if needed you can edit the `CSRFPrevention` value in your `config.php` file and set it to false.
+
+### Breaking Changes / Security
+ - Implemented a token system to protect against CSRF attacks. outdated modules and themes will no longer work with this protection. enabled.
+
+### Bug fixes 
+ - Fixed subscriptions with the PayPal payment adapter. 
+ - Properly fixed issues with the VestaCP and HestiaCP server managers.
+ - The localization files have been synced with the source code and we've pre-translated a few popular languages using machine learning.
+ - Fixed issues when trying to click the filter icon in the admin dashboard.
+
+## New Features
+ - Sever managers can now specify their own input fields, making the setup process a bit more intuitive. 
+
 ## Version 0.1.1 (12-3-2022)
 This release is a quick hotfix to resolve some minor issues reported with version [0.1.0](https://github.com/FOSSBilling/FOSSBilling/releases/tag/0.1.0)
 ### New Features
