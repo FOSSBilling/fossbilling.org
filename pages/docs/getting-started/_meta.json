@@ -1,5 +1,6 @@
 {
   "shared": "Install on cPanel or Plesk",
+  "apache": "Install on an Apache server",
   "nginx": "Install on an nginx server",
   "docker": "Install using Docker",
   "softaculous": "Install using Softaculous",

@@ -20,26 +20,23 @@ Most of the shared hosting plans that support PHP 8.0 or higher should work. How
 - `pdo_mysql`
 - `curl`
 - `zlib`
-- `gettext`
 - `openssl`
 
 You also need to have a MySQL database in a MariaDB server running version 10.3 or later, or in a MySQL server running version 8 or later.
 
 These requisities likely are already met by your hosting provider. The installer will check for them and let you know if you need to enable any of them.
 
-## Instructions
-
-### Download the latest release
+## Download the latest release
 Download the latest release of FOSSBilling from the [downloads page](/downloads). In the next step, you will upload the files to your web server.
 
 If you are planning to help us improve FOSSBilling, you can download the latest development preview from the [downloads page](/downloads) as well. However, development previews are not recommended for production use.
 
-### Upload the files to your web server
+## Upload the files to your web server
 Connect to your web server using an FTP client or the file manager provided by your hosting provider. Upload the files to the public directory of your website. It usually is the `public_html` or the `htdocs` directory.
 
 You can either extract the files from the downloaded archive to your computer and upload them, or upload the archive and extract it on the server. If you have access to the online file manager provided by cPanel or Plesk, doing the second should be easier and faster.
 
-### Set permissions for caching directories
+## Set permissions for caching directories
 <Tabs items={['cPanel', 'Plesk']}>
   <Tab>
     - Log in to your cPanel account and click on the "File Manager" icon in the "Files" section.
@@ -63,7 +60,7 @@ You can either extract the files from the downloaded archive to your computer an
   </Tab>
 </Tabs>
 
-### Create a MySQL database
+## Create a MySQL database
 <Tabs items={['cPanel', 'Plesk']}>
   <Tab>
     - Log in to your cPanel account and go to the "Databases" section.
@@ -87,12 +84,12 @@ You can either extract the files from the downloaded archive to your computer an
   </Tab>
 </Tabs>
 
-### Install using the web installer
+## Install using the web installer
 - Open your web browser and go to the "/install" path in your domain. For example, if your domain is "fossbilling.org", you would go to "https://fossbilling.org/install" in your web browser.
 - You should see the FOSSBilling installer. Follow the instructions on the screen to complete the installation.
 - Use the database credentials you created in the previous step to connect to the database.
 
-### Remove the installer
+## Remove the installer
 <Callout type="error" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
   For security purposes, you must remove the installer before you can access your FOSSBilling installation.
 </Callout>
@@ -101,8 +98,8 @@ Once you have completed the installation, you should remove the installer from y
 
 The installer is located in the `install` directory. You can use your FTP client or the online file manager provided by your hosting provider to delete the directory.
 
-### Post-installation steps
-#### Secure your configuration file
+## Post-installation steps
+### Securing your configuration file
 Adjusting the permissions of your configuration file ensures that only authorized users have access to the file. By setting the permissions to allow only the owner to write to the file, you can prevent unauthorized users from modifying the file and potentially causing problems with your website or application.
 
 <Tabs items={['cPanel', 'Plesk']}>
@@ -129,7 +126,7 @@ Adjusting the permissions of your configuration file ensures that only authorize
   </Tab>
 </Tabs>
 
-#### Rename the htaccess file
+### Renaming the htaccess file
 <Callout type="warning" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
   Not renaming the htaccess file will prevent FOSSBilling from working properly.
   
@@ -142,7 +139,7 @@ Use your FTP client or the online file manager provided by your hosting provider
 
 To confirm that the file was renamed successfully, you can enable the "Show hidden files" option in your file manager and check if it's named correctly.
 
-#### Set up cron jobs
+### Setting up the cron jobs
 FOSSBilling uses cron jobs to run scheduled tasks. Cron jobs are important because they allow you to automate repetitive tasks that would otherwise need to be performed manually. This can save time and effort, and help ensure that tasks are performed consistently and accurately.
 Not setting up cron jobs will prevent FOSSBilling from working properly.
 
