@@ -4,6 +4,22 @@ title: Changelog
 
 # Changelog
 
+
+## Version 0.2.3 (12-8-2022)
+
+### Bug fixes 
+ - Fixed some minor issues with the admin theme styling
+ - Hide the settings button for themes that don't have settings
+ - Another fix to the CSRF protection
+
+## Version 0.2.2 (12-7-2022)
+
+### Bug fixes 
+ - Fixed more issues relating to the CSRF protection, including the checkout screen.
+
+## Version 0.2.1 (12-7-2022)
+This is a hotfix to fix issues introduced by the new security features added in 0.2.0. (has changes from PR#545)
+
 ## Version 0.2.0 (12-7-2022)
 This release adds protection against CSRF attacks. This change will break outdated modules.
 It's highly discouraged to disable this protection, but if needed you can edit the `CSRFPrevention` value in your `config.php` file and set it to false.
