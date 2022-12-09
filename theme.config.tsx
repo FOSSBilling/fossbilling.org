@@ -38,11 +38,11 @@ export default {
         <meta httpEquiv="Content-Language" content="en" />
         <meta
           name="description"
-          content="FOSSBilling is the free and open-source solution for efficient billing and client management."
+          content="Empower your hosting business with FOSSBilling, the free and open-source solution for efficient billing and client management."
         />
         <meta
           name="og:description"
-          content="FOSSBilling is the free and open-source solution for efficient billing and client management."
+          content="Empower your hosting business with FOSSBilling, the free and open-source solution for efficient billing and client management."
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="" />
@@ -57,6 +57,9 @@ export default {
         text: () => {
          return (
             <div>
+              <div className="mb-2">
+                <a href="mailto:hello@fossbilling.org" className="hover:text-gray-500 dark:hover:text-gray-300">hello@fossbilling.org</a>
+              </div>
               <div className="mb-6">
                 <a href="/discord" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank"><FontAwesomeIcon icon={faDiscord} size="xl" className="mr-4" /></a>
                 <a href="https://fosstodon.org/@fossbilling" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank"><FontAwesomeIcon icon={faMastodon} size="xl" className="mr-4" /></a>
