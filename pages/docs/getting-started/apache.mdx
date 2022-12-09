@@ -33,7 +33,6 @@ In the next steps, we will assist you with the installation of the required soft
 ## Installing and configuring Apache
 <Tabs items={['Ubuntu']}>
   <Tab>
-    ### Installing Apache
     Let's start by updating our local package index. This will ensure that we have the latest version of all packages available to us.
     
     Depending on your internet connection, this may take a few minutes.
@@ -70,7 +69,7 @@ In the next steps, we will assist you with the installation of the required soft
     #### Allowing Apache configuration to be overridden by FOSSBilling
     FOSSBilling will need to override some of the Apache configuration to make it work correctly. Applications can use the `.htaccess` file to adjust the Apache configuration and tweak how it works for that specific application. However, by default, Apache doesn't allow `.htaccess` files to override the configuration. We need to enable it to make FOSSBilling work correctly.
 
-    To enable `.htaccess` files to override the Apache configuration, we will need to edit the `apache2.conf` file. Open the file using your favorite text editor. We will use `nano` in this guide.
+    To enable `.htaccess` files to override the Apache configuration, we will need to edit the `apache2.conf` file. Open the file using your favourite text editor. We will use `nano` in this guide.
       ```bash filename="bash"
       sudo nano /etc/apache2/apache2.conf
       ```
@@ -116,7 +115,7 @@ In the next steps, we will assist you with the installation of the required soft
       ```
     APT will prompt you to confirm the installation. Press `Y` and hit `Enter` to continue.
 
-    Now, use the builtin `mysql_secure_installation` script to secure our MySQL installation.
+    Now, use the built-in `mysql_secure_installation` script to secure our MySQL installation.
       ```bash filename="bash"
       sudo mysql_secure_installation
       ```
@@ -143,7 +142,7 @@ In the next steps, we will assist you with the installation of the required soft
 
     Next, we will be asked to set a password for the MySQL root user.
     
-    Don't mistake this with the `root` account in your Ubuntu server, it's a different account and they are unrelated with each other. This is the `root` account for your MySQL server which will have full permissions over your MySQL server. Enter a strong password, press `Enter`, then confirm the password and press `Enter` again.
+    Don't mistake this for the `root` account in your Ubuntu server, it's a different account and they are unrelated to each other. This is the `root` account for your MySQL server which will have full permissions over your MySQL server. Enter a strong password, press `Enter`, then confirm the password and press `Enter` again.
 
     It will display the estimated strength of the password you entered. If you are satisfied with the strength, press `Y` and hit `Enter` to continue.
 
@@ -247,9 +246,9 @@ Run the following in your terminal:
 ### Setting up the cron jobs
 
 ### Setting up the firewall
-Once the installation is done, we will need to adjust the firewall settings to allow incoming traffic on port 80 (HTTP) and 443 (HTTPS).
+Once the installation is done, we will need to adjust the firewall settings to allow incoming traffic on ports 80 (HTTP) and 443 (HTTPS).
 
-    We will use `ufw`. UFW provides an easy to use interface to manage the firewall. It is enabled by default on Ubuntu 22.04 LTS.
+    We will use `ufw`. UFW provides an easy-to-use interface to manage the firewall. It is enabled by default on Ubuntu 22.04 LTS.
     
     To list the available UFW rules, run:
       ```bash filename="bash"
