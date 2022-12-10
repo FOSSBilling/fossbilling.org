@@ -1,0 +1,25 @@
+---
+title: Creating a theme
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCode } from '@fortawesome/free-solid-svg-icons'
+
+# <FontAwesomeIcon icon={faCode} /> Creating a theme
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+    This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
+</Callout>
+
+## Where to start?
+Since the docs are incomplete, currently the best source would be to look at how the existing themes are created.
+
+## Working with our security systems.
+FOSSBilling has security systems implemented on the back end that will need to be taken into consideration when creating a new theme. Some info on these systems is available on [this page](https://fossbilling.org/docs/security/securing-fossbilling)
+The most important system that you need to account for is the CSRF protection. All API calls will need to provide this API key. Both get and post methods are acceptable. 
+
+### Working with the CSRF Protection
+- The token for the current user can be accessed through twig as a variable defined as `CSRFToken`, this is also the name you need to use when proving the token via post/get 
+- Here is an example of how to add the token to an HTML form:
+	- `<input type="hidden" name="CSRFToken" value="{{ CSRFToken }}"/>`
+- Here is an example of an API call that has the token added to it  
+	- `href="{{ 'api/admin/client/group_delete'|link({ 'id': group.id, 'CSRFToken': CSRFToken }) }}"`

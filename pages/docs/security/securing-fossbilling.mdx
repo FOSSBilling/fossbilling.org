@@ -1,0 +1,35 @@
+---
+title: Securing FOSSBilling
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPersonDigging, faUserShield } from '@fortawesome/free-solid-svg-icons'
+import { Callout } from 'nextra-theme-docs'
+
+# <FontAwesomeIcon icon={faUserShield} /> Securing FOSSBilling
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+    This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
+</Callout>
+
+## Configuration
+Out of the box, FOSSBilling will have all of it's security features enabled and set to their maximum options.
+If needed, they can be configured to be more relaxed, but the recommended option is to leave them at their default
+ - Security mode: 
+ - Starting with version 0.2.4, FOSSBilling will add a new setting to the `config.php` file called 'security_mode'
+   - 'regular' will allow HTTP connections and use the default cookie settings for your server
+   - The default setting will be 'strict' which will do the following:
+      - Automatically redirect to HTTPS
+      - Only send cookies over a secured connection
+      - Cookies will have their `samesite` option set to 'strict'
+      - Cookies will have a maximum lifespan of 2 hours.
+- CSRF Protection:
+   - FOSSBilling protects it's API against  CSRF by utilizing a token system
+   - This protection can be disabled by setting the `CSRFPrevention` setting in your `config.php` file to 'false'
+	   - The token is required for all API requests except:
+		   - When using an API token
+		   - When making a call to the guest API
+
+## Hosting Environment
+These documents are incomplete, if you have suggestions, we'd appreciate a pull request on our GitHub account.
+- Ensure you have a valid SSL certificate configured on your web server with the latest version of TLS enabled. 
