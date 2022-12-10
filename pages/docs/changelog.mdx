@@ -4,6 +4,19 @@ title: Changelog
 
 # Changelog
 
+## Version 0.2.4 (Release date TBD)
+
+### Security
+ - Added a new security mode which will default to 'strict'
+   - The strict mode will force the use of HTTPS and use more secure cookie settings.
+
+### Bug fixes 
+ - We've replaced the old `gettext` back end for translations. Translations should now work correctly for everyone.
+ - Fixed issue with HestiaCP.
+ - Cleanly handle no template being passed to the `renderString` function in the system module.
+
+### New Features
+ - Set the default currency during installation
 
 ## Version 0.2.3 (12-8-2022)
 
@@ -33,7 +46,7 @@ It's highly discouraged to disable this protection, but if needed you can edit t
  - The localization files have been synced with the source code and we've pre-translated a few popular languages using machine learning.
  - Fixed issues when trying to click the filter icon in the admin dashboard.
 
-## New Features
+### New Features
  - Sever managers can now specify their own input fields, making the setup process a bit more intuitive. 
 
 ## Version 0.1.1 (12-3-2022)
