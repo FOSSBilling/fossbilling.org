@@ -20,9 +20,11 @@ At the moment there are no breaking changes and it should be quick and painless 
 
 ## Is FOSSBilling stable?
 
-FOSSBilling is very much a work in progress. Right now we are busy squashing a lot of bugs and at the same time working on a major rewrite of large sections of the codebase. 
+FOSSBilling is very much a work in progress. Right now we are busy squashing a lot of bugs, improving security, and at the same time working on a major rewrite of large sections of the codebase. 
 
-The last release and the latest commits should work and should be relatively stable and secure but we don't really recommend using it on production sites just yet. If you do, then please be aware that there may be breaking changes somewhere in the near future, even though we aim to make migration to future versions as easy as possible.
+Right now, FOSSBilling is in a far more stable and secure state than it was just a few months ago and definitely more secure than the last releases of BB were. We don't generally recommend using it on production sites just yet unless you know what you are doing, but as long as you have some basic understanding then you probably could.  If you do, then please be aware that there may be breaking changes somewhere in the near future, even though we aim to make migration to future versions as easy as possible.
+
+If you are using it in a production environment then please download and use the latest stable release from the [FOSSBilling website](https://fossbilling.org/downloads) or [GH releases](https://github.com/FOSSBilling/FOSSBilling/releases), and DO NOT use the latest pre-release commits, unless they fix an explicit issue you are facing and you are sure they do not introduce any new issues.
 
 ## When will FOSSBilling have [_the magical feature I want_]?
 
@@ -31,6 +33,14 @@ We would love it if FOSSBilling could do everything that everyone will ever ask 
 Even though the specific thing that you particularly need might not be available in core, FOSSBilling is designed to be easily extendable. If you have the knowledge to build an extension yourself then we would love the contribution, if not then we recommend reaching out to the community and seeing if someone else will be willing to build or update it for you.
 
 You can [search for existing feature requests](https://github.com/FOSSBilling/FOSSBilling/issues?q=is:open+is:issue+label:"feature+request") and [add new ones](https://fossbilling.org/feature-request).
+
+## Does FOSSBilling work with Pterodactyl?
+
+No, there is currently no integration with Pterodactyl. 
+
+This is not because we hate Ptero, or don't want them to be integrated, or because it is overly difficult or impossible. It is simply because none of the core contributors to FOSSBilling are using Pterodactyl, and it is not one of the higher or more urgent things on our priority list. 
+
+There are frequent discussions about this on [Discord](https://fossbilling.org/discord) and at least one community member has expressed an interest in developing a Ptero module, but there is no guarantee or timeline. As noted above, this is open source software that is designed to be extendable, feel free to jump in and constribute. 
 
 ## Do I need to pay for FOSSBilling?
 
