@@ -21,12 +21,17 @@
   },
   "donate": {
     "title": "Donate",
-    "href": "https://fossbilling.org/donate",
+    "href": "https://fossbilling.org/donate/",
     "newWindow": true
   },
   "demo": {
     "title": "Demo",
     "href": "https://demo.fossbilling.org/",
+    "newWindow": true
+  },
+  "translate": {
+    "title": "Translate",
+    "href": "https://translate.fossbilling.org/",
     "newWindow": true
   }
 }
