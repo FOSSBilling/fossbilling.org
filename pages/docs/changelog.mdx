@@ -4,6 +4,32 @@ title: Changelog
 
 # Changelog
 
+## Version 0.2.7 (1-3-2023)
+Happy new years from the FOSSBilling team!
+This release is focused on bug fixes, but does also introduce a Namecheap registrar adapter.
+
+## Bugfixes
+ - Resolved issues related to the API wrapper submitting malformed JSON data. 
+ - Resolved a few minor issues with the CWP server manager 
+ - Replaced the way our 'custom and 'email' registrar adapters check for domain availability, this should resolve issues with some TLDs
+ - Fixed issues with the order button CSS
+ - Fixed issues when updating email templates
+ 
+ ## New Features
+ - FOSSBilling now has a Namecheap registrar adapter! Huge thank you to @ashavolian on GitHub!
+
+## Other
+ - Added a requirement check for the PHP XML extension
+ - Added and improved inline PHPDocs for payment, registrar, and server adapters
+ - Some minor fixes to the code and an increased scanning level from PHPStan
+ - Dependency updates
+
+## Localization
+ - FOSSBilling now targets 19 languages for localization
+ - Overall, we are 22% translated into all translations
+
+As always, if you'd like to contribute to the localization of FOSSBilling, join us at [translate.fossbilling.org](translate.fossbilling.org)
+
 ## Version 0.2.6 (12-28-2022)
 
 ### Security
