@@ -3,7 +3,7 @@
     "title": "Introduction"
   },
   "getting-started": {
-    "title": "Getting started"
+    "title": "Getting Started"
   },
   "maintaining-fossbilling": {
     "title": "Maintaining FOSSBilling"
@@ -18,13 +18,13 @@
     "title": "FOSSBilling API"
   },
   "under-the-hood": {
-    "title": "Under the hood"
+    "title": "Under the Hood"
   },
   "faq": {
     "title": "FAQ"
   },
   "contribution-handbook": {
-    "title": "Contribution handbook"
+    "title": "Contribution Handbook"
   },
   "changelog": {
     "title": "Changelog"
@@ -33,6 +33,6 @@
     "title": "Troubleshooting"
   },
   "extensions": {
-    "title": "Working extensions and payment modules"
+    "title": "Working Extensions and Payment Modules"
   }
 }
