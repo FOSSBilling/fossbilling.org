@@ -11,42 +11,51 @@ The main source code for FOSSBilling is located in the ["src"](https://github.co
 
 ### Data
 *File path: ``/src/data``*
+
 The "data" folder within the source code is mostly empty, but it is an important directory for a live installation of FOSSBilling. This is where cache, logs, and uploads will be stored.
 
 ### Install
 *File path: ``/src/install``*
+
 The "install" directory contains the files necessary for installing FOSSBilling, such as the installation wizard and default SQL content.
 
 ### Library
 *File path: ``/src/library``*
+
 The "library" folder serves as a general library for the FOSSBilling application. It contains several subfolders, which hold various resources and code used by the application. In the following section, we will describe the contents of these subfolders.
 
 #### API
 *File path: ``/src/library/Api``*
+
 The "API" folder contains some of the core files for the FOSSBilling API, including the abstract class, handler, and JavaScript API wrapper.
 The JavaScript API wrapper is located at ``src/library/API.js`` and is the most commonly used file in this directory. Documentation for the wrapper can be found [here](https://fossbilling.org/docs/api/javascript)
 
 #### Box
 *File path: ``/src/library/Box``*
+
 The "Box" directory is named after BoxBilling, the software that FOSSBilling was derived from. It contains a wide range of classes and functions that are used throughout the FOSSBilling application. 
 Some examples of the types of resources found in this directory include classes for tools, translations, exception handling, custom Twig extensions, and more.
 
 #### Model
 *File path: ``/src/library/Model``*
+
 The "Model" directory contains all of the models used in FOSSBilling. It is unlikely that you will need to make any changes to these files, but they can serve as a useful reference for the models implemented in the application.
 
 #### Payment
 *File path: ``/src/library/Payment``*
+
 The "Payment" directory is important and contains the library files for payment adapters and invoice handling. 
 For most developers, the subfolder ``src/library/Payment/Adapter`` will be of particular interest, as it contains the payment adapters for FOSSBilling, which extend the classes defined in the parent directory.
 
 #### Registrar
 *File path: ``/src/library/Registrar``*
+
 The "Registrar" directory holds the classes and files for domain registrar adapters used by FOSSBilling.
 The actual adapters are located in the subfolder ``src/library/Registrar/Adapter`` and extend classes from the parent directory.
 
 
 #### Server
 *File path: ``/src/library/Server``*
+
 The "Registrar" directory holds the classes and files for server managers used by FOSSBilling.
 The actual server managers are located in the subfolder ``src/library/Server/Manager`` and extend classes from the parent directory.
