@@ -75,12 +75,12 @@ No two modules will be exactly the same, however there is a standard set of fold
   - `Controller`    - The "Controller" folder defines the controllers for the module. These controllers are similar to what some frameworks may refer to as "routes". There may be separate files for different types of users, such as "Admin.php", "Client.php", and "Guest.php". Each of these files corresponds to a specific type of user.
   - `html_admin`    - The "html_admin" folder contains Twig templates for the module that are used within the admin panel.
   - `html_client`   - The "html_client" folder contains Twig templates for the module that are used within the client dashboard
-  - 'html_email`    - The "html_email" folder holds twig-enabled email templates related to the module.
+  - `html_email`    - The "html_email" folder holds twig-enabled email templates related to the module.
   - `manifest.json` - The "manifest.json" file is the module's manifest file, which defines various details about the module, such as its version, name, and description.
-  - 'Service.php'   - The "Service.php" file defines the main functions and class for the module. These functions are not exposed through the API and are generally used to define the underlying functions that the API calls utilize to execute API functions.
+  - `Service.php`   - The "Service.php" file defines the main functions and class for the module. These functions are not exposed through the API and are generally used to define the underlying functions that the API calls utilize to execute API functions.
 
 ### Themes
-*File path: ``/src/Themes``*
+*File path: ``/src/themes``*
 
 The "Themes" folder holds a directory for each theme that is installed inside of FOSSBilling.
 Themes should have the following file structure:
