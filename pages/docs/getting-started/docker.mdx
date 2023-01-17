@@ -1,6 +1,6 @@
 ---
 title: Install Using Docker
-description: This guide will help you install FOSSBilling on a Docker container
+description: This guide will help you install FOSSBilling using our official Docker image
 ---
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,12 +12,6 @@ import { Callout } from 'nextra-theme-docs'
 
 <Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
     This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
-
-    We also are planning to do changes to the installation process. You might want to check back later.
-</Callout>
-
-<Callout type="warning" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
-  This guide will build FOSSBilling from the main branch. It should be okay if you're planning to use it for testing or development. Be careful when using in production.
 </Callout>
 
 ## But wait... What is Docker?
@@ -25,34 +19,39 @@ Docker containers isolate the app from the host system and solve the "it works o
 
 Docker also lets you run multiple containers on the same machine with different configurations. To learn more about containers, we strongly advise you to read Docker's [explanation](https://www.docker.com/resources/what-container/) first.
 
-## InstructionsIt
-Before going further, please make sure you have Git, Docker Engine, Docker Compose and [GNU Make](https://www.gnu.org/software/make/) installed. Git and GNU Make will likely come pre-installed on most Linux distributions. To install the Docker Engine, visit Docker's [installation page](https://docs.docker.com/engine/install/). To install Docker Compose, visit Docker's [compose installation page](https://docs.docker.com/compose/install/).
+## Instructions
+Before going further, please make sure you have the Docker Engine and Docker Compose installed. To install the Docker Engine, visit Docker's [installation page](https://docs.docker.com/engine/install/). To install Docker Compose, visit Docker's [compose installation page](https://docs.docker.com/compose/install/).
 
-Also make sure you have root access to the server.
+### Using the image with Docker Compose
+This is an example of a docker-compose.yml file. You should change the values to suit your needs:
 
-### Clone the repository
-To get started, you need to clone the repository first. Cloning will download the latest version of our source code. You can do this by running the following command:
+```yaml
+version: "3.9"
+services:
+  fossbilling:
+    image: fossbilling/fossbilling
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - fossbilling:/var/www/html
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - mysql:/var/lib/mysql
 
-```bash
-git clone https://github.com/fossbilling/fossbilling
+volumes:
+  fossbilling:
+  mysql:
 ```
 
-### Navigate to the cloned directory
-You can now navigate to the cloned directory by running the following command:
+Then, use the web interface to install FOSSBilling. If you used this example, the database host field in the installer should be filled with mysql. Other fields should be self-explanatory.
 
-```bash
-cd fossbilling
-```
-
-### Run the installation script
-<Callout emoji={<FontAwesomeIcon icon={faCircleInfo} />}>
-  To use the installer, you need to be a superuser. Switch to the root user using `sudo su` or add the sudo prefix to the next command.
-</Callout>
-
-To start our installer script, run the following command:
-
-```bash
-make all
-```
 
 ### Post-installation steps
