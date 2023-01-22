@@ -10,8 +10,30 @@ import { Callout } from 'nextra-theme-docs'
 
 <Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
     This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
+    If you're looking to create your own extension, this documentation will tell you the bare minimum required, but looking at existing extensions will probably be necessary to get a complete idea on how to write one.
 </Callout>
 
 So you've decided to create an extension. Let's get started with the basics. In this guide, we'll inspect the example extension and create our own one based on that.
 
 ## How do extensions work?
+
+### Creating a module
+
+FOSSBilling modules all reside under the `/modules` directory. Their directory must be named as follows: 'Example'. Any other variation of capitalization will not work (Examples of invalid directory names: 'eXample', 'example').
+All modules are required to have at a minimum a `manifest.json` file and a `Service.php` file. 
+For more information, please see the [file structure](https://fossbilling.org/docs/contribution-handbook/file-structure#modules) documentation.
+
+### Creating a payment adapter
+
+All payment adapters should reside under the `/library/Payment/Adapter` folder. They should all extend the `Payment_AdapterAbstract` class and implement it's functions.
+The `Payment_AdapterAbstract` class has inline documentation of each function to aid in the development of payment adapters. You can find the most up-to-date version of this [here](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/library/Payment/AdapterAbstract.php)
+
+### Creating a domain registrar
+
+All domain registrars should reside under the `/library/Registrar/Adapter` folder. They should all extend the `Registrar_AdapterAbstract` class and implement it's functions.
+The `Registrar_AdapterAbstract` class has inline documentation of each function to aid in the development of domain registrars. You can find the most up-to-date version of this [here](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/library/Registrar/AdapterAbstract.php)
+
+### Creating a server manager
+
+All server managers should reside under the `/library/Server/Manager` folder. They should all extend the `Server_Manager` class and implement it's functions.
+The `Server_Manager` class has inline documentation of each function to aid in the development of server managers. You can find the most up-to-date version of this [here](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/library/Server/Manager.php)
