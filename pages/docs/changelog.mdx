@@ -4,6 +4,46 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## Version 0.2.10 (1-26-2023)
+This version comes with some bug fixes and security improvements, most notably with the Stripe payment adapter.
+As always, create a fully backup of your installation before updating and if possible perform tests outside of your live environment. 
+
+## Security
+- The Stripe payment adapter has been updated to their latest SDK.
+  - In the process, the adapter has been updated to have better payment status verification, preventing faked transactions from being accepted.
+  - The latest version of the adapter also features a much prettier looking payment screen and now works with 3d secure authentication.
+- With previous behavior from BoxBilling, generated web server credentials were stored inside the database, this has now been replaced with the asterisks key, with the intention of the row being completely removed in the future. If you have a custom module that depended on this behavior, it will no longer work.
+
+## New Features
+- The back-end has been updated to support password resets, in the next update it will be exposed within the UI. Thank you, @wyntonfranklin
+- Added a check for the PHP version before the installation screen, as some people were trying to install on unsupported versions and were getting HTTP 500 errors.
+
+## Bug Fixes
+-  On the admin login screen, we've added the version number when including the API.js file. This should help prevent issues related to cache.
+- Fixed issues when trying to assign staff permissions.
+- Fixed an issue with the test server connection button.
+- Fixed some bad HTML causing errors when entering the domain name when creating a new order.
+- Fixed an error that would be thrown if debug mode is turned on and a payment was made without the URL being set. 
+
+## Changes
+- We've started to remove multi-selects from the admin panel in favor of check-boxes for improved usability.
+- Default modules labels are now translatable, helping to ensure that as much of the admin panel can be translated as possible.
+- Updated document URLs and enforced the FOSSBiling naming in a few areas.
+- Changed the way emails are prevented from sending with the demo module enabled. 
+- Session save handlers will now only be set if headers haven't been sent.
+- Fixed some missing icons in the admin panel.
+
+## Version 0.2.9 (1-15-2023)
+
+## Bug Fixes
+- Fixed an issue with GET API requests within the admin panel.
+- Fixed the favicon on the admin login page.
+- Fixed typos in the FTP layer.
+- Fixed an issue when FOSSBilling would pass `null` to the markdown parser. (issue #701)
+
+## Changes
+- Properly check for the `back-to-top` element in the admin panel, avoids a error in the console, but it never caused any errors.
+
 ## Version 0.2.8 (1-13-2023)
 
 ## Security
