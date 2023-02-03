@@ -8,63 +8,63 @@ title: FOSSBilling Changelog
 Important: this version of FOSSBiling removes quite a few deprecated functions and as such this release has the possibility to break custom themes and modules.
 Please read the breaking changes below for information on what was removed and how you can update custom code if you were using them.
 
-## Breaking Changes
+### Breaking Changes
  - Removed `get_mime_content_type` from the Box_Tools class
  - Removed the `getApiAdmin`, `getApiGuest`, and `getApiClient` functions for all classes. The DI should be used instead (example: `$this->di['api_admin'];`)
  - Removed the following API routes:
-  - `/client/client/get`. Now use `/client/profile/get`
-  - `/client/client/update`. Now use `/client/profile/update`
-  - `/client/client/api_key_get`. Now use `/client/profile/api_key_get`
-  - `/client/client/api_key_reset`. Now use `/client/profile/api_key_reset`
-  - `/client/client/change_password`. Now use `/client/profile/change_password`
-  - `/client/client/logout`. Now use `/client/profile/logout`
-  - `/admin/staff/profile_get`. Now use `/admin/profile/get`
-  - `/admin/staff/profile_logout`. Now use `/admin/profile/logout`
-  - `/admin/staff/profile_update`. Now use `/admin/profile/update`
-  - `/admin/staff/profile_generate_api_key`. Now use `/admin/profile/generate_api_key`
-  - `/admin/staff/profile_change_password`. Now use`/admin/profile/change_password`
+   - `/client/client/get`. Now use `/client/profile/get`
+   - `/client/client/update`. Now use `/client/profile/update`
+   - `/client/client/api_key_get`. Now use `/client/profile/api_key_get`
+   - `/client/client/api_key_reset`. Now use `/client/profile/api_key_reset`
+   - `/client/client/change_password`. Now use `/client/profile/change_password`
+   - `/client/client/logout`. Now use `/client/profile/logout`
+   - `/admin/staff/profile_get`. Now use `/admin/profile/get`
+   - `/admin/staff/profile_logout`. Now use `/admin/profile/logout`
+   - `/admin/staff/profile_update`. Now use `/admin/profile/update`
+   - `/admin/staff/profile_generate_api_key`. Now use `/admin/profile/generate_api_key`
+   - `/admin/staff/profile_change_password`. Now use`/admin/profile/change_password`
  - Removed the `/client/me` route, clients should go to `/client/profile` to edit their profile.
  - Removed undocumented and deprecated `same_invoice` option in `refundInvoice`.
  - Removed the functionality from the license module that allowed it to handle legacy / deprecated API formatting.
  - Removed the deprecated `param` function from the `Admin` class.
 
-## Changes
+### Changes
  - All usage of the `bbmd` twig filter has been replaced with the `markdown` filter. The `bbmd` filter is now marked as deprecated and will be removed in the future.
  - Made the add funds limit exceptions more specific.
  - Remove references to Walking Pixel's defunct website from Huraga.
  - Gender options for clients have been updated to include non-binary and to allow the client to update it from their profile.
  - Added a link to the admin password reset page.
 
-## New features
+### New features
  - All FOSSBiling exception classes can now be translated.
  - We've added the ability to have plural translations with the `__pluralTrans` function.
  - Settings routes are now translatable for our default modules.
 
-## Bug Fixes
+### Bug Fixes
  - Fixed the usage placeholders in translations
 
 ## Version 0.2.10 (1-26-2023)
 This version comes with some bug fixes and security improvements, most notably with the Stripe payment adapter.
 As always, create a fully backup of your installation before updating and if possible perform tests outside of your live environment. 
 
-## Security
+### Security
 - The Stripe payment adapter has been updated to their latest SDK.
   - In the process, the adapter has been updated to have better payment status verification, preventing faked transactions from being accepted.
   - The latest version of the adapter also features a much prettier looking payment screen and now works with 3d secure authentication.
 - With previous behavior from BoxBilling, generated web server credentials were stored inside the database, this has now been replaced with the asterisks key, with the intention of the row being completely removed in the future. If you have a custom module that depended on this behavior, it will no longer work.
 
-## New Features
+### New Features
 - The back-end has been updated to support password resets, in the next update it will be exposed within the UI. Thank you, @wyntonfranklin
 - Added a check for the PHP version before the installation screen, as some people were trying to install on unsupported versions and were getting HTTP 500 errors.
 
-## Bug Fixes
+### Bug Fixes
 -  On the admin login screen, we've added the version number when including the API.js file. This should help prevent issues related to cache.
 - Fixed issues when trying to assign staff permissions.
 - Fixed an issue with the test server connection button.
 - Fixed some bad HTML causing errors when entering the domain name when creating a new order.
 - Fixed an error that would be thrown if debug mode is turned on and a payment was made without the URL being set. 
 
-## Changes
+### Changes
 - We've started to remove multi-selects from the admin panel in favor of check-boxes for improved usability.
 - Default modules labels are now translatable, helping to ensure that as much of the admin panel can be translated as possible.
 - Updated document URLs and enforced the FOSSBiling naming in a few areas.
@@ -74,21 +74,21 @@ As always, create a fully backup of your installation before updating and if pos
 
 ## Version 0.2.9 (1-15-2023)
 
-## Bug Fixes
+### Bug Fixes
 - Fixed an issue with GET API requests within the admin panel.
 - Fixed the favicon on the admin login page.
 - Fixed typos in the FTP layer.
 - Fixed an issue when FOSSBilling would pass `null` to the markdown parser. (issue #701)
 
-## Changes
+### Changes
 - Properly check for the `back-to-top` element in the admin panel, avoids a error in the console, but it never caused any errors.
 
 ## Version 0.2.8 (1-13-2023)
 
-## Security
+### Security
 - Replaced the existing markdown parser with commonmark, which offers better compatibility with markdown and improved security features.
 
-## Bug Fixes
+### Bug Fixes
 - Fixed the breadcrumbs and page header with the custom pages module.
 - Fixed the period strings.
 - Fixed the email history templates being mixed up.
@@ -101,20 +101,20 @@ As always, create a fully backup of your installation before updating and if pos
 - Fixed some more issues with the API wrapper with some specific HTML input types.
 - Fixed replication of new CSS body classes and existing container classes
 
-## New Features
+### New Features
 - Added basic support for custom PDF invoice CSS.
 - Themes can now access the locale name without the ISO code.
 - Added support for a custom favicon path. Thank you @reynaldiarya!
 - Added support for payment gateways to be moved into their own sub-folder.
 
-## Changes
+### Changes
 
 - Remove dots from the Huraga public dashboard.
 - Updated login / signup / password reset styling.
 - Used Rector to modernize code for PHP 8.0.
 - Add CSS body classes to modules client HTML.
 
-## Dependencies
+### Dependencies
 
 - Bump postcss from 8.4.20 to 8.4.21
 
@@ -122,23 +122,23 @@ As always, create a fully backup of your installation before updating and if pos
 Happy new years from the FOSSBilling team!
 This release is focused on bug fixes, but does also introduce a Namecheap registrar adapter.
 
-## Bugfixes
+### Bugfixes
  - Resolved issues related to the API wrapper submitting malformed JSON data. 
  - Resolved a few minor issues with the CWP server manager 
  - Replaced the way our 'custom and 'email' registrar adapters check for domain availability, this should resolve issues with some TLDs
  - Fixed issues with the order button CSS
  - Fixed issues when updating email templates
  
- ## New Features
+### New Features
  - FOSSBilling now has a Namecheap registrar adapter! Huge thank you to @ashavolian on GitHub!
 
-## Other
+### Other
  - Added a requirement check for the PHP XML extension
  - Added and improved inline PHPDocs for payment, registrar, and server adapters
  - Some minor fixes to the code and an increased scanning level from PHPStan
  - Dependency updates
 
-## Localization
+### Localization
  - FOSSBilling now targets 19 languages for localization
  - Overall, we are 22% translated into all translations
 
@@ -150,7 +150,7 @@ As always, if you'd like to contribute to the localization of FOSSBilling, join 
  - Introduce API wrapper for custom themes and modules to facilitate easier CSRF tokens (#612)
  - FOSSBilling will no longer provide a user's password to the account creation email.
 
-## Bugfixes
+### Bugfixes
  - Fixed an issue with alias under Apache2 (#626)
  - Better handle php://input being empty when checking the CSRF token. (#626)
  - Fixed an issue with WHM/Cpanel server manager where you where not able to reuse existing packages as root user (#607) 
