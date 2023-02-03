@@ -4,6 +4,45 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.3.0 (Upcoming with no release date)
+Important: this version of FOSSBiling removes quite a few deprecated functions and as such this release has the possibility to break custom themes and modules.
+Please read the breaking changes below for information on what was removed and how you can update custom code if you were using them.
+
+## Breaking Changes
+ - Removed `get_mime_content_type` from the Box_Tools class
+ - Removed the `getApiAdmin`, `getApiGuest`, and `getApiClient` functions for all classes. The DI should be used instead (example: `$this->di['api_admin'];`)
+ - Removed the following API routes:
+  - `/client/client/get`. Now use `/client/profile/get`
+  - `/client/client/update`. Now use `/client/profile/update`
+  - `/client/client/api_key_get`. Now use `/client/profile/api_key_get`
+  - `/client/client/api_key_reset`. Now use `/client/profile/api_key_reset`
+  - `/client/client/change_password`. Now use `/client/profile/change_password`
+  - `/client/client/logout`. Now use `/client/profile/logout`
+  - `/admin/staff/profile_get`. Now use `/admin/profile/get`
+  - `/admin/staff/profile_logout`. Now use `/admin/profile/logout`
+  - `/admin/staff/profile_update`. Now use `/admin/profile/update`
+  - `/admin/staff/profile_generate_api_key`. Now use `/admin/profile/generate_api_key`
+  - `/admin/staff/profile_change_password`. Now use`/admin/profile/change_password`
+ - Removed the `/client/me` route, clients should go to `/client/profile` to edit their profile.
+ - Removed undocumented and deprecated `same_invoice` option in `refundInvoice`.
+ - Removed the functionality from the license module that allowed it to handle legacy / deprecated API formatting.
+ - Removed the deprecated `param` function from the `Admin` class.
+
+## Changes
+ - All usage of the `bbmd` twig filter has been replaced with the `markdown` filter. The `bbmd` filter is now marked as deprecated and will be removed in the future.
+ - Made the add funds limit exceptions more specific.
+ - Remove references to Walking Pixel's defunct website from Huraga.
+ - Gender options for clients have been updated to include non-binary and to allow the client to update it from their profile.
+ - Added a link to the admin password reset page.
+
+## New features
+ - All FOSSBiling exception classes can now be translated.
+ - We've added the ability to have plural translations with the `__pluralTrans` function.
+ - Settings routes are now translatable for our default modules.
+
+## Bug Fixes
+ - Fixed the usage placeholders in translations
+
 ## Version 0.2.10 (1-26-2023)
 This version comes with some bug fixes and security improvements, most notably with the Stripe payment adapter.
 As always, create a fully backup of your installation before updating and if possible perform tests outside of your live environment. 
