@@ -9,7 +9,7 @@ Important: this version of FOSSBiling removes quite a few deprecated functions a
 Please read the breaking changes below for information on what was removed and how you can update custom code if you were using them.
 
 ### Breaking Changes
- - Removed `get_mime_content_type` from the Box_Tools class
+ - Removed `get_mime_content_type` from the `Box_Tools` class
  - Removed the `getApiAdmin`, `getApiGuest`, and `getApiClient` functions for all classes. The DI should be used instead (example: `$this->di['api_admin'];`)
  - Removed the following API routes:
    - `/client/client/get`. Now use `/client/profile/get`
@@ -32,7 +32,7 @@ Please read the breaking changes below for information on what was removed and h
  - All usage of the `bbmd` twig filter has been replaced with the `markdown` filter. The `bbmd` filter is now marked as deprecated and will be removed in the future.
  - Made the add funds limit exceptions more specific.
  - Remove references to Walking Pixel's defunct website from Huraga.
- - Gender options for clients have been updated to include non-binary and to allow the client to update it from their profile.
+ - Gender options for clients have been updated to include 'non-binary' and 'other' as options, and our default profile page now allows this to be updated by the client.
  - Added a link to the admin password reset page.
 
 ### New features
