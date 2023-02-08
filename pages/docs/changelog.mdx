@@ -34,14 +34,25 @@ Please read the breaking changes below for information on what was removed and h
  - Remove references to Walking Pixel's defunct website from Huraga.
  - Gender options for clients have been updated to include 'non-binary' and 'other' as options, and our default profile page now allows this to be updated by the client.
  - Added a link to the admin password reset page.
+ - The batch send email options is completely disabled in the demo.
+ - Made the "model not found" exception a bit more specific.
 
 ### New features
  - All FOSSBiling exception classes can now be translated.
  - We've added the ability to have plural translations with the `__pluralTrans` function.
  - Settings routes are now translatable for our default modules.
+ - The WYSIWYG editor has been upgraded to CKEditor 5 and Markitdown has been completely removed.
 
 ### Bug Fixes
- - Fixed the usage placeholders in translations
+ - Fixed the usage placeholders in translations.
+ - Fixed the issue that caused accounts to be logged in as "System Cron Job" when using CGI.
+ - Fixed the orderbutton module.
+ - Fixed the navbar on small screens & mobile, it'll now become a hamburger menu in those situations.
+
+### Dependencies
+ - RedBeanPHP has been moved to composer, and we've removed a custom hack-fix for our tests.
+ - dompdf has been updated to resolve a [security vulnerability](https://github.com/advisories/GHSA-56gj-mvh6-rp75).
+ - Many other minor updates.
 
 ## Version 0.2.10 (1-26-2023)
 This version comes with some bug fixes and security improvements, most notably with the Stripe payment adapter.
