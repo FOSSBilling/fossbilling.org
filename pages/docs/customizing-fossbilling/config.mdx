@@ -12,49 +12,49 @@ import { Callout } from 'nextra-theme-docs'
     This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
 </Callout>
 
+## Configuration file for FOSSBilling
 The configuration file can be found under **/src/config.php** (or just **/config.php** if you're using the preview artifacts). You can adjust the configuration file based on your preferences.
 
+## Security options
+### security
+* `mode` - Security mode for FOSSBilling. Acceptable options are 'strict' or 'regular'. 
+* `force_https` - Enable or disable forcing the usage of HTTPS. 
+* `cookie_lifespan` - Length of time the cookie is kept active in seconds. 
+
 ## Configuration keys
-* `update_branch` - Select the update branch that FOSSBilling will use for the automatic updater. Acceptable options are 'release' or 'preview'. 
-* `salt`
+* `salt` - Salt used for password encryption.
 * `url` - Full URL where FOSSBilling is installed with trailing slash.
-* `admin_area_prefix` - The URL prefix to access the BB admin area. Ex: '/admin' 
-* `debug` - Enable or disable displaying advanced debugging messages.
-* `log_stacktrace` - Enable or disable stacktraces when an exception is thrown (also requires debug to be enabled).
-* `stacktrace_length` - How long the stacktrace should be.
-* `sef_urls` - Enable or disable search engine friendly URLs. 
-* `timezone` - System timezone.
-* `locale` - FOSSBilling locale.
-* `locale_date_format` - Set default date format for localized strings
-* `locale_time_format` - Set default time format for localized strings
-* `path_data` - Set location to store sensitive data
-* `path_logs` - Set location to store sensitive data
-* `log_to_db` - Set location to store sensitive data
-### maintenance_mode
+* `admin_area_prefix` - The URL prefix to access the admin area. Ex: '/admin' 
+
+### Maintenance mode
 * `enabled`  - Enable or disable the system maintenance mode. Enabling this will block public access to your website, and API endpoints except the allowed ones won't work. However, this will not block access to the administrator area.
 * `allowed_urls` - Don't block these URLs when the maintenance is going on. Supports wildcard (e.g. '/api/guest/staff/*').
 * `allowed_ips` - Don't block these IP/Subnet addresses when the maintenance is going on. Supported formats: 127.0.0.1、127.0.0.1/32.
-* `disable_auto_cron` - FOSSBilling will automatically execute cron when you login to the admin panel if it hasn't been executed in awhile. You can disable this fallback here.
-### db
+
+### Database connection
 * `type` - Database type.
 * `host` - Database hostname.
 * `name` - The name of the database for FOSSBilling.
 * `user` - Database username.
 * `password` - Database password.
 * `port` - Database Port.
-### twig
+
+### Twig engine
 * `debug` - If debug mode should be enabled for Twig.
-* `auto_reload` - If Twig should try to detect changes to files & clear cache automatically
-* `cache` - Path to the twig cahce.
-### api
-* `require_referrer_header` - If all requests made to the API must have referrer request header with the same URL as the FOSSBilling installation
-* `allowed_ips` - Empty array will allow all IPs to access the API
-* `rate_span` - Time span for limit in seconds
-* `rate_limit` - How many requests allowed per time span
-* `throttle_delay` - Throttling delay
-* `rate_span_login` - Time span for limit in seconds for login attempts
-* `rate_limit_login` -  How many login requests allowed per time span
-### guzzle
-* `user_agent` - Defines the user agent for guzzle requests
-* `timeout` - Timeout for guzzle to use when making requests
-* `upgrade_insecure_requests` - If guzzle should upgrade insecure requests to use SSL
+* `auto_reload` - If Twig should try to detect changes to files & clear cache automatically.
+* `cache` - Path to the twig cache.
+
+### API endpoint
+* `require_referrer_header` - If all requests made to the API must have referrer request header with the same URL as the FOSSBilling installation.
+* `allowed_ips` - Empty array will allow all IPs to access the API.
+* `rate_span` - Time span for limit in seconds.
+* `rate_limit` - How many requests allowed per time span.
+* `throttle_delay` - Throttling delay.
+* `rate_span_login` - Time span for limit in seconds for login attempts.
+* `rate_limit_login` - How many login requests allowed per time span.
+* `CSRFPrevention` - This enables the usage of a token to protect the system from CSRF attacks and should always be left enabled.
+
+### Guzzle client
+* `user_agent` - Defines the user agent for guzzle requests.
+* `timeout` - Timeout for guzzle to use when making requests.
+* `upgrade_insecure_requests` - If guzzle should upgrade insecure requests to use SSL.
