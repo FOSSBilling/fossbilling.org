@@ -36,6 +36,7 @@ Please read the breaking changes below for information on what was removed and h
  - Added a link to the admin password reset page.
  - The batch send email options is completely disabled in the demo.
  - Made the "model not found" exception a bit more specific.
+ - The CWP server manager has had the code quality improved, with support for logging added to it.
 
 ### New features
  - All FOSSBiling exception classes can now be translated.
@@ -48,6 +49,9 @@ Please read the breaking changes below for information on what was removed and h
  - Fixed the issue that caused accounts to be logged in as "System Cron Job" when using CGI.
  - Fixed the orderbutton module.
  - Fixed the navbar on small screens & mobile, it'll now become a hamburger menu in those situations.
+ - Fixed the "authentication failed" error message when trying to edit a custom page, fix likely applies to other situations as well.
+ - Fixed the custom fields not displaying on the client's profile when they go to make changes.
+ - Fixed issues when trying to save custom theme profiles. 
 
 ### Dependencies
  - RedBeanPHP has been moved to composer, and we've removed a custom hack-fix for our tests.
