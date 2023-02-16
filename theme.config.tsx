@@ -63,7 +63,7 @@ export default {
               <div className="mb-6">
                 <a href="/discord" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank"><FontAwesomeIcon icon={faDiscord} size="xl" className="mr-4" /></a>
                 <a href="https://fosstodon.org/@fossbilling" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank"><FontAwesomeIcon icon={faMastodon} size="xl" className="mr-4" /></a>
-                <a href="https://twitter.org/FOSSBilling" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank"><FontAwesomeIcon icon={faTwitter} size="xl" className="mr-4" /></a>
+                <a href="https://twitter.com/FOSSBilling" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank"><FontAwesomeIcon icon={faTwitter} size="xl" className="mr-4" /></a>
               </div>
               <p className="mt-6 text-xs">© {new Date().getFullYear()}, The FOSSBilling project. Content licensed under the <a href="https://github.com/FOSSBilling/fossbilling.org/blob/main/LICENSE" target="_blank">Apache 2.0 license</a>.</p>
             </div>
