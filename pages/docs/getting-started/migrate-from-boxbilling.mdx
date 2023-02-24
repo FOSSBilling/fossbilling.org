@@ -33,37 +33,36 @@ These instructions assume that you are using the latest version of BoxBilling (4
 </Callout>
 
 ### Download the latest release
-
 Download the latest release of FOSSBilling using this link: [Latest Stable Release](https://fossbilling.org/downloads/stable)
 
 ### Prepare your existing installation
-
 <Callout type="info" emoji={<FontAwesomeIcon icon={faCircleInfo} />}>
   We have slightly changed our theming system. If you are using a custom theme for the client area, you will need to make some changes on it to get it working with FOSSBilling. A guide for that is on the way.
 
   Until then, join our [Discord server](https://fossbilling.org/discord) to get help.
 </Callout>
 
-Make a full backup of your database and all of the existing files and folders in your BoxBilling install. 
+Make a full backup of your database and all of the existing files and folders in your BoxBilling installation.
 
 Remove the 'bb-vendor' and 'bb-themes' folders.
 
 ### Upload and extract the FOSSBilling files
+Upload and extract the contents of the preview build archive over the files in your existing BoxBilling installallation.
 
-Upload and extract the contents of the preview build archive over the files in your existing BB install. 
+### Remove the installer folder
+Delete the 'install' folder and all of the files inside it. Since you already have BoxBilling installed, you will not need to go through the FOSSBilling installer again.
 
 ### Set up the configuration file
-
 You can either do this using either of the following methods:
 
 * **Recommended:** log into the admin panel, go to the "Update FOSSBilling" and use the "Migrate configuration" tool.
   * Note: if you are using custom values for `locale_date_format` or `locale_time_format`, you will need to manually update these to the [datetime format](https://www.php.net/manual/en/datetime.format.php).
-* **Not Recommended** Rename 'config-sample.php' to 'config.php' and then copy the values from your old configuration file (database name, etc.) into the new configuration file. 
+* **Not Recommended** Rename 'config-sample.php' to 'config.php' and then copy the values from your old configuration file (database name, etc.) into the new configuration file.
 
 ### Run foss-update
-
 Run the foss-update.php script.
 
-### Remove the installer files
-
-Delete the 'install' folder and all of the files inside it. 
+### The new folder structure
+<Callout type="info" emoji={<FontAwesomeIcon icon={faCircleInfo} />}>
+  This section needs clearer instructions
+</Callout>
