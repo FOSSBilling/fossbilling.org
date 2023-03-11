@@ -4,8 +4,55 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.4.0 (WIP)
+Note: FOSSBilling version 0.4.0 is still under development and as such, this changelog may not be fully representative of the final release.
+
+### Breaking Changes
+ - Both the client and admin `change_password` API endpoints to require password verification.
+   - These are the required parameters now: `current_password`, `new_password`, and `confirm_password`.
+ - jQuery has been updated to v3 from v1.7 for the administrator panel, and a lot of old jQuery plugins have been removed.
+ - The `bbmd` twig filter has now been completely removed, the `markdown` filter should be used instead.
+ - We've dropped official support for VestaCP due to it's unmaintained status, if you use a fork of VestaCP that was using it's server manager, you can find a backup of it here
+ - We've moved all twig filters that were outside of their class inside of it.
+
+### Bug Fixes
+ - Fixed the way email codes are generated.
+ - Fixed the form builder module.
+ - Fixed broken Gravatars for the client ticket page.
+ - Fixed an issue that could cause blank notifications.
+ - Fixed an issue that prevented editing an IDN TLD.
+ - Fixed some errors that could prevent PDF generation if debug mode is enabled.
+ - Fixed some duplicated IDs on the Huraga settings page.
+ - Fixed an issue that prevented clients from saving their profile changes.
+ - The Virtualmin server manager has had bugfixes Implemented.
+
+## Enhancements
+ - The CookieConsent module has had a visual rework.
+ - The SpamChecker module had it's settings visually reworked.
+ - The date picker in the admin panel has been replaced with a newer, better looking one.
+ - The admin panel flag icons have been replaced with newer ones.
+ - Module icons have been updated. (Note: this change will only take effect if you re-install modules)
+ - We've replaced Gulp with Webpack Encore.
+ - The extension store can now automatically install payment gateways.
+ - Locale flags will be displayed in the admin panel language drop-down.
+ - We've replaced the usage of Google fonts.
+ - Improved responsiveness to the admin panel.
+ - The old search autocomplete JS has been replaced in the admin panel, improving functionality and styling.
+ - Minor visual improvements to the client login page.
+ - We've replaced a bunch of jQuery usage with vanilla JavaScript.
+ - The WHM/cPanel Server Manager has been refactored, removing over two thousand lines of unused code.
+ - Product categories and descriptions will now be displayed when ordering.
+ - The color picker in the Administrator panel has been replaced with a newer, better one.
+ - FOSSBilling will automatically redirect you to the login page after updating. (This will apply for future updates AFTER 0.4.0)
+ - The option to update assigned server IPs has been made visible.
+ - The FormBuilder module has had it's styling rebuilt.
+
+## New Features
+ - We've refactored the way payment gateway logos are loaded, so they now no longer need to be hard-coded into a theme's CSS.
+ - We've started implementing native JS modals for the Administrator panel, and have started using that instead of jQuery based solutions. 
+
 ## 0.3.0 (2-17-2023)
-*Important*: this version of FOSSBiling removes quite a few deprecated functions and as such this release has the possibility to break custom themes and modules.
+*Important*: this version of FOSSBilling removes quite a few deprecated functions and as such this release has the possibility to break custom themes and modules.
 Please read the breaking changes below for information on what was removed and how you can update custom code if you were using them.
 
 ### Breaking Changes
@@ -39,13 +86,13 @@ Please read the breaking changes below for information on what was removed and h
  - The CWP server manager has had the code quality improved, with support for logging added to it.
 
 ### New features
- - All FOSSBiling exception classes can now be translated.
+ - All FOSSBilling exception classes can now be translated.
  - We've added the ability to have plural translations with the `__pluralTrans` function.
  - Settings routes are now translatable for our default modules.
  - The WYSIWYG editor has been upgraded to CKEditor 5 and markItUp! has been completely removed.
 
 ### Bug Fixes
- - Fixed the usage placeholders in translations.
+ - Fixed the usage of placeholders in translations.
  - Fixed the issue that caused accounts to be logged in as "System Cron Job" when using CGI.
  - Fixed the orderbutton module.
  - Fixed the navbar on small screens & mobile, it'll now become a hamburger menu in those situations.
@@ -83,7 +130,7 @@ As always, create a fully backup of your installation before updating and if pos
 ### Changes
 - We've started to remove multi-selects from the admin panel in favor of check-boxes for improved usability.
 - Default modules labels are now translatable, helping to ensure that as much of the admin panel can be translated as possible.
-- Updated document URLs and enforced the FOSSBiling naming in a few areas.
+- Updated document URLs and enforced the FOSSBilling naming in a few areas.
 - Changed the way emails are prevented from sending with the demo module enabled. 
 - Session save handlers will now only be set if headers haven't been sent.
 - Fixed some missing icons in the admin panel.
