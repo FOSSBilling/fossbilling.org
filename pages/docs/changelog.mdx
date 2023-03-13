@@ -46,10 +46,12 @@ Note: FOSSBilling version 0.4.0 is still under development and as such, this cha
  - FOSSBilling will automatically redirect you to the login page after updating. (This will apply for future updates AFTER 0.4.0)
  - The option to update assigned server IPs has been made visible.
  - The FormBuilder module has had it's styling rebuilt.
+ - The Embed module had it's settings page visually reworked.
 
 ### New Features
  - We've refactored the way payment gateway logos are loaded, so they now no longer need to be hard-coded into a theme's CSS.
- - We've started implementing native JS modals for the Administrator panel, and have started using that instead of jQuery based solutions inside the admin panel. 
+ - We've started implementing native JS modals for the Administrator panel, and have started using that instead of jQuery based solutions inside the admin panel.
+ - You can now export CSVs of orders, invoices, and clients. If you are working on a custom module, you can use `table_export_csv` from the DI to export a table as a CSV. 
 
 ## 0.3.0 (2-17-2023)
 *Important*: this version of FOSSBilling removes quite a few deprecated functions and as such this release has the possibility to break custom themes and modules.
