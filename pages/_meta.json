@@ -29,6 +29,11 @@
     "href": "https://translate.fossbilling.org/",
     "newWindow": true
   },
+  "forum": {
+    "title": "Forums",
+    "href": "https://forum.fossbilling.org/",
+    "newWindow": true
+  },
   "donate": {
     "title": "Donate",
     "type": "menu",
