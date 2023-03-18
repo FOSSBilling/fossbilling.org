@@ -25,10 +25,10 @@ Note: FOSSBilling version 0.4.0 is still under development and as such, this cha
  - Fixed some duplicated IDs on the Huraga settings page.
  - Fixed an issue that prevented clients from saving their profile changes.
  - The Virtualmin server manager has had some bugfixes.
+ - We've fixed an issue with the twig `number_filter` filter that could prevent you from viewing a client's profile in rare situations. ([Issue #964](https://github.com/FOSSBilling/FOSSBilling/issues/964))
+ - Fixed Gravatars on the activities tab in the admin panel.
 
 ### Enhancements
- - The CookieConsent module has had a visual rework.
- - The SpamChecker module had it's settings page visually reworked.
  - The date picker in the admin panel has been replaced with a newer, better looking one.
  - The admin panel flag icons have been replaced with newer ones.
  - Module icons have been updated. (Note: this change will only take effect if you re-install modules)
@@ -45,11 +45,10 @@ Note: FOSSBilling version 0.4.0 is still under development and as such, this cha
  - The color picker in the Administrator panel has been replaced with a newer, better one.
  - FOSSBilling will automatically redirect you to the login page after updating. (This will apply for future updates AFTER 0.4.0)
  - The option to update assigned server IPs has been made visible.
- - The FormBuilder module has had it's styling rebuilt.
- - The Embed module had it's settings page visually reworked.
  - We've added in the `symfony/http-client` package and started to use that instead of curl `calls`, which improve compatibility.
- - The Pages and MassMailer modules have had their admin panel styling reworked.
  - The admin panel has had it's layout significantly improved. It's now much more responsive to different resolutions and the sidebar navigation has been replaced with a horizontal navbar.
+ - The following modules have had their admin layouts reworked: `Cookieconsent`, `Spamchecker`, `Formbuilder`, `Embed`, `Custompages`, `Massmailer`, `Orderbutton`, `Redirect`, `Redirect`, `SEO Tools`, `Staff`, `Theme`, `Wysiwyg`.
+ - We've cleaned up and fixed some inconsistencies in the `admin_default` theme. 
 
 ### New Features
  - We've refactored the way payment gateway logos are loaded, so they now no longer need to be hard-coded into a theme's CSS.
