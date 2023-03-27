@@ -5,7 +5,7 @@ title: FOSSBilling Changelog
 # FOSSBilling Changelog
 
 ## 0.4.0 (WIP)
-Note: FOSSBilling version 0.4.0 is still under development and as such, this changelog may not be fully representative of the final release.
+Note: Note: FOSSBilling version 0.4.0 is not yet released. We believe this will be the final changelog, however if needed they may be further changes before we release version 0.4.0.
 
 ### Breaking Changes
  - Both the client and admin `change_password` API endpoints now require password verification.
@@ -14,6 +14,35 @@ Note: FOSSBilling version 0.4.0 is still under development and as such, this cha
  - The `bbmd` twig filter has now been completely removed, the `markdown` filter should be used instead.
  - We've dropped official support for VestaCP due to it's unmaintained status, if you use a fork of VestaCP that was using it's server manager, you can find a backup of it [here](https://github.com/jaapmarcus/FOSSBilling-vesta/tree/main)
  - We've moved all twig filters that were outside of their class back inside of it.
+ - The `bb_date` and `bb_datetime` filters have been removed in favor of official twig filters that offer better i18n support.
+  - With this, dates should now be translated to your locale.
+  - For those of you with custom themes / modules, you need to perform these replacements:
+    - `bb_date` => `format_date`
+    - `bb_datetime` => `format_datetime` 
+  - Email templates will automatically be updated as part of the `foss-update.php` script.
+  - Some configuration options in the `config.php` file have been changed or removed as part of the i18n efforts:
+    - old (Default values shown):
+      - `'timezone' => 'UTC',`
+      - `'locale' => 'en_US',`
+      - `'locale_date_format' => 'l, d F o',`
+      - `'locale_time_format' => ' G:i:s',`
+    - New (Default values shown):
+    -
+			'i18n' => [
+				'locale' => 'en_US',
+				'timezone' => 'UTC',
+
+				// Short names for formats (none, short, medium, long).
+				// @see https://www.php.net/manual/en/class.intldateformatter.php
+				'date_format' => 'medium',
+				'time_format' => 'short',
+
+				// Specifying a pattern will override the above date/time options. 
+				// @see https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
+				datetime_pattern' => '',
+				],
+  - The `guzzlehttp/guzzle` dependency has been completely removed in favor of the `symfony/http-client` package.
+  - We've completely removed the `array_get` function from the `di`. If you had a custom module, you should instead use a standard PHP ternary operator, which offers the same functionality while requiring less code and being easier to read for developers.
 
 ### Bug Fixes
  - Fixed the way email codes are generated.
@@ -27,6 +56,13 @@ Note: FOSSBilling version 0.4.0 is still under development and as such, this cha
  - The Virtualmin server manager has had some bugfixes.
  - We've fixed an issue with the twig `number_filter` filter that could prevent you from viewing a client's profile in rare situations. ([Issue #964](https://github.com/FOSSBilling/FOSSBilling/issues/964))
  - Fixed Gravatars on the activities tab in the admin panel.
+ - Fixed some payment and server manager exceptions that were broken after we made them translatable.
+ - Fixed the currencylayer integration
+  - **Note:** The API endpoint for currencylayer has been updated from `https://api.currencylayer.com/live` to `https://api.apilayer.com/currency_data/live`.
+    - If you have an older account with currencylayer, you may need to create a new account through apilayer to ensure it works correctly.
+    - Apilayer is now the owner of currencylayer and is maintaining two API endpoints for the service. When you create an account for currencylayer, you will be directed to the apilayer website, where you can find the new, updated API endpoint.
+    - We are using the apilayer API endpoint as it offers new functionality and seems to be the preferred option by apilayer, the current owner of currencylayer.
+ - Fixed an issue where the cart wasn't remembering a selected period for a product.
 
 ### Enhancements
  - The date picker in the admin panel has been replaced with a newer, better looking one.
@@ -53,7 +89,9 @@ Note: FOSSBilling version 0.4.0 is still under development and as such, this cha
 ### New Features
  - We've refactored the way payment gateway logos are loaded, so they now no longer need to be hard-coded into a theme's CSS.
  - We've started implementing native JS modals for the Administrator panel, and have started using that instead of jQuery based solutions inside the admin panel.
- - You can now export CSVs of orders, invoices, and clients. If you are working on a custom module, you can use `table_export_csv` from the DI to export a table as a CSV. 
+ - You can now export CSVs of orders, invoices, and clients. If you are working on a custom module, you can use `table_export_csv` from the DI to export a table as a CSV.
+ - The foss-update.php script has undergone visual enhancements and now includes support for performing file-level operations.
+  - These file operations include deleting, renaming, and moving files which will allow us to make the update process smoother in the future and remove and any un-used dependencies.
 
 ## 0.3.0 (2-17-2023)
 *Important*: this version of FOSSBilling removes quite a few deprecated functions and as such this release has the possibility to break custom themes and modules.
