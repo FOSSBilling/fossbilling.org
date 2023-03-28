@@ -1,0 +1,27 @@
+---
+title: Customizing Invoice PDFs
+description: Learn how to effectively set up your company's essentials including logo, name, address, and terms of service with this comprehensive guide.
+---
+
+# Customizing Invoice PDFs
+
+## Invoice CSS
+During the PDF generation, FOSSBilling first creates a simple HTML page and then converts that to a PDF using  [dompdf](https://github.com/dompdf/dompdf).
+The HTML page cannot currently be edited without editing the invoice module's source code, however you may use custom CSS for the page.
+
+### Limitations
+One important note to make, is that dompdf does not offer complete CSS support. Here is the limitations for dompdf as of version 2.0.3:
+> Handles most CSS 2.1 and a few CSS3 properties, including @import, @media & @page rules
+> Table cells are not pageable, meaning a table row must fit on a single page.
+> Elements are rendered on the active page when they are parsed.
+> Does not support CSS flexbox.
+> Does not support CSS Grid.
+
+### Using custom CSS
+By default, FOSSBilling uses the CSS from `/modules/Invoice/pdf_template/default-pdf.css`, however if you edit this file, any changes to it will be overridden when you update FOSSBilling.
+
+Simply make a copy of the `default-pdf.css` file and place it under `/modules/Invoice/pdf_template/custom-pdf.css`. This new custom CSS file will be used instead of the original one, and it will not be overridden when you update FOSSBilling. You can now edit the `custom-pdf.css` file and use custom CSS for the PDF generation, keeping in mind the limitations described above.
+
+### The layout
+Please see the image below for information on the overall layout of the page and where CSS classes are used (color-coded):
+![Layout of the PDF page](/img/guides/pdf/invoice_layout.png)

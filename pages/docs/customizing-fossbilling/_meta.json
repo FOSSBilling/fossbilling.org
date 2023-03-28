@@ -1,5 +1,6 @@
 {
   "config": "The Configuration File",
   "localization": "Localization",
-  "company": "Configuring Company Information"
+  "company": "Configuring Company Information",
+  "invoice_pdf": "Customizing Invoice PDFs"
 }
