@@ -2,7 +2,9 @@
 title: HestiaCP and FOSSBilling
 ---
 
-## Configuration HestiaCP
+# Integrating FOSSBilling with HestiaCP
+
+## Configuring HestiaCP
 
 Before you can setup the HestiaCP server manager, you need to first whitelist your FOSSBilling server's IP address inside of HestiaCP, and create a access key to use.
 [Here](https://development.hestiacp.com/docs/server-administration/rest-api.html#i-m-unable-to-connect-to-the-api) is their documentation for the whitelisting the IP address. 
@@ -15,7 +17,7 @@ A note on permissions: When creating the access key inside HestiaCP, you only ne
 2. Go to `Configuration` -> `Hosting plans and servers` from within the side panel.
 3. Go to the "New server" tab and fill out the name, hostname, and IP address, and nameservers for your server.
 4. Select the `Server manager` drop down and select HestiaCP from the drop down.
-5. Ender the access key ID and secret key you created within HestiaCP.
+5. Enter the access key ID and secret key you created within HestiaCP.
 6. Click the add server button to save your settings and add the server to FOSSBilling.
 
 ## Hosting plans with HestiaCP and FOSSBilling
