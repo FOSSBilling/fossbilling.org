@@ -11,11 +11,11 @@ The HTML page cannot currently be edited without editing the invoice module's so
 
 ### Limitations
 One important note to make, is that dompdf does not offer complete CSS support. Here is the limitations for dompdf as of version 2.0.3:
-> Handles most CSS 2.1 and a few CSS3 properties, including @import, @media & @page rules
-> Table cells are not pageable, meaning a table row must fit on a single page.
-> Elements are rendered on the active page when they are parsed.
-> Does not support CSS flexbox.
-> Does not support CSS Grid.
+> - Handles most CSS 2.1 and a few CSS3 properties, including @import, @media & @page rules
+> - Table cells are not pageable, meaning a table row must fit on a single page.
+> - Elements are rendered on the active page when they are parsed.
+> - Does not support CSS flexbox.
+> - Does not support CSS Grid.
 
 ### Using custom CSS
 By default, FOSSBilling uses the CSS from `/modules/Invoice/pdf_template/default-pdf.css`, however if you edit this file, any changes to it will be overridden when you update FOSSBilling.
