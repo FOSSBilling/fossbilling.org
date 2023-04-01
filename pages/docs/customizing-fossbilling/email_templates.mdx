@@ -1,0 +1,108 @@
+---
+title: Customizing Email Templates
+description: This guide covers how to create and use custom email templates inside FOSSBilling. 
+---
+
+# Email Templates
+
+## Customizing email templates
+
+### Finding them in the administrator panel
+ First, navigate to the email settings in your FOSSBilling administrator panel.
+ 
+ 1. Click on `Configuration` from the navbar and then go to `Settings`
+ 2. Click on the `Email` option.
+
+At this point, you should see a table with a list of all email templates in your FOSSBilling instance. 
+The table lists the subject of the template, what extension it is used in, the email code, and if it is enabled.
+If you are missing any email templates, use the `Generate templates` button at the bottom of the page to re-generate any missing email templates.
+
+### Editing an email template
+Click on the edit button on any email template to edit it. You should then be presented with a screen similar to this:
+![Editing an email template](/img/guides/emails/template-edit.png)
+Email templates are processed via [twig](https://twig.symfony.com/), which allows for them to take advantage of variables and filters to provide a more flexible email template system.
+
+In the following example, we will edit the test email template (`mod_email_test`). If you haven't already, configured your system email settings and and use the `Send test email to staff members` button to verify it is functional.
+
+By default, the `mod_email_test` will be created with the following:
+**Subject**:
+`[{{ guest.system_company.name }}] FOSSBilling Email Test`
+**Content**:
+```
+{% apply markdown %}
+Hi {{ staff.name }},
+
+If you are reading this email, FOSSBilling is **configured properly** 
+and is **able to send emails**.
+
+{{ guest.system_company.signature }}
+
+{% endapply %}
+```
+This is applying the `markdown` filter to convert all of the text you see into HTML, however you may also simply write the email template using HTML, which is what we will cover in this example.
+
+Here's an example of a very basic HTML email template: 
+**Subject**:
+`[{{ guest.system_company.name }}] FOSSBilling Email Test`
+
+**Content**:
+``` HTML
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>[{{ guest.system_company.name }}] FOSSBilling Email Test</title>
+	<style type="text/css">
+		body {
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			color: #333333;
+		}
+
+		h1 {
+			font-size: 24px;
+			font-weight: bold;
+			margin: 0 0 20px;
+		}
+
+		p {
+			margin: 0 0 10px;
+		}
+
+		strong {
+			font-weight: bold;
+		}
+
+		.signature {
+			font-style: italic;
+			color: #999999;
+			margin-top: 20px;
+			border-top: 1px solid #cccccc;
+			padding-top: 10px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Test email from [{{ guest.system_company.name }}]</h1>
+	<p>Hi {{ staff.name }},</p>
+	<p>If you are reading this email, FOSSBilling is <strong>configured properly</strong> and is <strong>able to send emails</strong>.</p>
+	<p class="signature">{{ guest.system_company.signature }}</p>
+</body>
+</html>
+```
+This example code generates a very basic email template, however it includes some simple styling and results in an email that is visually more appealing to look at. Here are both email templates, generated using the preview button:
+![How the default email template looks](/img/guides/emails/default-template-preview.png)
+![How the customized email template looks](/img/guides/emails/custom-template-preview.png)
+
+### Limitations
+
+ - Variables sent to email templates will not be known until an email template is sent at least once, at which point the `preview` button becomes enabled and the `Variables` tab will then have the variables and data from the last email that was sent. 
+ - HTML support from different email clients varies
+
+## Where are they stored?
+
+When a module is first installed, the email templates are loaded from the `html_email` directory inside of each module.
+After that, though, they are stored inside the the `email_template` table in your FOSSBilling database.
+The email templates are all run through twig to allow usage of variables and filters.
+
+You can find an example of the email templates in our [example module](https://github.com/FOSSBilling/example-module/tree/main/html_email).
