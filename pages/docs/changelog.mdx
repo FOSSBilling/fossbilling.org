@@ -46,6 +46,7 @@ Note: Note: FOSSBilling version 0.4.0 is not yet released. We believe this will 
       ```
   - The `guzzlehttp/guzzle` dependency has been completely removed in favor of the `symfony/http-client` package.
   - We've completely removed the `array_get` function from the `di`. If you had a custom module, you should instead use a standard PHP ternary operator, which offers the same functionality while requiring less code and being easier to read for developers.
+  - `boxbilling.message` is no longer available in the default admin theme. Custom modules should instead use `fossbilling.message`
 
 ### Bug Fixes
  - Fixed the way email codes are generated.
@@ -66,6 +67,7 @@ Note: Note: FOSSBilling version 0.4.0 is not yet released. We believe this will 
     - Apilayer is now the owner of currencylayer and is maintaining two API endpoints for the service. When you create an account for currencylayer, you will be directed to the apilayer website, where you can find the new, updated API endpoint.
     - We are using the apilayer API endpoint as it offers new functionality and seems to be the preferred option by apilayer, the current owner of currencylayer.
  - Fixed an issue where the cart wasn't remembering a selected period for a product.
+ - Fixed content type header for the generated sitemap. (example.com/sitemap.xml)
 
 ### Enhancements
  - The date picker in the admin panel has been replaced with a newer, better looking one.
