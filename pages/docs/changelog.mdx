@@ -4,14 +4,14 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
-## 0.4.0 (4-3-2023)
+## 0.4.0 4-3-2023
 
 ### Breaking Changes
  - Both the client and admin `change_password` API endpoints now require password verification.
    - These are now the required parameters: `current_password`, `new_password`, and `confirm_password`.
  - jQuery has been updated to v3 from v1.7 for the administrator panel, and a lot of old jQuery plugins have been removed.
  - The `bbmd` twig filter has now been completely removed, the `markdown` filter should be used instead.
- - We've dropped official support for VestaCP due to it's unmaintained status, if you use a fork of VestaCP that was using it's server manager, you can find a backup of it [here](https://github.com/jaapmarcus/FOSSBilling-vesta/tree/main)
+ - We've dropped official support for VestaCP due to its unmaintained status, if you use a fork of VestaCP that was using its server manager, you can find a backup of it [here](https://github.com/jaapmarcus/FOSSBilling-vesta/tree/main)
  - We've moved all twig filters that were outside of their class back inside of it.
  - The `bb_date` and `bb_datetime` filters have been removed in favor of official twig filters that offer better i18n support.
    - With this, dates should now be translated to your locale.
@@ -69,7 +69,7 @@ title: FOSSBilling Changelog
  - Fixed content type header for the generated sitemap. (example.com/sitemap.xml)
 
 ### Enhancements
- - The date picker in the admin panel has been replaced with a newer, better looking one.
+ - The date picker in the admin panel has been replaced with a newer, better-looking one.
  - The admin panel flag icons have been replaced with newer ones.
  - Module icons have been updated. (Note: this change will only take effect if you re-install modules)
  - We've replaced Gulp with Webpack Encore.
@@ -86,16 +86,16 @@ title: FOSSBilling Changelog
  - FOSSBilling will automatically redirect you to the login page after updating. (This will apply for future updates AFTER 0.4.0)
  - The option to update assigned server IPs has been made visible.
  - We've added in the `symfony/http-client` package and started to use that instead of curl `calls`, which improves compatibility.
- - The admin panel has had it's layout significantly improved. It's now much more responsive to different resolutions and the sidebar navigation has been replaced with a horizontal navbar.
+ - The admin panel has had its layout significantly improved. It's now much more responsive to different resolutions and the sidebar navigation has been replaced with a horizontal navbar.
  - The following modules have had their admin layouts reworked: `Cookieconsent`, `Spamchecker`, `Formbuilder`, `Embed`, `Custompages`, `Massmailer`, `Orderbutton`, `Redirect`, `Redirect`, `SEO Tools`, `Staff`, `Theme`, `Wysiwyg`.
  - We've cleaned up and fixed some inconsistencies in the `admin_default` theme. 
 
 ### New Features
  - We've refactored the way payment gateway logos are loaded, so they now no longer need to be hard-coded into a theme's CSS.
- - We've started implementing native JS modals for the Administrator panel, and have started using that instead of jQuery based solutions inside the admin panel.
+ - We've started implementing native JS modals for the Administrator panel, and have started using that instead of jQuery-based solutions inside the admin panel.
  - You can now export CSVs of orders, invoices, and clients. If you are working on a custom module, you can use `table_export_csv` from the DI to export a table as a CSV.
  - The foss-update.php script has undergone visual enhancements and now includes support for performing file-level operations.
-  - These file operations include deleting, renaming, and moving files which will allow us to make the update process smoother in the future and remove and any un-used dependencies.
+  - These file operations include deleting, renaming, and moving files which will allow us to make the update process smoother in the future and remove any unused dependencies.
 
 ## 0.3.0 (2-17-2023)
 *Important*: this version of FOSSBilling removes quite a few deprecated functions and as such this release has the possibility to break custom themes and modules.
