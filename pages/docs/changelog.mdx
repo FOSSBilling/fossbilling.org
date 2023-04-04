@@ -4,6 +4,16 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.4.1 (4-4-2023)
+
+### Bug Fixes
+- Fixed an issue that prevented access to the administrator panel if FOSSBilling is installed on a sub-folder.
+    - **Important**: this style of installation is highly discouraged. Please use a sub-domain instead.
+- Fixed an issue that prevented access to the administrator panel if the admin prefix was changed to no longer be `/admin`.
+- Fixed an issue with the `.htaccess` file that prevented access to payment gateway logos.
+- FOSSBilling now includes `symfony/polyfill-intl-icu`, which will be used as a polyfill if the `intl` extension is not installed & enabled in PHP.
+   - This polyfill only supports the `en` locale, and is only being included to prevent FOSSBilling from being unusable without the `intl` extension. For full functionality, you should always ensure this extension is installed and enabled.
+
 ## 0.4.0 (4-3-2023)
 
 ### Breaking Changes
