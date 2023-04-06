@@ -4,6 +4,19 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.4.2 (4-6-2023)
+**Important** Due to issues related to sub-folders and additional complexity, we have decided to remove official support for FOSSBilling installations under sub-folders rather than sub-domains. Long term, we wish to bring back official support, however we give no timeline for this. This was previously announced on [our forum](https://forum.fossbilling.org/d/25-fossbilling-will-no-longer-provide-official-support-for-sub-folder-installations).
+
+### Bug Fixes
+- Reverted the bugfix for sub-folder installations as it caused issues with other installation methods.
+
+### Enhancements
+- We've improved the way localization is handled within twig, it will now respect the locale selected from within the dashboard. This allows clients to have dates translated into their locale.
+- Fixed the mobile responsiveness of the Fix order "history" tab.
+- Added badges to the dashboard to display the number of unpaid invoices, open tickets, etc.
+- We've applied a simple fix to change the text color of CKEditor (WYSIWYG editor) when dark mode is enabled.
+- Improved `.htaccess` rules to strengthen security, improve error handling, and to clean up some unnecessary rules.
+
 ## 0.4.1 (4-4-2023)
 
 ### Bug Fixes
