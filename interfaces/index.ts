@@ -1,4 +1,4 @@
-export type APIResponse = {
+export type FOSSBillingAPIResponse = {
     result: any;
     error: {
         message: string;
