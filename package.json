@@ -20,7 +20,7 @@
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
     "framer-motion": "^10.11.2",
-    "next": "^13.0.6",
+    "next": "^13.3.0",
     "next-sitemap": "^4.0.6",
     "nextra": "^2.0.1",
     "nextra-theme-docs": "^2.0.1",
