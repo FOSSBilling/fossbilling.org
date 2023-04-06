@@ -26,12 +26,10 @@ export default function handler(req, res) {
     } as FOSSBillingVersion
   });
 
-  const response: APIResponse = {
+    res.status(200).json({
       result: {
         versions: versionsWithSupport
       },
-      error: null,
-    };
-
-    res.status(200).json(response)
+      error: null
+    } as APIResponse)
   }
