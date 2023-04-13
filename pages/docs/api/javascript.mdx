@@ -17,12 +17,46 @@ You can use the API wrapper in JavaScript to make requests to the API. This is v
 Having a wrapper allows us to make changes to the API without having to change the code in your theme or module. This makes your code more feature-proof.
 
 ## Importing the wrapper
-To use the wrapper, you need to import it.
+To import the API wrapper, use the following code:
+```
+<meta name="csrf-token" content="{{ CSRFToken }}">
+<script src="{{ "Api/API.js?v=#{guest.system_version}" | library_url }}"></script>
+```
+This code first creates a new meta tag that stores the CSRF token. The API wrapper uses this tag to add the token to API requests. Next, it imports the API wrapper using the `library_url` filter, which generates the correct URL for the file, then it appends the current system version to prevent cache issues.
 
 ## Making requests
-### GET requests
-### POST requests
 
-## Using the data returned by the API
+An API request using the wrapper will look something like this:
+`API.guest.get("system/version", {}, function(response)`
+The API wrapper has the following parameters:
+-   `Endpoint Type`: the type of API endpoint (`admin`, `client`, or `guest`).
+-   `method`: the HTTP method to use (`get` or `post`).
+-   `endpoint`: the specific endpoint to request (e.g., `/system/version`).
+-   `params`: any parameters to include in the request (e.g., query parameters for a `GET` request or request body data for a `POST` request).
+-   `successHandler`: a function to handle a successful response from the API.
+-   `errorHandler`: a function to handle an error response from the API.
 
-## Handling errors
+Here's a few different examples:
+To make a `GET` request to the guest API and request the `/api/guest/system/version` endpoint, use:
+```
+API.guest.get("system/version", {}, function(response) {
+  // handle successful response
+}, function(error) {
+  // handle error response
+});
+```
+To make a `POST` request to the admin API and request the `/api/admin/client/get_list` endpoint, use:
+```
+API.admin.post("client/get_list", {}, function(response) {
+  // handle successful response
+}, function(error) {
+  // handle error response
+});
+```
+## Handling API Responses
+
+### Handling Successful Responses
+In the example code snippets above, the `successHandler` function is called when the API request is successful. You can use this function to process the data returned by the API.
+
+### Handling Error Responses
+The `errorHandler` function is called when an error occurs during the API request. You can use this function to handle any errors and display an appropriate error message to the user.
