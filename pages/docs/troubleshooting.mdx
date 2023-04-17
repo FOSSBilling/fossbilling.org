@@ -4,10 +4,20 @@ title: Troubleshooting
 
 # Common problems and their solutions
 
-## Cloudflare specific issues
-Some Cloudflare features can cause issues within FOSSBilling, here is a list of features and any known issues they cause
- - "Auto Minify"
-   - Enabling the "Auto Minify" feature with Cloudflare can cause issues within the admin panel, specifically related to file integrity checks. This will cause JS and CSS files to no longer be loaded inside your web browser and for the administrator panel to be unusable. If this issue is effecting you, your browser should display an error like this: `None of the “sha384” hashes in the integrity attribute match the content of the subresource.`
-   - The solution for this issue is to simply disable the "Auto Minify" feature.
+## Error 404 when trying to visit the administrator panel
 
-## Can't create cache folder
+### Apache, LiteSpeed, or OpenLiteSpeed
+
+If you are using Apache, LiteSpeed, or OpenLiteSpeed and you are receiving a HTTP 404 error when trying to access the administrator panel (or other portions of FOSSBilling), please verify the following:
+ - Ensure that you have `mod_rewrite` installed and enabled.
+ - Verify there is a valid `.htaccess` file in the same directory as the FOSSBilling `index.php` file.
+ - If you do have a valid `.htaccess` file, verify that it matches the [default FOSSBilling one](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/.htaccess)
+ - For those of you who are using OpenLiteSpeed, you will need to restart the OpenLiteSpeed service or the webserver before the new `.htaccess` file will be loaded & take effect.
+
+## Cloudflare specific issues
+
+Some Cloudflare features can cause issues within FOSSBilling, here is a list of features and any known issues they cause
+
+### Auto Minify
+ - Enabling the "Auto Minify" feature with Cloudflare can cause issues within the admin panel, specifically related to file integrity checks. This will cause JS and CSS files to no longer be loaded inside your web browser and for the administrator panel to be unusable. If this issue is effecting you, your browser should display an error like this: `None of the “sha384” hashes in the integrity attribute match the content of the subresource.`
+ - The solution for this issue is to simply disable the "Auto Minify" feature.
