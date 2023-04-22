@@ -1,4 +1,4 @@
-import { FOSSBillingAPIResponse, FOSSBillingVersion } from '../../interfaces/index';
+import { FOSSBillingAPIResponse, FOSSBillingVersion } from 'interfaces/index';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<FOSSBillingAPIResponse>) {
