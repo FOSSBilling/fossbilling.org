@@ -25,4 +25,5 @@ export type CentralAlert = {
         link: string;
         type?: 'success' | 'info' | 'warning' | 'danger';
     }[];
+    datetime: string; // Use the ISO 8601 format. The easies way is to just open a browser and type "new Date().toISOString()" in the console.
 }

@@ -5,7 +5,7 @@ export const CentralAlerts: CentralAlert[] = [
         id: "1",
         title: "Test alert",
         message: "This is a test alert",
-        type: "success",
+        type: "info",
         dismissable: true,
         min_fossbilling_version: "0.1",
         max_fossbilling_version: "0.5",
@@ -14,13 +14,14 @@ export const CentralAlerts: CentralAlert[] = [
             {
                 text: "Test Button",
                 link: "https://fossbilling.org",
-                type: "success"
+                type: "info"
             },
             {
                 text: "Test Button 2",
                 link: "https://fossbilling.org",
             }
         ],
+        datetime: "2023-04-22T11:14:22.584Z"
     },
     {
         id: "2",
@@ -31,5 +32,6 @@ export const CentralAlerts: CentralAlert[] = [
         min_fossbilling_version: "0.1",
         max_fossbilling_version: "0.5",
         include_preview_branch: true,
+        datetime: "2023-04-22T11:14:22.584Z"
     }
 ]
