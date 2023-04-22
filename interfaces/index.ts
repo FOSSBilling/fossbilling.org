@@ -16,7 +16,7 @@ export type CentralAlert = {
     title: string;
     message: string;
     type: 'success' | 'info' | 'warning' | 'danger';
-    dismissable: boolean;
+    dismissible: boolean;
     min_fossbilling_version: string;
     max_fossbilling_version: string;
     include_preview_branch: boolean;
