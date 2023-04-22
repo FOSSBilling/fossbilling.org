@@ -1,6 +1,7 @@
 import { CentralAlert } from "interfaces";
 
 export const CentralAlerts: CentralAlert[] = [
+    /*
     {
         id: "1",
         title: "Testing central alert",
@@ -23,15 +24,5 @@ export const CentralAlerts: CentralAlert[] = [
         ],
         datetime: "2023-04-22T11:14:22.584Z"
     },
-    {
-        id: "2",
-        title: "Another central alert",
-        message: "This is another central alert. Central alerts aren't shown to your visitors. They are only shown to you, the admin.",
-        type: "danger",
-        dismissible: false,
-        min_fossbilling_version: "0.1",
-        max_fossbilling_version: "0.5",
-        include_preview_branch: true,
-        datetime: "2023-04-22T11:14:22.584Z"
-    }
+    */
 ]
