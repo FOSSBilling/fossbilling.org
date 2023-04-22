@@ -9,7 +9,7 @@ export const CentralAlerts: CentralAlert[] = [
         dismissable: true,
         min_fossbilling_version: "0.1",
         max_fossbilling_version: "0.5",
-        include_preview_branch: false,
+        include_preview_branch: true,
         buttons: [
             {
                 text: "Test Button",
