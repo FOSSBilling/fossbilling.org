@@ -3,12 +3,12 @@ import { CentralAlert } from "interfaces";
 export const CentralAlerts: CentralAlert[] = [
     {
         id: "1",
-        title: "Test alert",
-        message: "This is a test alert",
+        title: "Testing central alert",
+        message: "This is a test alert to test the new Central Alert System. This alert will be removed in the future. This central alert is only shown to users with a version between 0.4.0 and 0.4.2",
         type: "info",
         dismissible: true,
-        min_fossbilling_version: "0.1",
-        max_fossbilling_version: "0.5",
+        min_fossbilling_version: "0.4",
+        max_fossbilling_version: "0.4.2",
         include_preview_branch: true,
         buttons: [
             {
@@ -25,8 +25,8 @@ export const CentralAlerts: CentralAlert[] = [
     },
     {
         id: "2",
-        title: "Another test alert",
-        message: "This is another test alert",
+        title: "Another central alert",
+        message: "This is another central alert. Central alerts aren't shown to your visitors. They are only shown to you, the admin.",
         type: "danger",
         dismissible: false,
         min_fossbilling_version: "0.1",
