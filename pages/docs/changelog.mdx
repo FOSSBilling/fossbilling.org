@@ -4,6 +4,52 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.4.3 (4-25-2023)
+**Important** This release migrates to using `symfony/mailer` for sending emails. For mostly everyone, this will improve reliability of the emails and allow us to more easily maintain that functionality, however it is important to note that FOSSBilling now requires the `open_proc` function when using `sendmail` as your transport. Please check the release notes below for further information on this change.
+
+### New features
+ - FOSSBilling will now try to automatically detect the correct locale for users based on the browser's `HTTP_ACCEPT_LANGUAGE` header. This option can be overridden with the language selector.
+ - Server managers may now define a custom `generateUsername` function.
+ - Custom themes may now gain access to the `admin_default` encore by setting `use_admin_default_encore` to `true` in their manifest file. This allows them to use JS and CSS from the admin theme.
+
+### Enhancements
+ - We have significantly cleaned up the CSS files for the `admin_default` theme. The outdated CSS from BoxBilling is now completely gone and we are now using slightly different autoprefixer rules. The resulting CSS is now roughly half of the size compared to FOSSBilling version 0.4.2
+ - Cleaned up Huraga's CSS to removed outdated browser prefixes. This removes a little over 1k lines of unneeded CSS.
+ - The `admin_default` theme has had numerous improvements, including having some pages rewritten.
+ - The SEO module has had a minor overhaul.
+ - We've made many improvements to the translatable strings inside of FOSSBilling, fixing some poor grammar and lowering the word-count by roughly 700 words compared to 0.4.2.
+ - We've migrated to using `symfony/mailer` to handle emails. This will make it much more straightforward for us to add support for new transport options while also improving reliability and maintainability for the email functionality.
+    - If you have been using the `sendmail` transport, FOSSBilling now requires the `open_proc` function to be enabled. It should be by default in most installations, however some control panels or hosting providers may disable it.
+    - The option to disable SSL/TLS has been completely removed.
+        - You may use a custom mailer DSN with `verify_peer` set to 0 if you want to connect to a host with a self-signed certificate. An example and link to further documentation is available in the email settings page.
+     - The SendGrid integration has been updated to use the `symfony/mailer` package and now uses an API key instead of a username and password. We are unsure if the previous integration worked correctly, but if you were using it you will need to update to using an API key.
+    - The `Box_Mail` class has been completely replaced with a new `FOSSBilling_Mail` class and it is no longer available through the `di`.
+
+### Bug fixes
+ - The client profile page will now correctly respect what parameters you have configured as required.
+ - We've fixed an issue that prevented you from editing a promotion period.
+ - Fixed a bug that could prevent access to the MassMailer module.
+ - The "bring your own domain" option will now work correctly if a client doesn't enter a period into the TLD. (Both `.com` and `com` will work now)
+ - Various fixes to the Direct Admin server manager.
+ - Fixed an issue that could occasionally be seen where the next invoice number was being interpreted as a string rather than an integer.
+ - Fixed the ResellerClub registrar's HTTP response handling.
+ - Fixed server manager logging.
+ - Fixed an error that could be seen if you tried to create a client without selecting a group.
+ - Fixed an issue that could give an SQL error when trying to cancel an invoice.
+
+### Changes
+- The `Box_Config` class has been removed.
+- We've entirely removed the FTP layer from FOSSBilling as it was unused and likely broken.
+- We've removed `http-client` in favor of instancing the class directly.
+- The `Box_Zip` class has been removed in favor of directly calling the ZIP library.
+- Renamed the `Box_Requirements` and `Box_Version` classes to `FOSSBilling_Requirements` and `FOSSBilling_Version`.
+- Minor changes to reflect the Extension Store being renamed to Extension Directory.
+- We've removed a lot of functionality from the `Box_Request` class and have moved to using native PHP functionality.
+- `Box_Tools` has had a lot of functionality removed as it duplicated standard PHP functions.
+- System updated functionality has been moved from `Extensions` to `System`
+- Removed the `Box_Cookie`, `Box_ExceptionAuth`, and `Box_Response` classes.
+- `Box_Extension` has been replaced with `ExtensionManager`
+
 ## 0.4.2 (4-6-2023)
 **Important** Due to issues related to sub-folders and additional complexity, we have decided to remove official support for FOSSBilling installations under sub-folders rather than sub-domains. Long term, we wish to bring back official support, however we give no timeline for this. This was previously announced on [our forum](https://forum.fossbilling.org/d/25-fossbilling-will-no-longer-provide-official-support-for-sub-folder-installations).
 
