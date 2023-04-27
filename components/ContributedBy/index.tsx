@@ -6,7 +6,7 @@ export function ContributedBy({ username, pullRequestNumber }) {
     const avatarLink = `https://avatars.githubusercontent.com/${username}`;
 
     return (
-        <div className="flex float-right items-center p-2 ms-4 mb-4 w-56 bg-zinc-800 rounded-md nx-mt-6">
+        <div className="flex float-right items-center p-2 ms-4 mb-4 mt-6 w-56 bg-gray-100 dark:bg-neutral-800 text-gray-600 dark:text-gray-400 rounded-md">
             <div className="inline-block">
                 <a href={userLink} target="_blank">
                     <img className="rounded-md h-10 w-10" src={avatarLink} alt={username}/>
