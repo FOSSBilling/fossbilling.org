@@ -4,6 +4,7 @@ import { faMessage } from "@fortawesome/free-solid-svg-icons";
 
 import { useRouter } from "next/router";
 import React from "react";
+import { ContributedBy } from "@components/ContributedBy";
 
 export default {
     docsRepositoryBase: 'https://github.com/FOSSBilling/FOSSBilling.org/blob/main',
