@@ -23,9 +23,9 @@ export default {
         icon: <FontAwesomeIcon icon={faDiscord} size="xl" />,
     },
     banner: {
-        key: '0.4.3-release',
-        text: <a href="https://github.com/FOSSBilling/FOSSBilling/releases/latest" target="_blank">
-          🎉 FOSSBilling 0.4.3 is released. Read more →
+        key: 'mollie',
+        text: <a href="https://github.com/FOSSBilling/Mollie" target="_blank">
+          ⭐️ We have just released an extension for Mollie. Check it out →
         </a>,
     },
     feedback: {
