@@ -19,7 +19,7 @@
     "@vercel/analytics": "^1.0.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
-    "framer-motion": "^10.12.8",
+    "framer-motion": "^10.12.11",
     "next": "^13.4.2",
     "next-sitemap": "^4.0.9",
     "nextra": "^2.0.1",
