@@ -1,5 +1,4 @@
 # fossbilling.org
-
 [![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling.org/main)](https://github.com/fossbilling/fossbilling.org/actions/workflows)
 
 FOSSBilling's website and documentation. Built using [Nextra](https://nextra.site/), hosted on Vercel and can be reached by visiting [fossbilling.org](https://fossbilling.org).
