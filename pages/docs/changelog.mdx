@@ -4,6 +4,46 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.5.0 (Upcoming)
+If you have any type of custom module, please read the breaking changes. Very nearly **ALL** custom modules will not work correctly in this release unless updated for it.
+
+### New Features
+ - Introduced support for our "Central Alerts" system, allowing FOSSBilling to retrieve and display warnings associated with the currently running version.
+ - We've introduced the usage of Monolog, splitting logging out into a handful of files to help keep logs more organized.
+ - Our GitHub repository now runs automated spellchecks against changes to help prevent accidental spelling mistakes from being introduced into the application.
+ - The old error page has been completely replaced and errors can now be assigned helpful links to help aid in debugging.
+ - The API wrapper will now display a "spinner" on the page while waiting on an API request to complete, giving a visual indication that an action is being performed.
+     - To use this, your custom theme will need to have a `spinner-border` class that implements the spinner animation. The API wrapper will automatic center it for you.
+     - You can see this spinner in action inside of the administrator panel.
+
+### Bug Fixes
+ - The WHM/cPanel server manger now correctly assigns a default port when you don't manually specify it.
+ - Fixed the link that can be used to view what emails a client has been sent.
+ - Fixed an issue that could prevent you from updating an invoice if it's approval status isn't set.
+ - We've fixed a few minor issues with the automatic language detection.
+ - Multiple issues have been fixed with the orderbutton module.
+ - The order screen will now correctly respect the product priority.
+ - Resolved some minor PHP deprecation warnings.
+ - Fixed a bug with the Namecheap registrar adapter that occurred when you had the `Reseller ID` set.
+ - Fixed some SQL errors that could occur when updating a client.
+ - FOSSBilling will now correctly prevent upgrade request tickets from being made for upgrades that are invalid for the associated product.
+ - Fixed an issue that caused promotions to not properly be applied to the client balance, resulting in a negative balance.
+ - FOSSBilling will now re-check the promotion validity before the checkout step is completed. This prevents instances where a promotion could be used after it was disabled as long as the promotion had already been applied to the cart.
+
+### Changes
+ - FOSSBilling will no longer attempt to email the administrator after the installation is first complete.
+ - Removed `getSettingsRoutes` and `hasSettingsRoutes` from out modules as the front-end no longer used them.
+ - When changing the password for a client with the WHM/cPanel server manager, the client's DB password will also be updated.
+
+### Enhancements
+ - The ticket view has been cleaned up in the admin panel.
+
+### Breaking Changes
+ - `Box_Di` has been removed in favor of just using `\Pimple\Container` for typehints.
+ - All FOSSBilling classes have been moved to the FOSSBilling namespace, removed the `FOSSBilling_` prefix from the class name.
+ - FOSSBilling classes now enable strict types.
+ - `Box\InjectionAwareInterface` has been replaced with `\FOSSBilling\InjectionAwareInterface`. Almost **ALL** custom modules will be broken unless they are updated to reflect this change.
+
 ## 0.4.3 (4-25-2023)
 **Important** This release migrates to using `symfony/mailer` for sending emails. For mostly everyone, this will improve reliability of the emails and allow us to more easily maintain that functionality, however it is important to note that FOSSBilling now requires the `open_proc` function when using `sendmail` as your transport. Please check the release notes below for further information on this change.
 
@@ -361,7 +401,7 @@ As always, if you'd like to contribute to the localization of FOSSBilling, join 
 ### Security
  - Disable logging stack trace when debug mode is enabled (#618 #617)
 
-## Bugfixes
+### Bugfixes
  - Create a alias for bb-ipn.php to prevent recurring payments from failing after upgrading from BoxBilling or FOSSBilling 0.1.x release (#605) 
  - Change ApexCharts colors when switching to darkmode (#610)
  - Disable display errors before checking for a valid ssl certificate. (#604)
