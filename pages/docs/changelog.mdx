@@ -4,8 +4,16 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
-## 0.5.0 (Upcoming)
-If you have any type of custom module, please read the breaking changes. Very nearly **ALL** custom modules will not work correctly in this release unless updated for it.
+## 0.5.0 (6-13-202)
+**Important:** We have changed the way update patches are performed. After updating, you **MUST** manually login to the administrator panel, navigate to the updater, and then use the "Apply Patches & Update Configuration" button. this will be automated going forward but must be done manually with this update.
+
+Additionally: If you have any type of custom module, please read the breaking changes. Very nearly **ALL** custom modules will not work correctly in this release unless updated for it.
+
+### Security
+ - Resolved an issue with the "Downloadable" product type that allowed orders to be downloadable without being activated. ([Report on Huntr.dev](https://huntr.dev/bounties/390643f0-106b-4424-835d-52610aefa4c7/))
+     - Currently the description for this report is inaccurate, we are working with the security researcher and Huntr.dev administrators to get it updated.
+ - Additional checks have been added to prevent add-ons from being ordered by themselves or for a product they are not valid for. ([Report #1](https://huntr.dev/bounties/0a7ee1fb-e693-4259-abf8-a2c3218c1647/) and [report #2](https://huntr.dev/bounties/97ecf4b8-7eeb-4e39-917c-2660262ff9ba/))
+ - Prevented an issue that allowed disabled products from being ordered. ([Huntr.dev report](https://huntr.dev/bounties/31f48ca1-e5e8-436f-b779-cad597759170/))
 
 ### New Features
  - Introduced support for our "Central Alerts" system, allowing FOSSBilling to retrieve and display warnings associated with the currently running version.
