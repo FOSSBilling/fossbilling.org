@@ -30,6 +30,7 @@ You will need to have the following installed. Please take a moment now to make 
 * fastcgi_pass unix:/var/run/phpx.x-fpm.sock; , fastcgi_pass unix:/var/run/php/phpx.x-fpm.sock;
 * Change anything else you may need (SSL certificates, changing ports, etc)
 * Change servername to your domain (i.e fossbilling.example.com)
+* Run `sudo ln -s /etc/nginx/sites-available/fossbilling.conf /etc/nginx/sites-enabled/`
 * Run `sudo systemctl restart nginx`
 
 ### Installing FOSSBilling
@@ -49,3 +50,7 @@ You will need to have the following installed. Please take a moment now to make 
 * Locate `'url' => 'http://example.com/'` 
 * Replace 'http' with 'https'
 * Restart nginx ` sudo systemctl restart nginx ` 
+
+### 502 Bad Gateway after installinmg
+Make sure that you have installed phpx.x-fpm. If not:
+* Run `sudo apt-get install phpx.x-fpm` (Replase x.x with your current PHP version `php -v`)
