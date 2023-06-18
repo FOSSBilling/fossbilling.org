@@ -33,12 +33,21 @@ You will need to have the following installed. Please take a moment now to make 
 * Run `sudo ln -s /etc/nginx/sites-available/fossbilling.conf /etc/nginx/sites-enabled/`
 * Run `sudo systemctl restart nginx`
 
+### Setup Database
+```bash filename="bash"
+  mysql -u root -p
+  CREATE DATABASE fossbilling;
+  CREATE USER 'fossbillinguser'@'localhost' IDENTIFIED BY 'super_strong_password';
+  GRANT ALL PRIVILEGES ON fossbilling.* TO 'fossbillinguser'@'localhost';
+  FLUSH PRIVILEGES;
+```
+
 ### Installing FOSSBilling
 * Download the latest [FOSSBilling release](https://fossbilling.org/downloads/stable) and then upload the files in the archive to the public directory of the site on your server, keeping the file structure as it is inside the archive.  
 * Navigate to  to the install page on your domain (i.e fossbilling.example.com/install) 
 * Ensure the following have public write access, `/var/www/.../src/config.php`, `/var/www/.../src/data/cache`, `/var/www/.../src/data/log`, `/var/www/.../src/data/uploads`
 * Run `chown -R www-data  644 /var/www/fossbilling.org/src/`
-* Setup the database under the database tab
+* Setup the database under the database tab with fossbillinguser
 * Continue with Installation and setup
 * Make `/var/www/.../src/config.php` read only
 * Setup the admin username and password
