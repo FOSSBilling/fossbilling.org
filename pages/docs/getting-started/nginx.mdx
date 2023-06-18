@@ -34,10 +34,17 @@ You will need to have the following installed. Please take a moment now to make 
 * Run `sudo systemctl restart nginx`
 
 ### Setup Database
+
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
+    Please note that 'RANDOM_STRONG_PASSWORD' should be replaced with an actual random and strong password.
+    We want to clarify that it is not mandatory to use the username 'fossbillinguser' for the database. However, it is highly recommended to avoid using the root user, so instead please create and use a separate user with limited privileges for security reasons.
+</Callout>
+
 ```bash filename="bash"
   mysql -u root -p
   CREATE DATABASE fossbilling;
-  CREATE USER 'fossbillinguser'@'localhost' IDENTIFIED BY 'super_strong_password';
+  CREATE USER 'fossbillinguser'@'localhost' IDENTIFIED BY 'RANDOM_STRONG_PASSWORD';
   GRANT ALL PRIVILEGES ON fossbilling.* TO 'fossbillinguser'@'localhost';
   FLUSH PRIVILEGES;
 ```
