@@ -30,13 +30,31 @@ You will need to have the following installed. Please take a moment now to make 
 * fastcgi_pass unix:/var/run/phpx.x-fpm.sock; , fastcgi_pass unix:/var/run/php/phpx.x-fpm.sock;
 * Change anything else you may need (SSL certificates, changing ports, etc)
 * Change servername to your domain (i.e fossbilling.example.com)
+* Run `sudo ln -s /etc/nginx/sites-available/fossbilling.conf /etc/nginx/sites-enabled/`
 * Run `sudo systemctl restart nginx`
+
+### Setup Database
+
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
+    Please note that 'RANDOM_STRONG_PASSWORD' should be replaced with an actual random and strong password.
+    We want to clarify that it is not mandatory to use the username 'fossbillinguser' for the database. However, it is highly recommended to avoid using the root user, so instead please create and use a separate user with limited privileges for security reasons.
+</Callout>
+
+```bash filename="bash"
+  mysql -u root -p
+  CREATE DATABASE fossbilling;
+  CREATE USER 'fossbillinguser'@'localhost' IDENTIFIED BY 'RANDOM_STRONG_PASSWORD';
+  GRANT ALL PRIVILEGES ON fossbilling.* TO 'fossbillinguser'@'localhost';
+  FLUSH PRIVILEGES;
+```
 
 ### Installing FOSSBilling
 * Download the latest [FOSSBilling release](https://fossbilling.org/downloads/stable) and then upload the files in the archive to the public directory of the site on your server, keeping the file structure as it is inside the archive.  
 * Navigate to  to the install page on your domain (i.e fossbilling.example.com/install) 
 * Ensure the following have public write access, `/var/www/.../src/config.php`, `/var/www/.../src/data/cache`, `/var/www/.../src/data/log`, `/var/www/.../src/data/uploads`
-* Setup the database under the database tab
+* Run `chown -R www-data  644 /var/www/fossbilling.org/src/`
+* Setup the database under the database tab with fossbillinguser
 * Continue with Installation and setup
 * Make `/var/www/.../src/config.php` read only
 * Setup the admin username and password
@@ -49,3 +67,7 @@ You will need to have the following installed. Please take a moment now to make 
 * Locate `'url' => 'http://example.com/'` 
 * Replace 'http' with 'https'
 * Restart nginx ` sudo systemctl restart nginx ` 
+
+### 502 Bad Gateway after installinmg
+Make sure that you have installed phpx.x-fpm. If not:
+* Run `sudo apt-get install phpx.x-fpm` (Replace x.x with your current PHP version `php -v`)
