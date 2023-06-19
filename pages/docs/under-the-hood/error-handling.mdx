@@ -1,0 +1,165 @@
+---
+title: Error Handling
+---
+
+# Error Handling
+
+There is a class called `Box_Exception` that is used to handle errors. 
+
+It takes 4 parameters. The first is the error message, the second is an array of variables to be used in the error message, the third is the error code, and the fourth is a boolean that tells the exception if the variables should be protected.
+
+## Example
+
+```php
+throw new \Box_Exception('Module :mod does not have service class', array(':mod'=>$this->mod), 3);
+```
+
+# Error Codes
+
+To make it easier to handle errors, in the Future, we are going to rewrite the error handling to use error codes.
+Currently, only the FOSSBilling Loader uses error codes according to this list, the rest of the code is still very "wild" and will get updated for 0.6.0.
+
+## FOSSBilling Loader Error Codes
+
+Codes 1 to 50 are reserved for FOSSBilling Loader errors.
+
+| Code | Description |
+| ---- | ----------- |
+| 1 | The composer packages are missing. |
+| 2 | For security reasons, you have to delete the install directory before you can use FOSSBilling. |
+| 3 | The FOSSBilling configuration file is empty or invalid. |
+| 4 | Migration from BoxBilling is required. |
+| 5 | Missing .htaccess file |
+
+
+## 0000 - 0399 | 0600 - 1999 Core Error Codes
+
+Error Codes 400 to 599 are reserved for HTTP error codes. so we won't re-use them.
+
+Core errors are errors that are caused by the core of the system.
+F.ex if the database is down, or if the core is missing a file.
+
+Current Codes (Will be replaced with 0.6.0) 
+
+| Code | Description |
+| ---- | ----------- |
+| 55 | Administrator account already exists |
+| 201 | Authentication Failed |
+| 202 | Authentication Failed |
+| 203 | Authentication Failed |
+| 204 | Authentication Failed |
+| 205 | Authentication Failed |
+| 206 | Authentication Failed |
+| 302 | It is forbidden to pay a deposit invoice with this gateway |
+| 303 | It is forbidden to pay a deposit invoice with this gateway |
+| 252 | Visit the extension directory for more information on updating this extension. |
+| 632 | Unknown transaction #:id type: :type |
+| 654 | Invalid server manager. Server was not configured properly. |
+| 701 | Could not determine transaction origin. Transaction payment gateway is unknown. |
+| 701 | Hosting product is not configured completely. Configure server for hosting product. |
+| 702 | Hosting product is not configured completely. Configure hosting plan for hosting product. |
+| 702 | Transaction :id is not associated with an invoice. |
+| 704 | Can not handle transaction received from unknown payment gateway: :id |
+| 705 | Payment adapter :adapter does not support action :action |
+| 705 | Payment adapter class did not implement configuration options method |
+| 705 | Payment gateway :id method getTransaction should return Payment_Transaction object |
+| 705 | Exeption created with PHPUnit Test |
+| 706 | Instant payment notification (IPN) did not pass gateway :id validation |
+| 709 | Transaction currency :code do not match required currency :required |
+| 710 | Method :method must contain underscore |
+| 711 | Invoice not found |
+| 712 | Transaction status on payment gateway is Pending. Only Complete or Unknown transactions can be processed. |
+| 713 | Payment method not found |
+| 714 | Payment method not enabled |
+| 715 | FOSSBilling module :mod is not installed/activated |
+| 725 | You do not have access to :mod module |
+| 730 | Api class must be instance of Api_Abstract |
+| 740 | :type API call :method does not exist in module :module |
+| 746 | Invalid response from the FOSSBilling extension directory. |
+| 749 | :type class did not implement configuration options method |
+| 749 | Domain registrar class did not implement configuration options method |
+| 812 | Invoice not found |
+| 813 | Payment method not found |
+| 814 | Payment method not enabled |
+| 810 | Invoice hash not passed. Missing param hash |
+| 811 | Payment method not found. Missing param gateway_id |
+| 879 | Unknown API call :call |
+| 930 | You have latest version of FOSSBilling. You do not need to update. |
+| 981 | Amount must be at least :min_amount |
+| 982 | Amount cannot exceed :max_amount |
+| 1002 | Unauthorized IP |
+| 1004 | Invalid request. Make sure request origin is :from |
+| 1597 | :type values must be unique |
+| 1598 | :type labels must be unique |
+| 1654 | Form id was not passed |
+
+
+## 2000 - 2999 Server Manager Error Codes
+
+Errors codes in the server manager module.
+There's also a specific Exception class for server manager errors called `Server_Exception`.
+
+| Code | Description |
+| ---- | ----------- |
+
+
+## 3000 - 3999 Domain Registrar Error Codes
+
+Errors codes in the domain registrar module.
+There's also a specific Exception class for domain registrar errors called `Registrar_Exception`.
+
+| Code | Description |
+| ---- | ----------- |
+
+## 4000 - 4999 Payment Gateway Error Codes
+
+Errors codes in the payment gateway module.
+There's also a specific Exception class for payment gateway errors called `Payment_Exception`.
+
+| Code | Description |
+| ---- | ----------- |
+
+
+## 5000 - 8999 Extension Module Error Codes
+
+Error codes in extension modules.
+General error codes are 5000 - 5999.
+Extension specific error codes are 6000 - 8999.
+If your're an Extension Developer You can request your own error code range by contacting us.
+
+| Code | Description |
+| ---- | ----------- |
+
+
+## Other Error Codes currently in Use (Will be replaced with 0.6.0)
+
+| Code | Description |
+| ---- | ----------- |
+| 2684 | Form field type is not valid |
+| 3125 | Plugin :plugin does not support action :action |
+| 3207 | Field type not supported |
+| 3502 | Field name can not be empty. Please make sure it is not empty and does not contain special characters. |
+| 3510 | Textarea size options must be integer values |
+| 3657 | Form style was not found in predefined list |
+| 3657 | Form style was not found in predefined list |
+| 3658 | This input type must have unique values |
+| 3658 | This input type must have unique values |
+| 3794 | Form type was not passed |
+| 5468 | Field ' . $field['label'] . ' is read only. You can not change its value |
+| 5468 | Field ' . $field['label'] . ' is read only. You can not change its value |
+| 5897 | Module :mod manifest file is missing |
+| 5898 | Module :mod does not have service class |
+| 7022 | Transaction :id is not associated with an invoice. |
+| 7103 | API call is missing arguments |
+| 7456 | Could not activate order. Service was not created |
+| 7456 | Could not activate order. Service was not created |
+| 7628 | Unfortunately field with this name exists in this form already. Form must have different field names. |
+| 7777 | Account has been created. Please check your mailbox and confirm email address. |
+| 9241 | Form name was not passed |
+| 9684 | You must fill in all required fields. ' . $field['label'] . ' is missing |
+| 9684 | You must fill in all required fields. ' . $field['label'] . ' is missing |
+| 9842 | Form name was not passed |
+| 9846 | Form id was not passed |
+| 9874 | You have already used this promo code. Please remove promo code and checkout again. |
+| 9958 | Form id was not passed |
+| 788954 | Staff member with email :email is already registered |
