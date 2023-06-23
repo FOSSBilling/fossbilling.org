@@ -11,15 +11,42 @@ It takes 4 parameters. The first is the error message, the second is an array of
 ## Example
 
 ```php
-throw new \Box_Exception('Module :mod does not have service class', array(':mod'=>$this->mod), 3);
+throw new \Box_Exception('Module :mod: does not have service class', array(':mod:'=>$this->mod), 3);
 ```
 
 # Error Codes
 
-To make it easier to handle errors, in the Future, we are going to rewrite the error handling to use error codes.
-Currently, only the FOSSBilling Loader uses error codes according to this list, the rest of the code is still very "wild" and will get updated for 0.6.0.
+To make it easier to handle errors, we are assignig errorcodes to the errors so we can easily identify them.
+Currently, only the FOSSBilling Loader uses error codes according to this list, the rest of the code is still very "wild" and is in the process of being cleaned up.
 
-## FOSSBilling Loader Error Codes
+## 0000 - 0399 | 0600 - 1999 Core Error Codes
+
+Error Codes 400 to 599 are reserved for HTTP error codes so we won't re-use them.
+
+Core errors are errors that are caused by the core of the system.
+F.ex if the database is down, or if the core is missing a file.
+
+We broke the core errors into more categories as below.
+
+| Category                              | Number Range   |
+|---------------------------------------|----------------|
+| FOSSBilling Loader errors             | 1 - 50         |
+| Generic Core errors                   | 51 - 399       |
+| API related errors                    | 600 - 699      |
+| Service related errors                | 700 - 799      |
+| Permission related errors             | 800 - 899      |
+| Configuration related errors          | 900 - 999      |
+| Formbuilder related errors            | 1000 - 1099    |
+| Connectivity related errors           | 1100 - 1199    |
+| Update related errors                 | 1200 - 1299    |
+| Checkout related errors (Frontend)    | 1300 - 1399    |
+| User interface errors (Frontend)      | 1400 - 1499    |
+| Invoice related errors                | 1500 - 1599    |
+| Transaction related errors            | 1600 - 1699    |
+| Subscription related errors           | 1700 - 1799    |
+
+
+### FOSSBilling Loader Error Codes
 
 Codes 1 to 50 are reserved for FOSSBilling Loader errors.
 
@@ -30,14 +57,248 @@ Codes 1 to 50 are reserved for FOSSBilling Loader errors.
 | 3 | The FOSSBilling configuration file is empty or invalid. |
 | 4 | Migration from BoxBilling is required. |
 | 5 | Missing .htaccess file |
+| 6 | proc_open not enabled |
 
 
-## 0000 - 0399 | 0600 - 1999 Core Error Codes
+### Generic Core Error Codes
 
-Error Codes 400 to 599 are reserved for HTTP error codes. so we won't re-use them.
+Codes 51 to 399 are reserved for Generic Core errors.
 
-Core errors are errors that are caused by the core of the system.
-F.ex if the database is down, or if the core is missing a file.
+| Code | Description |
+| ---- | ----------- |
+|   51 | Generic central alerts related errors |
+|   52 | Generic FOSSBilling extension directory related errors |
+|   53 | Generic FOSSBilling validation errors |
+|   54 | Generic FOSSBilling installation errors |
+|   55 | Generic FOSSBilling logging errors |
+
+
+### API Error Codes
+
+Codes 600 to 699 are reserved for API errors.
+
+| Code | Description |
+| ---- | ----------- |
+|  601 | Sendgrid API related errors |
+|  602 | reCAPTCHA API related errors |
+|  603 | Generic FOSSBilling API related errors |
+|  604 | FOSSBilling API authentication related errors |
+
+
+### Service Error Codes
+
+Codes 700 to 799 are reserved for Service errors.
+
+| Code | Description |
+| ---- | ----------- |
+|  701 | Client-Account related errors |
+|  702 | Generic Custom Service related errors |
+|  703 | Order Cancellation related errors |
+|  704 | Hosting Plan related errors |
+|  705 | Product related errors |
+|  706 | Registrar related errors |
+|  707 | Domain related errors |
+|  708 | License related errors |
+|  709 | Order related errors |
+|  710 | Downloadable File related errors |
+|  711 | Client Activity-history related errors |
+
+
+
+### Permission Error Codes
+
+Codes 800 to 899 are reserved for permission errors.
+
+| Code | Description |
+| ---- | ----------- |
+|  801 | File / folder permission related errors |
+|  802 | Group permission related errors |
+
+### Configuration Error Codes
+
+Codes 900 to 999 are reserved for configuration errors.
+
+| Code | Description |
+| ---- | ----------- |
+|  901 | Generic FOSSBilling configuration errors |
+|  902 | Period definition errors |
+|  903 | Currency definition errors |
+|  904 | Helpdesk configuration errors |
+|  905 | Custom Service configuration errors |
+|  906 | Domain configuration errors |
+|  907 | Email template configuration errors |
+
+### Formbuilder Error Codes
+
+Codes 1000 to 1099 are reserved for Formbuilder errors.
+
+| Code | Description |
+| ---- | ----------- |
+| 1001 | Generic Formbuilder related errors |
+| 1002 | Formbuilder field related errors |
+
+### Connectivity Error Codes
+
+Codes 1100 to 1199 are reserved for connectivity errors.
+
+| Code | Description |
+| ---- | ----------- |
+| 1101 | E-Mail connectivity related errors |
+| 1102 | Connection to FOSSBilling extension directory failed |
+| 1103 | Invalid response from FOSSBilling extension directory |
+| 1104 | Connection to Central Alerts System failed |
+| 1105 | Invalid response from Central Alerts System |
+
+### Update Error Codes
+
+Codes 1200 to 1299 are reserved for update errors.
+
+| Code | Description |
+| ---- | ----------- |
+| 1201 | Generic FOSSBilling update related errors |
+| 1202 | FOSSBilling core module update related errors |
+| 1203 | Configuration update errors |
+| 1204 | File handling errors |
+
+### Checkout Error Codes
+
+Codes 1300 to 1399 are reserved for Checkout errors.
+
+| Code | Description |
+| ---- | ----------- |
+| 1301 | Item stock related errors |
+| 1302 | Item configuration related errors |
+| 1303 | Promotion related errors |
+| 1304 | Product Addon related errors |
+
+
+### User Interface Error Codes
+
+Codes 1400 to 1499 are reserved for User Interface errors.
+
+| Code | Description |
+| ---- | ----------- |
+| 1401 | Errors related to password complexity |
+| 1402 | Errors related to account activation |
+| 1403 | Errors related to account registration |
+| 1404 | Errors related to account login |
+| 1405 | Errors related to account password reset |
+
+
+### Invoice Error Codes
+
+Codes 1500 to 1599 are reserved for Invoice errors.
+
+| Code | Description |
+| ---- | ----------- |
+| 1501 | Generic Invoice related errors |
+| 1502 | Transaction related errors |
+| 1503 | Invoice Item related errors |
+| 1504 | Refund related errors |
+
+
+### Transaction Error Codes
+
+Codes 1600 to 1699 are reserved for Transaction errors.
+
+| Code | Description |
+| ---- | ----------- |
+| 1601 | Generic Transaction related errors |
+| 1602 | Transaction payment gateway related errors |
+| 1603 | Transaction settings related errors |
+
+### Subscription Error Codes
+
+Codes 1700 to 1799 are reserved for Subscription errors.
+
+| Code | Description |
+| ---- | ----------- |
+| 1701 | Generic Subscription related errors |
+| 1702 | Subscription payment related errors |
+
+
+## 2000 - 2999 Server Manager Error Codes
+
+Errors codes in the server manager module.
+There's also a specific Exception class for server manager errors called `Server_Exception`.
+
+| Code | Description |
+| ---- | ----------- |
+
+
+## 3000 - 3999 Domain Registrar Error Codes
+
+Errors codes in the domain registrar module.
+There's also a specific Exception class for domain registrar errors called `Registrar_Exception`.
+
+| Code | Description |
+| ---- | ----------- |
+
+## 4000 - 4999 Payment Gateway Error Codes
+
+Errors codes in the payment gateway module.
+There's also a specific Exception class for payment gateway errors called `Payment_Exception`.
+
+| Code | Description |
+| ---- | ----------- |
+| 4001 | Payment gateway adapter errors (e.g. missing files, missing classes, etc.) |
+
+## 5000 - 8999 Extension Module Error Codes
+
+Error codes in extension modules.
+General error codes are 5000 - 5999.
+Extension specific error codes are 6000 - 8999.
+If your're an Extension Developer You can request your own error code range by contacting us.
+
+| Code | Description |
+| ---- | ----------- |
+| 5001 | Generic Extension module errors |
+| 5002 | Extension module not found |
+
+
+| Code Range | Description |
+| ----------- | ----------- |
+| 6001 - 6050 | Knowledge Base Extension Error Codes |
+| 6051 - 6100 | News Extension Error Codes |
+| 6101 - 6150 | Branding Extension Error Codes |
+| 6151 - 6200 | Redirect Extension Error Codes |
+| 6201 - 6250 | WYSIWYG Extension Error Codes |
+| 6251 - 6300 | Membership Product Extension Error Codes |
+| 6301 - 6350 | Paid Support Extension Error Codes |
+| 6351 - 6400 | Custom Pages Extension Error Codes |
+| 6401 - 6450 | Client Dashboard Extension Error Codes |
+| 6451 - 6500 | Cookie Consent Extension Error Codes |
+| 6501 - 6550 | Spam Checker Extension Error Codes |
+| 6551 - 6600 | Embed parts Extension Error Codes |
+| 6601 - 6650 | SEO Tools Extension Error Codes |
+| 6651 - 6700 | notifications Extension Error Codes |
+| 6701 - 6750 | Mass Mail Extension Error Codes |
+| 6751 - 6800 | Queue Manager Extension Error Codes |
+
+
+### Knowledge Base Extension Error Codes
+
+| Code | Description |
+| ---- | ----------- |
+| 6001 | Generic Knowledge Base Extension Error |
+| 6002 | Knowledge Base category errors |
+| 6003 | Knowledge Base article errors |
+
+
+### Paid Support Extension Error Codes
+| Code | Description |
+| ---- | ----------- |
+| 6301 | Generic Paid Support Extension Error |
+
+### Mass Mail Extension Error Codes
+
+| Code | Description |
+| ---- | ----------- |
+| 6751 | Generic Mass Mail Extension Error |
+| 6752 | Mass Mail Extension configuration  |
+
+
+## Legacy Error Codes currently in Use (Will be replaced with 0.6.0)
 
 Current Codes (Will be replaced with 0.6.0) 
 
@@ -92,49 +353,6 @@ Current Codes (Will be replaced with 0.6.0)
 | 1597 | :type values must be unique |
 | 1598 | :type labels must be unique |
 | 1654 | Form id was not passed |
-
-
-## 2000 - 2999 Server Manager Error Codes
-
-Errors codes in the server manager module.
-There's also a specific Exception class for server manager errors called `Server_Exception`.
-
-| Code | Description |
-| ---- | ----------- |
-
-
-## 3000 - 3999 Domain Registrar Error Codes
-
-Errors codes in the domain registrar module.
-There's also a specific Exception class for domain registrar errors called `Registrar_Exception`.
-
-| Code | Description |
-| ---- | ----------- |
-
-## 4000 - 4999 Payment Gateway Error Codes
-
-Errors codes in the payment gateway module.
-There's also a specific Exception class for payment gateway errors called `Payment_Exception`.
-
-| Code | Description |
-| ---- | ----------- |
-
-
-## 5000 - 8999 Extension Module Error Codes
-
-Error codes in extension modules.
-General error codes are 5000 - 5999.
-Extension specific error codes are 6000 - 8999.
-If your're an Extension Developer You can request your own error code range by contacting us.
-
-| Code | Description |
-| ---- | ----------- |
-
-
-## Other Error Codes currently in Use (Will be replaced with 0.6.0)
-
-| Code | Description |
-| ---- | ----------- |
 | 2684 | Form field type is not valid |
 | 3125 | Plugin :plugin does not support action :action |
 | 3207 | Field type not supported |
