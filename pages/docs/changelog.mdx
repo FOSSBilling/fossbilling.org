@@ -4,6 +4,32 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.5.1 (6-23-2023)
+This is a fairly minor release, with enhanced security, some bug-fixes, and new default email templates.
+
+### Security
+ - `Box_Session` has been replaced with `FOSSBilling\Session`
+    - Session IDs are now forcibly regenerated when logging in, preventing  a session fixation vulnerability. [Vulnerability report](https://huntr.dev/bounties/84bf3e85-cdeb-4b8d-9ea4-74156dbda83f/).
+    - The `BOXCLR` cookie has been completely removed from within FOSSBilling.
+    - Sessions are now destroyed when logging out.
+    - Cron will automatically purge outdated sessions.
+    - FOSSBilling now implements a simple fingerprinting method for sessions to help prevent against session hijacking.
+       - Only hashes of the fingerprinted data are recorded, not the data itself.
+  - We've added protection against certain twig filters that would allow remote code execution which could be exploited by anyone with access to either theme or email templates. ([Vulnerability report](https://huntr.dev/bounties/e4df9280-900a-407a-a07e-e7fef3345914/))
+  - The company signature will not longer be interpreted as HTML inside of the Huraga theme, as it could allow a malicious staff member to perform XSS against clients. ([Vulnerability report](https://huntr.dev/bounties/e44589cd-d260-48c3-8fb9-0385d0f6adb1/))
+  - The entropy for invoice and ticket hashes has been significantly increased.
+
+### Bug fixes
+ - We've fixes issues with both the option to disable client signups as well as preventing them from changing their email.
+ - The order screen will no longer cause the Huraga layout to break. 
+ - Fixed a minor problem a handful of people got with the locale selector.
+ - Fixed an issue where the API was looking for the wrong property name when trying to update the client's city.
+ - Added checks to prevent errors logged when FOSSBilling would try to access and undefined variable.
+
+### New Features
+ - We've replaced the default markdown email templates with ones that are HTML based and include some simplistic styling.
+    - Existing FOSSBilling installations will need to manually reset existing templates in order for these new ones to be loaded. 
+
 ## 0.5.0 (6-13-202)
 **Important:** We have changed the way update patches are performed. After updating, you **MUST** manually login to the administrator panel, navigate to the updater, and then use the "Apply Patches & Update Configuration" button. this will be automated going forward but must be done manually with this update.
 
