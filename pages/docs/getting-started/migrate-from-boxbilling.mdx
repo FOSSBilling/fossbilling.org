@@ -76,10 +76,9 @@ You can either do this using either of the following methods:
 
 - **Recommended:** Use the automated migration tool.
   1. Edit your `config.php` file and update the `twig->cache` key to point to `/data/cache` instead of `/bb-data/cache`
-  2. Login to the administrator panel, go to `Extensions->Overview` in the sidebar.
-  2. Navigate to the `Update FOSSBilling` tab
-  3. Click the `Migrate configuration` button to run the automated config migrator.
-    - The FOSSBilling interface should provide feedback if the migration went smoothly, but you can verify by opening `config.php`, you should see new configuration keys that were added. There should also now be a backup of the old config under `config.php.old`
+  2. Login to the administrator panel, go to `System->update` in the top bar.
+  3. Click the `Apply Patches & Update Configuration` button to run the automated config migrator.
+    - The FOSSBilling interface should provide feedback if the migration went smoothly, but you can verify by opening `config.php`, you should see new configuration keys that were added. There should also now be a backup of the old config under `config.old.php`
     - Note: if you are using custom values for `locale_date_format` or `locale_time_format`, you will need to manually update these to the [datetime format](https://www.php.net/manual/en/datetime.format.php).
 - **Not Recommended** Rename 'config-sample.php' to 'config.php' and then copy the values from your old configuration file (database name, etc.) into the new configuration file.
   - This option is discouraged as it is easier to make a mistake and have issues.
