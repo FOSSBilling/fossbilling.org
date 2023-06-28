@@ -11,7 +11,7 @@ import { Callout } from 'nextra-theme-docs'
 
 ## Current Status
 
-Implementation is complete, waiting review and then inclusion in a future FOSSBilling release.
+Fully implemented and functional
 
 ## Basic Usage
 
@@ -41,8 +41,7 @@ You can define as many custom parameters as you wish. These will be tied to any 
 This allows you to define custom parameters such as the type of an API key, or it's limitations.
 From there, your application can retrieve those custom parameters and then enforce any limitations on an API key.
 
-**Important**: These API custom parameters will be retrievable by anyone as long as they have their API key and know what the API endpoint is.
-Do not use these parameters to define information that needs to be private.
+**Important**: These API custom parameters will be retrievable by anyone as long as they have their API key and know what the API endpoint is. Do not use these parameters to define information that needs to be private.
 
 ## Using the API Endpoints
 
@@ -56,9 +55,7 @@ The following API Endpoints exist:
 ### Updating an API Key
 
 Administrators can update an API key using the `/admin/serviceapikey/update` endpoint, which accepts the following parameters:
- - int `id` (required) The ID of the API key to update. This should match it's ID in the database.
-    - Tip: If you don't know the ID of an API key, you can get it through the `get_info` endpoint.
- - bool `valid` (optional) Used to set if an API key is valid or not.
+ - int `order_id` (required) The order ID of the API key to update.
  - array `config` (optional) The new configuration for the API key.
     - Overrides the previous one, so you must send the complete config rather than only the parameters you want to change.
 
@@ -75,9 +72,10 @@ Keep in mind, for security purposes you cannot *change* an API key using this en
 ### Resetting an API key
 
 Administrators can reset an API key using the `/admin/serviceapikey/reset` endpoint, which accepts the following parameters:
- - int `id` (optional) The ID of the API key to reset. This should match it's ID in the database.
-    - Tip: If you don't know the ID of an API key, you can get it through the `get_info` endpoint.
+ - int `order_id` (optional) The order ID of the API key to reset.
  - string `key` (optional) The API key you need to reset.
+
+It's required to send either the `key` or `order_id` in order to reset an API key, however it's not needed to send both or one over the other.
 
 Response:
 ```JSON
@@ -103,7 +101,7 @@ Response:
 }
 ```
 
-### Geting the API info
+### Getting the API info
 
 If you need to access the API key's validity as well as it's custom parameters, you can use the `/guest/serviceapikey/get_info` API endpoint.
 This accepts the same parameters as the `check` endpoint.
@@ -113,16 +111,15 @@ Response:
 {
   "result": {
     "valid": 1,
-    "id": 8,
-    "config": { "monthlyLimit": "250", "somethingElse": "1150" }
+    "config": { "monthlyLimit": 250, "somethingElse": 1150, "astring": "words" }
   },
   "error": null
 }
 ```
 
 ### Notes
- - FOSSBilling by default implements a basic rate-limiter on all API reqests.
+ - FOSSBilling by default implements a basic rate-limiter on all API requests.
     - This will help prevent brute-force guessing of the API keys using the `/check` endpoints, however you may want to consider lowering the value to be more restrictive.
     - There's some [brief documentation](https://fossbilling.org/docs/customizing-fossbilling/config#api-configuration) for these configuration parameters.
-    - Due to this rate limiter, you should desing your application to cache API key results locally for a short period of time. This will help avoid any rate-limiting as well as reduce unnecessary API requests to the FOSSBilling server.
+    - Due to this rate limiter, you should design your application to cache API key results locally for a short period of time. This will help avoid any rate-limiting as well as reduce unnecessary API requests to the FOSSBilling server.
  - Clients can at any time reset and view their API key. If you wish to revoke access, you should change it's validity rather than resetting the API key.
