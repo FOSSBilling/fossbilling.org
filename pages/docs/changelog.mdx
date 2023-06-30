@@ -4,6 +4,19 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.5.3 (6-30-23)
+
+### Security
+ - Implemented additional checks to prevent SQL injection from being performed. [Vulnerability report](https://huntr.dev/bounties/4e60ebc1-e00f-48cb-b011-3cefce688ecd/). [CVE-2023-3490](https://nvd.nist.gov/vuln/detail/CVE-2023-3490)
+ - Resolved an unrestricted file upload vulnerability that could be used to perform remote code execution. [Vulnerability report](https://huntr.dev/bounties/043bd900-ac78-44d2-a340-84ddd0bc4a1d/). [CVE-2023-3491](https://nvd.nist.gov/vuln/detail/CVE-2023-3491)
+ - Exported CSVs (pf clients, orders, etc) now have formulas escaped. [Vulnerability report](https://huntr.dev/bounties/e9a272ca-b050-441d-a8cb-4fdecb76ccce/). [CVE-2023-3493](https://nvd.nist.gov/vuln/detail/CVE-2023-3493)
+
+### Bug fixes
+ - We've fixed usage of dark-mode in the admin panel.
+
+### New Features
+ - FOSSBilling now includes a "API Key" product which can be used to sell API keys for use in your applications. [Docs](https://fossbilling.org/docs/product-types/apikeys)
+
 ## 0.5.2 (6-27-2023)
 Just a minor bugfix release to address issues a handful of people saw.
 
