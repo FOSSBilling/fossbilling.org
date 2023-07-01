@@ -11,7 +11,9 @@ import { Callout } from 'nextra-theme-docs'
 
 ## Current Status
 
-Fully implemented and included as an extension since FOSSBilling version 0.5.3. To use it, you must first navigate to the "Extensions" tab from within the administrator panel and install the `API Key Product` extension.
+Fully implemented and included as an extension since FOSSBilling version 0.5.3.
+To use it, you must first navigate to the "Extensions" tab from within the administrator panel and install the `API Key Product` extension.
+
 **Note**: Much like some other FOSSBilling extensions, deactivating / removing it will drop the database table associated with it. 
 
 ## Basic Usage
@@ -89,7 +91,7 @@ Response:
 Clients may also use the `/client/serviceapikey/reset` API endpoint to reset only their API key. It accepts the same parameters and has the same return.
  - If they attempt to reset an API key that does not being to their account, FOSSBilling will simply error out stating that the key does not exist.
 
-#### Checking the Status of an API Key
+### Checking the Status of an API Key
 
 Guests (anyone) may use the `/guest/serviceapikey/check` API endpoint to check the validity of an API key. This endpoint accepts the following parameter:
  - string `key` The API key to check.
@@ -118,7 +120,7 @@ Response:
 }
 ```
 
-### Notes
+## Notes
  - FOSSBilling by default implements a basic rate-limiter on all API requests.
     - This will help prevent brute-force guessing of the API keys using the `/check` endpoints, however you may want to consider lowering the value to be more restrictive.
     - There's some [brief documentation](https://fossbilling.org/docs/customizing-fossbilling/config#api-configuration) for these configuration parameters.
