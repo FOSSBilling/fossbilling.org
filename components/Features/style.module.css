@@ -67,6 +67,7 @@
   .feature.centered {
     text-align: center;
   }
+
   .feature h3 {
     position: relative;
     font-size: 34px;
@@ -76,6 +77,17 @@
     letter-spacing: -0.02rem;
     z-index: 2;
   }
+
+  .feature h4 {
+    position: relative;
+    font-size: 26px;
+    font-size: min(26px, max(4vw, 20px));
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02rem;
+    z-index: 2;
+  }
+  
   :global(.dark) .feature:not(.light-only) {
     color: #fff;
     background-color: #202020;
