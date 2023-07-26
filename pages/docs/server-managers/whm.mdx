@@ -4,7 +4,7 @@ title: WHM / cPanel and FOSSBilling
 
 # Integrating FOSSBilling with WHM 
 	
-## Configuring WHM
+## Configuring WHM / cPanel
 
 FOSSBilling is integrated with WHM using it's API. We will briefly describe how to setup the WHM API, however if needed you can view the [WHM API documentation](https://docs.cpanel.net/whm/development/manage-api-tokens-in-whm/).
 
@@ -29,7 +29,29 @@ FOSSBilling is integrated with WHM using it's API. We will briefly describe how 
 
 ## Hosting plans with WHM and FOSSBilling
 
-Due to technical limitations between FOSSBilling and WHM, FOSSBilling cannot create hosting packages automatically.
-Because of this, you should first create the hosting plans (packages) you want to use from within WHM and define the limitations and capabilities you want it to have there, as FOSSBilling will be unable to change or define them.
+When using FOSSBilling with WHM, FOSSBilling will first check and see if the WHM server has a package that matches the name of the hosting plan configured for the ordered product.
+If there is not a matching package, FOSSBilling will then create it using the hosting package details you entered within FOSSBilling.
 
-Once you've created the package within WHM, you should then create it within FOSSBilling, ensuring that the package name matches exactly between the two. If it doesn't match, FOSSBilling will be unable to create accounts with that package.
+### Configuring on WHM (Recommended)
+
+1. Create the package from within WHM under the account you are using to authenticate with WHM from FOSSBilling.
+2. Configured the package as you wish and would normally when using WHM.
+3. Create a new package from within FOSSBilling, ensuring that the names exactly match between both FOSSBilling and WHM.
+
+*Note:* Keep in mind, accounts will only follow the limits as set within WHM and the details you configure in FOSSBilling don't matter as long as the package name matches.
+
+### Creating on FOSSBilling
+
+If you wish to have FOSSBilling automatically create the package for you, follow these steps.
+1. Create the hosting package for the server from within FOSSBilling and configure the limits as you see fit.
+2. If needed, refer to the information below to configure optional package options and add them to the `Hosting plan additional parameters` section of the hosting plan.
+
+*Note:* While FOSSBilling will create the package for you, changes to the package within FOSSBilling will not by synced to the WHM server and as such any changes will need to be manually performed on the WHM server.
+
+#### Additional Parameters
+|Name|Example Values|Description|
+|--|--|--|
+|`cgi`|`1` or `0`|Whether CGI access is enabled for the account.|
+|`cpmod`|`jupiter`|The hosting plan's cPanel theme.|
+|`maxlst`|`unlimited`, `null`, or `250`|The hosting plan's maximum number of mailing lists.|
+|`hasshell`|`1` or `0`|Whether the hosting plan allows shell access.|
