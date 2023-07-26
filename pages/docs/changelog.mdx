@@ -4,6 +4,28 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.5.5 (7-25-23)
+
+### Security
+ - FOSSBilling will now invalidate sessions for a given user when performing a password reset.
+
+### Bug Fixes
+ - FOSSBilling will now configure the timezone when setting up PDO connections.
+ - A handful of miscellaneous bugs have been fixed.
+ - The "toast" (notifications) in the admin panel have had their colors fixed when using dark mode.
+ - Improved handling of deleted accounts with active sessions, avoiding "model not found" errors and instead sending the user to the login screen.
+ - Fixed an issue where the update patcher would override the locale & timezone set in your `config.php` file.
+ - We've increased the timeout when downloading FOSSBilling updates.
+
+### New Features
+ - We've changed how the email verification system works to resolve some flaws and oversights in it's behavior.
+   - Previously, FOSSBilling only checked if an email was valid when the client attempted to login and then prevented the login from being performed.
+   - Now a client with an email that's not yet validated may still login, however they will only be allow to: access their profile, update their information, and request the verification email to be resent.
+
+### Enhancements
+ - The "scheduled tasks" settings page has been updated to call cron via the API rather than attempting to open the `cron.php` file in the the browser and cron will now log how many outdated sessions it purged from the database.
+ - We've made a few small changes to the themes list to help improve visual consistency and slightly improve usability.
+
 ## 0.5.4 (7-5-23)
 
 ### Security
