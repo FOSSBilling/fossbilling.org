@@ -24,25 +24,25 @@ git clone git@github.com:FOSSBilling/FOSSBilling.git
 
 Then, navigate into the FOSSBilling directory:
 
-```
+```bash
 cd FOSSBilling/
 ```
 
 Navigate into the src directory:
 
-```
+```bash
 cd src/
 ```
 
 Copy the sample configuration file to create a new one:
 
-```
+```bash
 cp config-sample.php config.php
 ```
 
 Go back to the main FOSSBilling directory:
 
-```
+```bash
 cd ..
 ```
 
@@ -50,13 +50,13 @@ cd ..
 
 Install the necessary PHP packages using the following command:
 
-```
+```bash
 sudo apt-get install php8.2-cli php8.2-common php8.2-gd php8.2-curl php8.2-dom  php8.2-zip php8.2-mbstring php8.2-cli php8.2-xml php8.2-tokenizer
 ```
 
 You can confirm the PHP version with:
 
-```
+```bash
 php -v
 ```
 
@@ -64,18 +64,18 @@ php -v
 
 Install composer using these commands:
 
-```
+```bash
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
-```
+```bash
 
 ## Updating Dependencies
 
 Next, update the project dependencies:
 
-```
+```bash
 ./composer.phar update
 ```
 
@@ -83,8 +83,9 @@ Next, update the project dependencies:
 
 Run the tests to ensure everything is set up properly:
 
-```
+```bash
 src/vendor/phpstan/phpstan/phpstan
 src/vendor/phpunit/phpunit/phpunit
+```
 
 Congratulations, your development environment is now set up and ready!
