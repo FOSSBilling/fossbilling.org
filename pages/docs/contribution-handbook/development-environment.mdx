@@ -1,0 +1,90 @@
+---
+title: Setting up your Development Environment
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCodeBranch, faLaptopCode } from '@fortawesome/free-solid-svg-icons'
+import { Callout } from 'nextra-theme-docs'
+
+# <FontAwesomeIcon icon={faCodeBranch} /> Setting up your Development Environment
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faLaptopCode} />}>
+    This guide walks you through the steps to set up your development environment for FOSSBilling. You need to have basic knowledge of using the command line.
+</Callout>
+
+Setting up a conducive development environment is essential for a smooth and efficient workflow. This guide will walk you through the steps to set up your development environment for FOSSBilling.
+
+## Cloning the Repository
+
+First, clone the FOSSBilling repository:
+
+```bash
+git clone git@github.com:FOSSBilling/FOSSBilling.git
+```
+
+Then, navigate into the FOSSBilling directory:
+
+```
+cd FOSSBilling/
+```
+
+Navigate into the src directory:
+
+```
+cd src/
+```
+
+Copy the sample configuration file to create a new one:
+
+```
+cp config-sample.php config.php
+```
+
+Go back to the main FOSSBilling directory:
+
+```
+cd ..
+```
+
+## Installing the Required PHP Packages
+
+Install the necessary PHP packages using the following command:
+
+```
+sudo apt-get install php8.2-cli php8.2-common php8.2-gd php8.2-curl php8.2-dom  php8.2-zip php8.2-mbstring php8.2-cli php8.2-xml php8.2-tokenizer
+```
+
+You can confirm the PHP version with:
+
+```
+php -v
+```
+
+## Installing Composer
+
+Install composer using these commands:
+
+```
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+```
+
+## Updating Dependencies
+
+Next, update the project dependencies:
+
+```
+./composer.phar update
+```
+
+## Running Tests
+
+Run the tests to ensure everything is set up properly:
+
+```
+src/vendor/phpstan/phpstan/phpstan
+src/vendor/phpunit/phpunit/phpunit
+
+Congratulations, your development environment is now set up and ready!
