@@ -30,16 +30,13 @@ These instructions assume that you are using the latest version of BoxBilling (4
 
 ### Breaking Changes
 Please note, FOSSBilling has made significant changes since forking from BoxBilling, custom themes and modules may no longer work. We recommended reading the [changelog](https://fossbilling.org/docs/changelog) to review any changes listed as a breaking change.
-Most notably, we have migrated from twig 2.x to twig 3.x and changed the file names from `.phtml` to `.html.twig`. 
 
 ### Download the latest release
 Download the latest release of FOSSBilling using this link: [Latest Stable Release](https://fossbilling.org/downloads/stable)
 
 ### Prepare your existing installation
 <Callout type="info" emoji={<FontAwesomeIcon icon={faCircleInfo} />}>
-  We have slightly changed our theming system. If you are using a custom theme for the client area, you will need to make some changes on it to get it working with FOSSBilling. A guide for that is on the way.
-
-  Until then, join our [Discord server](https://fossbilling.org/discord) to get help.
+  Themes created for BoxBilling will not function inside of FOSSBilling and need to be manaully ported to be compatible with FOSSBilling.
 </Callout>
 
 1. Make a full backup of your database and all of the existing files and folders in your BoxBilling installation.
@@ -60,7 +57,7 @@ Download the latest release of FOSSBilling using this link: [Latest Stable Relea
     - `bb-update.php`
     - You should also delete all files and folders under `data/cache`
 
-**Note**: In the process of updating the folder structure, `bb-ipn.php` has been renamed to `ipn.php`. If at all possible, you should create a virtual alias from `bb-ipn.php` to `ipn.php` on your server. If you cannot do this, you *must* create a copy of `ipn.php` and name it `bb-ipn.php` for old subscriptions to continue to function.
+**READ THIS**: In the process of updating the folder structure, `bb-ipn.php` has been renamed to `ipn.php`. If at all possible, you should create a virtual alias from `bb-ipn.php` to `ipn.php` on your server. If you cannot do this, you **must** create a copy of `ipn.php` and name it `bb-ipn.php` for old subscriptions to continue to function.
 
 ### Upload and extract the FOSSBilling files
 Upload and extract the contents of the preview build archive over the files in your existing BoxBilling installation and replace any existing files.
@@ -68,18 +65,7 @@ Upload and extract the contents of the preview build archive over the files in y
 ### Remove the install folder
 Delete the 'install' folder and all of the files inside it. Since you already had BoxBilling installed, you will not need to go through the FOSSBilling installer again.
 
-### Run foss-update
-Run the foss-update.php script. (ex: example.com/foss-update.php)
+### Migrate the configuration file and Database
 
-### Migrate the configuration file
-You can either do this using either of the following methods:
-
-- **Recommended:** Use the automated migration tool.
-  1. Edit your `config.php` file and update the `twig->cache` key to point to `/data/cache` instead of `/bb-data/cache`
-  2. Login to the administrator panel, go to `Extensions->Overview` in the sidebar.
-  2. Navigate to the `Update FOSSBilling` tab
-  3. Click the `Migrate configuration` button to run the automated config migrator.
-    - The FOSSBilling interface should provide feedback if the migration went smoothly, but you can verify by opening `config.php`, you should see new configuration keys that were added. There should also now be a backup of the old config under `config.php.old`
-    - Note: if you are using custom values for `locale_date_format` or `locale_time_format`, you will need to manually update these to the [datetime format](https://www.php.net/manual/en/datetime.format.php).
-- **Not Recommended** Rename 'config-sample.php' to 'config.php' and then copy the values from your old configuration file (database name, etc.) into the new configuration file.
-  - This option is discouraged as it is easier to make a mistake and have issues.
+1. Edit your `config.php` file and update the `twig->cache` key to point to `/data/cache` instead of `/bb-data/cache`.
+2. Navigate to `example.com/run-patcher` to use FOSSBilling's backup patching method. This will automatically migrate the configuration file and database to be compatible with the current versions of FOSSBilling. 

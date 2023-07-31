@@ -21,8 +21,9 @@
   },
   "demo": {
     "title": "Demo",
-    "href": "https://demo.fossbilling.org/",
-    "newWindow": true
+    "theme": {
+      "layout": "raw"
+    }
   },
   "translate": {
     "title": "Translate",

@@ -9,7 +9,7 @@ import { Callout } from 'nextra-theme-docs'
 
 # <FontAwesomeIcon icon={faRobot} /> API wrapper in JavaScript
 <Callout type="info" emoji={<FontAwesomeIcon icon={faCircleInfo} />}>
-  We currently are working on the wrapper. It will be available in the future. This guide also is a work in progress.
+  This guide is a work in progress, we'd appreciate any contributions to it.
 </Callout>
 
 You can use the API wrapper in JavaScript to make requests to the API. This is very useful for themes and modules, and you should use it instead of making requests yourself.
@@ -23,6 +23,27 @@ To import the API wrapper, use the following code:
 <script src="{{ "Api/API.js?v=#{guest.system_version}" | library_url }}"></script>
 ```
 This code first creates a new meta tag that stores the CSRF token. The API wrapper uses this tag to add the token to API requests. Next, it imports the API wrapper using the `library_url` filter, which generates the correct URL for the file, then it appends the current system version to prevent cache issues.
+
+## Displaying a "spinner"
+The FOSSBilling API wrapper will display a spinner (sometimes called a loader) during long-running requests.
+It will automatically be centered on the middle of the screen, has a fade-in, and will only be displayed once a request has been running for at least 250 milliseconds.
+
+To have it be used, simply have an animation class called `spinner-border`. FOSSBilling will automatically create and destroy the element for it:
+![spinner example](/img/docs/spinner-example.gif)
+
+### Disabling the spinner
+To disable the spinner, do one of the following things:
+ - Don't have a `spinner-border` class.
+ - Pass `false` to the spinner option when using the API wrapper. (this parameter is completely optional unless you wan to disable the spinner)
+
+Example:
+```
+API.admin.post("client/get_list", {}, function(response) {
+  // handle successful response
+}, function(error) {
+  // handle error response
+}, false);
+```
 
 ## Making requests
 

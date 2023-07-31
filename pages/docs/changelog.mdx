@@ -4,6 +4,74 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.5.5 (7-25-23)
+
+### Security
+ - FOSSBilling will now invalidate sessions for a given user when performing a password reset.
+
+### Bug Fixes
+ - FOSSBilling will now configure the timezone when setting up PDO connections.
+ - A handful of miscellaneous bugs have been fixed.
+ - Toasts (notifications) in the admin panel have had their colors fixed when using dark mode.
+ - Improved handling of deleted accounts with active sessions, avoiding "model not found" errors and instead sending the user to the login screen.
+ - Fixed an issue where the update patcher would override the locale & timezone set in your `config.php` file.
+ - We've increased the timeout when downloading FOSSBilling updates.
+
+### New Features
+ - We've changed how the email verification system works to resolve some flaws and oversights in it's behavior.
+   - Previously, FOSSBilling only checked if an email was valid when the client attempted to login and then prevented the login from being performed.
+   - Now a client with an email that's not yet validated may still login, however they will only be allow to: access their profile, update their information, and request the verification email to be resent.
+
+### Enhancements
+ - The "scheduled tasks" settings page has been updated to call cron via the API rather than attempting to open the `cron.php` file in the the browser and cron will now log how many outdated sessions it purged from the database.
+ - We've made a few small changes to the themes list to help improve visual consistency and slightly improve usability.
+
+## 0.5.4 (7-5-23)
+
+### Security
+ - Exception / error messages now have HTML escaped before sending them to the browser. [Vulnerability report](https://huntr.dev/bounties/76a3441d-7f75-4a8d-a7a0-95a7f5456eb0/). [CVE-2023-3521](https://nvd.nist.gov/vuln/detail/CVE-2023-3521)
+ - HTML embedded in company info is now escaped. [Vulnerability report](https://huntr.dev/bounties/f3782eb1-049b-4998-aac4-d9798ec1c123/)
+
+### New Features
+ - You can now whitelist IP addresses from rate-limiting using the `rate_limit_whitelist` configuration property.
+ - Tables columns in the administrator panel may now be sorted by clicking on them.
+ - FOSSBilling now includes a fallback option to apply patches after updating (Can be performed by navigating to `example.com/run-patcher`).
+ - You may now optionally configure a username prefix when configuring server managers.
+
+### Bug Fixes
+ - Fixed an issue when trying to reset purchased API keys from the administrator panel.
+ - The admin theme dashboard will now correctly apply dark mode to the charts.
+ - We've sped up how quickly the selected theme is applied within the admin panel, completely removing or reducing the "flash" that could be seen of the wrong theme mode. (Dark VS light mode)
+ - 6 different search statements were being created incorrectly which resulting in errors when trying to search within the effected modules, this has been fixed. 
+
+### Changes
+ - We've cleaned up the exception messages to help reduce the number of translatable strings and improve consistency.
+
+## 0.5.3 (6-30-23)
+
+### Security
+ - Implemented additional checks to prevent SQL injection from being performed. [Vulnerability report](https://huntr.dev/bounties/4e60ebc1-e00f-48cb-b011-3cefce688ecd/). [CVE-2023-3490](https://nvd.nist.gov/vuln/detail/CVE-2023-3490)
+ - Resolved an unrestricted file upload vulnerability that could be used to perform remote code execution. [Vulnerability report](https://huntr.dev/bounties/043bd900-ac78-44d2-a340-84ddd0bc4a1d/). [CVE-2023-3491](https://nvd.nist.gov/vuln/detail/CVE-2023-3491)
+ - Exported CSVs (of clients, orders, etc.) now have formulas escaped. [Vulnerability report](https://huntr.dev/bounties/e9a272ca-b050-441d-a8cb-4fdecb76ccce/). [CVE-2023-3493](https://nvd.nist.gov/vuln/detail/CVE-2023-3493)
+
+### Bug fixes
+ - We've fixed usage of dark-mode in the admin panel.
+
+### New Features
+ - FOSSBilling now includes a "API Key" product which can be used to sell API keys for use in your applications. [Docs](https://fossbilling.org/docs/product-types/apikeys)
+
+## 0.5.2 (6-27-2023)
+Just a minor bugfix release to address issues a handful of people saw.
+
+### Bug fixes
+ - We've adjusted the fingerprint weights to resolve some issues that were occurring, primarily when using a reverse proxy.
+ - Fixed an issue where the config migrator would introduce the `cookie_lifespan` configuration property as a `string` instead of as an `int`. This issue only effected very old version of FOSSBilling or users who were using BoxBilling.
+ - The installer will no longer attempt to detect and redirect to HTTPS as this functionality was causing issues with some server configurations.
+
+### New features
+ - FOSSBilling will now use the `cf-ipcountry` header Cloudflare sends while creating fingerprints to further increase protection against session hijacking.
+    - "IP Geolocation" must be enabled under Cloudflare's "network" settings before this header is sent.
+
 ## 0.5.1 (6-23-2023)
 This is a fairly minor release, with enhanced security, some bug-fixes, and new default email templates.
 

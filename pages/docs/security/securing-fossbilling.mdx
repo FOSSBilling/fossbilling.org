@@ -12,39 +12,45 @@ import { Callout } from 'nextra-theme-docs'
     This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
 </Callout>
 
-## Configuration
+## FOSSBilling Configuration
 
-FOSSBilling comes with security features enabled and set to their maximum options by default. These options can be adjusted to be more relaxed, but it is recommended to keep them at their default values.
+These following documents security options under the `config.php` configuration file.
 
-## Security Options
+### Security Options
 
-- Security Mode:
-  - Default: `strict`
-  - Options:
-    - `strict`: 
-      - Cookies are only sent over a secured connection (HTTPS)
-      - Cookies have the `samesite` option set to 'strict'
-      - Cookies are marked as `httpOnly`
-    - `regular`: Allows HTTP connections and uses the default cookie settings for your server.
-  - Configuration: Set the option `mode` in the `config.php` file.
+#### Property Descriptions 
 
-- HTTPS Redirection: 
-  - Default: `true`
-  - Options: `true` or `false`
-  - Configuration: Set the option `force_https` in the `config.php` file.
+| Config Property | Default Value | Allowed Values | Description |
+| --- | --- | --- | --- |
+| `mode` | `strict` | `strict` or `regular` | Setting this to `strict` sets cookies to have their `samesite` attribute set to `strict` and they will be set as `httpOnly`. Setting it to `regular` will use the default cookie properties except that they will still be set as `httpOnly`. |
+| `force_https` | `true` | `bool` | Setting this to `true` will cause FOSSBilling to redirect all requests to HTTPS and force cookies to only be sent over HTTPS.|
+| `cookie_lifespan` | `7200` | `int` | This property configures the number of seconds that cookies and session is considered valid for. After this time period, they will expire and be destroyed. The default configuration is `7200` seconds (2 hours).|
 
-- Cookie Lifespan:
-  - Default: `7200` seconds (2 hours)
-  - Configuration: Set the option `cookie_lifespan` in the `config.php` file to the desired maximum lifespan of cookies in seconds.
+#### Example in  the config
+```
+'security' => [
+	'mode' => 'strict',
+	'force_https' => true,
+	'cookie_lifespan' => 7200,
+],
+```
 
-## API Options
 
-- CSRF Prevention:
-  - Default: `true`
-  - Options: `true` or `false`
-  - Configuration: Set the option `CSRFPrevention` in the `config.php` file.
-    - Note: Disabling this protection is not recommended and opens your instance to a known vulnerability. This option is only here for backwards compatibility.
+### API Options
 
-## Hosting Environment
-These documents are incomplete, if you have suggestions, we'd appreciate a pull request on our GitHub account.
-- Ensure you have a valid SSL certificate configured on your web server with the latest version of TLS enabled. 
+#### Property Descriptions 
+
+| Config Property | Default Value | Allowed Values | Description |
+| --- | --- | --- | --- |
+| `CSRFPrevention` | `true` | `bool` | Enables or disables the usage of a CSRF protection system. This should be enabled at all times unless it is specifically causing issues.|
+
+#### Example in  the config
+
+```
+'api' => [
+	'CSRFPrevention' => true,
+],
+```
+
+## Cloudflare
+ - Enable `IP Geolocation` under your website's `Network` settings. This will allow FOSSBilling to use a visitor's country (based on IP address) to help prevent session hijacking.

@@ -54,10 +54,11 @@
 #admin-card {
   background-image: url(/assets/img/admin.png);
   background-size: cover;
-  color: #fff;
+  color: rgb(27, 27, 27);
   text-shadow: 0 0 1rem rgba(0,0,0,0.2);
 }
 .dark #admin-card {
+  color: #fff;
   background-image: url(/assets/img/admin_dark.png);
 }
 #os-card {
