@@ -29,7 +29,7 @@ Some Cloudflare features can cause issues within FOSSBilling, here is a list of 
 
 ## Permission issues
 
-If you're receiving errors related to creating the `config.php` file, or the cache folder, these troubleshooting steps may help.
+If you're receiving permission related errors (such as with the `config.php` file or the cache folder) these troubleshooting steps may help.
 
 ### File and folder permissions
 - If you are using a control panel with a "fix permissions" button, first try that
@@ -45,14 +45,14 @@ Those of you who are using a RHEL derived Linux distribution (RHEL, CentOS, Rock
  - Configure SELinux to allow PHP (Recommended)
 	 1. Ensure you have the `policycoreutils-python` package installed.
 	 2. Set the proper context for the document root
-		 a. Note: Please check the paths in the below code snippets before executing them. Your actual paths may differ.
-		 b. `semanage fcontext -a -t httpd_sys_content_t '/var/www/html(/.*)?'`
-		 c. `restorecon -Rv /var/www/html`
+		 - Note: Please check the paths in the below code snippets before executing them. Your actual paths may differ.
+		 1. `semanage fcontext -a -t httpd_sys_content_t '/var/www/html(/.*)?'`
+		 2. `restorecon -Rv /var/www/html`
 	3. Configure SELinux rules.
-		a. `setsebool -P httpd_can_network_connect on`
-		b. `setsebool -P httpd_can_sendmail on`
-		c. Install the `selinux-policy-devel` package
-		d. `setsebool -P httpd_can_network_connect_db on`
+		 1. `setsebool -P httpd_can_network_connect on`
+		 2. `setsebool -P httpd_can_sendmail on`
+		 3. Install the `selinux-policy-devel` package
+		 4. `setsebool -P httpd_can_network_connect_db on`
 	4. Restart the server
  - Disable SELinux (Discouraged)
 	 - Edit `/etc/selinux/config`
