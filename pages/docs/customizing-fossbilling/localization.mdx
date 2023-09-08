@@ -24,13 +24,16 @@ The file structure of your newly installed translation should be as follows (exa
 ## Contributing to the official translations
 
 ### Existing translations
+
 Contributing to translations that already exist within FOSSBilling is easy! Simple go to [translate.fossbilling.org](https://translate.fossbilling.org/) and create an account with Crowdin. From there, you will be able to review the existing translations and contribute to them.
 
 ### New translations
+
 If you haven't already created a new translation file for FOSSBilling yet, but would like to start one, simply join our [discord](https://fossbilling.org/discord) and ask in the #localization channel for the new language to be added to Crowdin.
 Once we've added it, you'll be able to login to Crowdin and contribute to the translation from there.
 
 #### If you already have a completed custom translation
+
 If you've already created a custom translation and would like to add it to the official FOSSBilling translations, you'll need to add them to our [locale repo](https://github.com/FOSSBilling/locale) through a pull request.
 When submitting a pull request to submit a new locale, **do not** include the compiled .mo file. The compiled files are automatically generated when new commits are added to the repository.
 Once we merge the new translation into the official ones, we will add them to Crowdin at which point they will be available for crowdsourced contributions. 
@@ -38,6 +41,7 @@ Once we merge the new translation into the official ones, we will add them to Cr
 If you have any questions or issues with the above steps, please join our [discord](https://fossbilling.org/discord) and request assistance.
 
 ## Changing the default language
+
 The default locale that FOSSBilling uses is defined inside of the `config.php` file.
 For example: this is the default you'll find after a fresh install of FOSSBilling:
 `'locale' => 'en_US'`
@@ -45,6 +49,19 @@ For example: this is the default you'll find after a fresh install of FOSSBillin
 To Change the default, change the `en_US` to match the folder name of your translation. For example, `vi_VN` for the Vietnamize translation.
 
 ## Removing a language
+
 To remove a translation from FOSSBilling, simply delete the folder that has it from the `/locale/` folder.
 Please keep in mind, all official translations are included as part of the FOSSBilling release and will be restored when you update.
-At some point, an option to disable a language will be added, however that is not done yet. 
+At some point, an option to disable a language will be added, however that is not done yet.
+
+## Automatic language detection
+
+FOSSBilling is designed to leverage the browser's language header to correctly select a language that the visitor will be able to understand.
+Because of this, some may find that their FOSSBilling instance isn't displaying the language they set in the configuration file. This is not a bug and it is just FOSSBilling using the preferred whatever your browser says your preferred language is.
+
+The logic flow of this is as follows:
+![locale logic flowchart](/img/docs/locale-logic-flow.png)
+
+### What counts as a matching locale?
+- FOSSBilling will only use the primary preferred locale based off the language header. Any other language listed in the header will be ignored.
+- A matching locale is either a locale that matches exactly (`en_US` and `en_US`) or a locale that's similar (`en_GB` and `en_US`)
