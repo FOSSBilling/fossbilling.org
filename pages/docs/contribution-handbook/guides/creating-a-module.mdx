@@ -1,0 +1,60 @@
+---
+title: Creating a Module
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCode, faPersonDigging } from '@fortawesome/free-solid-svg-icons'
+import { Callout } from 'nextra-theme-docs'
+
+# Creating a module
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+    This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
+    If you're looking to create your own extension, this documentation will tell you the bare minimum required, but looking at existing extensions will probably be necessary to get a complete idea on how to write one.
+</Callout>
+
+## Quick overview 
+
+- All FOSSBilling module reside under the `/modules` directory.
+- If a module is implements a new product type, it's name should start with "Service". For example: `Servicehosting`
+- Module IDs should be lowercase.
+- Modules can provide all kinds of functionality including API endpoints, email template, front-end templates, mew product types, cron or hook-based functionality, and more.
+
+## Module directory scheme
+
+All FOSSBilling modules should follow the following directory scheme principle in order to function correctly
+
+-  The directory name should match the module ID, however the first character should always be capitalized. 
+- Valid directory names: `Servicehosting`, `Example`, `Serviceexample`, `Mynewmodule`, `Fossbillingisgreat`.
+- Invalid directory names: `servicehosting`, `example`, `serviceExample`, `MyNewModule`, `FOSSBillingIsGreat`.
+- FOSSBilling expects a given file structure for specific features, which is described [here in our documentation](https://fossbilling.org/docs/contribution-handbook/file-structure#modules).
+
+## The example module
+
+The example module is a great reference for how FOSSBilling modules work and should serve as an introduction for all basic functionality that modules may use and is currently how we recommend developers familiarize themselves with all the basics.
+
+The following functionality is all described and used in the example module:
+
+- Front-end templates for both the admin and client area.
+- The usage of email templates.
+- Defining API routes and using them in your templates.
+- Interacting with the FOSSBilling `DI`.
+- Defining routes, including the usage of variables (`/example/user/:id`) .
+- Using translations.
+- Basic interaction with the database.
+- The usage of hooks.
+
+You can find the example module on it's own [GitHub repository](https://github.com/FOSSBilling/example-module), it includes documentation in it's `README.md` file as well as in-line above code.
+
+## Using cron to perform scheduled actions within your module
+
+To make the usage of scheduled tasks easy to use, FOSSBilling leverages hooks when cron is being run.
+Specifically, it fires the `onBeforeAdminCronRun` and `onAfterAdminCronRun` hooks which can be used within your module to perform tasks whenever cron runs.
+
+The example module includes more in-depth examples for cron, however this very simple example will log "Cron was called!" whenever cron is being performed:
+```PHP
+public static function onBeforeAdminCronRun(\Box_Event $event): void
+{
+    error_log('Cron was called!');
+}
+```

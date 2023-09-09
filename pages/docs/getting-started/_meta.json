@@ -4,5 +4,6 @@
   "nginx": "Install on Nginx",
   "docker": "Install using Docker",
   "softaculous": "Install using Softaculous",
-  "migrate-from-boxbilling": "Migrate from BoxBilling"
+  "migrate-from-boxbilling": "Migrate from BoxBilling",
+  "building": "Building FOSSBilling"
 }

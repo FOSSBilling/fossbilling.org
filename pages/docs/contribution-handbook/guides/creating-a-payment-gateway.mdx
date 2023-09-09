@@ -1,0 +1,18 @@
+---
+title: Creating a Payment Gateway
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCode, faPersonDigging } from '@fortawesome/free-solid-svg-icons'
+import { Callout } from 'nextra-theme-docs'
+
+# Creating a payment adapter
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+    This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
+    If you're looking to create your own extension, this documentation will tell you the bare minimum required, but looking at existing extensions will probably be necessary to get a complete idea on how to write one.
+</Callout>
+
+All payment adapters should reside under the `/library/Payment/Adapter` folder. They should all extend the `Payment_AdapterAbstract` class and implement it's functions.
+
+The `Payment_AdapterAbstract` class has inline documentation of each function to aid in the development of payment adapters. You can find the most up-to-date version of this [here](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/library/Payment/AdapterAbstract.php)

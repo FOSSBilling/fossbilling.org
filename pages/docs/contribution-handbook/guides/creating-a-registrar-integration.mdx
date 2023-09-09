@@ -1,0 +1,18 @@
+---
+title: Creating a Registrar Integration
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCode, faPersonDigging } from '@fortawesome/free-solid-svg-icons'
+import { Callout } from 'nextra-theme-docs'
+
+# Creating a registrar integration
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+    This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
+    If you're looking to create your own extension, this documentation will tell you the bare minimum required, but looking at existing extensions will probably be necessary to get a complete idea on how to write one.
+</Callout>
+
+All domain registrars should reside under the `/library/Registrar/Adapter` folder. They should all extend the `Registrar_AdapterAbstract` class and implement it's functions.
+
+The `Registrar_AdapterAbstract` class has inline documentation of each function to aid in the development of domain registrars. You can find the most up-to-date version of this [here](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/library/Registrar/AdapterAbstract.php)

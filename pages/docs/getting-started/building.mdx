@@ -1,0 +1,16 @@
+---
+title: Building FOSSBilling
+description: This guide will help you build FOSSBilling off of the source code.
+---
+
+# Building FOSSBilling
+
+Building FOSSBilling from the source code is rather simple and only requires a few simple steps.
+
+1. Ensure you have the following dependencies installed: `git`, `npm`, `php`, and `composer`
+2. Clone the FOSSBilling repository and then move to that directory: `git clone https://github.com/FOSSBilling/FOSSBilling.git && cd FOSSBilling`
+3. Install PM dependencies: `npm -i`
+4. Install composer dependencies: `composer install`
+5. Build  the front-end assets: `npm run build`
+6. Pull in the latest translations: `cd src/locale && git submodule update --init --remote --recursive`
+7. That's it, you're done! You now have a build installation of FOSSBilling under the `src` directory which can be uploaded to a web server.
