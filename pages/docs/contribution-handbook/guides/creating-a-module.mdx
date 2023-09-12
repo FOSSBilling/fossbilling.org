@@ -58,3 +58,57 @@ public static function onBeforeAdminCronRun(\Box_Event $event): void
     error_log('Cron was called!');
 }
 ```
+
+## Adding permissions to your module
+
+FOSSBilling offers the ability for modules to define new permission keys, meaning even modules that aren't built by the FOSSBilling team may still offer granular and flexible permissions in whatever way best suits their specific needs.
+
+### Considerations
+
+- FOSSBilling automatically adds a "module access" permission key to all modules, you shouldn't define one yourself
+ - Outside of the generic "module access" permission, FOSSBilling won't do anything to check permissions for you. It is the module's responsibility to check for permissions at the correct moment.
+ -  Module permissions are specific to staff members, there is no permissions system for clients at the moment.
+ - Permission keys are specific to your own module, so you don't need to worry about a possible naming conflict. 
+
+### Defining your permissions
+
+All modules which want to implement custom permissions need to define a `getModulePermissions` function. FOSSBilling will call this function whenever it wants to get a list of the available functions for a given module. Below is an example of one of these functions:
+
+```PHP
+public function getModulePermissions(): array
+{
+    return [
+        'delete_something' => [
+            'type' => 'bool',
+            'display_name' => __trans('Delete something'),
+            'description' => __trans('Allows the staff member to delete "something"'),
+        ],
+        'can_always_access' => true,
+        'manage_settings',
+    ];
+}
+```
+Because this function isn't static and FOSSBilling sets the `DI` before calling it, you may potentially take advantage of this to dynamically generate the permissions, although we don't have an example of such an implementation.
+
+If you add `can_always_access` and set it to be `true` in your permissions, this means that it is impossible to prevent access to this module for a staff member. This doesn't mean that they can perform all actions, it simply means that will always have the minimum permissions in the form of access to it. Most modules won't need this.
+![can always access](/img/docs/can-always-access.png)
+
+Adding `manage_settings` to your permissions list tells FOSSBilling that you want to be able to restrict access to your modules settings (`/admin/extension/settings/email` as an example). Due to how some modules use this "settings" page for purposes other than settings, this specific permission key is opt-in.  Adding `manage_settings` is all you need to do to opt-in to using the permission key and FOSSBilling will then automatically populate the permission key with the correct description and display name as well as checking for permission when someone attempts to access the module settings.
+
+### Checking for permission
+
+Obviously having the ability to define permissions is only useful if you also have a way to check those permissions, which is handled by calling a function within the `staff` module. Here's an example below using our `delete_something` permission key:
+
+```PHP
+$staff_service = $this->di['mod_service']('Staff');
+if (!$staff_service->hasPermission(null, 'example', 'delete_something')) {
+    throw new \Box_Exception('You do not have permission to perform this action', [], 403);
+}
+```
+Let's break it down line-by-line:
+1. We create an instance of the staff module's service class, as this holds the `hasPermission` function.
+2. We call on the `hasPermission` providing it the following parameters:
+    - By passing `null` to the first parameter we tell the function to use the ID for the currently authenticated staff member.
+	- The second parameter represents the module ID that we are checking the permissions for, in this case we put `example`, but you should put the ID of your module.
+	- The third parameter is going to be the permission key you are checking, in this example it's `delete_something`. This should match the key as you set it in `getModulePermissions`
+3. Finally in this example we throw an except to prevent any further code from being executed. If you do use an exception, please use "You do not have permission to perform this action" as the message as this will be translated. The error code should also be `403`
