@@ -12,13 +12,13 @@ import { Callout } from 'nextra-theme-docs'
     This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
 </Callout>
 
-## FOSSBilling Configuration
+## FOSSBilling configuration
 
 These following documents security options under the `config.php` configuration file.
 
 ### Security Options
 
-#### Property Descriptions 
+#### Property descriptions 
 
 | Config Property | Default Value | Allowed Values | Description |
 | --- | --- | --- | --- |
@@ -35,8 +35,7 @@ These following documents security options under the `config.php` configuration 
 ],
 ```
 
-
-### API Options
+### API options
 
 #### Property Descriptions 
 
@@ -54,3 +53,11 @@ These following documents security options under the `config.php` configuration 
 
 ## Cloudflare
  - Enable `IP Geolocation` under your website's `Network` settings. This will allow FOSSBilling to use a visitor's country (based on IP address) to help prevent session hijacking.
+
+
+## Reverse proxies
+
+### Indicating HTTPS
+ 
+Because of how reverse proxies typically work, it's common for the usage of it to make FOSSBilling think it's being accessed without HTTPS.
+To fix this, simply ensure that your reverse proxy is forwarding the `X-Forwarded-Proto` header and that it's correctly set to `https`.
