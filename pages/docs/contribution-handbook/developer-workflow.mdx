@@ -1,0 +1,58 @@
+---
+title: Developer Workflow
+description: How to set up your development environment and submit your first pull request.
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Callout } from 'nextra-theme-docs'
+import { Card, Cards } from '../../../components/Card/'
+import { faDocker, faCpanel, faWindows } from '@fortawesome/free-brands-svg-icons'
+import { faServer, faBoxOpen, faBolt, faRobot, faHand, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+
+# Developer Workflow
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faCircleInfo} />}>
+  This section is a work in progress. Some sections may be incomplete or missing. To contribute to this page, refer to [Issue #1583](https://github.com/FOSSBilling/FOSSBilling/issues/1583).
+</Callout>
+
+This guide  will walk you through setting up your development environment and submitting your first pull request.
+
+## Prepare Code
+
+1. Create your own [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) from [FOSSBilling](https://github.com/FOSSBilling/FOSSBilling/fork).
+2. Clone your own fork instead of the FOSSBilling repo.
+3. [Setup your upstream](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) to help keep your fork in sync. Alternatively, use the web UI.
+
+## Environments
+
+There are multiple ways to set up your environment. Choose the one that works best for you.
+
+Proceed to the next section once your environment is configured.
+
+<Cards>
+  <Card icon={<FontAwesomeIcon icon={faDocker} size="xl" />} title="Docker" href="/docs/contribution-handbook/developer-workflow/docker"/>
+  <Card icon={<FontAwesomeIcon icon={faWindows} size="xl" />} title="WSL" href="/docs/contribution-handbook/developer-workflow/wsl"/>
+  <Card icon={<FontAwesomeIcon icon={faCpanel} size="xl" />} title="Shared (cPanel/Plesk)" href="/docs/contribution-handbook/developer-workflow/shared"/>
+  <Card icon={<FontAwesomeIcon icon={faServer} size="xl" />} title="Linux &amp; Apache" href="/docs/contribution-handbook/developer-workflow/apache"/>
+  <Card icon={<FontAwesomeIcon icon={faServer} size="xl" />} title="Linux &amp; NGINX" href="/docs/contribution-handbook/developer-workflow/nginx"/>
+</Cards>
+
+## Modifying Code
+
+1. Create a new branch under your fork. Name it something brief and relevant to what you are working on.
+2. Commit your changes into the new branch.
+3. If your commit is related to an existing issue, tag the issue ID in your commit message. For example: `#1234 add verify checkbox`. This will make your commit show within the issue history.
+4. Keep each set of changes isolated into their own branches. Avoid creating branches that have mixed changes across various modules. Each branch should solve a specific problem or task.
+5. Run PHPUnit tests to validate existing logic, and create new tests for any new logic.
+6. When your changes are finished, you are ready to submit a pull request.
+
+
+## Submitting a Pull Request
+
+1. Submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) from your forked branch targeting `main` on the FOSSBilling repo.
+2. Clearly document what your pull request is for and any new features it introduces or changes. Tag any open issues the pull request relates to. For example: `Closes #1234`.
+3. Submit your request.
+4. Verify that the automated tests complete successfully. The status will be shown in the pull request. The tests will take a moment to execute and finish.
+5. Monitor for and respond to any feedback on your request.
+6. If all tests pass and at least one maintainer leaves approval, your pull request will be accepted and your update will be merged into the main FOSSBilling branch.
+7. Sync your fork with the FOSSBilling upstream to now find your new code in your fork's `main` branch.
