@@ -129,6 +129,14 @@ Use `mysql` as the database hostname, and `fossbilling` for the database name, u
   Keep this in mind if you are rapidly re-creating the development environment or reinstalling FOSSBilling.
 </Callout>
 
+### Running Tests
+
+Use the following command in the `web` container to run `phpunit` tests:
+
+```
+php /var/www/fossbilling/src/vendor/phpunit/phpunit/phpunit
+```
+
 ## Summary
 
 You have completed configuring a local development environment with Docker. Making changes to code on your local machine will be reflected within your development containers without needing to rebuild them.
