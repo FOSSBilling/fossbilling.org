@@ -1,6 +1,5 @@
 {
-  "communication-guidelines": "Communication Guidelines",
-  "creating-an-extension": "Creating an Extension",
-  "code-of-conduct": "Code of Conduct",
-  "file-structure": "FOSSBilling File Structure"
+  "guides": "Guides",
+  "file-structure": "FOSSBilling File Structure",
+  "code-of-conduct": "Code of Conduct"
 }

@@ -4,7 +4,7 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
-## 0.5.5 (7-25-23)
+## 0.5.5 (7-25-2023)
 
 ### Security
  - FOSSBilling will now invalidate sessions for a given user when performing a password reset.
@@ -26,7 +26,7 @@ title: FOSSBilling Changelog
  - The "scheduled tasks" settings page has been updated to call cron via the API rather than attempting to open the `cron.php` file in the the browser and cron will now log how many outdated sessions it purged from the database.
  - We've made a few small changes to the themes list to help improve visual consistency and slightly improve usability.
 
-## 0.5.4 (7-5-23)
+## 0.5.4 (7-5-2023)
 
 ### Security
  - Exception / error messages now have HTML escaped before sending them to the browser. [Vulnerability report](https://huntr.dev/bounties/76a3441d-7f75-4a8d-a7a0-95a7f5456eb0/). [CVE-2023-3521](https://nvd.nist.gov/vuln/detail/CVE-2023-3521)
@@ -47,7 +47,7 @@ title: FOSSBilling Changelog
 ### Changes
  - We've cleaned up the exception messages to help reduce the number of translatable strings and improve consistency.
 
-## 0.5.3 (6-30-23)
+## 0.5.3 (6-30-2023)
 
 ### Security
  - Implemented additional checks to prevent SQL injection from being performed. [Vulnerability report](https://huntr.dev/bounties/4e60ebc1-e00f-48cb-b011-3cefce688ecd/). [CVE-2023-3490](https://nvd.nist.gov/vuln/detail/CVE-2023-3490)
@@ -98,7 +98,7 @@ This is a fairly minor release, with enhanced security, some bug-fixes, and new 
  - We've replaced the default markdown email templates with ones that are HTML based and include some simplistic styling.
     - Existing FOSSBilling installations will need to manually reset existing templates in order for these new ones to be loaded. 
 
-## 0.5.0 (6-13-202)
+## 0.5.0 (6-13-2023)
 **Important:** We have changed the way update patches are performed. After updating, you **MUST** manually login to the administrator panel, navigate to the updater, and then use the "Apply Patches & Update Configuration" button. this will be automated going forward but must be done manually with this update.
 
 Additionally: If you have any type of custom module, please read the breaking changes. Very nearly **ALL** custom modules will not work correctly in this release unless updated for it.
