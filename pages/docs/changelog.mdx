@@ -33,19 +33,9 @@ It is also possible that there will be a 0.5.6 release before this one is publis
  - We have improved the behavior of the session expiration to behave more as one might expect.
 
 ### Bug Fixes
- - We have updated the session fingerprint system to alleviate a few cases where it was causing issues.
- - Fixed a few errors with the Plesk server manager.
- - Some errors in some of the old database patches have been fixed.
- - Fixed a bug with the price format feature.
- - Fixed a bug that could prevent administrators from creating tickets.
- - We've fixed another issue with the email verification system so it functions as it should.
- - Fixed an issue that could prevent access from certain administrator tasks when maintained mode is enabled.
  - Fixed an issue that prevented multiple toasts from appearing in the administrator panel.
- - Fixed a bug with the tax support checkbox in the administrator panel.
  - Fixed a bug that resulted in add-ons getting separate invoices generated.
  - FOSSBilling will now prevent certain actions on orders with bad statuses.
- - If a domain already existed on a HestiaCP server and then an order was created for it, an empty account would be left behind. This is now removed.
-
 
 #### Breaking changes
   - You will need to re-configure staff permissions when updating due to the changes in how they are saved.
@@ -58,7 +48,26 @@ It is also possible that there will be a 0.5.6 release before this one is publis
 	 - `Interkassa` (Reported non-functional)
 	 - `Onebip` (Status unknown)
 	 - `WebMoney` (Status unknown) 
-	 - `TwoCheckout` (Reported working, will be added to the Extension Directory)  
+	 - `TwoCheckout` (Reported working, will be added to the Extension Directory)
+
+## 0.5.6 (9-28-2023)
+
+Hello everyone, we realize a bug-fix release might not be what everyone was expecting to see after two months since `0.5.5` was published, however the next major FOSSBilling version (`0.6.0`) is taking a bit longer than expected as it's going to be a pretty significant update and we felt like it was important to get this bug-fix release out to resolve some of the more problematic issues that existed with the older releases.
+
+Thanks for the patience and we look forward to being able to release `0.6.0` in the near future with a lot of improvements, enhancements, and new features!
+
+### Bug Fixes
+ - Fixed an issue that could cause a client to be redirected to the admin panel when paying with stripe.
+ - Adjusted the session fingerprinting system to be more lenient when needed. 
+ - Fixed a handful of bugs with the Plesk integration.
+ - Fixed some errors in some of the old database migration patches.
+ - Fixed the price format system not working all of the time.
+ - Fixed a bug with the tax support checkbox. 
+ - FOSSBilling will now cleanup a leftover account if a duplicated domain existed on the HestiaCP server when trying to setup an order.
+ - Fixed a bug with the maintenance mode that could prevent some actions from being performed in the administrator panel.
+ - Fixed issues with the client password reset workflow.
+ - Fixed a problem where a newly created client wouldn't be sent the email verification request.
+ - Fixed a bug when staff members were creating tickets for clients.
 
 ## 0.5.5 (7-25-2023)
 
