@@ -1,15 +1,26 @@
 # Working Extensions and Payment Modules
-These extensions are known to be working with FOSSBilling. Once we get our extension directory running again, we will contact extension developers about having their extensions listed on the directory.
 
-## Payment adapters
-* [Mollie](https://extensions.fossbilling.org/extension/Mollie)
-* [Razorpay](https://extensions.fossbilling.org/extension/Razorpay)
-* [UdoktaPay](https://extensions.fossbilling.org/extension/UddoktaPay)
-### Cryptocurrency
-* [Bitcart](https://extensions.fossbilling.org/extension/Bitcart). Developed by [BitcartCC](https://bitcart.ai/).
+Also take a look at the [Extension Directory](https://extensions.fossbilling.org/) where you can find more extensions and payment modules.
+We are working on making it as complete as possible.
 
-## Server managers
-* [Proxmox](https://extensions.fossbilling.org/extension/Serviceproxmox)
+You can then download and install extensions from the extension directory directly in your FOSSBilling installation.
+
+## List of Payment adapters
+
+| **Payment Adapter** |                | **Features** | **Developer**                                                | **Status**   |
+| ------------------- | -------------- | ------------ | ------------------------------------------------------------ | ------------ |
+|                     | Single Payment | Subscriptions |                                                              |              |
+| PayPal              | ✅              | ✅         | FOSSBilling                                                  | Production\* |
+| Stripe              | ✅              | ❌         | FOSSBilling                                                  | Production\* |
+| Razorpay            | ✅              | ❌         | [Albinvar](https://github.com/albinvar/Razorpay-FOSSBilling) | Production\*    |
+| Payrexx             | ✅              | ❌         | [Jaap Marcus](https://github.com/jaapmarcus/payrexx)         | In Developent          |
+| Mollie              | ✅              | ❌         | [FOSSBilling](https://github.com/FOSSBilling/Mollie)         | Production\*          |
+| UddoktaPay          | ✅              | ❌         | [UddoktaPay](https://github.com/UddoktaPay/FOSSBilling)      | Production\* |
+| Bitcart             | ✅              | ❌         | [Bitcart](https://github.com/bitcart/bitcart-fossbilling)    | Production\* |
+
+* Keep in mind, that FOSSBilling is currently considered pre-production software. While we are working hard to make it production-ready, we do not recommend using it in production yet.
+
+See [this issue on github](https://github.com/FOSSBilling/FOSSBilling/issues/1360) for more information regarding plans for Payment Adapters.
 
 ## Registration modules
 * [EPP Registrar Module (Generic RFC EPP)](https://github.com/getpinga/fossbilling-epp-rfc). Developed by [Pinga](https://github.com/getpinga).
@@ -17,5 +28,6 @@ These extensions are known to be working with FOSSBilling. Once we get our exten
 * [EPP Registrar Module (FRED Registry)](https://github.com/getpinga/fossbilling-epp-fred). Developed by [Pinga](https://github.com/getpinga).
 * [NETIM Registrar Module](https://github.com/netim-com/fossbilling-registrar-module). Developed by [NETIM](https://github.com/netim-com).
 
-## How do I get my extension listed?
-You can edit this page directly and create a PR. For any questions, reach our team.
+## How do I get my extension listed in the Extension directory?
+You can [create a PR here](https://github.com/FOSSBilling/extension-directory). 
+If you have any questions, feel free to reach out to our Team.
