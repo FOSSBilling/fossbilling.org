@@ -4,6 +4,62 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.6.0 (WIP)
+
+The 0.6.0 release is still in development and we don't have an ETA on when it will be released yet, however this changelog is going to be periodically updated with the latest changes as there's been quite a bit of work done.
+
+It is also possible that there will be a 0.5.6 release before this one is published depending on how long it takes to complete the final items for 0.6.0.
+
+### Enhancements
+ - General optimizations in the code, the most noteworthy is that emails will be queued and send via `cron` rather than on-request. This change significantly reduced the time it takes to perform actions such as placing an order or creating a support ticket by (generally two or more seconds).
+ - PDF Invoices have been improved.
+ - You can no longer delete a hosting plan, server, or TLD that has active products linked to them.
+ - The behavior of the "test email" button has been improved to only email the person who clicked it & to display errors on the front-end if any occur.
+ - The "Huraga" client theme has been migrated to Bootstrap 5 and has had many bug fixes (WIP, not yet merged)
+
+
+### New Features
+ - FOSSBilling will now display a little notification if an update is considered to be a major or minor patch to help people be aware of when significant changes have been done.
+ - Company info and system version visibility through the API is now configurable.
+ - PDFs can now have their HTML customized rather than just the CSS.
+ - You can now updated all orders associated with a downloadable product at once when uploading a new file.
+ - Reoccurring pricing check-boxes are un-ticked by default and will be automatically ticked when a price is entered when configuring a product.
+ - There is now a copy button for the order button example code.
+
+### Security
+ - The default `.htaccess` no longer allows direct access to PHP files. Only the few that are needed for functionality are allowed.
+ - We've improved the HTTPS check and the behavior of how FOSSBilling enables secure cookies to be more opportunistic. 
+ - The staff permission system has been revamped to allow granular permission control with full support for custom modules to define permission keys. (WIP, not yet merged) (Group-based permissions will come at a later date)
+ - We have improved the behavior of the session expiration to behave more as one might expect.
+
+### Bug Fixes
+ - We have updated the session fingerprint system to alleviate a few cases where it was causing issues.
+ - Fixed a few errors with the Plesk server manager.
+ - Some errors in some of the old database patches have been fixed.
+ - Fixed a bug with the price format feature.
+ - Fixed a bug that could prevent administrators from creating tickets.
+ - We've fixed another issue with the email verification system so it functions as it should.
+ - Fixed an issue that could prevent access from certain administrator tasks when maintained mode is enabled.
+ - Fixed an issue that prevented multiple toasts from appearing in the administrator panel.
+ - Fixed a bug with the tax support checkbox in the administrator panel.
+ - Fixed a bug that resulted in add-ons getting separate invoices generated.
+ - FOSSBilling will now prevent certain actions on orders with bad statuses.
+ - If a domain already existed on a HestiaCP server and then an order was created for it, an empty account would be left behind. This is now removed.
+
+
+#### Breaking changes
+  - You will need to re-configure staff permissions when updating due to the changes in how they are saved.
+  - The invoice numbering has been modified to be continuous.
+  - We have removed the following server managers from the core application since they did not work:
+	  - `ISPConfig` and `Virtualmin`.
+	  - Both have been moved to their own repositories on GitHub if someone else would like to maintain them.
+ - We have removed the following Payment Gateways from the core application as we are unable to maintain them:
+	 - `AliPay` (Status unknown)
+	 - `Interkassa` (Reported non-functional)
+	 - `Onebip` (Status unknown)
+	 - `WebMoney` (Status unknown) 
+	 - `TwoCheckout` (Reported working, will be added to the Extension Directory)  
+
 ## 0.5.5 (7-25-2023)
 
 ### Security
