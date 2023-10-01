@@ -10,33 +10,34 @@ import { Callout } from 'nextra-theme-docs'
 # <FontAwesomeIcon icon={faBoxOpen} /> Migrate from BoxBilling
 
 <Callout type="warning" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
-  Please note that some legacy BoxBilling features, most notably forums have been deprecated in FOSSBilling (as well as in the latest BoxBilling releases). Although forum posts and user information will remain in the database after migration, they will not be displayed in any way in the new installation. 
+  Please note that some legacy BoxBilling features, most notably forums have been removed in FOSSBilling. Although forum posts and user information will remain in the database after migration, they will not be displayed in any way in the new installation. 
 
   [See the changelog](https://fossbilling.org/docs/changelog) for more complete info.
 </Callout>
 
-The FOSSBilling project was forked from BoxBilling in 2022. FOSSBilling aims to provide a more stable and secure open source billing platform with a clear roadmap and more transparent governance. 
-
-If you are currently using BoxBilling and want to migrate to FOSSBilling then you can, and we aim to make the process as simple and painless as possible.
-
-These instructions assume that you are using the latest version of BoxBilling (4.22.1.5). If you are using an older version then it is highly recommended to update your install before migrating. 
-
-## Instructions
+## Migration instructions
 <Callout type="error" emoji={<FontAwesomeIcon icon={faHand} />}>
   Before you do anything, make sure that you do a full backup (or two) of both the database and all files in your current BoxBilling installation.
-
   Not doing so will leave you with no way to restore your data if something goes wrong.
+
+  The migration has last been tested going from BoxBilling version 4.22.1.5 to FOSSBilling version 0.5.6.
+  Thing should still work without any issues going to a version of FOSSBilling that's newer than 0.5.6, however you should expect issues if updating from a version of BoxBilling older than 4.22.1.5.
+  If you are running an out of date version of BoxBilling, you should first create a backup and then update to the most recent version to ensure things go smoothly.
+
+  Due to the importance of a smooth migration, we suggest first cloning your BoxBilling instance and doing a test migration on a separate instance of it.
+  Doing so will give you the opportunity to uncover any potential issues or misunderstandings with the process so the actual migration goes as smooth as possible with minimal downtime.
 </Callout>
 
-### Breaking Changes
-Please note, FOSSBilling has made significant changes since forking from BoxBilling, custom themes and modules may no longer work. We recommended reading the [changelog](https://fossbilling.org/docs/changelog) to review any changes listed as a breaking change.
+### Breaking changes
+Please note, FOSSBilling has made significant changes since forking from BoxBilling, it is very likely that all custom themes and modules will no longer work without being updated first.
+We recommended reading the [changelog](https://fossbilling.org/docs/changelog) to review "breaking changes".
 
 ### Download the latest release
 Download the latest release of FOSSBilling using this link: [Latest Stable Release](https://fossbilling.org/downloads/stable)
 
 ### Prepare your existing installation
 <Callout type="info" emoji={<FontAwesomeIcon icon={faCircleInfo} />}>
-  Themes created for BoxBilling will not function inside of FOSSBilling and need to be manaully ported to be compatible with FOSSBilling.
+  Themes created for BoxBilling will not function inside of FOSSBilling and need to be manually ported to be compatible with FOSSBilling.
 </Callout>
 
 1. Make a full backup of your database and all of the existing files and folders in your BoxBilling installation.
@@ -67,5 +68,7 @@ Delete the 'install' folder and all of the files inside it. Since you already ha
 
 ### Migrate the configuration file and Database
 
-1. Edit your `config.php` file and update the `twig->cache` key to point to `/data/cache` instead of `/bb-data/cache`.
-2. Navigate to `example.com/run-patcher` to use FOSSBilling's backup patching method. This will automatically migrate the configuration file and database to be compatible with the current versions of FOSSBilling. 
+1. Edit your `config.php` file and update all references of `/bb-data/` to `/data/`.
+2. Navigate to `example.com/run-patcher` to use FOSSBilling's backup patching method. This will automatically migrate the configuration file and database to be compatible with the current versions of FOSSBilling.
+3. After migration, you may need to edit your config file and re-configure localization settings such as the timezone as FOSSBilling has changed how those are stored. Defaults will be used in place of the original.
+4. You may need to open your database, find the `setting` table, and then manually update the configured theme to be `huraga`.

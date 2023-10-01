@@ -8,9 +8,32 @@ title: FAQ
 
 In a word, **No**.
 
-The BoxBilling project still exists (you can search for it on GitHub) but FOSSBilling is a new project forked from it. Many of the team behind FOSSBilling had previously tried to revive and update BB but found that for various reasons, mostly about project ownership, etc. that it was not possible.
+The BoxBilling project still exists (you can search for it on GitHub), but FOSSBilling is a fork of it with improvements across the board. Many of the team behind FOSSBilling had previously tried to revive and update BoxBilling but found that for various reasons, mostly about project ownership, etc. that it was not possible.
 
-We wanted to move forward and create a usable and dependable open source billing solution that will be well maintained and not commercialised. The result of those desires is FOSSBilling. At this moment both solutions are quite similar with FOSSBilling containing minor updates, bug fixes, and security improvements, but in the future, they will move further and further apart as the development of FOSSBilling continues.
+We wanted to move forward and create a usable and dependable open source billing solution that will be well maintained and not commercialized which resulted in FOSSBilling being created in 2022.
+
+If you're interested in quick overview of the significant differences between the two projects, please check the table in the section below.
+
+### BoxBilling VS FOSSBilling
+
+At a very quick glance, here are some of the important differences between the two:
+
+| Comparison Categories | BoxBilling | FOSSBilling | 
+|----------|------------|-------------|
+|Last release* |4-3-2022 |9-28-2023    |
+|PHP Support | 7.4 & 8.0| [Officially Supported Versions](https://www.php.net/supported-versions.php) |
+|Development| Automated Dependency Updates Only | Very Active |
+| Average Vulnerability Resolution Time** | 71 Days | 6 Days |
+| Internationalization*** | Mixed | Good |
+| Security features**** | Very Outdated | Good and Constantly Improving  |  
+
+\*Note: To ensure you are getting the latest info, check the latest releases for [BoxBilling](https://github.com/boxbilling/boxbilling/releases) and [FOSSBilling](https://github.com/FOSSBilling/FOSSBilling/releases).
+
+\*\*Based on published vulnerability reports only.
+
+\*\*\*BoxBilling translation sources are out of date and generally full of errors. FOSSBilling introduces support for plural translations, automated language detection, improved handling of date/time localization, more portions of the software can be translated, and the base strings have had many spelling and grammatical fixes. Additionally, FOSSBilling translation functionality is more reliable and will work for everyone out-of-the-box unlike BoxBilling's.*
+
+\*\*\*\*FOSSBilling introduces new functionality such as prevention against session hijacking, enforced session expropriations, proper usage of the HTTPS only flag for cookies, a HTTPS only mode, and more while also having resolved numerous security vulnerabilities which still effect BoxBilling.
 
 ## Can I migrate from BoxBilling?
 
@@ -54,3 +77,4 @@ Whether open-source projects live or die completely depends on community partici
 There are so many ways that you can be a part of the future of FOSSBilling. You can obviously contribute code, but we also need people to be a part of community discussions, write documentation, and sponsor the project.
 
 You can find out more about how to do all of those things here: [Contributing to FOSSBilling](https://github.com/FOSSBilling/FOSSBilling/blob/main/CONTRIBUTING.md)
+
