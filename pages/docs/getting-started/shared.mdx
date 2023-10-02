@@ -126,19 +126,6 @@ Adjusting the permissions of your configuration file ensures that only authorize
   </Tab>
 </Tabs>
 
-### Renaming the htaccess file
-<Callout type="warning" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
-  Not renaming the htaccess file will prevent FOSSBilling from working properly.
-  
-  If you don't rename the file, you will see a 404 error when you try to access any page other than the main page.
-</Callout>
-
-In some cases, the installer fails to automatically rename the `.htaccess` file. If this is the case, you will need to rename the file manually.
-
-Use your FTP client or the online file manager provided by your hosting provider to rename the `htaccess.txt` file to `.htaccess`. You should keep the dot at the beginning of the file name. After you renamed it, you might see it disappear from the file manager. This is normal. The file is still there, but it is hidden.
-
-To confirm that the file was renamed successfully, you can enable the "Show hidden files" option in your file manager and check if it's named correctly.
-
 ### Setting up the cron jobs
 FOSSBilling uses cron jobs to run scheduled tasks. Cron jobs are important because they allow you to automate repetitive tasks that would otherwise need to be performed manually. This can save time and effort, and help ensure that tasks are performed consistently and accurately.
 Not setting up cron jobs will prevent FOSSBilling from working properly.
