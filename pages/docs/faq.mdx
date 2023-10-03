@@ -8,7 +8,7 @@ title: FAQ
 
 In a word, **No**.
 
-The BoxBilling project still exists (you can search for it on GitHub), but FOSSBilling is a fork of it with improvements across the board. Many of the team behind FOSSBilling had previously tried to revive and update BoxBilling but found that for various reasons, mostly about project ownership, etc. that it was not possible.
+The BoxBilling project does still exist but it is almost entirely unmaintained and has many security vulnerabilities (you can search for it on GitHub). FOSSBilling was forked from BoxBilling and has numerous improvements across the board. Many of the team behind FOSSBilling had previously tried to revive and update BoxBilling but found that for various reasons, mostly about project ownership, etc. that it was not possible.
 
 We wanted to move forward and create a usable and dependable open source billing solution that will be well maintained and not commercialized which resulted in FOSSBilling being created in 2022.
 
@@ -40,13 +40,15 @@ At a very quick glance, here are some of the important differences between the t
 Yes, although we've made significant changes compared to BoxBilling and a migration may not go 100% smoothly.
 Create a backup of your filesystem and database and then follow the [migration guide](https://fossbilling.org/docs/getting-started/migrate-from-boxbilling).
 
+Please also be aware that any extensions and themes that were creatd for BoxBilling are very unlikely to work in FOSSBilling without modification.
+
 ## Is FOSSBilling stable?
 
 FOSSBilling is very much a work in progress. Right now we are busy squashing a lot of bugs, improving security, and at the same time working on a major rewrite of large sections of the codebase. 
 
 Right now, FOSSBilling is in a far more stable and secure state than it was just a few months ago and definitely more secure than the last releases of BB were. We don't generally recommend using it on production sites just yet unless you know what you are doing, but as long as you have some basic understanding then you probably could.  If you do, then please be aware that there may be breaking changes somewhere in the near future, even though we aim to make migration to future versions as easy as possible.
 
-If you are using it in a production environment then please download and use the latest stable release from the [FOSSBilling website](https://fossbilling.org/downloads) or [GH releases](https://github.com/FOSSBilling/FOSSBilling/releases), and DO NOT use the latest pre-release commits, unless they fix an explicit issue you are facing and you are sure they do not introduce any new issues.
+If you are using it in a production environment then please download and use the latest stable release from the [FOSSBilling website](https://fossbilling.org/downloads) or [GH releases](https://github.com/FOSSBilling/FOSSBilling/releases), and DO NOT use the latest pre-release commits, unless they fix an explicit issue you are facing and you are sure they do not introduce any new issues. As a;ways, backup and test things in a staging environemnt.
 
 ## When will FOSSBilling have [_the magical feature I want_]?
 
@@ -58,7 +60,7 @@ You can [search for existing feature requests](https://github.com/FOSSBilling/FO
 
 ## Does FOSSBilling work with Pterodactyl?
 
-FOSSBilling does not support Pterodactyl and we currently have no plans to provide official support for it, however the community is more than welcome to build an integration of their own for FOSSBilling. Also see [here](https://fossbilling.org/docs/server-managers/others)
+FOSSBilling does not support Pterodactyl and we currently have no plans to provide official support for it. Just to repeat for absolute clarity, there are **no plans** now or in the future for official support for a Pterodactyl integration. However the community is more than welcome to build an integration of their own for FOSSBilling. Also see [here](https://fossbilling.org/docs/server-managers/others)
 
 ## Do I need to pay for FOSSBilling?
 
@@ -66,9 +68,9 @@ No, you do not and never will need to pay to use the core components of FOSSBill
 
 The clue is right there in the name: **FOSS** stands for Free and Open Source Software. It means that the source code of the software is open for anyone to freely use, study and modify. 
 
-People may develop commercial modules/extensions for FOSSBilling which you will need to pay for but the basic software will always remain free in all senses of the word.
+Third parties are free to develop commercial modules/extensions for FOSSBilling which they may charge  for but the basic software will always remain free in all senses of the word.
 
-If you use and appreciate FOSSBilling and you do want to give something back then you are very welcome to sponsor the project with a financial donation or, in contribute in other ways.
+If you use and appreciate FOSSBilling and you do want to give something back then you are very welcome to sponsor the project with a financial donation or to contribute in other ways.
 
 ## How can I contribute to FOSSBilling? 
 
