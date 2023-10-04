@@ -1,0 +1,80 @@
+---
+title: Remote Installation
+description: Setting up your FOSSBilling development environment as a remote installation.
+---
+
+import { Callout } from 'nextra-theme-docs'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+
+
+# Remote Installation
+
+## Requirements
+
+You will need:
+
+1. Your own forked FOSSBilling repository already cloned on your development workstation.
+2. A remote hosting service meeting the appropriate system requirements. Installation instructions and options are available [here](http://localhost:3000/docs/getting-started).
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faCircleInfo} />}>
+    For the purposes of developer workflow, ignore the sections regarding downloading and uploading FOSSBilling files. This workflow guide replaces that process.
+</Callout>
+
+## General Workflow
+
+1. Modify relevant files via your locally cloned repository.
+2. Use a File Sync method to sync your modified files into your remote installation.
+3. Visit your remote installation to test and debug.
+4. Refer back to [Developer Workflow](/docs/contribution-handbook/developer-workflow) for submitting commits and pull requests.
+
+## File Sync Methods
+
+You can use any of these methods to sync files into your remote installation. Use the method that works best for you.
+
+All methods involve copying the `src/` folder from your local repository into the public folder for your remote installation, refered to as `www`. All examples assume you are working from the project root directory.
+
+
+### Command Line: rsync
+
+Utilize [rsync](https://linux.die.net/man/1/rsync) via command line to sync only files that have changed.
+
+```
+rsync -ahP src/ user@domainorip:/path/to/www
+```
+
+Add the `-I` flag to force sync all files regardless of changes:
+
+```
+rsync -ahPI src/ user@domainorip:/path/to/www
+```
+
+To skip uploading the `src/install` folder, use the `--exclude` flag:
+
+```
+rsync -ahPI --exclude 'src/install' src/ user@domainorip:/path/to/www
+```
+
+Use [explain shell](https://explainshell.com/explain?cmd=rsync+-ahPI+--exclude+%27src%2Finstall%27+src%2F+user%40domainorip%3A%2Fpath%2Fto%2Fwww) for an interactive description.
+
+### FTP / SFTP GUI
+
+Use a FTP/SFTP client with a GUI such as [FileZilla](https://filezilla-project.org/download.php).
+
+Once connected, simply drag and drop your updates into your remote `www` folder.
+
+### Visual Studio Code
+
+Use the inline terminal to run your required sync commands or scripts. This allows you to edit and deploy all from one area.
+
+For a more interactive but still inline solution, consider an extension like [SFTP](https://marketplace.visualstudio.com/items?itemName=Natizyskunk.sftp) to help automatically sync your code on each change.
+
+## Install Folder Handling
+
+Syncing in your local repository into an existing FOSSBilling installation will cause the `src/install/` folder to reappear. An error will be thrown in FOSSBilling requesting you to delete the `install` folder.
+
+You have a few options to work around this. Pick one of the following:
+
+1. Skip uploading the `src/install` folder when you upload your latest files.
+2. Manually delete your remote `www/install` folder each time after uploading.
+3. Set `'debug' => true,` in your `config.php`. This will bypass the restriction and allow you to access FOSSBilling without deleting the `www/install` folder. You will still be shown warnings inside the UI to delete the folder, but the UI will be functional.

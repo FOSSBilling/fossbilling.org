@@ -10,17 +10,19 @@ import { faHand, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 # Docker
 
 <Callout type="error" emoji={<FontAwesomeIcon icon={faHand} />}>
-  This guide is for setting up a local development environment only. Some configurations are not ideal for production use. Do not expose this enviornment to the public unless you know what you are doing.
+  This guide is for setting up a streamlined local development environment only. Some configurations are not ideal for production use. Do not expose this enviornment to the public unless you know what you are doing.
 
-  Some functionality may require remote external connections to be active, such as webhooks, payment notifications, or other cases where a third party needs to be able to reach FOSSBilling. This development environment will not allow you to develop or work with those features. If this is important to you, consider an alternate workflow, or change workflows later once you are more familiar with the codebase.
+  Some functionality may require remote external connections to be active, such as webhooks, payment notifications, or other cases where a third party needs to be able to reach FOSSBilling. This development environment will not allow you to develop or work with those features.
+  
+  If you need to create a publicly accessible environment, refer to [Remote Installation](/docs/contribution-handbook/developer-workflow/remote) instead.
 </Callout>
 
 ## Requirements
 
 You will need:
 
-1. [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed.
-2. Your own forked FOSSBilling repository already downloaded.
+1. Your own forked FOSSBilling repository already cloned on your development workstation.
+2. [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed.
 
 ## Docker Configs
 
