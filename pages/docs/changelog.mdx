@@ -13,11 +13,14 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
  - Optimizations throughout the application to improve the speed and reliability of FOSSBilling.
 	 - Emails are now queued and then sent via `cron` rather than being sent on-demand. The result is that many tasks including orders, ticket submissions, and more are now 2-4 seconds faster for some installations.
 	 - Better use of caching in various places.
+   - Improved handling of the autoloader FOSSBilling uses internally.
  - PDF Invoices have been improved.
  - The behavior of the "test email" button has been improved to only email the person who clicked it & to display errors on the front-end if any occur.
  - The "Huraga" client theme has been migrated to Bootstrap 5 and has had many bug fixes (WIP, not yet merged)
  - On the development side of things, we've improved our workflows to provide better code coverage and catch more issues before they have the opportunity to make it into the main source code.
- - The Stripe payment adapter will now set the client's name and email address, improving your dashboard analytics as well as improving Stripe's ability to perform fraud detection. 
+ - The Stripe payment adapter will now set the client's name and email address, improving your dashboard analytics as well as improving Stripe's ability to perform fraud detection.
+ - The Extension Directory has been moved to a seperate tab for both Payment Gateways and Domain Registrars.
+ - Various improvements to the developer experience.
 
 ### New Features
 
@@ -31,6 +34,7 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
  - FOSSBilling will no longer includes translations that are less that 25% complete and you can also view how complete any of the default translations are from within the administrator panel.
  - PDF Invoices can now include information such as banking info for billing and the same info can be added to the client area to make it more easily discoverable for clients.
  - Translations can now be disabled from within the FOSSBilling administrator panel.
+ - You can now view the readme for items on the Extension Directory directly from within FOSSBilling. 
 
 ### Security
 
@@ -48,6 +52,7 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
  - Deletion of servers, hosting plans, and TLDs with active orders / products is now prevented.
  - The FOSSBilling installer will no longer display an error if the `config.php` file doesn't exist & will correctly check that it is writable.
  - We've fixed the message on the dashboard that alerts the administrator if cron isn't being run correctly.
+ - Fixed an issue with the the Massmailer module's send functionality.
 
 ### Breaking changes
 
