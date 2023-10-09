@@ -6,6 +6,12 @@ title: Troubleshooting
 
 ## HTTP Error 404
 
+### Subfolder installations
+
+If you are trying to run an installation of FOSSBilling using a subfolder rather than a subdomain, i.e. 'https://myfancyhost.com/fossbilling' instead of 'https://fossbilling.myfancyhost.com' then it will not work. 
+
+Support for subfolder installations was deprecated in FOSSBilling 0.4.2. They are not currently supported and may or may not return in the future. Please ensure that your FOSSBilling install is in the root folder of your site, i.e. public_html and that you have a working subdomain DNS record pointing at it. 
+
 ### Apache, LiteSpeed, or OpenLiteSpeed
 
 If you are using Apache, LiteSpeed, or OpenLiteSpeed and you are receiving a HTTP 404 error when trying to access portions of FOSSBilling, please check the following troubleshooting steps:
