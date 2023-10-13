@@ -175,7 +175,7 @@ Our MySQL server should now be installed and secured. We can now move on to the 
 
     Let's use APT once more to install PHP and the extensions we need for FOSSBilling.
       ```bash filename="bash"
-      sudo apt install php libapache2-mod-php php-mysql php-curl php-xml
+      sudo apt install php libapache2-mod-php php-mysql php-curl php-xml php-intl php-dom php-gd php-mbstring
       ```
     APT will prompt you to confirm the installation. Press `Y` and hit `Enter` to continue.
 
@@ -252,12 +252,8 @@ Run the following in your terminal:
 
 ### Using the web installer
 Head on over to your server by using the domain/ip and setup your server. The `/install` is very important in this step!
-- Domain Example: `http://www.serveraddress.com/install`
+- Domain Example: `http://www.yourfossbilling.com/install`
 - IP Example: `http://0.0.0.0/install`
-
-Once this step is completed then the server is ready to go! If you want to do SSL continue on!
-
-If you recieve an Apache test page after this step make sure to remove `index.html` from `/var/www/html`
 
 ## Getting a free SSL certificate from Let's Encrypt
 ### Installing Certbot
