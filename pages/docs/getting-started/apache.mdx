@@ -232,10 +232,32 @@ Run the following in your terminal:
   ```
 
 ### Setting up the MySQL database
-#### Creating the MySQL database
-#### Creating the MySQL user
+
+### Setup Database
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
+    Please note that 'RANDOM_STRONG_PASSWORD' should be replaced with an actual random and strong password.
+    We want to clarify that it is not mandatory to use the username 'fossbillinguser' for the database. However, it is highly recommended to avoid using the root user, so instead please create and use a separate user with limited privileges for security reasons.
+</Callout>
+
+#### Creating the MySQL database and User
+
+```bash filename="bash"
+  mysql -u root -p
+  CREATE DATABASE fossbilling;
+  CREATE USER 'fossbillinguser'@'localhost' IDENTIFIED BY 'RANDOM_STRONG_PASSWORD';
+  GRANT ALL PRIVILEGES ON fossbilling.* TO 'fossbillinguser'@'localhost';
+  FLUSH PRIVILEGES;
+```
 
 ### Using the web installer
+Head on over to your server by using the domain/ip and setup your server. The `/install` is very important in this step!
+- Domain Example: `http://www.serveraddress.com/install`
+- IP Example: `http://0.0.0.0/install`
+
+Once this step is completed then the server is ready to go! If you want to do SSL continue on!
+
+If you recieve an Apache test page after this step make sure to remove `index.html` from `/var/www/html`
 
 ## Getting a free SSL certificate from Let's Encrypt
 ### Installing Certbot
