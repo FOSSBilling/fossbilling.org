@@ -111,7 +111,7 @@ In the next steps, we will assist you with the installation of the required soft
 
     Let's use APT again to install the MySQL server and its dependencies.
       ```bash filename="bash"
-      sudo apt install mysql-server
+      sudo apt install mariadb-server
       ```
     APT will prompt you to confirm the installation. Press `Y` and hit `Enter` to continue.
 
@@ -175,7 +175,7 @@ Our MySQL server should now be installed and secured. We can now move on to the 
 
     Let's use APT once more to install PHP and the extensions we need for FOSSBilling.
       ```bash filename="bash"
-      sudo apt install php libapache2-mod-php php-mysql php-curl
+      sudo apt install php libapache2-mod-php php-common php-mysql php-xml php-intl php-dom php-gd php-mbstring
       ```
     APT will prompt you to confirm the installation. Press `Y` and hit `Enter` to continue.
 
@@ -232,10 +232,28 @@ Run the following in your terminal:
   ```
 
 ### Setting up the MySQL database
-#### Creating the MySQL database
-#### Creating the MySQL user
+
+### Setup Database
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
+    Please note that 'RANDOM_STRONG_PASSWORD' should be replaced with an actual random and strong password.
+    We want to clarify that it is not mandatory to use the username 'fossbillinguser' for the database. However, it is highly recommended to avoid using the root user, so instead please create and use a separate user with limited privileges for security reasons.
+</Callout>
+
+#### Creating the MySQL database and User
+
+```bash filename="bash"
+  mysql -u root -p
+  CREATE DATABASE fossbilling;
+  CREATE USER 'fossbillinguser'@'localhost' IDENTIFIED BY 'RANDOM_STRONG_PASSWORD';
+  GRANT ALL PRIVILEGES ON fossbilling.* TO 'fossbillinguser'@'localhost';
+  FLUSH PRIVILEGES;
+```
 
 ### Using the web installer
+Head on over to your server by using the domain/ip and setup your server. The `/install` is very important in this step!
+- Domain Example: `http://www.yourfossbilling.com/install`
+- IP Example: `http://0.0.0.0/install`
 
 ## Getting a free SSL certificate from Let's Encrypt
 ### Installing Certbot
