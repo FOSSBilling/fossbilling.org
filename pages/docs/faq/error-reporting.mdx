@@ -1,0 +1,36 @@
+# What is error reporting?
+
+FOSSBilling includes the optional functionality to incorporate error reporting. Error reporting is handled via [Sentry.io](https://sentry.io/welcome/) with data being recorded in a [secure and compliant](https://sentry.io/security/) manner with a maximum retention of 90 days.
+
+## Why should I enable it?
+
+Enabling error reporting on your FOSSBilling instance comes with multiple benefits, namely:
+1. It improves our ability to provide technical support to you by allowing us to pull up all recorded errors from your instance including helpful information specific to when the error occurred. All you need to do is to provide your FOSSBilling instance's ID when submitting a bug report.
+2. Error reporting allows us to monitor FOSSBilling's stability overtime, pick up on potential regressions introduced with a given release, and work proactively to resolve errors that can be commonly seen.
+3. Reduces or eliminates the need to share log files, which may occasionally include information that you don't want to share publicly. Additionally, the error reporting system automatically scrubs and filters potentially sensitive information to help prevent anything from being shared.
+4. It allows the FOSSBilling team to identify environments where FOSSBilling is more error-prone (such as Windows VS Linux, specific PHP versions, and other similar details)
+
+## What type of information is reported?
+
+We try to focus only on what's important for improving the stability of FOSSBilling, specifically the following information is reported:
+
+- What the host OS is & what version it is.
+- The PHP version in use.
+- Fatal, parse, warning, notice, and depreciation errors in PHP.
+- Exceptions thrown within FOSSBilling (with some exceptions for informational exceptions).
+- The version of FOSSBilling that's in use.
+- The unique instance ID for your FOSSBilling install.
+- If applicable, the browser and OS information associated with the request that caused the error.
+- If we are able to detect it, what type of web-server that's being used.
+
+## What is the instance ID and where do I find it?
+
+The FOSSBilling instance ID is a unique id that is specific to your FOSSBilling installation, they match the RFC4122 version 5 specification and are created off of your installation's URL.
+These IDs are non-reversible which means you can share them publicly without leaking the URL of your FOSSBilling install.
+
+The ID for your installation can be found in the "about" tab under your system settings as seen below:
+ ![instance ID](/img/docs/instance-id.png)
+
+## How do I enable / disable error reporting?
+
+FOSSBilling will initially ask you if you'd like to enable error reporting during the installation, if you want to change it after that it currently needs to be done so through the `config.php` file by changing the `report_errors` option which is found under `debug_and_monitoring`.
