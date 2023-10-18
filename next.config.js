@@ -1,5 +1,3 @@
-const { withSentryConfig } = require('@sentry/nextjs')
-
 const withNextra = require('nextra')({
   theme: 'nextra-theme-docs',
   themeConfig: './theme.config.tsx',
@@ -10,4 +8,4 @@ const withNextra = require('nextra')({
   defaultShowCopyCode: true,
 })
 
-module.exports = withSentryConfig(withNextra())
+module.exports = withNextra()
