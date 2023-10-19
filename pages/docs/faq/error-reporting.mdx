@@ -25,7 +25,7 @@ We try to focus only on what's important for improving the stability of FOSSBill
 
 ## What is the instance ID and where do I find it?
 
-The FOSSBilling instance ID is a unique id that is specific to your FOSSBilling installation, they match the RFC4122 version 5 specification and are created off of your installation's URL.
+The FOSSBilling instance ID is a unique id that is specific to your FOSSBilling installation, they match the RFC4122 version 5 specification and are created based on your installation's URL.
 These IDs are non-reversible which means you can share them publicly without leaking the URL of your FOSSBilling install.
 
 The ID for your installation can be found in the "about" tab under your system settings as seen below:
@@ -33,4 +33,4 @@ The ID for your installation can be found in the "about" tab under your system s
 
 ## How do I enable / disable error reporting?
 
-FOSSBilling will initially ask you if you'd like to enable error reporting during the installation, if you want to change it after that it currently needs to be done so through the `config.php` file by changing the `report_errors` option which is found under `debug_and_monitoring`.
+FOSSBilling will initially ask you if you'd like to enable error reporting during the installation. If you want to change it after that it currently needs to be done so through the `config.php` file by changing the `report_errors` option which is found under `debug_and_monitoring`.
