@@ -4,7 +4,8 @@ FOSSBilling includes the optional functionality to incorporate error reporting. 
 
 ## Why should I enable it?
 
-Enabling error reporting on your FOSSBilling instance comes with multiple benefits, namely:
+We recommend enabling error reporting as it comes with multiple benefits, namely:
+
 1. It improves our ability to provide technical support to you by allowing us to pull up all recorded errors from your instance including helpful information specific to when the error occurred. All you need to do is to provide your FOSSBilling instance's ID when submitting a bug report.
 2. Error reporting allows us to monitor FOSSBilling's stability overtime, pick up on potential regressions introduced with a given release, and work proactively to resolve errors that can be commonly seen.
 3. Reduces or eliminates the need to share log files, which may occasionally include information that you don't want to share publicly. Additionally, the error reporting system automatically scrubs and filters potentially sensitive information to help prevent anything from being shared.
@@ -23,6 +24,14 @@ We try to focus only on what's important for improving the stability of FOSSBill
 - If we are able to detect it, what type of web-server that's being used.
 - Error-specific information such as the path where it occurred and the stacktrace that led to the error.
 
+## Error reporting changelog
+
+To make it easier for you to quickly identify any changes that may be introduced for error reporting, you can find the error-reporting changelog here.
+
+### 0.6.0
+
+- Initial implementation via Sentry.io.
+
 ## What is the instance ID and where do I find it?
 
 The FOSSBilling instance ID is a unique id that is specific to your FOSSBilling installation, they match the RFC4122 version 5 specification and are created based on your installation's URL.
@@ -33,4 +42,4 @@ The ID for your installation can be found in the "about" tab under your system s
 
 ## How do I enable / disable error reporting?
 
-FOSSBilling will initially ask you if you'd like to enable error reporting during the installation. If you want to change it after that it currently needs to be done so through the `config.php` file by changing the `report_errors` option which is found under `debug_and_monitoring`.
+FOSSBilling will initially ask you if you'd like to enable error reporting during the installation, however if you wish to change it afterwards you may do so either through the config file (`report_errors`) or via the system settings in the administrator panel (example.com/admin/extension/settings/system).
