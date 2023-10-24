@@ -61,7 +61,9 @@ Download the latest release of FOSSBilling using this link: [Latest Stable Relea
     - `bb-update.php`
     - You should also delete all files and folders under `data/cache`
 
-**READ THIS**: In the process of updating the folder structure, `bb-ipn.php` has been renamed to `ipn.php`. If at all possible, you should create a virtual alias from `bb-ipn.php` to `ipn.php` on your server. If you cannot do this, you **must** create a copy of `ipn.php` and name it `bb-ipn.php` for old subscriptions to continue to function.
+<Callout type="error" emoji={<FontAwesomeIcon icon={faHand} />}>
+  **READ THIS**: In the process of updating the folder structure, `bb-ipn.php` has been renamed to `ipn.php`. If at all possible, you should create a virtual alias from `bb-ipn.php` to `ipn.php` on your server. If you cannot do this, you **must** create a copy of `ipn.php` and name it `bb-ipn.php` for old subscriptions to continue to function.
+</Callout>
 
 ### Upload and extract the FOSSBilling files
 Upload and extract the contents of the preview build archive over the files in your existing BoxBilling installation and replace any existing files.
