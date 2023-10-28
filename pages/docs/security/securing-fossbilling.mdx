@@ -53,6 +53,20 @@ These following documents security options under the `config.php` configuration 
 
 ## Cloudflare
  - Enable `IP Geolocation` under your website's `Network` settings. This will allow FOSSBilling to use a visitor's country (based on IP address) to help prevent session hijacking.
+-  Allow only /admin/staff/login page for country or IP using Cloudflare WAF
+
+This rule allows access to the /admin/staff/login page for a specific country and IP while blocking others.
+
+Expression Builder for Country Block:
+`(http.request.uri.path contains "/admin/staff/login" and ip.geoip.country ne "US")`
+
+Expression Builder for IP Block:
+`(http.request.uri.path contains "/admin/staff/login" and ip.src ne 127.0.0.1)`
+
+Choose Action: Block
+
+Note that if you are running FOSSBilling on a subdomain, you must enable the Cloudflare proxy,"Orange Cloud," for it to work properly.
+
 
 
 ## Reverse proxies
