@@ -1,3 +1,15 @@
+---
+title: Error Reporting
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCode, faPersonDigging } from '@fortawesome/free-solid-svg-icons'
+import { Callout } from 'nextra-theme-docs'
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+    This documentation references a new features that is currently available in FOSSBilling preview builds and will be generally available in FOSSBilling version 0.6.0.
+</Callout>
+
 # What is error reporting?
 
 FOSSBilling includes the optional functionality to incorporate error reporting. Error reporting is handled via [Sentry.io](https://sentry.io/welcome/) with data being recorded in a [secure and compliant](https://sentry.io/security/) manner with a maximum retention of 90 days.
