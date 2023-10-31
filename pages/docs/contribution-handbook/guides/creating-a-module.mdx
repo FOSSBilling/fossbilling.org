@@ -3,7 +3,7 @@ title: Creating a Module
 ---
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCode, faPersonDigging } from '@fortawesome/free-solid-svg-icons'
+import { faCode, faPersonDigging, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { Callout } from 'nextra-theme-docs'
 
 # Creating a module
@@ -97,15 +97,32 @@ Adding `manage_settings` to your permissions list tells FOSSBilling that you wan
 
 ### Checking for permission
 
+
 Obviously having the ability to define permissions is only useful if you also have a way to check those permissions, which is handled by calling a function within the `staff` module. Here's an example below using our `delete_something` permission key:
+
+
+#### One-liner example
+
+```PHP
+// Checks if the staff member has the "delete_something" permission key for the "example" module and then throws an exception if they don't.
+$this->di['mod_service']('Staff')->checkPermissionsAndThrowException('example', 'delete_something');
+```
+
+#### More involved example
+
+<Callout type="warning" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
+    Please be certain to use the `\FOSSBilling\InformationException` exception class when denying access. This exception class is not forwarded via error reporting which helps ensure your module does not produce excess error reports. 
+</Callout>
 
 ```PHP
 $staff_service = $this->di['mod_service']('Staff');
 if (!$staff_service->hasPermission(null, 'example', 'delete_something')) {
-    throw new \Box_Exception('You do not have permission to perform this action', [], 403);
+    throw new \FOSSBilling\InformationException('You do not have permission to perform this action', [], 403);
 }
 ```
+
 Let's break it down line-by-line:
+
 1. We create an instance of the staff module's service class, as this holds the `hasPermission` function.
 2. We call on the `hasPermission` providing it the following parameters:
     - By passing `null` to the first parameter we tell the function to use the ID for the currently authenticated staff member.
