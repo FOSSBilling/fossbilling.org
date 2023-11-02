@@ -40,6 +40,7 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - Translations can now be disabled from within the FOSSBilling administrator panel.
 - You can now view the readme for items on the Extension Directory directly from within FOSSBilling.
 - The installer has been completely overhauled with a new design and to no longer rely on jQuery.
+- Added opt-in automated error reporting via Sentry.io to improve our ability to catch and fix bugs, give better technical support, and to improve the overall stability of FOSSBilling.
 
 ### Security
 
@@ -59,7 +60,7 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - We've fixed the message on the dashboard that alerts the administrator if cron isn't being run correctly.
 - Fixed an issue with the the Massmailer module's send functionality.
 - Improved handling of situations where a client may be deleted while leaving their old tickets in place.
--
+- Fixed file action paths pointing to the wrong directory in the `UpdatePather` class.
 
 ### Breaking changes
 
