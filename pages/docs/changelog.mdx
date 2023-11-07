@@ -8,7 +8,7 @@ title: FOSSBilling Changelog
 
 The 0.6.0 release is still in development and we don't have an ETA on when it will be released yet, however this changelog is going to be periodically updated with the latest changes as there's been quite a bit of work done.
 
-### Enhancements
+### 📈 Enhancements
 
 - Optimizations throughout the application to improve the speed and reliability of FOSSBilling.
   - Emails are now queued and then sent via `cron` rather than being sent on-demand. The result is that many tasks including orders, ticket submissions, and more are now 2-4 seconds faster for some installations.
@@ -26,7 +26,7 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - The order is now made available to the registrar to allow them to use information from it for the domain creation process.
 - The `birthday` and `document_nr` are now set within `Registrar_Domain_Contact` to be used for identification with domain registrations.
 
-### New Features
+### ➕ New Features
 
 - FOSSBilling will now display a little notification if an update is considered to be a major or minor patch to help people be aware of when significant changes have been done.
 - Company info and system version visibility through the API is now configurable.
@@ -42,7 +42,7 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - The installer has been completely overhauled with a new design and to no longer rely on jQuery.
 - Added opt-in automated error reporting via Sentry.io to improve our ability to catch and fix bugs, give better technical support, and to improve the overall stability of FOSSBilling.
 
-### Security
+### 🔐 Security
 
 - The default `.htaccess` no longer allows direct access to PHP files. Only the few that are needed for functionality are allowed.
 - We've improved the HTTPS check and the behavior of how FOSSBilling enables secure cookies to be more opportunistic.
@@ -50,7 +50,7 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - We have improved the behavior of the session expiration to behave more as one might expect.
 - FOSSBilling will now require authentication to view invoices, even when viewed directly using their unique hash. This may be disabled if you prefer.
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed an issue that prevented multiple toasts from appearing in the administrator panel.
 - Fixed a bug that resulted in add-ons getting separate invoices generated.
@@ -62,7 +62,7 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - Improved handling of situations where a client may be deleted while leaving their old tickets in place.
 - Fixed file action paths pointing to the wrong directory in the `UpdatePather` class.
 
-### Breaking changes
+### ⚠️ Breaking Changes
 
 - You will need to re-configure staff permissions when updating due to the changes in how they are saved.
 - The invoice numbering has been modified to be continuous.
@@ -82,7 +82,7 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 	- `BB_MODE_API` -> `API_MODE`
 - The following constants have been removed: `BB_SSL` and `BB_URL_API`.
 
-### Changes
+### 📝 Changes
 
 - The "Remember me" check-boxes have been removed as they didn't actually do anything.
 - Minor improvements to the developer workflow.
@@ -93,7 +93,7 @@ Hello everyone, we realize a bug-fix release might not be what everyone was expe
 
 Thanks for the patience and we look forward to being able to release `0.6.0` in the near future with a lot of improvements, enhancements, and new features!
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed an issue that could cause a client to be redirected to the admin panel when paying with stripe.
 - Adjusted the session fingerprinting system to be more lenient when needed.
@@ -109,11 +109,11 @@ Thanks for the patience and we look forward to being able to release `0.6.0` in 
 
 ## 0.5.5 (7-25-2023)
 
-### Security
+### 🔐 Security
 
 - FOSSBilling will now invalidate sessions for a given user when performing a password reset.
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - FOSSBilling will now configure the timezone when setting up PDO connections.
 - A handful of miscellaneous bugs have been fixed.
@@ -122,55 +122,54 @@ Thanks for the patience and we look forward to being able to release `0.6.0` in 
 - Fixed an issue where the update patcher would override the locale & timezone set in your `config.php` file.
 - We've increased the timeout when downloading FOSSBilling updates.
 
-### New Features
+### ➕ New Features
 
 - We've changed how the email verification system works to resolve some flaws and oversights in it's behavior.
   - Previously, FOSSBilling only checked if an email was valid when the client attempted to login and then prevented the login from being performed.
   - Now a client with an email that's not yet validated may still login, however they will only be allow to: access their profile, update their information, and request the verification email to be resent.
 
-### Enhancements
+### 📈 Enhancements
 
-- The "scheduled tasks" settings page has been updated to call cron via the API rather than attempting to open the `cron.php` file in the the browser and cron will now log how many outdated sessions it purged from the database.
 - We've made a few small changes to the themes list to help improve visual consistency and slightly improve usability.
 
 ## 0.5.4 (7-5-2023)
 
-### Security
+### 🔐 Security
 
 - Exception / error messages now have HTML escaped before sending them to the browser. [Vulnerability report](https://huntr.dev/bounties/76a3441d-7f75-4a8d-a7a0-95a7f5456eb0/). [CVE-2023-3521](https://nvd.nist.gov/vuln/detail/CVE-2023-3521)
 - HTML embedded in company info is now escaped. [Vulnerability report](https://huntr.dev/bounties/f3782eb1-049b-4998-aac4-d9798ec1c123/)
 
-### New Features
+### ➕ New Features
 
 - You can now whitelist IP addresses from rate-limiting using the `rate_limit_whitelist` configuration property.
 - Tables columns in the administrator panel may now be sorted by clicking on them.
 - FOSSBilling now includes a fallback option to apply patches after updating (Can be performed by navigating to `example.com/run-patcher`).
 - You may now optionally configure a username prefix when configuring server managers.
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed an issue when trying to reset purchased API keys from the administrator panel.
 - The admin theme dashboard will now correctly apply dark mode to the charts.
 - We've sped up how quickly the selected theme is applied within the admin panel, completely removing or reducing the "flash" that could be seen of the wrong theme mode. (Dark VS light mode)
 - 6 different search statements were being created incorrectly which resulting in errors when trying to search within the effected modules, this has been fixed.
 
-### Changes
+### 📝 Changes
 
 - We've cleaned up the exception messages to help reduce the number of translatable strings and improve consistency.
 
 ## 0.5.3 (6-30-2023)
 
-### Security
+### 🔐 Security
 
 - Implemented additional checks to prevent SQL injection from being performed. [Vulnerability report](https://huntr.dev/bounties/4e60ebc1-e00f-48cb-b011-3cefce688ecd/). [CVE-2023-3490](https://nvd.nist.gov/vuln/detail/CVE-2023-3490)
 - Resolved an unrestricted file upload vulnerability that could be used to perform remote code execution. [Vulnerability report](https://huntr.dev/bounties/043bd900-ac78-44d2-a340-84ddd0bc4a1d/). [CVE-2023-3491](https://nvd.nist.gov/vuln/detail/CVE-2023-3491)
 - Exported CSVs (of clients, orders, etc.) now have formulas escaped. [Vulnerability report](https://huntr.dev/bounties/e9a272ca-b050-441d-a8cb-4fdecb76ccce/). [CVE-2023-3493](https://nvd.nist.gov/vuln/detail/CVE-2023-3493)
 
-### Bug fixes
+### 🐛 Bug Fixes
 
 - We've fixed usage of dark-mode in the admin panel.
 
-### New Features
+### ➕ New Features
 
 - FOSSBilling now includes a "API Key" product which can be used to sell API keys for use in your applications. [Docs](https://fossbilling.org/docs/product-types/apikeys)
 
@@ -178,13 +177,13 @@ Thanks for the patience and we look forward to being able to release `0.6.0` in 
 
 Just a minor bugfix release to address issues a handful of people saw.
 
-### Bug fixes
+### 🐛 Bug Fixes
 
 - We've adjusted the fingerprint weights to resolve some issues that were occurring, primarily when using a reverse proxy.
 - Fixed an issue where the config migrator would introduce the `cookie_lifespan` configuration property as a `string` instead of as an `int`. This issue only effected very old version of FOSSBilling or users who were using BoxBilling.
 - The installer will no longer attempt to detect and redirect to HTTPS as this functionality was causing issues with some server configurations.
 
-### New features
+### ➕ New Features
 
 - FOSSBilling will now use the `cf-ipcountry` header Cloudflare sends while creating fingerprints to further increase protection against session hijacking.
   - "IP Geolocation" must be enabled under Cloudflare's "network" settings before this header is sent.
@@ -193,7 +192,7 @@ Just a minor bugfix release to address issues a handful of people saw.
 
 This is a fairly minor release, with enhanced security, some bug-fixes, and new default email templates.
 
-### Security
+### 🔐 Security
 
 - `Box_Session` has been replaced with `FOSSBilling\Session`
   - Session IDs are now forcibly regenerated when logging in, preventing a session fixation vulnerability. [Vulnerability report](https://huntr.dev/bounties/84bf3e85-cdeb-4b8d-9ea4-74156dbda83f/).
@@ -206,7 +205,7 @@ This is a fairly minor release, with enhanced security, some bug-fixes, and new 
 - The company signature will not longer be interpreted as HTML inside of the Huraga theme, as it could allow a malicious staff member to perform XSS against clients. ([Vulnerability report](https://huntr.dev/bounties/e44589cd-d260-48c3-8fb9-0385d0f6adb1/))
 - The entropy for invoice and ticket hashes has been significantly increased.
 
-### Bug fixes
+### 🐛 Bug Fixes
 
 - We've fixes issues with both the option to disable client signups as well as preventing them from changing their email.
 - The order screen will no longer cause the Huraga layout to break.
@@ -214,7 +213,7 @@ This is a fairly minor release, with enhanced security, some bug-fixes, and new 
 - Fixed an issue where the API was looking for the wrong property name when trying to update the client's city.
 - Added checks to prevent errors logged when FOSSBilling would try to access and undefined variable.
 
-### New Features
+### ➕ New Features
 
 - We've replaced the default markdown email templates with ones that are HTML based and include some simplistic styling.
   - Existing FOSSBilling installations will need to manually reset existing templates in order for these new ones to be loaded.
@@ -223,16 +222,16 @@ This is a fairly minor release, with enhanced security, some bug-fixes, and new 
 
 **Important:** We have changed the way update patches are performed. After updating, you **MUST** manually login to the administrator panel, navigate to the updater, and then use the "Apply Patches & Update Configuration" button. this will be automated going forward but must be done manually with this update.
 
-Additionally: If you have any type of custom module, please read the breaking changes. Very nearly **ALL** custom modules will not work correctly in this release unless updated for it.
+Additionally: If you have any type of custom module, please read the Breaking Changes. Very nearly **ALL** custom modules will not work correctly in this release unless updated for it.
 
-### Security
+### 🔐 Security
 
 - Resolved an issue with the "Downloadable" product type that allowed orders to be downloadable without being activated. ([Report on Huntr.dev](https://huntr.dev/bounties/390643f0-106b-4424-835d-52610aefa4c7/))
   - Currently the description for this report is inaccurate, we are working with the security researcher and Huntr.dev administrators to get it updated.
 - Additional checks have been added to prevent add-ons from being ordered by themselves or for a product they are not valid for. ([Report #1](https://huntr.dev/bounties/0a7ee1fb-e693-4259-abf8-a2c3218c1647/) and [report #2](https://huntr.dev/bounties/97ecf4b8-7eeb-4e39-917c-2660262ff9ba/))
 - Prevented an issue that allowed disabled products from being ordered. ([Huntr.dev report](https://huntr.dev/bounties/31f48ca1-e5e8-436f-b779-cad597759170/))
 
-### New Features
+### ➕ New Features
 
 - Introduced support for our "Central Alerts" system, allowing FOSSBilling to retrieve and display warnings associated with the currently running version.
 - We've introduced the usage of Monolog, splitting logging out into a handful of files to help keep logs more organized.
@@ -242,7 +241,7 @@ Additionally: If you have any type of custom module, please read the breaking ch
   - To use this, your custom theme will need to have a `spinner-border` class that implements the spinner animation. The API wrapper will automatic center it for you.
   - You can see this spinner in action inside of the administrator panel.
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - The WHM/cPanel server manger now correctly assigns a default port when you don't manually specify it.
 - Fixed the link that can be used to view what emails a client has been sent.
@@ -258,17 +257,17 @@ Additionally: If you have any type of custom module, please read the breaking ch
 - FOSSBilling will now re-check the promotion validity before the checkout step is completed. This prevents instances where a promotion could be used after it was disabled as long as the promotion had already been applied to the cart.
 - The breadcrumbs on the Formbuilder module have been fixed and the overall layout has been slightly improved.
 
-### Changes
+### 📝 Changes
 
 - FOSSBilling will no longer attempt to email the administrator after the installation is first complete.
 - Removed `getSettingsRoutes` and `hasSettingsRoutes` from out modules as the front-end no longer used them.
 - When changing the password for a client with the WHM/cPanel server manager, the client's DB password will also be updated.
 
-### Enhancements
+### 📈 Enhancements
 
 - The ticket view has been cleaned up in the admin panel.
 
-### Breaking Changes
+### ⚠️ Breaking Changes
 
 - `Box_Di` has been removed in favor of just using `\Pimple\Container` for typehints.
 - All FOSSBilling classes have been moved to the FOSSBilling namespace, removing the `FOSSBilling_` prefix from the class name.
@@ -279,13 +278,13 @@ Additionally: If you have any type of custom module, please read the breaking ch
 
 **Important** This release migrates to using `symfony/mailer` for sending emails. For mostly everyone, this will improve reliability of the emails and allow us to more easily maintain that functionality, however it is important to note that FOSSBilling now requires the `open_proc` function when using `sendmail` as your transport. Please check the release notes below for further information on this change.
 
-### New features
+### ➕ New Features
 
 - FOSSBilling will now try to automatically detect the correct locale for users based on the browser's `HTTP_ACCEPT_LANGUAGE` header. This option can be overridden with the language selector.
 - Server managers may now define a custom `generateUsername` function.
 - Custom themes may now gain access to the `admin_default` encore by setting `use_admin_default_encore` to `true` in their manifest file. This allows them to use JS and CSS from the admin theme.
 
-### Enhancements
+### 📈 Enhancements
 
 - We have significantly cleaned up the CSS files for the `admin_default` theme. The outdated CSS from BoxBilling is now completely gone and we are now using slightly different autoprefixer rules. The resulting CSS is now roughly half of the size compared to FOSSBilling version 0.4.2
 - Cleaned up Huraga's CSS to removed outdated browser prefixes. This removes a little over 1k lines of unneeded CSS.
@@ -299,7 +298,7 @@ Additionally: If you have any type of custom module, please read the breaking ch
   - The SendGrid integration has been updated to use the `symfony/mailer` package and now uses an API key instead of a username and password. We are unsure if the previous integration worked correctly, but if you were using it you will need to update to using an API key.
   - The `Box_Mail` class has been completely replaced with a new `FOSSBilling_Mail` class and it is no longer available through the `di`.
 
-### Bug fixes
+### 🐛 Bug Fixes
 
 - The client profile page will now correctly respect what parameters you have configured as required.
 - We've fixed an issue that prevented you from editing a promotion period.
@@ -312,7 +311,7 @@ Additionally: If you have any type of custom module, please read the breaking ch
 - Fixed an error that could be seen if you tried to create a client without selecting a group.
 - Fixed an issue that could give an SQL error when trying to cancel an invoice.
 
-### Changes
+### 📝 Changes
 
 - The `Box_Config` class has been removed.
 - We've entirely removed the FTP layer from FOSSBilling as it was unused and likely broken.
@@ -330,11 +329,11 @@ Additionally: If you have any type of custom module, please read the breaking ch
 
 **Important** Due to issues related to sub-folders and additional complexity, we have decided to remove official support for FOSSBilling installations under sub-folders rather than sub-domains. Long term, we wish to bring back official support, however we give no timeline for this. This was previously announced on [our forum](https://forum.fossbilling.org/d/25-fossbilling-will-no-longer-provide-official-support-for-sub-folder-installations).
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Reverted the bugfix for sub-folder installations as it caused issues with other installation methods.
 
-### Enhancements
+### 📈 Enhancements
 
 - We've improved the way localization is handled within twig, it will now respect the locale selected from within the dashboard. This allows clients to have dates translated into their locale.
 - Fixed the mobile responsiveness of the Fix order "history" tab.
@@ -344,7 +343,7 @@ Additionally: If you have any type of custom module, please read the breaking ch
 
 ## 0.4.1 (4-4-2023)
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed an issue that prevented access to the administrator panel if FOSSBilling is installed on a sub-folder.
   - **Important**: this style of installation is highly discouraged. Please use a sub-domain instead.
@@ -355,7 +354,7 @@ Additionally: If you have any type of custom module, please read the breaking ch
 
 ## 0.4.0 (4-3-2023)
 
-### Breaking Changes
+### ⚠️ Breaking Changes
 
 - Both the client and admin `change_password` API endpoints now require password verification.
   - These are now the required parameters: `current_password`, `new_password`, and `confirm_password`.
@@ -400,7 +399,7 @@ Additionally: If you have any type of custom module, please read the breaking ch
 - We've completely removed the `array_get` function from the `di`. If you had a custom module, you should instead use a standard PHP ternary operator, which offers the same functionality while requiring less code and being easier to read for developers.
 - `boxbilling.message` is no longer available in the default admin theme. Custom modules should instead use `fossbilling.message`
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed the way email codes are generated.
 - Fixed the FormBuilder module.
@@ -422,7 +421,7 @@ Additionally: If you have any type of custom module, please read the breaking ch
 - Fixed an issue where the cart wasn't remembering a selected period for a product.
 - Fixed content type header for the generated sitemap. (example.com/sitemap.xml)
 
-### Enhancements
+### 📈 Enhancements
 
 - The date picker in the admin panel has been replaced with a newer, better-looking one.
 - The admin panel flag icons have been replaced with newer ones.
@@ -445,7 +444,7 @@ Additionally: If you have any type of custom module, please read the breaking ch
 - The following modules have had their admin layouts reworked: `Cookieconsent`, `Spamchecker`, `Formbuilder`, `Embed`, `Custompages`, `Massmailer`, `Orderbutton`, `Redirect`, `Redirect`, `SEO Tools`, `Staff`, `Theme`, `Wysiwyg`.
 - We've cleaned up and fixed some inconsistencies in the `admin_default` theme.
 
-### New Features
+### ➕ New Features
 
 - We've refactored the way payment gateway logos are loaded, so they now no longer need to be hard-coded into a theme's CSS.
 - We've started implementing native JS modals for the Administrator panel, and have started using that instead of jQuery-based solutions inside the admin panel.
@@ -456,9 +455,9 @@ Additionally: If you have any type of custom module, please read the breaking ch
 ## 0.3.0 (2-17-2023)
 
 _Important_: this version of FOSSBilling removes quite a few deprecated functions and as such this release has the possibility to break custom themes and modules.
-Please read the breaking changes below for information on what was removed and how you can update custom code if you were using them.
+Please read the Breaking Changes below for information on what was removed and how you can update custom code if you were using them.
 
-### Breaking Changes
+### ⚠️ Breaking Changes
 
 - Removed `get_mime_content_type` from the `Box_Tools` class
 - Removed the `getApiAdmin`, `getApiGuest`, and `getApiClient` functions for all classes. The DI should be used instead (example: `$this->di['api_admin'];`)
@@ -479,7 +478,7 @@ Please read the breaking changes below for information on what was removed and h
 - Removed the functionality from the license module that allowed it to handle legacy / deprecated API formatting.
 - Removed the deprecated `param` function from the `Admin` class.
 
-### Changes
+### 📝 Changes
 
 - All usage of the `bbmd` twig filter has been replaced with the `markdown` filter. The `bbmd` filter is now marked as deprecated and will be removed in the future.
 - Made the add funds limit exceptions more specific.
@@ -490,14 +489,14 @@ Please read the breaking changes below for information on what was removed and h
 - Made the "model not found" exception a bit more specific.
 - The CWP server manager has had the code quality improved, with support for logging added to it.
 
-### New features
+### ➕ New Features
 
 - All FOSSBilling exception classes can now be translated.
 - We've added the ability to have plural translations with the `__pluralTrans` function.
 - Settings routes are now translatable for our default modules.
 - The WYSIWYG editor has been upgraded to CKEditor 5 and markItUp! has been completely removed.
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed the usage of placeholders in translations.
 - Fixed the issue that caused accounts to be logged in as "System Cron Job" when using CGI.
@@ -508,7 +507,7 @@ Please read the breaking changes below for information on what was removed and h
 - Fixed issues when trying to save custom theme profiles.
 - FOSSBilling will now correctly hide hidden folders from the locale listing if you compiled it from source.
 
-### Dependencies
+### 📈 Changes
 
 - RedBeanPHP has been moved to composer, and we've removed a custom hack-fix for our tests.
 - Dompdf has been updated to resolve a [security vulnerability](https://github.com/advisories/GHSA-56gj-mvh6-rp75).
@@ -519,19 +518,19 @@ Please read the breaking changes below for information on what was removed and h
 This version comes with some bug fixes and security improvements, most notably with the Stripe payment adapter.
 As always, create a fully backup of your installation before updating and if possible perform tests outside of your live environment.
 
-### Security
+### 🔐 Security
 
 - The Stripe payment adapter has been updated to their latest SDK.
   - In the process, the adapter has been updated to have better payment status verification, preventing faked transactions from being accepted.
   - The latest version of the adapter also features a much prettier looking payment screen and now works with 3d secure authentication.
 - With previous behavior from BoxBilling, generated web server credentials were stored inside the database, this has now been replaced with the asterisks key, with the intention of the row being completely removed in the future. If you have a custom module that depended on this behavior, it will no longer work.
 
-### New Features
+### ➕ New Features
 
 - The back-end has been updated to support password resets, in the next update it will be exposed within the UI. Thank you, @wyntonfranklin
 - Added a check for the PHP version before the installation screen, as some people were trying to install on unsupported versions and were getting HTTP 500 errors.
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - On the admin login screen, we've added the version number when including the API.js file. This should help prevent issues related to cache.
 - Fixed issues when trying to assign staff permissions.
@@ -539,7 +538,7 @@ As always, create a fully backup of your installation before updating and if pos
 - Fixed some bad HTML causing errors when entering the domain name when creating a new order.
 - Fixed an error that would be thrown if debug mode is turned on and a payment was made without the URL being set.
 
-### Changes
+### 📝 Changes
 
 - We've started to remove multi-selects from the admin panel in favor of check-boxes for improved usability.
 - Default modules labels are now translatable, helping to ensure that as much of the admin panel can be translated as possible.
@@ -550,24 +549,24 @@ As always, create a fully backup of your installation before updating and if pos
 
 ## Version 0.2.9 (1-15-2023)
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed an issue with GET API requests within the admin panel.
 - Fixed the favicon on the admin login page.
 - Fixed typos in the FTP layer.
 - Fixed an issue when FOSSBilling would pass `null` to the markdown parser. (issue #701)
 
-### Changes
+### 📝 Changes
 
 - Properly check for the `back-to-top` element in the admin panel, avoids a error in the console, but it never caused any errors.
 
 ## Version 0.2.8 (1-13-2023)
 
-### Security
+### 🔐 Security
 
 - Replaced the existing markdown parser with commonmark, which offers better compatibility with markdown and improved security features.
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed the breadcrumbs and page header with the custom pages module.
 - Fixed the period strings.
@@ -581,30 +580,26 @@ As always, create a fully backup of your installation before updating and if pos
 - Fixed some more issues with the API wrapper with some specific HTML input types.
 - Fixed replication of new CSS body classes and existing container classes
 
-### New Features
+### ➕ New Features
 
 - Added basic support for custom PDF invoice CSS.
 - Themes can now access the locale name without the ISO code.
 - Added support for a custom favicon path. Thank you @reynaldiarya!
 - Added support for payment gateways to be moved into their own sub-folder.
 
-### Changes
+### 📝 Changes
 
 - Remove dots from the Huraga public dashboard.
 - Updated login / signup / password reset styling.
 - Used Rector to modernize code for PHP 8.0.
 - Add CSS body classes to modules client HTML.
 
-### Dependencies
-
-- Bump postcss from 8.4.20 to 8.4.21
-
 ## Version 0.2.7 (1-3-2023)
 
 Happy new years from the FOSSBilling team!
 This release is focused on bug fixes, but does also introduce a Namecheap registrar adapter.
 
-### Bugfixes
+### 🐛 Bug Fixes
 
 - Resolved issues related to the API wrapper submitting malformed JSON data.
 - Resolved a few minor issues with the CWP server manager
@@ -612,18 +607,18 @@ This release is focused on bug fixes, but does also introduce a Namecheap regist
 - Fixed issues with the order button CSS
 - Fixed issues when updating email templates
 
-### New Features
+### ➕ New Features
 
 - FOSSBilling now has a Namecheap registrar adapter! Huge thank you to @ashavolian on GitHub!
 
-### Other
+### 📈 Changes
 
 - Added a requirement check for the PHP XML extension
 - Added and improved inline PHPDocs for payment, registrar, and server adapters
 - Some minor fixes to the code and an increased scanning level from PHPStan
 - Dependency updates
 
-### Localization
+### 💬 Localization
 
 - FOSSBilling now targets 19 languages for localization
 - Overall, we are 22% translated into all translations
@@ -632,12 +627,12 @@ As always, if you'd like to contribute to the localization of FOSSBilling, join 
 
 ## Version 0.2.6 (12-28-2022)
 
-### Security
+### 🔐 Security
 
 - Introduce API wrapper for custom themes and modules to facilitate easier CSRF tokens (#612)
 - FOSSBilling will no longer provide a user's password to the account creation email.
 
-### Bugfixes
+### 🐛 Bug Fixes
 
 - Fixed an issue with alias under Apache2 (#626)
 - Better handle php://input being empty when checking the CSRF token. (#626)
@@ -645,7 +640,7 @@ As always, if you'd like to contribute to the localization of FOSSBilling, join 
 - Refactor loading locales (#623)
 - Update how we load available locale selection (#611)
 
-### Localization
+### 💬 Localization
 
 - Synced localization with Crowdin (Current status +/- 24% and 13 different languages)
   - Arabic, Egypt
@@ -663,36 +658,36 @@ As always, if you'd like to contribute to the localization of FOSSBilling, join 
 
 To help with the localization please join us on https://translate.fossbilling.org/
 
-### Other
+### 📈 Changes
 
 - Updated some dependencies.
 - Added some inline documentation to our code to help developers with more documentation in the works.
 
 ## Version 0.2.5 (12-21-2022)
 
-### Security
+### 🔐 Security
 
 - Disable logging stack trace when debug mode is enabled (#618 #617)
 
-### Bugfixes
+### 🐛 Bug Fixes
 
 - Create a alias for `bb-ipn.php` to prevent recurring payments from failing after upgrading from BoxBilling or FOSSBilling 0.1.x release (#605)
 - Change ApexCharts colors when switching to darkmode (#610)
 - Disable display errors before checking for a valid ssl certificate. (#604)
 
-### Other
+### 📝 Changes
 
 - Updated some dependencies.
 
 ## Version 0.2.4 (12-16-2022)
 
-### Security
+### 🔐 Security
 
 - Added a new security mode and settings
   - These settings are located in the `config.php` file and allow you to fine tune some security related options.
   - The default settings are what we recommend.
 
-### Bug fixes
+### 🐛 Bug Fixes
 
 - We've replaced the old `gettext` back end for translations. Translations should now work correctly for everyone.
 - Fixed issue with HestiaCP.
@@ -705,20 +700,20 @@ To help with the localization please join us on https://translate.fossbilling.or
 - Removed the option to ping sitemaps top Bing as they do not accept them anymore.
 - PDF invoices will now hide company / client details that are not set, rather than an empty line.
 
-### New Features
+### ➕ New Features
 
 - Set the default currency during installation
 - We've improved the "showcase" feature with Huraga, it now accepts markdown input and has multiple sizing options.
 - We've added some new events to be used in our demo module. (with a FOSSBilling demo coming soon)
 
-### Other
+### 📝 Changes
 
 - Updated some dependencies.
 - Significantly cleaned up the Huraga theme's dependencies, shrinking the overall theme size by about 5Mb.
 
 ## Version 0.2.3 (12-8-2022)
 
-### Bug fixes
+### 🐛 Bug Fixes
 
 - Fixed some minor issues with the admin theme styling
 - Hide the settings button for themes that don't have settings
@@ -726,7 +721,7 @@ To help with the localization please join us on https://translate.fossbilling.or
 
 ## Version 0.2.2 (12-7-2022)
 
-### Bug fixes
+### 🐛 Bug Fixes
 
 - Fixed more issues relating to the CSRF protection, including the checkout screen.
 
@@ -739,18 +734,18 @@ This is a hotfix to fix issues introduced by the new security features added in 
 This release adds protection against CSRF attacks. This change will break outdated modules.
 It's highly discouraged to disable this protection, but if needed you can edit the `CSRFPrevention` value in your `config.php` file and set it to false.
 
-### Breaking Changes / Security
+### ⚠️ Breaking Changes / Security
 
 - Implemented a token system to protect against CSRF attacks. outdated modules and themes will no longer work with this protection enabled.
 
-### Bug fixes
+### 🐛 Bug Fixes
 
 - Fixed subscriptions with the PayPal payment adapter.
 - Properly fixed issues with the VestaCP and HestiaCP server managers.
 - The localization files have been synced with the source code and we've pre-translated a few popular languages using machine learning.
 - Fixed issues when trying to click the filter icon in the admin dashboard.
 
-### New Features
+### ➕ New Features
 
 - Sever managers can now specify their own input fields, making the setup process a bit more intuitive.
 
@@ -758,11 +753,11 @@ It's highly discouraged to disable this protection, but if needed you can edit t
 
 This release is a quick hotfix to resolve some minor issues reported with version [0.1.0](https://github.com/FOSSBilling/FOSSBilling/releases/tag/0.1.0)
 
-### New Features
+### ➕ New Features
 
 - Added an "about" tab
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fix issues with the "email" domain registrar adapter.
 - Fixed the income chart
@@ -776,7 +771,7 @@ This release is a quick hotfix to resolve some minor issues reported with versio
 
 Note: this changelog is compared to BoxBilling version 4.22.1.5
 
-### Security
+### 🔐 Security
 
 - Don't send the admin password in plain text email.
 - Prevent cron from paying deposit invoices with credits
@@ -787,7 +782,7 @@ Note: this changelog is compared to BoxBilling version 4.22.1.5
 - Removed obsolete file manager. It had security vulnerabilities and many bugs.
 - Default config for NGINX will now properly block direct access to sensitive files.
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed database port not being used during installation
 - Fixed database can't contain a hyphen
@@ -809,7 +804,7 @@ Note: this changelog is compared to BoxBilling version 4.22.1.5
 - Prevent domain orders from being completed without selecting the "years"
 - Removed the "API" tab from the staff members list due to bugs and security concerns.
 
-### Breaking Changes
+### ⚠️ Breaking Changes
 
 - Dropped the forum module
 - Dropped the "BoxBilling" and "Bootstrap" themes
@@ -825,7 +820,7 @@ Note: this changelog is compared to BoxBilling version 4.22.1.5
 - Completely new admin theme
 - Completely rewritten the Plesk integration.
 
-### New Features
+### ➕ New Features
 
 - Introduced the ability for FOSSBilling to migrate configuration files. - This can be manually run from the "Update FOSSBilling" screen
 - Created a new `validateAndSanitizeEmail` tool.
@@ -839,7 +834,7 @@ Note: this changelog is compared to BoxBilling version 4.22.1.5
 - Very basic support for an extension store inside of FOSSBilling.
 - Added a new setting for a dark variant of your companies logo that will be used with dark mode.
 
-### Other
+### 📝 Changes
 
 - Lots of dependency updates
 - Add 4 new events
