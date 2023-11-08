@@ -25,6 +25,9 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - Client searching in the administrator panel now searches more fields.
 - The order is now made available to the registrar to allow them to use information from it for the domain creation process.
 - The `birthday` and `document_nr` are now set within `Registrar_Domain_Contact` to be used for identification with domain registrations.
+- The email queue behavior has been updated to more reliable, especially with situations such as brief outages preventing emails from sending correctly.
+- The Mass Mailer module now goes through the standard email queue rather than using the now removed queue module. This ensures more reliable and predicable behavior of the queue.
+- You man now view the current email queue from the email settings. This tab will list all emails queued to be sent including their recipient, creation date, subject, and the number of attempts done to send the email.
 
 ### ➕ New Features
 
@@ -58,9 +61,10 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - Deletion of servers, hosting plans, and TLDs with active orders / products is now prevented.
 - The FOSSBilling installer will no longer display an error if the `config.php` file doesn't exist & will correctly check that it is writable.
 - We've fixed the message on the dashboard that alerts the administrator if cron isn't being run correctly.
-- Fixed an issue with the the Massmailer module's send functionality.
+- Fixed an issue with the the Mass Mailer module's send functionality.
 - Improved handling of situations where a client may be deleted while leaving their old tickets in place.
 - Fixed file action paths pointing to the wrong directory in the `UpdatePather` class.
+- When FOSSBilling is accessed via it's API mode, PHP's `display_errors` option will be disabled. Previously enabling debug mode had the chance to break API responses as the response may include a PHP error and therefore no longer have a valid JSON response and this change corrects that.
 
 ### ⚠️ Breaking Changes
 
@@ -81,11 +85,14 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 	- `BB_URL`           -> `SYSTEM_URL`
 	- `BB_MODE_API` -> `API_MODE`
 - The following constants have been removed: `BB_SSL` and `BB_URL_API`.
+- Support for PHP 8.0 has been removed as it no longer is receiving security updates.
+- The queue module has been completely removed as it was somewhat incomplete and only being used by the Massmailer module.
 
 ### 📝 Changes
 
 - The "Remember me" check-boxes have been removed as they didn't actually do anything.
 - Minor improvements to the developer workflow.
+- We've removed the messages that could appear when your FOSSBilling instance reported it's version as 0.0.1. 
 
 ## 0.5.6 (9-28-2023)
 
