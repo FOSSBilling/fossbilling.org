@@ -20,12 +20,12 @@ FOSSBilling will work correctly on any of the following web-servers. For the gre
 
 Most control panels will either come configured like this out-of-the-box or support this configuration.
 
-- Apache with `mod_rewrite` installed and enabled.
+- Apache with `mod_rewrite` enabled
+- LiteSpeed
 - NGINX running the correct [configuration](https://config.fossbilling.org/).
   - The config generator will give you a good starting point, however you may still need to configure items such as SSL and PHP to be correct for your server.
-- OpenLiteSpeed.
+- OpenLiteSpeed
   - Due to how OpenLiteSpeed handles `.htaccess` files, it's typically not suitable for selling web hosting, however FOSSBilling itself will run on it without any issues.
-- LiteSpeed.
 
 If you wish to use a web server that is not listed above, you will need to manually create a configuration for it that implements the URL rewriting FOSSBilling relies on using one of the existing configurations as reference.
 
@@ -33,7 +33,7 @@ If you wish to use a web server that is not listed above, you will need to manua
 
 ### Version
 
-FOSSBilling follows the official PHP [supported versions list](https://www.php.net/supported-versions.php). That means that FOSSBilling should function correctly on any PHP version that is still receiving active security and/or feature updates. When a PHP version looses it's official support, we drop support for that PHP version with the next FOSSBilling release
+FOSSBilling follows the official PHP [supported versions list](https://www.php.net/supported-versions.php). That means that FOSSBilling should function correctly on any PHP version that is still receiving active security and/or feature updates. When a PHP version loses it's official support, we drop support for that PHP version with the next FOSSBilling release
 
 Strictly following the official supported PHP versions allows us to keep FOSSBilling as secure and stable as possible while also being able to leverage new PHP features for better performance or improved functionality.
 
@@ -45,7 +45,6 @@ At a minimum for correct functionality, you should have the following extensions
 - `openssl`
 - `pdo_mysql`
 - `xml`
-- `xml`
 
 ### Highly recommended extensions
 
@@ -56,6 +55,7 @@ These extensions may not be needed to make FOSSBilling work, however they are re
 - `dom`
 - `opcache` (This is PHP's official extension that's used to cache compiled scripts and improve performance. We recommend using this for all PHP applications!)
 - `imagick` or `gmagick`
+- `bzip2`
 
 ### Configuration
 
