@@ -1,4 +1,5 @@
 {
+  "requirements": "System Requirements",
   "shared": "Install on cPanel or Plesk",
   "apache": "Install on Apache",
   "nginx": "Install on Nginx",
