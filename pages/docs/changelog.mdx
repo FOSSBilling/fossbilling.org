@@ -44,6 +44,9 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - You can now view the readme for items on the Extension Directory directly from within FOSSBilling.
 - The installer has been completely overhauled with a new design and to no longer rely on jQuery.
 - Added opt-in automated error reporting via Sentry.io to improve our ability to catch and fix bugs, give better technical support, and to improve the overall stability of FOSSBilling.
+- The Massmailer module will now allow you to preview the list of recipients for a message before sending it.
+- The API and Huraga theme have been updated to allow clients to choose if they'd like to pay with a subscription or a one-time payment. This is disabled by default via the theme settings.
+  - Developers: When using the `client/get_banklink` API endpoint you may now pass `allow_subscription`with a value of `0` as a GET parameter to instruct FOSSBilling to not create a subscription. If you don't pass the parameter, the previous behavior of automatically using one when the payment gateway and invoice both support it will be used instead.
 
 ### 🔐 Security
 
@@ -65,6 +68,8 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - Improved handling of situations where a client may be deleted while leaving their old tickets in place.
 - Fixed file action paths pointing to the wrong directory in the `UpdatePather` class.
 - When FOSSBilling is accessed via it's API mode, PHP's `display_errors` option will be disabled. Previously enabling debug mode had the chance to break API responses as the response may include a PHP error and therefore no longer have a valid JSON response and this change corrects that.
+- Fixed the filter options in the Massmailer module.
+- Added in prevention against recipients being duplicated when using the Massmailer module.
 
 ### ⚠️ Breaking Changes
 
@@ -81,9 +86,9 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
   - `TwoCheckout` (Reported working, will be added to the Extension Directory)
 - The KB and Support modules have been merged into one singular Support module.
 - Some of the constants have been renamed within FOSSBilling to remove references to BoxBilling:
-	- `BB_DEBUG`      -> `DEBUG`
-	- `BB_URL`           -> `SYSTEM_URL`
-	- `BB_MODE_API` -> `API_MODE`
+  - `BB_DEBUG` -> `DEBUG`
+  - `BB_URL` -> `SYSTEM_URL`
+  - `BB_MODE_API` -> `API_MODE`
 - The following constants have been removed: `BB_SSL` and `BB_URL_API`.
 - Support for PHP 8.0 has been removed as it no longer is receiving security updates.
 - The queue module has been completely removed as it was somewhat incomplete and only being used by the Massmailer module.
@@ -92,7 +97,8 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 
 - The "Remember me" check-boxes have been removed as they didn't actually do anything.
 - Minor improvements to the developer workflow.
-- We've removed the messages that could appear when your FOSSBilling instance reported it's version as 0.0.1. 
+- We've removed the messages that could appear when your FOSSBilling instance reported it's version as 0.0.1.
+- We've removed the option to generate EU VAT rates as these values were hard-coded, making the option misleading and potentially confusing.
 
 ## 0.5.6 (9-28-2023)
 
