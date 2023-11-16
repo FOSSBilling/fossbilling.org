@@ -58,14 +58,16 @@ These extensions may not be needed to make FOSSBilling work, however they are re
 - `mbstring`
 - `opcache` (This is PHP's official extension that's used to cache compiled scripts and improve performance. We recommend using this for all PHP applications!)
 - `imagick` or `gmagick`
+` `GD`
 - `bz2` (bzip2)
 - `simplexml` & `xml` for the Plesk API
 
 ### Configuration
 
-- `memory_limit`: Should be at least `64M`
+- `memory_limit`: Should be at least `64M`.
   - The more modules and extensions you have installed, the greater this will be. Installations under heavy demand may also need their memory limit increased.
 - `max_execution_time`: The default of 30 seconds is typically sufficient, however those with slower servers may consider increasing this to 45 or 60 seconds.
+- To use remote images in your PDFs (images accessed via a URL) you should have `allow_url_fopen` set to `true`.
 
 ## Database
 
