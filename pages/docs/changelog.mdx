@@ -6,12 +6,12 @@ title: FOSSBilling Changelog
 
 ## 0.6.0 (WIP)
 
-The 0.6.0 release is still in development and we don't have an ETA on when it will be released yet, however this changelog is going to be periodically updated with the latest changes as there's been quite a bit of work done.
+The 0.6.0 release is still in development, however we soon plan on entering a bug-fix only stage and hope to then publish 0.6.0 roughly one week after PHP 8.3 is released which will allow ourselves and our dependencies an opportunity to make any required changes.
 
 ### 📈 Enhancements
 
 - Optimizations throughout the application to improve the speed and reliability of FOSSBilling.
-  - Emails are now queued and then sent via `cron` rather than being sent on-demand. The result is that many tasks including orders, ticket submissions, and more are now 2-4 seconds faster for some installations.
+  - Emails are now queued and then sent via `cron` rather than being sent on-demand. The result is that many tasks including, but not limited to orders and ticket submissions are now 2-4 seconds faster for some installations.
   - Better use of caching in various places.
   - Improved handling of the autoloader FOSSBilling uses internally.
 - PDF Invoices have been improved.
@@ -34,19 +34,23 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - FOSSBilling will now display a little notification if an update is considered to be a major or minor patch to help people be aware of when significant changes have been done.
 - Company info and system version visibility through the API is now configurable.
 - Invoice PDFs can now have their HTML customized rather than just the CSS.
-- You can now updated all orders associated with a downloadable product at once when uploading a new file.
+- You can now update all orders associated with a downloadable product at once when uploading a new file.
 - Reoccurring pricing check-boxes are un-ticked by default and will be automatically ticked when a price is entered when configuring a product.
 - There is now a copy button for the order button example code.
-- You can now disable languages (translations) from within the FOSSBilling dashboard.
+- You can now disable languages (translations) from within the FOSSBilling  administrator panel.
 - FOSSBilling will no longer includes translations that are less that 25% complete and you can also view how complete any of the default translations are from within the administrator panel.
 - PDF Invoices can now include information such as banking info for billing and the same info can be added to the client area to make it more easily discoverable for clients.
-- Translations can now be disabled from within the FOSSBilling administrator panel.
 - You can now view the readme for items on the Extension Directory directly from within FOSSBilling.
 - The installer has been completely overhauled with a new design and to no longer rely on jQuery.
 - Added opt-in automated error reporting via Sentry.io to improve our ability to catch and fix bugs, give better technical support, and to improve the overall stability of FOSSBilling.
 - The Massmailer module will now allow you to preview the list of recipients for a message before sending it.
 - The API and Huraga theme have been updated to allow clients to choose if they'd like to pay with a subscription or a one-time payment. This is disabled by default via the theme settings.
   - Developers: When using the `client/get_banklink` API endpoint you may now pass `allow_subscription`with a value of `0` as a GET parameter to instruct FOSSBilling to not create a subscription. If you don't pass the parameter, the previous behavior of automatically using one when the payment gateway and invoice both support it will be used instead.
+ - To help with development, FOSSBilling now includes a debug bar which will automatically be displayed with the `APP_ENV` environment key is set to `dev`
+	 - Theme creators: this must be added into your theme in order to rendered. 
+	 - `{{ DebugBar_renderHead() }}` Should be added to the `head` of your base template
+	 - `{{ DebugBar_render() }}` should be added at the bottom on your template.
+	 - Our default themes already include these new additions.
 
 ### 🔐 Security
 
@@ -70,6 +74,7 @@ The 0.6.0 release is still in development and we don't have an ETA on when it wi
 - When FOSSBilling is accessed via it's API mode, PHP's `display_errors` option will be disabled. Previously enabling debug mode had the chance to break API responses as the response may include a PHP error and therefore no longer have a valid JSON response and this change corrects that.
 - Fixed the filter options in the Massmailer module.
 - Added in prevention against recipients being duplicated when using the Massmailer module.
+- Fixed an issue where stock control could only be configured when using the "custom" product type.
 
 ### ⚠️ Breaking Changes
 
