@@ -14,6 +14,7 @@ The 0.6.0 release is still in development, however we soon plan on entering a bu
   - Emails are now queued and then sent via `cron` rather than being sent on-demand. The result is that many tasks including, but not limited to orders and ticket submissions are now 2-4 seconds faster for some installations.
   - Better use of caching in various places.
   - Improved handling of the autoloader FOSSBilling uses internally.
+  - Extension configs are cached, saving the system from needing to pull them from the database and decode them each time it's requested.
 - PDF Invoices have been improved.
 - The behavior of the "test email" button has been improved to only email the person who clicked it & to display errors on the front-end if any occur.
 - The "Huraga" client theme has been migrated to Bootstrap 5 and has had many bug fixes (WIP, not yet merged)
@@ -75,6 +76,7 @@ The 0.6.0 release is still in development, however we soon plan on entering a bu
 - Fixed the filter options in the Massmailer module.
 - Added in prevention against recipients being duplicated when using the Massmailer module.
 - Fixed an issue where stock control could only be configured when using the "custom" product type.
+- Numerous minor bugs that have been caught via error reporting have been resolved.
 
 ### ⚠️ Breaking Changes
 
@@ -89,7 +91,7 @@ The 0.6.0 release is still in development, however we soon plan on entering a bu
   - `Onebip` (Status unknown)
   - `WebMoney` (Status unknown)
   - `TwoCheckout` (Reported working, will be added to the Extension Directory)
-- The KB and Support modules have been merged into one singular Support module.
+- The KB and Support modules have been merged into one singular Support module. (See [PR#1180](https://github.com/FOSSBilling/FOSSBilling/pull/1180) for changes)
 - Some of the constants have been renamed within FOSSBilling to remove references to BoxBilling:
   - `BB_DEBUG` -> `DEBUG`
   - `BB_URL` -> `SYSTEM_URL`
