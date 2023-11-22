@@ -5,7 +5,12 @@
 # Source repository: https://github.com/actions/dependency-review-action
 # Public documentation: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review#dependency-review-enforcement
 name: 'Dependency Review'
-on: [pull_request]
+on: 
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -13,8 +18,12 @@ permissions:
 jobs:
   dependency-review:
     runs-on: ubuntu-latest
+    if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
     steps:
       - name: 'Checkout Repository'
         uses: actions/checkout@v4
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v3
+        with:
+          base-ref: ${{ github.event.pull_request.base.sha || 'main' }}
+          head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
