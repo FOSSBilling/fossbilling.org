@@ -1,0 +1,45 @@
+name: Build and Deploy
+
+on:
+  push:
+  pull_request_target:
+    branches:
+      - main
+
+jobs:
+  # Require authorization/approval before running on external forks/pull requests.
+  authorize:
+    name: 'Authorization Check'
+    environment: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.id != github.repository_id && 'external' || 'internal' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: true
+
+  build-deploy-preview:
+    name: 'Preview'
+    if: ${{ (github.event_name == 'pull_request_target' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
+    needs: authorize
+    permissions:
+      contents: read
+    uses: FOSSBilling/.workflows/.github/workflows/vercel-build-deploy.yml@main
+    secrets:
+      vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
+      vercel_project_id: ${{ secrets.VERCEL_PROJECT_ID }}
+      vercel_token: ${{ secrets.VERCEL_TOKEN }}
+    with:
+      checkout_ref: ${{ github.event.pull_request.head.sha || github.ref }}
+      environment: 'Preview'
+
+  build-deploy-production:
+    name: 'Production'
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: read
+    uses: FOSSBilling/.workflows/.github/workflows/vercel-build-deploy.yml@main
+    secrets:
+      vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
+      vercel_project_id: ${{ secrets.VERCEL_PROJECT_ID }}
+      vercel_token: ${{ secrets.VERCEL_TOKEN }}
+    with:
+      environment: 'Production'
+      prod_deployment: true
