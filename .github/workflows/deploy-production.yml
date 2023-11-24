@@ -1,0 +1,19 @@
+name: Vercel Deploy Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy-production:
+    permissions:
+      contents: read
+    uses: FOSSBilling/.workflows/.github/workflows/vercel-build-deploy.yml@main
+    secrets:
+      vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
+      vercel_project_id: ${{ secrets.VERCEL_PROJECT_ID }}
+      vercel_token: ${{ secrets.VERCEL_TOKEN }}
+    with:
+      environment: Production
+      prod_deployment: true
