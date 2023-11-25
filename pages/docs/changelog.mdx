@@ -6,7 +6,20 @@ title: FOSSBilling Changelog
 
 ## 0.6.0 (WIP)
 
-The 0.6.0 release is still in development, however we soon plan on entering a bug-fix only stage and hope to then publish 0.6.0 roughly one week after PHP 8.3 is released which will allow ourselves and our dependencies an opportunity to make any required changes.
+## 0.6.0 (WIP)
+
+We are nearing the 0.6.0 release in the near future. All major new features are implemented and at this stage it is mostly bug fixing and regression testing remaining before this release can be made official.
+
+If you want a nice overview of the most exciting changes and some screenshots, give a look at the [FOSSBilling forum](https://forum.fossbilling.org/d/99-060-speak-peek).
+
+**Important**:
+This release has a lot of changes, many of which are breaking changes. Please review the entire release notes before updating, however the most critical things to note are as follows:
+
+- The staff permissions system has been redone to be more flexible and as a result permissions will need to be reconfigured after updating. Sorry!
+- Numerous breaking changes that effect theming. If you are using the Tide theme, it will not function correctly with this update. The developer has been informed that changes are needed and will hopefully publish a new release in the near future.
+- PHP 8.0 is no longer supported. As always, we follow the official PHP supported versions list which means PHP 8.1, 8.2, and 8.3 are all supported by FOSSBilling.
+- Some constants have been renamed or removed.
+- The behavior of invoice numbering has changed and it is not continuous.
 
 ### 📈 Enhancements
 
@@ -17,7 +30,7 @@ The 0.6.0 release is still in development, however we soon plan on entering a bu
   - Extension configs are cached, saving the system from needing to pull them from the database and decode them each time it's requested.
 - PDF Invoices have been improved.
 - The behavior of the "test email" button has been improved to only email the person who clicked it & to display errors on the front-end if any occur.
-- The "Huraga" client theme has been migrated to Bootstrap 5 and has had many bug fixes (WIP, not yet merged)
+- The "Huraga" client theme has been migrated to Bootstrap 5 to have a significantly more modern UI and has had many bug fixes.
 - On the development side of things, we've improved our workflows to provide better code coverage and catch more issues before they have the opportunity to make it into the main source code.
 - The Stripe payment adapter will now set the client's name and email address, improving your dashboard analytics as well as improving Stripe's ability to perform fraud detection.
 - The Extension Directory has been moved to a separate tab for both Payment Gateways and Domain Registrars.
@@ -29,6 +42,7 @@ The 0.6.0 release is still in development, however we soon plan on entering a bu
 - The email queue behavior has been updated to more reliable, especially with situations such as brief outages preventing emails from sending correctly.
 - The Mass Mailer module now goes through the standard email queue rather than using the now removed queue module. This ensures more reliable and predicable behavior of the queue.
 - You man now view the current email queue from the email settings. This tab will list all emails queued to be sent including their recipient, creation date, subject, and the number of attempts done to send the email.
+- The requirements system has been reworked and will now list missing recommended extensions. Additionally, we've rechecked the system requirements and have properly documented them on [the documentation](https://fossbilling.org/docs/getting-started/requirements).
 
 ### ➕ New Features
 
@@ -57,7 +71,7 @@ The 0.6.0 release is still in development, however we soon plan on entering a bu
 
 - The default `.htaccess` no longer allows direct access to PHP files. Only the few that are needed for functionality are allowed.
 - We've improved the HTTPS check and the behavior of how FOSSBilling enables secure cookies to be more opportunistic.
-- The staff permission system has been revamped to allow granular permission control with full support for custom modules to define permission keys. (WIP, not yet merged) (Group-based permissions will come at a later date)
+- The staff permission system has been revamped to allow granular permission control with full support for custom modules to define permission keys. We've implemented some baseline options and will gradually fill out the permissions list for our default modules over time.
 - We have improved the behavior of the session expiration to behave more as one might expect.
 - FOSSBilling will now require authentication to view invoices, even when viewed directly using their unique hash. This may be disabled if you prefer.
 
@@ -77,6 +91,7 @@ The 0.6.0 release is still in development, however we soon plan on entering a bu
 - Added in prevention against recipients being duplicated when using the Massmailer module.
 - Fixed an issue where stock control could only be configured when using the "custom" product type.
 - Numerous minor bugs that have been caught via error reporting have been resolved.
+- Failed email deliveries will no longer result in an email being sent to the DB log multiple times.
 
 ### ⚠️ Breaking Changes
 
