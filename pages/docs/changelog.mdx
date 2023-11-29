@@ -50,7 +50,7 @@ This release has a lot of changes, many of which are breaking changes. Please re
 - You can now update all orders associated with a downloadable product at once when uploading a new file.
 - Reoccurring pricing check-boxes are un-ticked by default and will be automatically ticked when a price is entered when configuring a product.
 - There is now a copy button for the order button example code.
-- You can now disable languages (translations) from within the FOSSBilling  administrator panel.
+- You can now disable languages (translations) from within the FOSSBilling administrator panel.
 - FOSSBilling will no longer includes translations that are less that 25% complete and you can also view how complete any of the default translations are from within the administrator panel.
 - PDF Invoices can now include information such as banking info for billing and the same info can be added to the client area to make it more easily discoverable for clients.
 - You can now view the readme for items on the Extension Directory directly from within FOSSBilling.
@@ -59,11 +59,12 @@ This release has a lot of changes, many of which are breaking changes. Please re
 - The Massmailer module will now allow you to preview the list of recipients for a message before sending it.
 - The API and Huraga theme have been updated to allow clients to choose if they'd like to pay with a subscription or a one-time payment. This is disabled by default via the theme settings.
   - Developers: When using the `client/get_banklink` API endpoint you may now pass `allow_subscription`with a value of `0` as a GET parameter to instruct FOSSBilling to not create a subscription. If you don't pass the parameter, the previous behavior of automatically using one when the payment gateway and invoice both support it will be used instead.
- - To help with development, FOSSBilling now includes a debug bar which will automatically be displayed with the `APP_ENV` environment key is set to `dev`
-	 - Theme creators: this must be added into your theme in order to rendered. 
-	 - `{{ DebugBar_renderHead() }}` Should be added to the `head` of your base template
-	 - `{{ DebugBar_render() }}` should be added at the bottom on your template.
-	 - Our default themes already include these new additions.
+- To help with development, FOSSBilling now includes a debug bar which will automatically be displayed with the `APP_ENV` environment key is set to `dev`
+  - Theme creators: this must be added into your theme in order to rendered.
+  - `{{ DebugBar_renderHead() }}` Should be added to the `head` of your base template
+  - `{{ DebugBar_render() }}` should be added at the bottom on your template.
+  - Our default themes already include these new additions.
+- Server managers may now implement SSO support to generate direct login links for clients. This has been implemented int into the Plesk server manager and will be added to others over time.
 
 ### 🔐 Security
 
@@ -90,6 +91,7 @@ This release has a lot of changes, many of which are breaking changes. Please re
 - Fixed an issue where stock control could only be configured when using the "custom" product type.
 - Numerous minor bugs that have been caught via error reporting have been resolved.
 - Failed email deliveries will no longer result in an email being sent to the DB log multiple times.
+- FOSSBilling will now behave correctly for HEAD requests. Some uptime services such as [updown.io](https://updown.io) use these request types to save bandwidth for both parties and starting with FOSSBilling version 0.6.0 this functionality should now work correctly.
 
 ### ⚠️ Breaking Changes
 
@@ -112,6 +114,7 @@ This release has a lot of changes, many of which are breaking changes. Please re
 - The following constants have been removed: `BB_SSL` and `BB_URL_API`.
 - Support for PHP 8.0 has been removed as it no longer is receiving security updates.
 - The queue module has been completely removed as it was somewhat incomplete and only being used by the Massmailer module.
+- `getLoginUrl` and `getResellerLoginUrl` for server managers now need to accept a new parameter which will either be `null` or a `Server_Account` object. This is provided for SSO support. If the system doesn't want an SSO link, `null` will be passed.
 
 ### 📝 Changes
 
