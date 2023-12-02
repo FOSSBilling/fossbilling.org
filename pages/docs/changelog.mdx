@@ -17,7 +17,9 @@ This release has a lot of changes, many of which are breaking changes. Please re
 - Numerous breaking changes that effect theming. If you are using the Tide theme, it will not function correctly with this update. The developer has been informed that changes are needed and will hopefully publish a new release in the near future.
 - PHP 8.0 is no longer supported. As always, we follow the official PHP supported versions list which means PHP 8.1, 8.2, and 8.3 are all supported by FOSSBilling.
 - Some constants have been renamed or removed.
-- The behavior of invoice numbering has changed and it is not continuous.
+- The behavior of invoice numbering has changed and it is now continuous.
+- Direct browser access to PHP files is now blocked via the `.htaccess` to improve security.
+  - This also applies to the `cron.php` file. If you are reliant on an external service to call this file via a URL, you will need to access the "Scheduled Tasks" settings, enable the guest API endpoint, and then update the URL on the external service to point to the one that's provided on the settings page.
 
 ### 📈 Enhancements
 
