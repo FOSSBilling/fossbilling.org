@@ -4,11 +4,9 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
-## 0.6.0 (WIP)
+## 0.6.0 (12-11-20203)
 
-We are nearing the 0.6.0 release in the near future. All major new features are implemented and at this stage it is mostly bug fixing and regression testing remaining before this release can be made official.
-
-If you want a nice overview of the most exciting changes and some screenshots, give a look at the [FOSSBilling forum](https://forum.fossbilling.org/d/100-060-sneak-peek).
+If you want a nice overview of the most exciting changes and some screenshots for this release, give a look at the [FOSSBilling forum](https://forum.fossbilling.org/d/100-060-sneak-peek).
 
 **Important**:
 This release has a lot of changes, many of which are breaking changes. Please review the entire release notes before updating, however the most critical things to note are as follows:
@@ -16,10 +14,11 @@ This release has a lot of changes, many of which are breaking changes. Please re
 - The staff permissions system has been redone to be more flexible and as a result permissions will need to be reconfigured after updating. Sorry!
 - Numerous breaking changes that effect theming. If you are using the Tide theme, it will not function correctly with this update. The developer has been informed that changes are needed and will hopefully publish a new release in the near future.
 - PHP 8.0 is no longer supported. As always, we follow the official PHP supported versions list which means PHP 8.1, 8.2, and 8.3 are all supported by FOSSBilling.
-- Some constants have been renamed or removed.
+- Some PHP constants have been renamed or removed.
 - The behavior of invoice numbering has changed and it is now continuous.
 - Direct browser access to PHP files is now blocked via the `.htaccess` to improve security.
   - This also applies to the `cron.php` file. If you are reliant on an external service to call this file via a URL, you will need to access the "Scheduled Tasks" settings, enable the guest API endpoint, and then update the URL on the external service to point to the one that's provided on the settings page.
+- The ISPConfig and Virtualmin server managers have been removed from the application as they did not work. The associated files will be auto-deleted when performing an update as they could otherwise prevent aspects of the admin panel from functioning. They are now under new repositories and are open to external contributors who can maintain them.
 
 ### 📈 Enhancements
 
@@ -94,6 +93,8 @@ This release has a lot of changes, many of which are breaking changes. Please re
 - Numerous minor bugs that have been caught via error reporting have been resolved.
 - Failed email deliveries will no longer result in an email being sent to the DB log multiple times.
 - FOSSBilling will now behave correctly for HEAD requests. Some uptime services such as [updown.io](https://updown.io) use these request types to save bandwidth for both parties and starting with FOSSBilling version 0.6.0 this functionality should now work correctly.
+- Fixed an issue where the max uses for a promo code could not be changed after initial creation.
+- Fixed an issue that could happen type when attempting to delete orders for the API key product.
 
 ### ⚠️ Breaking Changes
 
