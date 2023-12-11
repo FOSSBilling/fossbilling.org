@@ -1,0 +1,146 @@
+---
+title: Docker
+description: Setting up your FOSSBilling development environment with Docker.
+---
+
+import { Callout } from 'nextra-theme-docs'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHand, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+
+# Docker
+
+<Callout type="error" emoji={<FontAwesomeIcon icon={faHand} />}>
+  This guide is for setting up a streamlined local development environment only. Some configurations are not ideal for production use. Do not expose this enviornment to the public unless you know what you are doing.
+
+  Some functionality may require remote external connections to be active, such as webhooks, payment notifications, or other cases where a third party needs to be able to reach FOSSBilling. This development environment will not allow you to develop or work with those features.
+  
+  If you need to create a publicly accessible environment, refer to [Remote Installation](/docs/contribution-handbook/developer-workflow/remote) instead.
+</Callout>
+
+## Requirements
+
+You will need:
+
+1. Your own forked FOSSBilling repository already cloned on your development workstation.
+2. [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed.
+
+## Docker Configs
+
+Create new files in the root folder of your local FOSSBilling repository with the following names and contents:
+
+### docker-compose.yml
+
+```yaml
+version: "3.8"
+
+services:
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    image: php:8.1-apache
+    ports:
+      - 80:80
+    volumes:
+      - ./:/var/www/fossbilling
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: fossbilling
+      MYSQL_DATABASE: fossbilling
+      MYSQL_USER: fossbilling
+      MYSQL_PASSWORD: fossbilling
+    volumes:
+      - mysql:/var/lib/mysql
+volumes:
+  mysql:
+```
+
+### Dockerfile
+
+```dockerfile
+FROM php:8.1-apache
+
+ENV APACHE_DOCUMENT_ROOT=/var/www/fossbilling/src
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+RUN rm -f /var/lib/apt/lists/* ||true
+RUN apt update -y
+RUN apt install git unzip libzip-dev -y
+
+RUN a2enmod rewrite headers
+RUN docker-php-ext-install pdo pdo_mysql zip
+
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+COPY --from=node:20-slim /usr/local/bin /usr/local/bin
+COPY --from=node:20-slim /usr/local/lib/node_modules /usr/local/lib/node_modules
+
+ADD . /var/www/fossbilling
+```
+
+## Manage Containers
+
+Run the following command to build and start the containers:
+
+```
+docker-compose up --build -d
+```
+
+You can now interact with the containers via Docker Desktop.
+
+To destroy the containers via command line, run:
+
+```
+docker-compose down --volumes
+```
+
+
+## Installing FOSSBilling
+
+### Set Debug Mode
+
+Open `config-sample.php` and set `debug` to `true`.
+
+This will set debug mode by default, and prevent the `install` folder from being deleted during the installation process. This prevents the folder deletion from being shown in your git history and allows the installer files to still be referenced after installation.
+
+Once installation is completed, you can revert your change to `config-sample.php` to clear your local git changes.
+
+### Install Dependencies
+
+Use Docker Desktop to access the `Terminal` for the `web` container.
+
+Run the following commands:
+
+```
+cd /var/www/fossbilling
+composer install
+npm install
+npm run build
+```
+
+### Web Installer
+
+Visit http://localhost/install/install.php and follow the steps.
+
+Use `mysql` as the database hostname, and `fossbilling` for the database name, username, and password.
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faCircleInfo} />}>
+  It may take around 15 to 30 seconds for the MySQL container to fully initialize. The webserver will respond before MySQL is fully ready. Attempting to install FOSSBilling before MySQL finishes initializing will result in a database connection error. If you get this issue, wait a moment and try again, or check Docker logs to ensure MySQL finished initalizing.
+
+  Keep this in mind if you are rapidly re-creating the development environment or reinstalling FOSSBilling.
+</Callout>
+
+### Running Tests
+
+Use the following command in the `web` container to run `phpunit` tests:
+
+```
+php /var/www/fossbilling/src/vendor/phpunit/phpunit/phpunit
+```
+
+## Summary
+
+You have completed configuring a local development environment with Docker. Making changes to code on your local machine will be reflected within your development containers without needing to rebuild them.
+
+You may now refer back to [Developer Workflow](/docs/contribution-handbook/developer-workflow) for modifying and contributing code.
