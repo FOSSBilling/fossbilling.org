@@ -1,0 +1,43 @@
+---
+title: FOSSBilling's Twig Filters & Functions
+---
+
+# Twig Filters & Functions
+
+FOSSBilling utilizes the popular twig templating engine for various purposes (front-end, email templates, PDFs, ect).
+This documentation covers what twig filters FOSSBilling includes so that developers can better understand what's available to work with.
+
+## From Twig
+
+FOSSBilling includes all of the default twig filters plus the following additional filters through extensions:
+
+- The [Intl Extra Extension](https://github.com/twigphp/intl-extra) & associated filters
+
+## Custom
+
+FOSSBilling has quite a few custom filters included in it. Here's the full list of them with further documentation coming in the future:
+
+- `trans`: The translation filter.
+- `alink`: Accepts a URI and turns it into a link for the administrator panel.
+- `link`: Generates a full link for the FOSSBilling installation off of a URI.
+- `autolink`: Automatically generates an HTML link element.
+- `gravatar`: Accepts an email and optionally size and generates a gravatar image for it.
+- `markdown`: Parses markdown into HTML, escaping HTML and removing unsafe links (`javascript:`, `vbscript:`, `file:`, and most `data:` links`
+  - Follows the CommonMark spec with GitHub markdown extensions enable via the `league/commonmark` package.
+- `truncate`: Truncates a string down to a given maximum length.
+- `timeago` Accepts a `ISO 8601` date format and displays how long ago it was.
+- `daysleft`: Accepts a `ISO 8601` date format and displays how many days until that date is reached.
+- `size`: Converts a provided byte count into a human-readable representation (`KB`, `MB`, `GB`, etc).
+- `ipcountryname`: Displays the name of a country associated with a given IP addresses.
+- `number`: Acts as an alias to the PHP function `number_format`.
+- `period_title`: Displays a translated title for a given period (Example: `1M` for 1 month).
+- `img_tag`: Generates an HTML image tag.
+- `script_tag`: Generates an HTML script tag.
+- `stylesheet_tag`: Generates an HTML style-sheet tag to load CSS.
+- `mod_asset_url`: Provides an easy way to generate the correct URL for assets within a given module.
+- `asset_url`: Provides an easy way to generate the correct URL to point to assets in the current theme.
+- `library_url`: Provides an easy way to generate the correct URL to point to the library folder of the FOSSBilling installation.
+- `money`: Formats a price for a given currency.
+- `money_without_currency`: Formats a price for a given currency without displaying the currency symbol.
+- `money_convert`: Like `money` except it also converts the currency.
+- `money_convert_without_currency`: Like `money_without_currency` except it also converts the currency.
