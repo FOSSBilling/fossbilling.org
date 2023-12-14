@@ -4,12 +4,28 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+## 0.6.3 (12-14-2023)
+
+This release resolves some bugs with 0.6.0 & 0.6.1.
+For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
+
+### 🐛 Bug Fixes
+
+- Fixed the custom forms after the Huraga migration to Bootstrap 5.
+- Fixed a bug where some people would get an error similar to this in their administrator panel: `Cannot assign null to property Server_Client::$company of type string`
+- Reverted a pull request that had the unintended side-effect of renewal invoices duplicating the first line-item.
+
+### ➕ New Features
+
+- Invoices may now be translated and have had a couple of minor improvements.
+
+
 ## 0.6.2 (12-12-2023)
 
 This release resolves some bugs with 0.6.0 & 0.6.1.
 For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed an issue that could result in the client search displaying `null` for clients without both a first and last name.
 - Fixed an issue with the new Huraga theme where the domain action wasn't being updated on the order screen, preventing transfers from being used.
@@ -22,7 +38,7 @@ For those of you who are upgrading from versions older than 0.6.0, please check 
 This release simply resolves two issues with 0.6.0 that were missed during testing.
 For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
 
-### Bug Fixes
+### 🐛 Bug Fixes
 
 - Fixed the currency selector in the new version of Huraga.
 - Migrated the "addons" template in the ordering process to Bootstrap 5 as that was missed during the original Huraga work.
