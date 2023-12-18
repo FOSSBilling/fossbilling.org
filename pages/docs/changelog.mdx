@@ -4,9 +4,29 @@ title: FOSSBilling Changelog
 
 # FOSSBilling Changelog
 
+Below are the changelogs for all FOSSBilling releases ordered most recent to oldest.
+Dates are displayed as `MM-DD-YYYY`.
+
+## 0.6.4 (12-17-2023)
+
+This release resolves a few issues with the 0.6.x releases, improves compatibility with reverse proxies, and addresses two of the most commonly request enhancements for the order screen.
+For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
+
+### 🐛 Bug Fixes
+
+- Fixed the "Password confirmation required" message when registering on the order page.
+- Improved compatibility with reverse proxies by checking `HTTP_X_FORWARDED_HOST`.
+- Removed & replaced some broken jQuery code that caused an error when submitting public tickets.
+- Some minor PHP deprecation errors have been resolved.
+
+### 📈 Enhancements
+
+- The currency selector has been moved to the top of the order page from the bottom.
+- The domain registration options will be correctly hidden on the order page when no domain registrar has registration enabled.
+
 ## 0.6.3 (12-14-2023)
 
-This release resolves some bugs with 0.6.0 & 0.6.1.
+This release resolves some bugs with the 0.6.x releases.
 For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
 
 ### 🐛 Bug Fixes
