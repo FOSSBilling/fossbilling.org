@@ -5,7 +5,30 @@ title: FOSSBilling Changelog
 # FOSSBilling Changelog
 
 Below are the changelogs for all FOSSBilling releases ordered most recent to oldest.
+
 Dates are displayed as `MM-DD-YYYY`.
+
+## 0.6.5 (12-26-2023)
+
+This release brings further improvements to the 0.6.x releases in the form of bugfixes and minor enhancements.
+
+For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
+
+### 🐛 Bug Fixes
+
+- Fixed an error when searching transactions.
+- Disabled email DNS validation when logging in as it could prevent someone from updating their email address if it becomes invalid.
+- Fixed address formatting in the PDF footer.
+- Fixed a missing icon for domain management in the administrator panel.
+- Added a missing `api-form` class from the order screen, which resulted in account registrations to not use the API wrapper and instead display a JSON result on the screen.
+- Increased the maximum timeout for the WHM server manager to help resolve timeout issues with slow servers.
+- Fixed an outdated URL being used when trying to search KB articles.
+- Fixed a typo on the PDF templates.
+
+### 📈 Enhancements
+
+- The default PDF template will now hide more items that aren't set.
+- Some improvements have been made to logging, you'll now find multiple folders under the `data/log` directory with each one being associated with a given logging channel. Each channel will have daily logs which will be rotated and retained for 90 days.
 
 ## 0.6.4 (12-17-2023)
 
