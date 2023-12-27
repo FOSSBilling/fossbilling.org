@@ -84,7 +84,7 @@ As a general rule, if you are looking to run a simple FOSSBilling container that
 Regardless of the installation method used, after completing the installation, you still need to configure a cron job to ensure scheduled tasks are run. This can be achieved using the command below on the host system (replacing `<container name/id>` with the container name/ID as appropriate):
 
 ```
-(crontab -l; echo "*/5 * * * * docker exec <container name/id> php /var/www/html/cron.php")|awk '!x[$0]++'|crontab -
+(crontab -l; echo "*/5 * * * * docker exec <container name/id> su www-data -s /usr/local/bin/php /var/www/html/cron.php")|awk '!x[$0]++'|crontab -
 ```
 
 If you do not know the container name or ID for the above, you can get a list of containers with `docker ps`.
