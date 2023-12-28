@@ -1,0 +1,191 @@
+---
+title: Installing FOSSBilling
+description: This guide will walk you through all of the basic steps for installing FOSSBilling onto your server.
+---
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleInfo,
+  faPersonDigging,
+  faServer,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
+import { Callout, Tab, Tabs } from "nextra-theme-docs";
+
+# <FontAwesomeIcon icon={faServer} /> Installing FOSSBilling
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+  This article needs visual improvements. If you can provide screenshots or
+  other helpful visuals, please help us improve it using the **"Edit this
+  page"** button in the sidebar. Thanks!
+</Callout>
+
+## Prerequisites
+
+- A domain or sub-domain dedicated to FOSSBilling (Sub-folders are not applicable at the moment).
+- Your server must meet or exceed the [system requirements](https://fossbilling.org/docs/getting-started/requirements).
+- A webserver running a configuration created for FOSSBilling (See examples below).
+
+## Webserver configurations
+
+Except for Apache, the following configurations should be used as _examples_ and treated as starting points for when installing FOSSBilling. They may have placeholders that need to be replaced or be incomplete in some way.
+
+<Callout type="info">
+    If you're using a server you didn't setup yourself / a control panel and you're unsure what type of webserver you are using, it's most likely Apache which will be the easiest to setup.
+
+    If you're unsure how to perform the basic setup for your chosen webserver (such as configuring virtual hosts), we recommend googling what you are having issues with.
+    There are some high quality guides by companies like Digital Ocean which can do a better job of describing the basic process than we can.  
+</Callout>
+
+<Tabs items={['Apache / LiteSpeed / OpenLiteSpeed', 'NGINX']}>
+  <Tab>
+Good news! FOSSBilling includes the correct .`htaccess` file out-of-the box . Setup the domain as you normally would and then proceed with the installation steps.
+
+If you are using OpenLiteSpeed, be sure to reload the associated service after installing so the new `.htaccess` file is loaded by the server.
+  </Tab>
+  <Tab>
+Below you may find the example NGINX configuration file to get FOSSBilling working correctly under NGINX. Further adjustments may be needed for items such as SSL and there are placeholder values you will need to replace with the appropriate values for your server.
+```conf
+server {
+	listen 80;
+	server_name %%DOMAIN%%
+	return 301 https://%%DOMAIN%%/request_uri/;
+}
+
+server {
+	listen 443 ssl http2;
+	ssl_certificate      /path/to/ssl/certicate.crt;
+	ssl_certificate_key  /path/to/ssl/certicate.key;
+	ssl_stapling on;
+	ssl_stapling_verify on;
+
+	set $root_path '%%SOURCE_PATH%%';
+	server_name %%DOMAIN%%;
+
+	index index.php;
+	root $root_path;
+	try_files $uri $uri/ @rewrite;
+	sendfile off;
+	include /etc/nginx/mime.types;
+
+	# Block access to sensitive files and return 404 to make it indistinguishable from a missing file
+	location ~* .(ini|sh|inc|bak|twig|sql)$ {
+		return 404;
+	}
+
+	# Block access to hidden files except .well-known
+	location ~ /\.(?!well-known\/) {
+		return 404;
+	}
+
+	# Disable PHP execution in /uploads
+	location ~* /uploads/.*\.php$ {
+		return 404;
+	}
+
+	# Deny access to /data
+	location ~* /data/ {
+		return 404;
+	}
+
+	location @rewrite {
+		rewrite ^/page/(.*)$ /index.php?_url=/custompages/$1;
+		rewrite ^/(.*)$ /index.php?_url=/$1;
+	}
+
+	location ~ \.php {
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+		# fastcgi_pass need to be changed according your server setup:
+		# phpx.x is your server setup
+		# examples: /var/run/phpx.x-fpm.sock, /var/run/php/phpx.x-fpm.sock or /run/php/phpx.x-fpm.sock are all valid options
+		# Or even localhost:port (Default 9000 will work fine)
+		# Please check your server setup
+
+		fastcgi_pass unix:/run/php/phpx.x-fpm.sock;
+			fastcgi_param PATH_INFO       $fastcgi_path_info;
+			fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+			fastcgi_intercept_errors on;
+			include fastcgi_params;
+		}
+
+		location ~* ^/(css|img|js|flv|swf|download)/(.+)$ {
+			root $root_path;
+			expires off;
+		}
+}
+```
+  </Tab>
+</Tabs>
+
+## Pre-installation steps
+
+1. Download the latest [FOSSBilling release](https://fossbilling.org/downloads) from our downloads page. Be sure to **not** download a preview build unless that's specifically what you're after.
+2. Create a new MySQL database and database user for your FOSSBilling installation.
+3. If you intend to use SSL on your installation (which you should!), ensure it's setup and functioning before performing the installation process.
+4. When using products such as Cloudflare, ensure options like auto-minification for JS and CSS files is disabled.
+5. If you are using a reverse proxy, ensure your proxy is configured to send the `X-Forwarded-Host` and `X-Forwarded-Proto` headers to FOSSBilling.
+
+## Installation Steps
+
+1. Access the document root for your domain and ensure any placeholder files created by your control panel are deleted so they don't cause issues (placeholder pages, `.htaccess` files, etc).
+2. Upload the FOSSBilling release you previously downloaded and extract the contents into the document root. Your document root should now look similar to this:
+```
+├── data
+├── install
+├── library
+├── locale
+├── modules
+├── themes
+├── vendor
+├── config-sample.php
+├── config.php
+├── cron.php
+├── di.php
+├── index.php
+...
+```
+3. Access the domain you've setup for FOSSBilling. If you are going to use SSL, ensure you access the domain via HTTPS so the application can automatically configure itself for HTTPS. You should automatically be redirected to domain.com/install/install.php.
+
+If you see a page similar to this, you're in the right place!
+![The FOSSBilling installer landing page](/img/guides/install/installer-landing.png)
+
+4. Follow the on-screen steps to agree to the FOSSBilling license, enter your database credentials, and setup the login information for your administrator account.
+5. Ensure you correctly configure your default currency. The price format **must** contain `{{price}}` in order for it to work correctly as this represents the price of your currency. Simply enter the currency either on the left or the right side of  `{{price}}`.
+6. Click install. After a few moments, you should be presented with a success page.
+
+<Callout type="info">
+	Ran into an error after clicking install? You may need to manually empty the database you've created for FOSSBilling before trying again.
+</Callout>
+
+## Post-installation Steps
+
+After completing the steps inside of the FOSSBilling installer, you're almost ready to log in and begin using the software!
+Ensure you've followed these last few steps to validate that everything is working correctly.
+
+### Configuring the cronjob
+
+FOSSBilling relies on the cronjob to perform important actions such as handling renewals, expired orders, sending emails, and more. Because of this, it's critical that cron is configured correctly, is running reliably, and that it's setup to run frequently enough.
+
+We recommend configuring cron to run once ever 5 minutes. If 15 minutes goes past without cron executing, FOSSBilling will display a notification in the administrator panel. If you see this message, you need to resolve the issue as soon as possible.
+![FOSSBilling warning about cron execution](/img/guides/install/cron-warning.png)
+
+#### Utilizing a local cronjob
+
+<Callout type="info">
+	The cronjob also needs to be run on a PHP version that FOSSBilling supports. If you are running into errors, you may be experiencing a common issue where your cronjob isn't being run on the same PHP version as your domain is configured for. For troubleshooting steps, please check [this forum post](https://forum.fossbilling.org/d/117-error-in-cron-after-update/3) for some pointers.
+</Callout>
+
+FOSSBilling will display the correct cron command to utilize to run it's cronjob both on the installation complete page as well as in the administrator panel.
+If you ever need to find it again, navigate to `Settings` -> `Scheduled Tasks` (example.com/admin/extension/settings/cron).
+
+![Cron settings - correct cron command](/img/guides/install/cron-settings-command.png)
+
+#### Utilizing a remote service to activate cron
+
+If you find that you are unable to use a local cronjob to run cron, you may instead use a remote service to call a given URL to execute cron, but first you must enable the functionality.
+To do this navigate to `Settings` -> `Scheduled Tasks` (example.com/admin/extension/settings/cron`) and then enable the cron API endpoint and click on "update"
+
+You will then be able to use the URL displayed on the page with an external service to automatically execute the cronjob.
+
+![Cron settings - remote URL](/img/guides/install/cron-settings-remote.png)
