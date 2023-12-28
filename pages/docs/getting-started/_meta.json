@@ -1,10 +1,7 @@
 {
   "requirements": "System Requirements",
-  "shared": "Install on cPanel or Plesk",
-  "apache": "Install on Apache",
-  "nginx": "Install on Nginx",
+  "installation": "Install Normally",
   "docker": "Install using Docker",
-  "softaculous": "Install using Softaculous",
   "migrate-from-boxbilling": "Migrate from BoxBilling",
   "building": "Building FOSSBilling"
 }
