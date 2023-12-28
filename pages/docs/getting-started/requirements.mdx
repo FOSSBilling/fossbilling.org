@@ -22,7 +22,7 @@ Most control panels will either come configured like this out-of-the-box or supp
 
 - Apache with `mod_rewrite` enabled
 - LiteSpeed
-- NGINX running the correct [configuration](https://config.fossbilling.org/).
+- NGINX running the correct [configuration](http://localhost:3000/docs/getting-started/installation#webserver-configurations).
   - The config generator will give you a good starting point, however you may still need to configure items such as SSL and PHP to be correct for your server.
 - OpenLiteSpeed
   - Due to how OpenLiteSpeed handles `.htaccess` files, it's typically not suitable for selling web hosting, however FOSSBilling itself will run on it without any issues.
@@ -49,12 +49,12 @@ At a minimum for correct functionality, you should have the following extensions
 - `iconv`
 - `json`
 - `zlib`
+- `curl` >= version 7.34.0. (You may need to rebuild PHP after updating as both cURL on your server and the PHP extension need to be updated)
 
 ### Recommended extensions
 
 These extensions may not be needed to make FOSSBilling work, however they are recommended for improved performance, compatibility, and functionality.
 
-- `curl`
 - `mbstring`
 - `opcache` (This is PHP's official extension that's used to cache compiled scripts and improve performance. We recommend using this for all PHP applications!)
 - `imagick` or `gmagick`
