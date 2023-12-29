@@ -8,6 +8,30 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.6 (12-28-2023)
+
+This release brings some bugfixes, improved theming functionality, and a better update experience.
+
+For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
+
+### 🐛 Bug Fixes
+
+- Email verification emails will now skip the email queue to ensure faster delivery.
+- Fixed a regression which caused the PDF invoices to only display the system's default currency. If you are using a custom PDF template, please apply the changes in [PR #2022](https://github.com/FOSSBilling/FOSSBilling/pull/2022)
+- Added a workaround to ensure special characters such as single quotes (`'`) in a payment gateway's name won't cause JS errors on the invoice page.
+
+### ➕ New Features
+
+- Themes may now define default attributes that will be applied to rendered markdown content, improving their ability to customize the appearance of various aspects of FOSSBilling.
+  - Our default themes are now using this to improve how tables, quotes, and images within markdown content renders on the page.
+- You may now use a `html_custom` folder within a theme to override any templates. This folder should be placed alongside the theme's original `html` folder and will allow for easier customization of themes for end-users.
+- The update screen now displays the release notes for all versions you are upgrading through rather than the latest. For example, if upgrading from 0.6.2 to 0.6.5 it would display the changes for 0.6.3, 0.6.4, and 0.6.5 rather than only 0.6.5.
+- The update screen now displays when the last update check was performed, when the next one will be performed, and it now also allows you to manually perform a recheck.
+
+### 📈 Enhancements
+
+- The update screen should now properly reflect when there's no update available.
+
 ## 0.6.5 (12-26-2023)
 
 This release brings further improvements to the 0.6.x releases in the form of bugfixes and minor enhancements.
