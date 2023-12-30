@@ -1,6 +1,7 @@
 {
   "guides": "Guides",
   "file-structure": "FOSSBilling File Structure",
-  "code-of-conduct": "Code of Conduct",
-  "twig-filters": "Twig Filters & Extensions"
+  "twig-filters": "Twig Filters & Extensions",
+  "event-hooks": "Event Hooks",
+  "code-of-conduct": "Code of Conduct"
 }
