@@ -8,65 +8,85 @@ title: Troubleshooting
 
 ### Subfolder installations
 
-If you are trying to run an installation of FOSSBilling using a subfolder rather than a subdomain, i.e. `https://myfancyhost.com/fossbilling` instead of `https://fossbilling.myfancyhost.com` then it will not work. 
+If you are trying to run an installation of FOSSBilling using a subfolder rather than a subdomain, i.e. `https://myfancyhost.com/fossbilling` instead of `https://fossbilling.myfancyhost.com` then it will not work.
 
-Support for subfolder installations was deprecated in FOSSBilling 0.4.2. They are not currently supported and may or may not return in the future. Please ensure that your FOSSBilling install is in the root folder of your site, i.e. public_html and that you have a working subdomain DNS record pointing at it. 
+Support for subfolder installations was deprecated in FOSSBilling 0.4.2. They are not currently supported and may or may not return in the future. Please ensure that your FOSSBilling install is in the root folder of your site, i.e. public_html and that you have a working subdomain DNS record pointing at it.
 
 ### Apache, LiteSpeed, or OpenLiteSpeed
 
 If you are using Apache, LiteSpeed, or OpenLiteSpeed and you are receiving a HTTP 404 error when trying to access portions of FOSSBilling, please check the following troubleshooting steps:
- - Ensure that you have `mod_rewrite` installed and enabled.
- - Verify there is a valid `.htaccess` file in the same directory as the FOSSBilling `index.php` file.
- - If you do have a valid `.htaccess` file, verify that it matches the [default FOSSBilling one](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/.htaccess)
- - For those of you who are using OpenLiteSpeed, you will need to restart the OpenLiteSpeed service or the webserver before the new `.htaccess` file will be loaded & take effect.
- - If you've checked all of the above, restart your webserver. Some configuration changes aren't applied until services are reloaded and restarting the server will ensure everything has had a chance to reload.
+
+- Ensure that you have `mod_rewrite` installed and enabled.
+- Verify there is a valid `.htaccess` file in the same directory as the FOSSBilling `index.php` file.
+- If you do have a valid `.htaccess` file, verify that it matches the [default FOSSBilling one](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/.htaccess).
+- For those of you who are using OpenLiteSpeed, you will need to restart the OpenLiteSpeed service or the webserver before the new `.htaccess` file will be loaded & take effect.
+- If you've checked all of the above, restart your webserver. Some configuration changes aren't applied until services are reloaded and restarting the server will ensure everything has had a chance to reload.
 
 ### Apache
+
 - Ensure that you have `AllowOverride All` enabled.
-	- Check [this post](https://stackoverflow.com/a/22526144) on Stack Overflow for info on how to enable it. 
+  - Check [this post](https://stackoverflow.com/a/22526144) on Stack Overflow for info on how to enable it.
 
 ## Cloudflare specific issues
 
 Some Cloudflare features can cause issues within FOSSBilling, here is a list of features and any known issues they cause
 
 ### Auto Minify
- - Enabling the "Auto Minify" feature with Cloudflare can cause issues within the admin panel, specifically related to file integrity checks. This will cause JS and CSS files to no longer be loaded inside your web browser and for the administrator panel to be unusable. If this issue is effecting you, your browser should display an error like this: `None of the “sha384” hashes in the integrity attribute match the content of the subresource.`
- - The solution for this issue is to simply disable the "Auto Minify" feature.
+
+- Enabling the "Auto Minify" feature with Cloudflare can cause issues within the admin panel, specifically related to file integrity checks. This will cause JS and CSS files to no longer be loaded inside your web browser and for the administrator panel to be unusable. If this issue is effecting you, your browser should display an error like this: `None of the “sha384” hashes in the integrity attribute match the content of the subresource.`
+- The solution for this issue is to simply disable the "Auto Minify" feature.
 
 ## Permission issues
 
 If you're receiving permission related errors (such as with the `config.php` file or the cache folder) these troubleshooting steps may help.
 
 ### File and folder permissions
+
 - If you are using a control panel with a "fix permissions" button, first try that
 - Verify files and folders for your website have the correct permissions applied. Usually `755` is correct for folders and 644 for PHP files.
+  - From within your terminal and under the document root, you can manually apply the correct permissions by using the following commands:
+    - `find . -type d -exec chmod 755 {} \;` to apply 755 to all folders.
+    - `find . -type f -exec chmod 644 {} \;` to apply 644 to all files.
 
 ### File ownership
+
 If the wrong owner is assigned to the files, then even with the correct file permissions assigned (`755`), things will still not work correctly. You can check the correct own using the following steps:
+
 - Create a new PHP file and place the following contents inside of it: `<?php var_dump(get_current_user());?>`
-- Open the PHP file in your web-browser. This should output the user that is used to execute PHP, which you can then use to fix the user / group permissions for your website. 
+- Open the PHP file in your web-browser. This should output the user that is used to execute PHP, which you can then use to fix the user / group permissions for your website.
 
 ### RHEL Linux (and derivatives)
+
 Those of you who are using a RHEL derived Linux distribution (RHEL, CentOS, Rocky Linux, AlmaLinux), you may find that FOSSBilling is unable to create files regardless of the file/folder permissions. Please try the following solutions:
- - Configure SELinux to allow PHP (Recommended)
-	 1. Ensure you have the `policycoreutils-python` package installed.
-	 2. Set the proper context for the document root
-		 - Note: Please check the paths in the below code snippets before executing them. Your actual paths may differ.
-		 1. `semanage fcontext -a -t httpd_sys_content_t '/var/www/html(/.*)?'`
-		 2. `restorecon -Rv /var/www/html`
-	3. Configure SELinux rules.
-		 1. `setsebool -P httpd_can_network_connect on`
-		 2. `setsebool -P httpd_can_sendmail on`
-		 3. Install the `selinux-policy-devel` package
-		 4. `setsebool -P httpd_can_network_connect_db on`
-	4. Restart the server
- - Disable SELinux (Discouraged)
-	 - Edit `/etc/selinux/config`
-	 - Change `SELINUX=enforcing` to `SELINUX=disabled` and save the file
-	 - Reboot the server
+
+- Configure SELinux to allow PHP (Recommended)
+  1. Ensure you have the `policycoreutils-python` package installed.
+  2. Set the proper context for the document root
+     - Note: Please check the paths in the below code snippets before executing them. Your actual paths may differ.
+     1. `semanage fcontext -a -t httpd_sys_content_t '/var/www/html(/.*)?'`
+     2. `restorecon -Rv /var/www/html`
+  3. Configure SELinux rules.
+     1. `setsebool -P httpd_can_network_connect on`
+     2. `setsebool -P httpd_can_sendmail on`
+     3. Install the `selinux-policy-devel` package
+     4. `setsebool -P httpd_can_network_connect_db on`
+  4. Restart the server
+- Disable SELinux (Discouraged)
+  - Edit `/etc/selinux/config`
+  - Change `SELINUX=enforcing` to `SELINUX=disabled` and save the file
+  - Reboot the server
 
 ## Unknown "encore_entry_link_tags" function.
 
 This error occurs when attempting to use FOSSBilling under a sub-folder (`example.com/billing`).
 For the time being, we aren't providing support for installing FOSSBilling under a sub-folder, however we do intend to improve how routing is handling later down the line which should resolve this issue.
 The fix is to instead install FOSSBilling to a sub-domain (`billing.example.com`).
+
+## Errors after updating
+
+If you're having errors after updating, the following steps may help you resolve any issues you are experiencing.
+
+1. Review the [changelog](https://fossbilling.org/docs/changelog) for any breaking changes or for any manual actions required.
+2. Try using the fallback patcher to ensure that all patches have applied correctly by navigating to `yourdomain.com/run-patcher`
+   - If you are having to use the fallback patcher, this indicates there is likely a permission issue that's halting the update process mid-way through. We'd recommend checking the troubleshooting section for permission issues.
+3. If you're still experiencing issues, you can ask for further assistance via our [forum](https://forum.fossbilling.org/), [Discord](https://fossbilling.org/discord), or with a [bug report](https://github.com/FOSSBilling/FOSSBilling/issues).
