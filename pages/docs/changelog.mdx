@@ -8,6 +8,19 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.7 (12-31-2023)
+
+This will be the last FOSSBilling release of 2023 and with it comes a handful of bug-fixes. We hope everyone had a great 2023 and that you'll have an even better 2024!
+
+For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
+
+### 🐛 Bug Fixes
+
+- Resolved an issue where using certain payment gateways would log out the client after the payment was completed.
+- Fixed how negative prices are displayed in the UI.
+- Disabled currency conversions for PDF invoices as the pricing on invoices is already converted.
+  - If you are using a custom PDF invoice template, please be sure to replace `money_convert` with `money` to ensure you aren't effected by this issue.
+
 ## 0.6.6 (12-28-2023)
 
 This release brings some bugfixes, improved theming functionality, and a better update experience.
