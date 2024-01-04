@@ -8,6 +8,22 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.8 (1-4-2024)
+
+This is a minor update to address an issue with the installer and bring some quality of life improvements.
+
+For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
+
+### 🐛 Bug Fixes
+
+- Fixed an issue in the installer where `PATH_LOG` was undefined.
+- Fixed the usage of placeholders in some exceptions, mostly in server managers.
+- The "I will use my existing domain and update nameservers" option will now be correctly displayed by default when there's no option available to perform a registration.
+
+### 📈 Enhancements
+
+- When manually selecting a language, the cookie created will now be valid for 365 days rather than only 7, preventing having to re-select the proper language frequently.
+
 ## 0.6.7 (12-31-2023)
 
 This will be the last FOSSBilling release of 2023 and with it comes a handful of bug-fixes. We hope everyone had a great 2023 and that you'll have an even better 2024!
