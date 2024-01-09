@@ -8,6 +8,27 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.9 (1-8-2024)
+
+This release incorporates some enhancements to the client area and some other minor improvements.
+
+For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
+
+### 🐛 Bug Fixes
+
+- Fixed some minor front-end issues for the client area.
+- The WHM server manager now has additional checks to ensure invalid usernames won't be generated.
+
+### 📈 Enhancements
+
+- Improved the visual consistency of the client area.
+- The admin panel login page will now respect the choice between light & dark mode.
+- The side menu items in the client area will now be added to the mobile hamburger menu to ensure mobile users won't have reduced functionality.
+- Some minor improvements to logging have been made.
+  - Errors while trying to deliver errors are now sent to a new "email" log channel for easier visibility.
+  - When a session fails the fingerprint check & is destroyed, a warning will be sent to the PHP error log.
+- Added a new config option to disable session fingerprinting.
+
 ## 0.6.8 (1-4-2024)
 
 This is a minor update to address an issue with the installer and bring some quality of life improvements.
