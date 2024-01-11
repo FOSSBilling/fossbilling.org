@@ -176,14 +176,14 @@ We recommend configuring cron to run once every 5 minutes. If 15 minutes goes pa
 </Callout>
 
 FOSSBilling will display the correct cron command to utilize to run it's cronjob both on the installation complete page as well as in the administrator panel.
-If you ever need to find it again, navigate to `Settings` -> `Scheduled Tasks` (example.com/admin/extension/settings/cron).
+If you ever need to find it again, navigate to `Settings` -> `Scheduled Tasks` (/admin/extension/settings/cron).
 
 ![Cron settings - correct cron command](/img/guides/install/cron-settings-command.png)
 
 #### Utilizing a remote service to activate cron
 
 If you find that you are unable to use a local cronjob to run cron, you may instead use a remote service to call a given URL to execute cron, but first you must enable the functionality.
-To do this navigate to `Settings` -> `Scheduled Tasks` (example.com/admin/extension/settings/cron`) and then enable the cron API endpoint and click on "update"
+To do this navigate to `Settings` -> `Scheduled Tasks` (/admin/extension/settings/cron) and then enable the cron API endpoint and click on "update"
 
 You will then be able to use the URL displayed on the page with an external service to automatically execute the cronjob.
 
