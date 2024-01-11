@@ -1,3 +1,8 @@
+---
+title: Troubleshooting FOSSBilling Issues
+description: If you're having errors or issues with FOSSBilling, this guide may provide some useful information on how to resolve them.
+---
+
 import { Callout, Tab, Tabs } from "nextra-theme-docs";
 
 # Common problems and their solutions
@@ -97,15 +102,18 @@ If you're seeing a message similar to this in the FOSSBilling dashboard, that me
 ![FOSSBilling warning about cron execution](/img/guides/install/cron-warning.png)
 
 <Callout type="info">
-  Note: by default FOSSBilling includes a fallback cron behavior which will be run when cron goes past 15 minutes since it's last execution & you access the administrator dashboard.
-  So if you see this message and then go check the last execution time, it will be quite recent & this does not mean cron is working correctly!
+  Note: by default FOSSBilling includes a fallback cron behavior which will be
+  run when cron goes past 15 minutes since it's last execution & you access the
+  administrator dashboard. So if you see this message and then go check the last
+  execution time, it will be quite recent & this does not mean cron is working
+  correctly!
 </Callout>
 
 1. Check for any errors in the FOSSBilling [error log](https://fossbilling.org/docs/faq#where-can-i-find-error-logs).
    - FOSSBilling will try to alert you if the PHP version is out of date, however in some cases newer PHP features on older versions results in a PHP compile error which we cannot handle. See the lower steps to resolve this. Below are any known examples of these errors:
      - `Cannot use 'final' as constant modifier`: This error occurs when cron is being run with a PHP version older 8.1.
 2. Validate you have correctly configured cron to run once every 5 minutes. FOSSBilling will display a crontab example with the correct path for your installation under the cron settings (/admin/extension/settings/cron)
-   ![Cron settings - correct cron command](/img/guides/install/cron-settings-command.png)
+3. If you're using a control panel with multiple users, log into your user account via the CLI and enter `php -v` to see what the default PHP version is under your account. If it's less than FOSSBilling's minimum PHP version, follow the below steps to correct it.
 
 ### An incorrect PHP version is being used
 
