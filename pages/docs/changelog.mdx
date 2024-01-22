@@ -8,6 +8,37 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.10 (1-21-2024)
+
+This release of FOSSBIlling includes some minor bug fixes and some new functionality to improve the stability and usability of the software.
+
+For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
+
+### 🐛 Bug Fixes
+
+- Fixed a few minor issues with the FOSSBilling error page.
+- The HestiaCP integration will now prevent invalid usernames from being generated.
+- Fixed a bug that could occur when the WYSIWYG editor is loaded in the admin area with no text areas to attach to.
+- We've added a workaround to ensure that cart contents are no longer lost when logging in.
+
+### ➕ New Features
+
+- FOSSBilling now includes a brand new `FOSSBilling\Config` class to handle interactions with the config file including reading from it, updating specific values, and dumping a new config to the config file. This is now used by default by all FOSSBilling code and should improve the reliability of FOSSBilling while providing an easier interface for developers to use.
+  - This class handles interactions with properties via dot notation.
+  - The config file is now pretty-printed to make manual edits much easier.
+  - Default values are used when reading from the config file via the class which should eliminate undefined references that could sometimes occur after a minor error in the update process.
+- You may now specify the default network interface for FOSSBilling to use when making external network requests as well as see what IP address those requests will be coming from under the "network interface" tab in the system settings.
+- You may now specify the password length that will be generated for hosting accounts.
+- There's now a `debug_fingerprint` config option which can be used to print debug info to the log file when a session fails the fingerprint check.
+
+### 📈 Enhancements
+
+- We've enhanced our testing infrastructure to include tests performed against a live FOSSBilling installation, further reducing the possibility of regressions between releases. For now there are only 24 tests performed, however we will continue to expand these to provide more coverage over time.
+
+### 🗑️ Deprecations
+
+- Deprecated accessing the config file via both the `DI` as well as directly including it into an array from `PATH_CONFIG`.
+
 ## 0.6.9 (1-8-2024)
 
 This release incorporates some enhancements to the client area and some other minor improvements.
