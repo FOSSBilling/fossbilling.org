@@ -8,6 +8,30 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.11 (2-2-2024)
+
+### 🐛 Bug Fixes
+
+For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
+
+- Fixed an error when attempting to use an access hash with the WHM server manager.
+
+## 0.6.11 (2-2-2024)
+
+For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
+
+### 🐛 Bug Fixes
+
+- Fixed an SQL error that would appear if you tried to add a server without specifying the password length.
+- Cleaned up various PHP deprecation errors.
+- Fixed a mistake which resulted in PDFs not including a client's city, state, zip-code, and country.
+- Slightly improved how the PDF footer interacts with a large invoice (~10+ items).
+- The DirectAdmin and Hestia server managers should now properly use a configured username prefix.
+
+### ➕ New Features
+
+- You can now disable public tickets from under the "support" settings.
+
 ## 0.6.10 (1-22-2024)
 
 This release of FOSSBIlling includes some minor bug fixes and some new functionality to improve the stability and usability of the software.
