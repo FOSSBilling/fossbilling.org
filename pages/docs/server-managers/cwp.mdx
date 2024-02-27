@@ -2,6 +2,8 @@
 title: CWP and FOSSBilling
 ---
 
+import { Callout } from 'nextra-theme-docs'
+
 # Integrating FOSSBilling with CWP
 
 ## Configuring CWP
@@ -29,6 +31,10 @@ FOSSBilling is integrated with CWP (Control Web Server) using it's API. We will 
 6.  Click the add server button to save your settings and add the server to FOSSBilling.
 
 ## Hosting plans with CWP and FOSSBilling
+
+<Callout type='info'>
+    Attempting to use a hosting plan with a name such as "Plan 1" won't work correctly, instead it should be named "Plan1".
+</Callout>
 
 Due to technical limitations between FOSSBilling and CWP, FOSSBilling cannot create hosting packages automatically. Because of this, you should first create the hosting plans (packages) you want to use from withing CWP and define the limitations and capabilities you want it to have there, as FOSSBilling will be unable to change or define them.
 

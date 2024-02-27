@@ -24,14 +24,14 @@ These following documents security options under the `config.php` configuration 
 | --- | --- | --- | --- |
 | `mode` | `strict` | `strict` or `regular` | Setting this to `strict` sets cookies to have their `samesite` attribute set to `strict` and they will be set as `httpOnly`. Setting it to `regular` will use the default cookie properties except that they will still be set as `httpOnly`. |
 | `force_https` | `true` | `bool` | Setting this to `true` will cause FOSSBilling to redirect all requests to HTTPS and force cookies to only be sent over HTTPS.|
-| `cookie_lifespan` | `7200` | `int` | This property configures the number of seconds that cookies and session is considered valid for. After this time period, they will expire and be destroyed. The default configuration is `7200` seconds (2 hours).|
+| `session_lifespan` | `7200` | `int` | This property configures the number of seconds that sessions are considered valid for. After this time period, they will expire and be destroyed. The default configuration is `7200` seconds (2 hours).|
 
 #### Example in  the config
 ```
 'security' => [
 	'mode' => 'strict',
 	'force_https' => true,
-	'cookie_lifespan' => 7200,
+	'session_lifespan' => 7200,
 ],
 ```
 
