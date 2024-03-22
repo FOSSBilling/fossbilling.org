@@ -8,6 +8,42 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.16 (2-22-2024)
+
+⚠️This release makes some changes to how FOSSBilling implements currency exchange rate data providers. We highly suggest validating your previous settings have correctly been migrated over.
+
+⚠️If you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well for breaking changes.
+
+### ➕New Features
+
+- In the Huraga theme settings you may now configure various options for the requiring TOS / Privacy Policy acceptance on the signup and checkout pages.
+- FOSSBilling now supports multiple currency exchange rate data providers including automated exchange rate syncing out-of-the-box with zero setup. We suggest checking your previous configuration was correctly migrated during the update.
+	- New FOSSBilling installations will automatically have exchange rates being synced with zero config needed.
+	- Removed the European Central Bank as a data provider.
+	- Added [ExchangeRate-API](https://www.exchangerate-api.com/) as a data provider.
+	- Restored support for [currencylayer](https://currencylayer.com/) as a data provider.
+	- Configurable sync frequency ranging from daily down to every minute (if cron is being run frequently enough). ExchangeRate-API also supports an "auto" mode which will intelligently sync only when new data is available, preventing excess API requests.
+
+### 🐛 Bug Fixes
+
+- Minor fixes to prevent PHP deprecation errors.
+- Fixed an error that caused a 404 error code to be given for the FOSSBilling generated `sitemap.xml` file.
+- Adjusted the checkout logic to prevent possible accidental variable name conflicts between.
+- Fixed the missing margin for multiple product categories on the order screen.
+
+### 📈 Enhancements
+
+- The default FOSSBilling themes will now automatically disable buttons to prevent duplicated clicks when performing API requests.
+- Many grammatical / wording issues have been resolved in FOSSBilling, about 10% of the translatable strings received changes.
+
+### 🔐 Security
+
+- Increased the password hashing cost, improving password hash security.
+
+### 📝 Changes
+
+- The official docker image has been upgraded to PHP 8.3 and the Imagick extension was removed as it has unresolved build issues.
+
 ## 0.6.15 (2-20-2024)
 
 For those of you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well as it included some major changes, including backwards-incompatible ones.
