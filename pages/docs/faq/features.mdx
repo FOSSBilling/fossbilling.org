@@ -1,0 +1,110 @@
+---
+title: Features & Functionality
+---
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCode, faPersonDigging } from "@fortawesome/free-solid-svg-icons";
+import { Callout } from "nextra-theme-docs";
+
+# Features & Functionality
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+  This list is still incomplete! If something isn't listed, that may not mean
+  that FOSSBilling doesn't have support for it.
+</Callout>
+
+This page provides an overview of all functionality and if it is or isn't implemented in FOSSBilling.
+If you see something that's unimplemented and you'd like to have it added, consider contributing to the project!
+
+## Currency Support
+
+| Item                            | Supported | Planned | Notes                                                                                                                                                                                                                                                                 |
+| ------------------------------- | --------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Multi currency support          | ✅        |         | Some various limitations such as with currency formatting. General improvements are planned long-term.                                                                                                                                                                |
+| Automatic exchange rate syncing | ✅        |         | Automatically enabled for new installations. Supports [ExchangeRate-API](https://www.exchangerate-api.com/), [Currency Data API](https://apilayer.com/marketplace/currency_data-api), and [currencylayer](https://currencylayer.com/) for exchange rate data sources. |
+
+## Security & Anti-Spam
+
+_Note:_ Many of the following require the "SpamChecker" module to be installed and must be configured under it's settings.
+
+| Item                                                               | Supported | Planned | Notes                                                                                                                                                                                                                  |
+| ------------------------------------------------------------------ | --------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| IP Address blocking                                                | ✅        |         |                                                                                                                                                                                                                        |
+| reCAPTCHA                                                          | ✅        |         | Currently only v2 is supported. Support for more providers and versions is planned.                                                                                                                                    |
+| "Stop Forum Spam" integration                                      | ✅        |         |                                                                                                                                                                                                                        |
+| Disallowing temporary / disposable email addresses from being used | ✅        |         | Uses the great [FakeFilter](https://fakefilter.net/static/docs/intro) project as a large, reliable list of temporary email address domains to filter out.                                                              |
+| MFA/2FA                                                            | ❌        | ✅      | MFA/2FA support is considered a prerequisite before FOSSBilling reaches version 1 and is officially considered production-ready.                                                                                       |
+| Activity logs                                                      | ✅        |         |                                                                                                                                                                                                                        |
+| Session hijacking prevention                                       | ✅        |         | This is not an advanced implementation and leans towards not causing issues rather than being easily triggered.                                                                                                        |
+| Session age limits                                                 | ✅        |         | Defaults to 2 hours and may be adjusted via the configuration file.                                                                                                                                                    |
+| Restricting staff member logins to certain IP addresses            | ✅        |         | These are set via the "staff" settings. Be very careful as this may lock you out of the administrator panel.                                                                                                           |
+| FOSSBilling version-related alerts                                 | ✅        |         | FOSSBilling will periodically query our ["Central Alerts" API](https://fossbilling.org/api/central-alerts/list) and will warn the administrator about major issues with the current version (such as a vulnerability). |
+| CSRF prevention                                                    | ✅        |         | May be disabled via the configuration file.                                                                                                                                                                            |
+| Staff member permissions                                           | ✅        |         |                                                                                                                                                                                                                        |
+
+## Hosting Functionality
+
+| Item                                          | Supported | Planned | Notes                                                                          |
+| --------------------------------------------- | --------- | ------- | ------------------------------------------------------------------------------ |
+| Automatic hosting provisioning                | ✅        |         |                                                                                |
+| Account suspension / cancellation             | ✅        |         | At the moment, the cancellation reason isn't forwarded onto the control panel. |
+| 1-click logins for clients                    | ✅        |         | Not supported by all server managers.                                          |
+| Custom domain via updated name severs         | ✅        |         |                                                                                |
+| Registering domains alongside a hosting order | ✅        |         |
+
+## Domain Registration
+
+| Item                             | Supported | Planned | Notes                                                                                                                                                                                                                                                                                             |
+| -------------------------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Registration                     | ✅        |         |                                                                                                                                                                                                                                                                                                   |
+| Renewal                          | ✅        |         |                                                                                                                                                                                                                                                                                                   |
+| Domain-specific pricing          | ❌        | ✅      | Presently domain prices are set per TLD.                                                                                                                                                                                                                                                          |
+| Changing name severs             | ✅        |         |                                                                                                                                                                                                                                                                                                   |
+| Modifying contact information    | ✅        |         |                                                                                                                                                                                                                                                                                                   |
+| Domain transfers                 | ✅        |         |                                                                                                                                                                                                                                                                                                   |
+| Domain locking                   | ✅        |         |                                                                                                                                                                                                                                                                                                   |
+| Privacy controls                 | ✅        |         |                                                                                                                                                                                                                                                                                                   |
+| Per-TLD information requirements | ❌        | ✅      | This refers to requiring additional information from a client for certain TLDs which may have legal requirements. In some cases an error can be thrown and the client can specify the info in their profile, however in other cases TLDs may be unregistrable within FOSSBilling. |
+| DNS Management                   | ❌        | ❓      |                                                                                                                                                                                                                                                                                                   |
+
+## Core Functionality
+
+| Item                             | Supported | Planned | Notes                                                                                                                                                                                                                                                                                 |
+| -------------------------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Network interface selection      | ✅        |         | It's up to individual modules to respect the specified setting. All FOSSBilling ones should do and if they don't it's then a bug, however we can't force a module built by a community member to use the correct interface & if one doesn't the developer needs to address it on their end. |
+| Theming support                  | ✅        |         |                                                                                                                                                                                                                                                                                       |
+| Emailing                         | ✅        |         | Only one outgoing email address can be configured.                                                                                                                                                                                                                                    |
+| Invoicing                        | ✅        |         |                                                                                                                                                                                                                                                                                       |
+| Usage based pricing              | ❌        | ✅      |                                                                                                                                                                                                                                                                                       |
+| One time purchase pricing        | ✅        |         |                                                                                                                                                                                                                                                                                       |
+| Recurring purchase pricing       | ✅        |         |
+| Promotional codes / discounts    | ✅        |         | Some general limitations and less advanced than other options that may be available.                                                                                                                                                                                                  |
+| Translation support              | ✅        |         |                                                                                                                                                                                                                                                                                       |
+| Timezone support                 | ✅        |         | Timezone is presently set system-wide, although we do hope to have per-client timezones as an eventual option.                                                                                                                                                                        |
+| File attachments                 | ❌        | ✅      |                                                                                                                                                                                                                                                                                       |
+| Virus scanning for attachments   | ❌        | ✅      |                                                                                                                                                                                                                                                                                       |
+| Exports / system backups         | ❌        | ✅      |                                                                                                                                                                                                                                                                                       |
+| Import / backup restoration      | ❌        | ✅      |                                                                                                                                                                                                                                                                                       |
+| Custom email templates           | ✅        |         |                                                                                                                                                                                                                                                                                       |
+| Automatic system updates         | ❌        | ✅      | FOSSBilling can self-update, however it will not do so automatically and requires you to start the process.                                                                                                                                                                           |
+| Built to be modular              | ✅        |         | FOSSBilling allows you to install unofficial themes, modules, payment gateways, server managers, domain registrars, and more.                                                                                                                                                         |
+| Date / time internationalization | ✅        |         |                                                                                                                                                                                                                                                                                       |
+
+## Ticketing / Helpdesk
+
+| Item                      | Supported | Planned | Notes                                                                                                                                                                    |
+| ------------------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Client tickets            | ✅        |         |                                                                                                                                                                          |
+| Guest tickets             | ✅        |         |                                                                                                                                                                          |
+| Email notifications       | ✅        |         |                                                                                                                                                                          |
+| Automatic ticket closure  | ✅        |         |                                                                                                                                                                          |
+| Direct replying to emails | ❌        | ❓      | This refers to a client's ability to respond to an email and have it be picked up by FOSSBilling. At the time of writing, FOSSBilling has no way to read from a mailbox. |
+| Ticket attachments        | ❌        | ✅      |                                                                                                                                                                          |
+
+## Invoices
+
+| Item                 | Supported | Planned | Notes                                                                                                         |
+| -------------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------- |
+| PDF Support          | ✅        |         |                                                                                                               |
+| PDF Customization    | ✅        |         | Uses [Dompdf](https://github.com/dompdf/dompdf) to generate a PDF off of HTML, which has limited CSS support. |
+| Translations in PDFs | ✅        |         | PDFs should automatically be generated in the currently selected language.                                    |
