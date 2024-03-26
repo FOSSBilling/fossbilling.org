@@ -8,6 +8,19 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.18 (3-26-2024)
+
+⚠️If you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well for breaking changes.
+
+### ➕New Features
+
+- The DirectAdmin server manager now has support for 1-click logging in for clients.
+- When deleting an order, there is now a new checkbox to force the order to be deleted even if an error occurs. This may be useful for example if an order is removed on your control panel without the associated order in FOSSBilling being deleted.
+
+### 🐛 Bug Fixes
+
+- We've made an adjustment to the update patching process to help mitigate cache related errors some users were seeing, especially with the last two updates.
+
 ## 0.6.17 (3-22-2024)
 
 ⚠️If you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well for breaking changes.
@@ -27,11 +40,11 @@ Dates are displayed as `MM-DD-YYYY`.
 
 - In the Huraga theme settings you may now configure various options for the requiring TOS / Privacy Policy acceptance on the signup and checkout pages.
 - FOSSBilling now supports multiple currency exchange rate data providers including automated exchange rate syncing out-of-the-box with zero setup. We suggest checking your previous configuration was correctly migrated during the update.
-	- New FOSSBilling installations will automatically have exchange rates being synced with zero config needed.
-	- Removed the European Central Bank as a data provider.
-	- Added [ExchangeRate-API](https://www.exchangerate-api.com/) as a data provider.
-	- Restored support for [currencylayer](https://currencylayer.com/) as a data provider.
-	- Configurable sync frequency ranging from daily down to every minute (if cron is being run frequently enough). ExchangeRate-API also supports an "auto" mode which will intelligently sync only when new data is available, preventing excess API requests.
+  - New FOSSBilling installations will automatically have exchange rates being synced with zero config needed.
+  - Removed the European Central Bank as a data provider.
+  - Added [ExchangeRate-API](https://www.exchangerate-api.com/) as a data provider.
+  - Restored support for [currencylayer](https://currencylayer.com/) as a data provider.
+  - Configurable sync frequency ranging from daily down to every minute (if cron is being run frequently enough). ExchangeRate-API also supports an "auto" mode which will intelligently sync only when new data is available, preventing excess API requests.
 
 ### 🐛 Bug Fixes
 
