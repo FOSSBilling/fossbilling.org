@@ -118,10 +118,6 @@ $this->di['mod_service']('Staff')->checkPermissionsAndThrowException('example', 
 
 #### More involved example
 
-<Callout type="warning" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
-    Please be certain to use the `\FOSSBilling\InformationException` exception class when denying access. This exception class is not forwarded via error reporting which helps ensure your module does not produce excess error reports. 
-</Callout>
-
 ```PHP
 $staff_service = $this->di['mod_service']('Staff');
 if (!$staff_service->hasPermission(null, 'example', 'delete_something')) {
