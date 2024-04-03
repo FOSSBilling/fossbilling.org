@@ -8,6 +8,20 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.19 (4-03-2024)
+
+### 🐛 Bug Fixes
+
+- Fixed a few locations in the Huraga theme where invoice database IDs were being displayed rather than the actual invoice number & series ID.
+- Huraga has been updated to remove some instances of hard-coded colors which caused bootstrap's theming support to not function correctly.
+
+### 📈 Enhancements
+
+- New orders for domain registrations / transfers will use the domain name for the order title, rather than the product title.
+- The knowledge base index page in Huraga will now display a tiled list of knowledge base categories rather than a long list of all knowledge base articles.
+- Now that Bootstrap theming works correctly in Huraga, we've added a configuration option to select which theme is enabled. Presently the only options are Bootstrap's light & dark themes, however we want to introduce color themes in the future to allow better customization.
+  - Feel free to suggest good color combinations so we can add new theme options based on them!
+
 ## 0.6.18 (3-26-2024)
 
 ⚠️If you who are upgrading from versions older than 0.6.0, please check [the changelog](https://fossbilling.org/docs/changelog#060-12-11-2023) for that release as well for breaking changes.
