@@ -8,6 +8,21 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.20 (4-11-2024)
+
+### 🐛 Bug Fixes
+
+- Fixed Huraga still using the light mode logo when the dark mode theme was enabled.
+- Fixed the client profile page not correctly setting items as required.
+- Fixed some untranslatable strings.
+
+### 📈 Enhancements
+
+- The final size of our `vendor` folder has been shrunk by about 5% by removing unneeded items that some dependencies shipped with.
+- The installer page will now provide info on why certain extensions are suggested.
+- FOSSBilling no longer depends on the GitHub API to check for new releases and now depends on [api.fossbilling.org](https://api.fossbilling.org/).
+  - As part of this change, updates are now tagged with a required PHP version and updating will be prevented if this is not met by the current installation.
+
 ## 0.6.19 (4-03-2024)
 
 ### 🐛 Bug Fixes
