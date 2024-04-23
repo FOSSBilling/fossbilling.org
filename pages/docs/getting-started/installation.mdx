@@ -83,10 +83,10 @@ server {
 		return 404;
 	}
 
-	# Deny access to /data
-	location ~* /data/ {
-		return 404;
-	}
+	# Deny access to /data, except /assets/gateways
+    	location ~* /data/(?!(assets/gateways/)) {
+        	return 404;
+    	}
 
 	location @rewrite {
 		rewrite ^/page/(.*)$ /index.php?_url=/custompages/$1;
