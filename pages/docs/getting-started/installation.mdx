@@ -85,7 +85,7 @@ server {
 
 	# Deny access to /data
 	location ~* /data/ {
-		return 404;
+		return 403;
 	}
 
 	location @rewrite {
