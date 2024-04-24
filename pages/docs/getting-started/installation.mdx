@@ -68,25 +68,25 @@ server {
 	sendfile off;
 	include /etc/nginx/mime.types;
 
-	# Block access to sensitive files and return 404 to make it indistinguishable from a missing file
+	# Block access to sensitive files
 	location ~* .(ini|sh|inc|bak|twig|sql)$ {
-		return 404;
+		return 403;
 	}
 
 	# Block access to hidden files except .well-known
 	location ~ /\.(?!well-known\/) {
-		return 404;
+		return 403;
 	}
 
 	# Disable PHP execution in /uploads
 	location ~* /uploads/.*\.php$ {
-		return 404;
+		return 403;
 	}
 
 	# Deny access to /data, except /assets/gateways
-    	location ~* /data/(?!(assets/gateways/)) {
-        	return 404;
-    	}
+	location ~* /data/(?!(assets/gateways/)) {
+		return 403;
+	}
 
 	location @rewrite {
 		rewrite ^/page/(.*)$ /index.php?_url=/custompages/$1;
