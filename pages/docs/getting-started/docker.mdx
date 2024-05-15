@@ -55,8 +55,8 @@ As a general rule, if you are looking to run a simple FOSSBilling container that
         environment:
           MYSQL_DATABASE: fossbilling
           MYSQL_USER: fossbilling
-          MYSQL_PASSWORD: fossbilling
-          MYSQL_RANDOM_ROOT_PASSWORD: '1'
+          MYSQL_PASSWORD: replace-with-my-secret-secure-pw
+          MYSQL_ROOT_PASSWORD: replace-with-my-secret-secure-pw
         volumes:
           - mysql:/var/lib/mysql
     volumes:
@@ -88,3 +88,68 @@ Regardless of the installation method used, after completing the installation, y
 ```
 
 If you do not know the container name or ID for the above, you can get a list of containers with `docker ps`.
+
+### Replace mysql root password if you lose it
+
+If you lose, forget, or misconfigure your mysql root password but need to recover the database use the following steps for docker compose:
+
+1. Add command: --skip-grant-tables to your existing MySQL service in your compose.yml. Like the following:
+ ```mysql:
+        image: mysql:8.2
+        restart: always
+        environment:
+          MYSQL_DATABASE: fossbilling
+          MYSQL_USER: fossbilling
+          MYSQL_PASSWORD: replace-with-my-secret-secure-pw
+          MYSQL_ROOT_PASSWORD: replace-with-my-secret-secure-pw
+        volumes:
+          - mysql:/var/lib/mysql
+        command: --skip-grant-tables
+ ```
+2. Restart your mysql container:
+```
+docker compose up -d <container name/id> 
+```
+3.Enter the container shell environment for mysql:
+```
+docker compose exec -it <container name/id> bash
+```
+4.Access the root user with this command inside the mysql container:
+```
+mysql -uroot 
+```
+5. Enter the following 3 SQL commands, replacing "my-secret-secure-pw" with your new password. Depending on your fossbilling installation config you may need to use 'local host' or 'mysql' in the ALTER USER command.
+```
+USE mysql; 
+FLUSH PRIVILEGES; 
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'my-secret-secure-pw';`
+```
+6. Exit the container shell. Remove command: --skip-grant-tables from your docker-compose.yml and restart the service again. You should now have access again. 
+
+### Migration to a new host
+
+If you need to migrate your docker fossbilling to a new server host use the following steps:
+
+1. Generate an ssh key on your existing host and add it to your remote host. This is so you can use the scp command later. A quick search online and you'll find lots of articles on how to do this.
+2. Important: if possible take a backup or snapshot of your server before continuing so you can rollback to it if something goes wrong.
+3. On your existing host use the following docker command to create a data dump of your mysql database
+```
+$ docker exec <mysql-container-name> sh -c 'exec mysqldump --all-databases -uroot -p"REPLACE_WITH_MYSQL_ROOT_PASSWORD"' > /some/path/on/your/host/all-databases.sql
+```
+
+Give it a minute and then you'll see the .sql file on your host machine in the directory path you chose.
+
+4. Next use an SCP command to transfer the database dump file to your new host.
+```
+scp /some/path/on/your/host/all-databases.sql you-username@ip-address-here:/some/path/on/your/newhost/
+```
+5. Log into your new host and confirm the all-databases.sql file is there.
+6. Next put a fresh installation of fossbilling using docker on your new host, complete the installation at port 8080 using the same credentials as your old fossbilling install.
+7. Once a new installation of fossbilling is on your new host machine now you can restore your data from the all-databases.sql file, use the following command:
+```
+$ docker exec -i <mysql-container-name> sh -c 'exec mysql -uroot -p"REPLACE_WITH_MYSQL_ROOT_PASSWORD"' < /some/path/on/your/newhost/all-databases.sql
+```
+8. Restart your containers and you should see your data on the frontend.
+```
+docker compose up -d
+```
