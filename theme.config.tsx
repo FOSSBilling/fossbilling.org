@@ -24,8 +24,8 @@ export default {
     },
     banner: {
         key: 'mollie',
-        text: <a href="https://github.com/FOSSBilling/Mollie" target="_blank">
-          ⭐️ We have just released an extension for Mollie. Check it out →
+        text: <a href="https://github.com/NerdbyteIO/FOSSBilling-CyberPanel" target="_blank">
+          ⭐️ There's now a community maintained integration for CyberPanel! Click here to check it out.
         </a>,
     },
     feedback: {
