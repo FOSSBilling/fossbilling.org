@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub, faTwitter, faMastodon } from '@fortawesome/free-brands-svg-icons'
-import { faMessage } from "@fortawesome/free-solid-svg-icons";
+import { faMessage, faSignal } from "@fortawesome/free-solid-svg-icons";
 
 import { useRouter } from "next/router";
 import React from "react";
@@ -24,8 +24,8 @@ export default {
     },
     banner: {
         key: 'mollie',
-        text: <a href="https://github.com/FOSSBilling/Mollie" target="_blank">
-          ⭐️ We have just released an extension for Mollie. Check it out →
+        text: <a href="https://github.com/NerdbyteIO/FOSSBilling-CyberPanel" target="_blank">
+          ⭐️ There's now a community maintained integration for CyberPanel! Click here to check it out.
         </a>,
     },
     feedback: {
@@ -67,6 +67,7 @@ export default {
                 <a href="https://fosstodon.org/@fossbilling" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank"><FontAwesomeIcon icon={faMastodon} size="xl" className="mr-4" /></a>
                 <a href="https://twitter.com/FOSSBilling" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank"><FontAwesomeIcon icon={faTwitter} size="xl" className="mr-4" /></a>
                 <a href="https://forum.fossbilling.org" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank"><FontAwesomeIcon icon={faMessage} size="xl" className="mr-4" /></a>
+                <a href="https://status.fossbilling.org/" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank"><FontAwesomeIcon icon={faSignal} size="xl" className="mr-4" /></a>
               </div>
               <p className="mt-6 text-xs">© {new Date().getFullYear()}, The FOSSBilling project. Content licensed under the <a href="https://github.com/FOSSBilling/fossbilling.org/blob/main/LICENSE" target="_blank">Apache 2.0 license</a>.</p>
             </div>

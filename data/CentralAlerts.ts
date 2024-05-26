@@ -4,10 +4,10 @@ export const CentralAlerts: CentralAlert[] = [
     {
         id: "1",
         title: "This version of FOSSBilling is insecure",
-        message: "FOSSBilling versions between 0.4.3 and 0.5.2 are vulnerable to SQL injection with a critical (9.8) severity. Please update now to protect you and your customers.",
+        message: "FOSSBilling versions older than 0.5.3 are vulnerable to SQL injection with a critical (9.8) severity. Please update now to protect you and your customers.",
         type: "danger",
         dismissible: false,
-        min_fossbilling_version: "0.4.3",
+        min_fossbilling_version: "0.0.0",
         max_fossbilling_version: "0.5.2",
         include_preview_branch: false,
         buttons: [
