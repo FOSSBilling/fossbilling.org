@@ -1,7 +1,7 @@
 {
   "requirements": "System Requirements",
-  "installation": "Install Normally",
+  "installation": "Standard Installation",
   "docker": "Install using Docker",
   "migrate-from-boxbilling": "Migrate from BoxBilling",
-  "building": "Building FOSSBilling"
+  "building": "Building FOSSBilling (Developers)"
 }
