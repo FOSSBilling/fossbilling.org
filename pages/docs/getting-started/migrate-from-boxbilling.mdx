@@ -23,7 +23,13 @@ Interested in the differences between BoxBilling and FOSSBilling?
 FOSSBilling has evolved significantly since forking from BoxBilling and as part of that, the system requirements have changed.
 We suggest reviewing the [documented system requirements](https://fossbilling.org//docs/getting-started/requirements).
 
+## Breaking changes
+
+Please note, FOSSBilling has made significant changes since forking from BoxBilling, it is very likely that all custom themes and modules will no longer work without being updated first.
+We recommended reading the [changelog](https://fossbilling.org/docs/changelog) to review "breaking changes".
+
 ## Migration instructions
+
 <Callout type="error" emoji={<FontAwesomeIcon icon={faHand} />}>
   Before you do anything, make sure that you do a full backup (or two) of both the database and all files in your current BoxBilling installation.
   Not doing so will leave you with no way to restore your data if something goes wrong.
@@ -36,49 +42,26 @@ We suggest reviewing the [documented system requirements](https://fossbilling.or
   Doing so will give you the opportunity to uncover any potential issues or misunderstandings with the process so the actual migration goes as smooth as possible with minimal downtime.
 </Callout>
 
-### Breaking changes
-Please note, FOSSBilling has made significant changes since forking from BoxBilling, it is very likely that all custom themes and modules will no longer work without being updated first.
-We recommended reading the [changelog](https://fossbilling.org/docs/changelog) to review "breaking changes".
-
-### Download the latest release
-Download the latest release of FOSSBilling using this link: [Latest Stable Release](https://fossbilling.org/downloads/stable)
-
-### Prepare your existing installation
-<Callout type="info" emoji={<FontAwesomeIcon icon={faCircleInfo} />}>
-  Themes created for BoxBilling will not function inside of FOSSBilling and need to be manually ported to be compatible with FOSSBilling.
-</Callout>
-
-1. Make a full backup of your database and all of the existing files and folders in your BoxBilling installation.
-2. Remove the 'bb-vendor' and 'bb-themes' folders (create a backup of your theme if you are using a custom theme).
-3. Rename the following folders and files to remove the `bb-` prefix:
-    - `bb-data` -> `data`
-    - `bb-library` -> `library`
-    - `bb-locale` -> `locale`
-    - `bb-modules` -> `modules`
-    - `bb-uploads` -> `uploads`
-    - `bb-config.php` -> `config.php`
-4. Delete the following files:
-    - `bb-cron.php` (you will need to update your cron job to point to `cron.php`)
-    - `bb-di.php`
-    - `bb-load.php`
-    - `rb.php`
-    - `bb-ipn.php`
-    - `bb-update.php`
-    - You should also delete all files and folders under `data/cache`
-
 <Callout type="error" emoji={<FontAwesomeIcon icon={faHand} />}>
   **READ THIS**: In the process of updating the folder structure, `bb-ipn.php` has been renamed to `ipn.php`. If at all possible, you should create a virtual alias from `bb-ipn.php` to `ipn.php` on your server. If you cannot do this, you **must** create a copy of `ipn.php` and name it `bb-ipn.php` for old subscriptions to continue to function.
 </Callout>
 
-### Upload and extract the FOSSBilling files
-Upload and extract the contents of the preview build archive over the files in your existing BoxBilling installation and replace any existing files.
+### Steps
 
-### Remove the install folder
-Delete the 'install' folder and all of the files inside it. Since you already had BoxBilling installed, you will not need to go through the FOSSBilling installer again.
+1. Change your active client area theme to `Huraga`.
+2. Delete all BoxBilling files **except** the `bb-config.php` file.
+3. Upload a copy of the [latest stable release](https://fossbilling.org/downloads/stable) of FOSSBilling into the document root.
+4. Extract the FOSSBilling release archive.
+5. Rename your `bb-config.php` file to `config.php` and delete the `install` directory.
+6. Visit yourdomain.com/run-patcher **twice**. The first time, errors are expected, however on the second run no errors should be displayed.
+7. Edit your `config.php` file to remove the `bb-` prefix from file paths.
+8. If needed, reconfigure your timezone and localization settings from within the `config.php` file.
+9. Check the "post migration notes" section for information on other additional steps that may be needed.
 
-### Migrate the configuration file and Database
+## Post migration notes
 
-1. Edit your `config.php` file and update all references of `/bb-data/` to `/data/`.
-2. Navigate to `example.com/run-patcher` to use FOSSBilling's backup patching method. This will automatically migrate the configuration file and database to be compatible with the current versions of FOSSBilling.
-3. After migration, you may need to edit your config file and re-configure localization settings such as the timezone as FOSSBilling has changed how those are stored. Defaults will be used in place of the original.
-4. You may need to open your database, find the `setting` table, and then manually update the configured theme to be `huraga`.
+- If you want to limit what languages you support, disable any unwanted from the administrator panel.
+- We've made the permissions system much more flexible and as such staff permissions need to be redone.
+- SSL is now a requirement for SMTP email usage, although you may use a custom DSN from the email settings to disable peer verification.
+- Quite a lot of work has gone into the Huraga theme, we suggest taking a look at it's settings after migrating.
+- If you run into any issues, be sure to check the [troubleshooting documentation](https://fossbilling.org/docs/troubleshooting).

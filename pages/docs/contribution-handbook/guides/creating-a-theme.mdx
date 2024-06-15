@@ -28,6 +28,15 @@ import { Callout } from "nextra-theme-docs";
 - Themes operate by overriding templates found in modules. To do so, simply have a template within your theme's `html` folder that matches the original template name you wish to override.
 - You can find the expected theme structure in the [folder structure documentation](https://fossbilling.org/docs/contribution-handbook/file-structure#themes).
 
+## Twig Loader Template Priority
+
+Twig will load templates in the following order.
+"Huraga" has been used as the example theme.
+
+1. Custom HTML templates (`themes/huraga/html_custom`)
+2. Theme HTML templates  (`themes/huraga/html`)
+3. The relevant modules's HTML folder (`modules/example/html_client`)
+
 ## Twig Filters and Functions
 
 Invoices gain access to the same filters that Twig does on the front-end with FOSSBilling.
