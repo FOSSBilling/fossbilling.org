@@ -17,27 +17,34 @@ You can use the API wrapper in JavaScript to make requests to the API. This is v
 Having a wrapper allows us to make changes to the API without having to change the code in your theme or module. This makes your code more feature-proof.
 
 ## Importing the wrapper
+
 To import the API wrapper, use the following code:
-```
+
+```html
 <meta name="csrf-token" content="{{ CSRFToken }}">
 <script src="{{ "Api/API.js?v=#{guest.system_version}" | library_url }}"></script>
 ```
+
 This code first creates a new meta tag that stores the CSRF token. The API wrapper uses this tag to add the token to API requests. Next, it imports the API wrapper using the `library_url` filter, which generates the correct URL for the file, then it appends the current system version to prevent cache issues.
 
 ## Displaying a "spinner"
+
 The FOSSBilling API wrapper will display a spinner (sometimes called a loader) during long-running requests.
 It will automatically be centered on the middle of the screen, has a fade-in, and will only be displayed once a request has been running for at least 250 milliseconds.
 
 To have it be used, simply have an animation class called `spinner-border`. FOSSBilling will automatically create and destroy the element for it:
+
 ![spinner example](/img/docs/spinner-example.gif)
 
 ### Disabling the spinner
+
 To disable the spinner, do one of the following things:
  - Don't have a `spinner-border` class.
  - Pass `false` to the spinner option when using the API wrapper. (this parameter is completely optional unless you wan to disable the spinner)
 
 Example:
-```
+
+```js
 API.admin.post("client/get_list", {}, function(response) {
   // handle successful response
 }, function(error) {
@@ -48,7 +55,7 @@ API.admin.post("client/get_list", {}, function(response) {
 ## Making requests
 
 An API request using the wrapper will look something like this:
-`API.guest.get("system/version", {}, function(response)`
+`API.guest.get("system/version", {}, function(response){console.log(response)});`
 The API wrapper has the following parameters:
 -   `Endpoint Type`: the type of API endpoint (`admin`, `client`, or `guest`).
 -   `method`: the HTTP method to use (`get` or `post`).
@@ -59,15 +66,18 @@ The API wrapper has the following parameters:
 
 Here's a few different examples:
 To make a `GET` request to the guest API and request the `/api/guest/system/version` endpoint, use:
-```
+
+```js
 API.guest.get("system/version", {}, function(response) {
   // handle successful response
 }, function(error) {
   // handle error response
 });
 ```
+
 To make a `POST` request to the admin API and request the `/api/admin/client/get_list` endpoint, use:
-```
+
+```js
 API.admin.post("client/get_list", {}, function(response) {
   // handle successful response
 }, function(error) {
@@ -76,8 +86,10 @@ API.admin.post("client/get_list", {}, function(response) {
 ```
 ## Handling API Responses
 
-### Handling Successful Responses
+### Successful Responses
+
 In the example code snippets above, the `successHandler` function is called when the API request is successful. You can use this function to process the data returned by the API.
 
-### Handling Error Responses
+### Error Responses
+
 The `errorHandler` function is called when an error occurs during the API request. You can use this function to handle any errors and display an appropriate error message to the user.

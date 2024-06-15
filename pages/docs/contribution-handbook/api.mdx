@@ -16,17 +16,15 @@ This document describes the resources that make up the official FOSSBilling API.
 
 ## API endpoints
 
-FOSSBilling provides 3 main API endpoints:
+FOSSBilling provides 3 main API entrypoints:
 
- - `example.com/api/admin/*`: The admin endpoint. Authenticated administrators can access this endpoint.
- - `example.com/api/client/*`: The client endpoint. Authenticated clients can access this endpoint.
- - `example.com/api/guest/*`: The admin endpoint. Anybody can access this, even without being authenticated.
+ - `example.com/api/admin/*`: The admin entrypoint. Authenticated administrators can access this endpoint.
+ - `example.com/api/client/*`: The client entrypoint. Authenticated clients can access this endpoint.
+ - `example.com/api/guest/*`: The admin entrypoint. Anybody can access this, even without being authenticated.
 
 ## Schema
 
-By default, FOSSBilling only allows HTTPS connections. This can be overridden in the `config.php`, but we strongly discourage this.
-
-- All Requests are made via POST method
+- All Requests are made via POST method.
 - All data is sent and received as JSON.
 - All methods names are lowercase and words are separated by an underscore.
 - Blank fields are included as null instead of being omitted.
@@ -34,14 +32,15 @@ By default, FOSSBilling only allows HTTPS connections. This can be overridden in
 
 ## Authentication
 
-- Usernames are `admin` or `client`
+- Usernames are `admin` or `client`.
 - The authentication password is an API key which can be retrieved from your profile in the FOSSBilling Admin area.
 - The API uses cookies to store sessions.
 - Authentication credentials should be provided via HTTP authorization headers and be base64 encoded.
-	- Example: If you want to access the `admin` API endpoint, you must send `admin` as the HTTP authentication username and provide your API key as the HTTP authentication password. 
+	- Example: If you want to access the `admin` API endpoint, you must send `admin` as the HTTP authentication username and provide your API key as the HTTP authentication password.
+    - Most HTTP clients will automatically base64 encode your authorization headers.
 
 ## Requests
 
 - All Requests are made via the POST method.
 - Data can be sent as JSON string or POST form.
-- All data is received as JSON.
+- All responses are sent as JSON.
