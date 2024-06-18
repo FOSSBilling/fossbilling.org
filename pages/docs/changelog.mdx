@@ -8,6 +8,37 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.6.21 (6-17-2024)
+
+### ⚠️ Potentially Breaking Changes
+
+- The `bb_` prefix has been [removed](https://github.com/FOSSBilling/FOSSBilling/pull/2239) from all IPN parameters.
+	- FOSSBilling will continue to *read* from these parameters when supplied, making the likelyhood of breakage very low, however we suggest payment gateways update any hardcoded references to ensure future compatibility.
+	- `bb_invoice_id` -> `invoice_id`
+	- `bb_gateway_id` -> `gateway_id`
+	- `bb_redirect` -> `redirect`
+	- `bb_invoice_hash` -> `invoice_hash`
+
+### 🐛 Bug Fixes
+
+- Fixed a bug which resulted in the client profile displaying either all or no parameters as required.
+- Fixed some typehints which could result in various errors.
+- Fixed references to undefined functions in the Plesk server manager.
+- Fixed a bug which caused the activity log to not use the configured retention length.
+- Fixed a missing closing tag on the order page which caused other page elements to be turned into a hyperlink.
+- Fixed a display bug with the "Document format" checkbox.
+
+### 📈 Enhancements
+
+- Email activity log cleanup is now configured separately from other activity logs and can be disabled while enabling other automatic cleanup.
+- The internet.bs registrar is now able to check domains for transfer eligibility.
+- The order configuration screen has had significant visual improvements.
+- Lots of general code cleanup and improved code styling.
+
+### 📦 Dependencies
+
+- Dompdf has been updated to [version 3.0.0](https://github.com/dompdf/dompdf/releases/tag/v3.0.0), adding support for CSS variables, CSS math functions, and other various improvements to rendering.
+
 ## 0.6.20 (4-11-2024)
 
 ### 🐛 Bug Fixes
