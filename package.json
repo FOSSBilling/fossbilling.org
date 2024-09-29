@@ -18,7 +18,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@vercel/analytics": "^1.1.1",
     "clsx": "^2.0.0",
-    "date-fns": "^3.0.0",
+    "date-fns": "^4.0.0",
     "framer-motion": "^11.0.0",
     "next": "^14.0.2",
     "next-sitemap": "^4.2.3",
