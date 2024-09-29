@@ -10,7 +10,7 @@ import {
   faServer,
   faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
-import { Callout, Tab, Tabs } from "nextra-theme-docs";
+import { Callout, Tabs } from "nextra/components";
 
 # <FontAwesomeIcon icon={faServer} /> Installing FOSSBilling
 
@@ -38,12 +38,12 @@ Except for Apache, the following configurations should be used as _examples_ and
 </Callout>
 
 <Tabs items={['Apache / LiteSpeed / OpenLiteSpeed', 'NGINX']}>
-  <Tab>
+  <Tabs.Tab>
 Good news! FOSSBilling includes the correct .`htaccess` file out-of-the box . Setup the domain as you normally would and then proceed with the installation steps.
 
 If you are using OpenLiteSpeed, be sure to reload the associated service after installing so the new `.htaccess` file is loaded by the server.
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
 Below you may find the example NGINX configuration file to get FOSSBilling working correctly under NGINX. Further adjustments may be needed for items such as SSL and there are placeholder values you will need to replace with the appropriate values for your server.
 ```conf
 server {
@@ -115,7 +115,7 @@ server {
 		}
 }
 ```
-  </Tab>
+  </Tabs.Tab>
 </Tabs>
 
 ## Pre-installation steps

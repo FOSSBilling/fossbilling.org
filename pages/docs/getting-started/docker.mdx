@@ -5,7 +5,7 @@ description: This guide will help you install FOSSBilling using our official Doc
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDocker } from '@fortawesome/free-brands-svg-icons'
-import { Callout, Tabs, Tab } from 'nextra-theme-docs'
+import { Callout, Tabs } from 'nextra/components'
 
 # <FontAwesomeIcon icon={faDocker} /> Install Using Docker
 
@@ -27,7 +27,7 @@ As a general rule, if you are looking to run a simple FOSSBilling container that
 </Callout>
 
 <Tabs items={['Standalone', 'Docker Compose']}>
-  <Tab>
+  <Tabs.Tab>
     This is an example of simply running the latest FOSSBilling image with a volume named `fossbilling` where changes will be persisted:
 
     ```
@@ -35,8 +35,8 @@ As a general rule, if you are looking to run a simple FOSSBilling container that
     ```
 
     Once the container has started, you can access the FOSSBilling web installer by visiting your server IP/hostname in a web browser. Using this method, you will require an external database and the details of this should be used in the installer.
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
     This is an example `docker-compose.yml` which uses our image along with the MySQL image (adjust to suit your requirements):
 
     ```yaml
@@ -72,7 +72,7 @@ As a general rule, if you are looking to run a simple FOSSBilling container that
     * Database: `fossbilling`
     * Username: `fossbilling`
     * Password: `fossbilling`
-  </Tab>
+  </Tabs.Tab>
 </Tabs>
 
 ### Post-installation

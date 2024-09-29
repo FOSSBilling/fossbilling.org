@@ -1,4 +1,4 @@
-{
+export default {
   "requirements": "System Requirements",
   "installation": "Standard Installation",
   "docker": "Install using Docker",

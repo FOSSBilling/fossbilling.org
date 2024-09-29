@@ -1,4 +1,4 @@
-{
+export default {
   "guides": "Guides",
   "file-structure": "FOSSBilling File Structure",
   "twig-filters": "Twig Filters & Extensions",

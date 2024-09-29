@@ -1,4 +1,4 @@
-{
+export default {
   "config": "The Configuration File",
   "localization": "Localization",
   "company": "Configuring Company Information",
