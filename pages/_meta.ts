@@ -1,8 +1,7 @@
-{
+export default {
   "*": {
     "type": "page"
   },
-
   "index": {
     "title": "FOSSBilling",
     "display": "hidden",
