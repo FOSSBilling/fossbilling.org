@@ -10,7 +10,7 @@
 /donate/ https://github.com/sponsors/FOSSBilling 301
 /feature-request/ https://github.com/FOSSBilling/FOSSBilling/issues/new?assignees=&labels=feature+request&template=feature_request.md&title=%5BFeature+Request%5D 301
 /downloads/stable/ https://github.com/FOSSBilling/FOSSBilling/releases/latest/download/FOSSBilling.zip 301
-/downloads/preview/ https://s4-fossb-2.fi-hel2.upcloudobjects.com/releases/FOSSBilling-preview.zip 301
+/downloads/preview/ https://download.fossbilling.org/FOSSBilling-preview.zip 301
 
 /docs/getting-started/apache /docs/getting-started/installation 301
 /docs/getting-started/shared /docs/getting-started/installation 301
