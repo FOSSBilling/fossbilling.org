@@ -31,7 +31,7 @@
           },
           {
             "source": "/downloads/preview",
-            "destination": "https://s4-fossb-2.fi-hel2.upcloudobjects.com/releases/FOSSBilling-preview.zip",
+            "destination": "https://download.fossbilling.org/FOSSBilling-preview.zip",
             "permanent": true
           },
           {
