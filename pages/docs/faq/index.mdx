@@ -110,9 +110,16 @@ If you believe that the cause of your problem is a bug in FOSSBilling rather tha
 
 ## Where can I find (error) logs?
 
-FOSSBilling uses the `/data/log` directory for logging.
+From within it's installation directory, FOSSBilling uses the `data/log` directory for logging.
 
-In this directory you'll find a file named `php_error.log` which will contain PHP errors (and some other logging statements), however there are also that there are various directories in that folder.
+Inside the `data/log` folder you'll find a file named `php_error.log` which will contain PHP errors (and some other logging statements).
 
-These directories represent specific logging channels and can contain errors, warnings, general information, or alerts.
+In addition to the error log file, FOSSBilling will create various directory which represent specific logging channels and can contain errors, warnings, general information, or alerts.
 The logs in these channels are automatically rotated daily and up to 90 days of logs will be retained.
+
+## Does FOSSBilling work with an IPv6 only environment?
+
+*Somewhat* yes, however some items that FOSSBilling depends are do not properly support IPv6.
+
+ - **Automatic updates** depend on GitHub releases to download the file, which does not offer IPv6 support. An [IPv6 GitHub proxy](https://danwin1210.de/github-ipv6-proxy.php) exists which may be used as a workaround. We may consider implementing an alternative download server at some point in the future.
+ - **Error reporting** forwards events to [sentry.io](https://sentry.io/welcome/) which does not currently support IPv6 connections, however they are actively working to introduce support for it.

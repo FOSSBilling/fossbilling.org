@@ -126,7 +126,7 @@ Because cron is executed as a command on the host server, these steps aren't ass
 These steps may help you resolve this issue:
 
 1.  If your control panel gives you a PHP version selector for cron, use that to select one that meets FOSSBilling's requirements.
-2.  Try specifying a different PHP binary to use in the cron job (Examples: `/usr/bin/php8.1`, `php8.1`, or `php81` instead of simply using `php`)
+2.  Try specifying a different PHP binary to use in the cron job (Examples: `php8.1` or `/usr/bin/php8.1` instead of simply using `php`)
 3.  Remove any PHP versions less than 8.1 to ensure it can't use an incorrect version.
 4.  Contact the maintainers of your control panel and how to select a different PHP version for cron.
 5.  Switch to utilizing [cronjob API endpoint](https://fossbilling.org/docs/getting-started/installation#utilizing-a-remote-service-to-activate-cron) by either using `wget` to call the API endpoint via a cronjob or by using an external service.
