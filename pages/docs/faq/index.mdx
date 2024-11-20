@@ -31,7 +31,7 @@ At a very quick glance, here are some of the important differences between the t
 
 \*\*BoxBilling translation sources are out of date and generally full of errors. FOSSBilling introduces support for plural translations, automated language detection, improved handling of date/time localization, more portions of the software can be translated, and the base strings have had many spelling and grammatical fixes. Additionally, FOSSBilling translation functionality is more reliable and will work for everyone out-of-the-box unlike BoxBilling's.
 
-\*\*\*FOSSBilling introduces new functionality such as prevention against session hijacking, enforced session expirations, proper usage of the HTTPS only flag for cookies, a HTTPS only mode, and more while also having resolved numerous security vulnerabilities which still effect BoxBilling.
+\*\*\*FOSSBilling introduces new functionality such as prevention against session hijacking, enforced session expirations, proper usage of the HTTPS only flag for cookies, a HTTPS only mode, and more while also having resolved numerous security vulnerabilities which still affect BoxBilling.
 
 ## Can I migrate from BoxBilling?
 
@@ -44,7 +44,7 @@ Please also be aware that any extensions and themes that were created for BoxBil
 
 FOSSBilling is very much a work in progress. Right now we are busy squashing a lot of bugs, improving security, and at the same time working on a major rewrite of large sections of the codebase.
 
-Right now, FOSSBilling is in a far more stable and secure state than it was just a few months ago and definitely more secure than the last releases of BB were. We don't generally recommend using it on production sites just yet unless you know what you are doing, but as long as you have some basic understanding then you probably could. If you do, then please be aware that there may be breaking changes somewhere in the near future, even though we aim to make migration to future versions as easy as possible.
+Right now, FOSSBilling is in a far more stable and secure state than it was just a few months ago and definitely more secure than the last releases of BB were. We generally don't recommend using it on production sites just yet unless you know what you are doing, but as long as you have some basic understanding then you probably could. If you do, then please be aware that there may be breaking changes somewhere in the near future, even though we aim to make migration to future versions as easy as possible.
 
 If you are using it in a production environment then please download and use the latest stable release from the [FOSSBilling website](https://fossbilling.org/downloads) or [GH releases](https://github.com/FOSSBilling/FOSSBilling/releases), and DO NOT use the latest pre-release commits, unless they fix an explicit issue you are facing and you are sure they do not introduce any new issues. As always, backup and test things in a staging environment.
 
@@ -119,7 +119,7 @@ The logs in these channels are automatically rotated daily and up to 90 days of 
 
 ## Does FOSSBilling work with an IPv6 only environment?
 
-*Somewhat* yes, however some items that FOSSBilling depends are do not properly support IPv6.
+*Somewhat* yes, however some items that FOSSBilling depends on do not properly support IPv6.
 
  - **Automatic updates** depend on GitHub releases to download the file, which does not offer IPv6 support. An [IPv6 GitHub proxy](https://danwin1210.de/github-ipv6-proxy.php) exists which may be used as a workaround. We may consider implementing an alternative download server at some point in the future.
  - **Error reporting** forwards events to [sentry.io](https://sentry.io/welcome/) which does not currently support IPv6 connections, however they are actively working to introduce support for it.
