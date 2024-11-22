@@ -8,6 +8,35 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## Upcoming / preview release (TBD)
+
+This FOSSBilling release adds support for PHP 8.4 and removes support for PHP 8.1.
+
+### 🔐 Security
+ - Debug logs now automatically mask some common parameters which are considered sensitive.
+ - Delays have been added to help prevent email enumeration by monitoring timings with login attempts.
+
+### 📈 Enhancements
+ - The client area now supports a WYSIWYG editor for markdown content.
+	 - **Warning:** depending on how the theme is built, custom themes may require an update to function correctly with this change. ([Related changes](https://github.com/FOSSBilling/FOSSBilling/pull/2384))
+- You no longer need to provide the title and conversion rate for currencies when adding them, these will be automatically populated when possible.
+- Updated the countries, phone code, and currency lists.
+- Added support for 1-click WHM logins.
+- Improved the styling of the signup section on the order screen.
+- GeoIP functionality has been upgrade.
+	- FOSSBilling now includes ASN information.
+	- There is now an IP address lookup page.
+	- The previously existing IP address database has been replaced with a new one that's under the CC0 license.
+	- Country names from IP addresses will be shown in the current FOSSBilling language.
+
+### 🐛 Bug Fixes
+
+- The error handler has been updated to resolve an issue where it was possible for necessary classes to not be loaded if a fatal error occurred very early in the loader.
+- Fixed a bug on the client profile from an unclosed input element.
+
+### 📝 Changes
+ - The fallback cron behavior is now automatically disabled for production installations to help reduce confusion.
+
 ## 0.6.22 (6-20-2024)
 
 ### 🐛 Bug Fixes
