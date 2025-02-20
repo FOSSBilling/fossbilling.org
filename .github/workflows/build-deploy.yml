@@ -10,6 +10,8 @@ jobs:
   # Require authorization/approval before running on external forks/pull requests.
   authorize:
     name: 'Authorization Check'
+    permissions:
+      contents: read
     environment: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.id != github.repository_id && 'external' || 'internal' }}
     runs-on: ubuntu-latest
     steps:
