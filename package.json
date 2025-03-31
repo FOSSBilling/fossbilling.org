@@ -29,7 +29,7 @@
     "sharp": "^0.33.5"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "4.0.15",
+    "@tailwindcss/postcss": "4.0.17",
     "@types/node": "22.13.14",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
