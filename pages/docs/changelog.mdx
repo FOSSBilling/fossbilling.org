@@ -12,6 +12,11 @@ Dates are displayed as `MM-DD-YYYY`.
 
 This FOSSBilling release adds support for PHP 8.4 and removes support for PHP 8.1.
 
+### ⚠️ Potentially Breaking Changes
+
+ - `FOSSBilling\Request` and `FOSSBilling\RequestFile
+` classes have been completely removed and FOSSBilling now instead uses `Symfony\HttpFoundation`.
+
 ### 🔐 Security
 
  - Debug logs now automatically mask some common parameters which are considered sensitive.
@@ -32,9 +37,11 @@ This FOSSBilling release adds support for PHP 8.4 and removes support for PHP 8.
 	  - There is now an IP address lookup page.
 	  - The previously existing IP address database has been replaced with a new one that's under the CC0 license.
 	  - Country names from IP addresses will be shown in the current FOSSBilling language.
+	  - The databases will automatically be updated on a weekly basis now.
   - FOSSBilling's routing has been slightly simplified, cleaned up, and enhanced.
     - The protocol is no longer hardcoded into the config file.
     - FOSSBilling is no longer dependant on webservers to handle custom pages rewriting and to write the request URL into the `_URL` GET parameter.
+ - The navbar inside of the administrator is now stickied to the top of the page.
 
 ### ➕ New Features
 
@@ -50,10 +57,14 @@ This FOSSBilling release adds support for PHP 8.4 and removes support for PHP 8.
   - Knowledge Base catagories and articles are now sorted a-z rather than by the order they were added.
   - Fixed a mistake which caused outdated translations to be bundled with FOSSBilling releases.
   - The background of the support tickets had a distracting background color, which is now fixed.
+  - Deleting a domain product from the cart now only removes its associated addons, instead of removing all addons of the same type across the cart.
+  - Fixed a positioning issue with the cookie consent banner.
+  - Fixed the keywords meta tag not being applied with the Huraga theme.
 
 ### 📝 Changes
 
  - The fallback cron behavior is now automatically disabled for production installations to help reduce confusion.
+ - Hid the quantity control options for products as it is not fully implemented.
 
 ## 0.6.22 (6-20-2024)
 
