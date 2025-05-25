@@ -10,6 +10,7 @@
 # Next.js
 /.next/
 /out/
+_pagefind/
 
 # Production
 /build
