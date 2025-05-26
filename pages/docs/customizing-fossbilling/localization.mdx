@@ -1,0 +1,70 @@
+---
+title: Localization
+description: Using FOSSBilling in Your Language
+---
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLanguage } from "@fortawesome/free-solid-svg-icons";
+
+# <FontAwesomeIcon icon={faLanguage} /> Using FOSSBilling in Your Language
+
+## Installing a new language
+
+By default, FOSSBilling includes all of the official translations that are at least 25% complete in its releases. If you have a custom translation, you can submit it to the official repository using the instructions provided in the lower steps.
+
+To install your custom translation, simply upload the translation files to the `/locale` directory of your FOSSBilling instance and the translation will be automatically detected by FOSSBilling.
+Please note that you may need to add an entry to the `/locale/locales.php` file in order for your translation to appear with its title in its native language, although this is not required for the translation to function, and this file will be overridden when FOSSBilling is updated.
+
+The file structure of your newly installed translation should be as follows (example for English):
+
+- `/locale/`
+  - `/locale/en_US/`
+    - `/locale/en_US/LC_MESSAGES/`
+    - `/locale/en_US/LC_MESSAGES/messages.mo` - The compiled translation. This is needed for FOSSBilling to use the translation.
+    - `/locale/en_US/LC_MESSAGES/messages.po` - The source for the translation. This is not needed for FOSSBilling to use the translation, but it does allow developers to build off of your translation easily.
+
+## Contributing to the official translations
+
+### Existing translations
+
+Contributing to translations that already exist within FOSSBilling is easy! Simple go to [translate.fossbilling.org](https://translate.fossbilling.org/) and create an account with Crowdin. From there, you will be able to review the existing translations and contribute to them.
+
+### New translations
+
+If you haven't already created a new translation file for FOSSBilling yet, but would like to start one, simply join our [discord](https://fossbilling.org/discord) and ask in the `#localization` channel for the new language to be added to Crowdin.
+Once we've added it, you'll be able to login to Crowdin and contribute to the translation from there.
+
+#### If you already have a completed custom translation
+
+If you've already created a custom translation and would like to add it to the official FOSSBilling translations, you'll need to add them to our [locale repo](https://github.com/FOSSBilling/locale) through a pull request.
+When submitting a pull request to submit a new locale, **do not** include the compiled .mo file. The compiled files are automatically generated when new commits are added to the repository.
+Once we merge the new translation into the official ones, we will add them to Crowdin at which point they will be available for crowdsourced contributions.
+
+If you have any questions or issues with the above steps, please join our [discord](https://fossbilling.org/discord) and request assistance.
+
+## Changing the default language
+
+The default locale that FOSSBilling uses is defined inside of the `config.php` file.
+For example: this is the default you'll find after a fresh install of FOSSBilling:
+`'locale' => 'en_US'`
+
+To Change the default, change the `en_US` to match the folder name of your translation. For example, `vi_VN` for the Vietnamese translation.
+
+## Disabling a language
+
+Starting with FOSSBilling version 0.6.0, you can disable translations by logging into the administrator panel and navigating to `Extensions` -> `Languages`. The final URL should be billing.example.com/admin/extension/languages.
+
+From this screen you can view how complete a translation is and enable / disable any with a singular click of a button.
+
+## Automatic language detection
+
+FOSSBilling is designed to leverage the browser's language header to correctly select a language that the visitor will be able to understand.
+Because of this, some may find that their FOSSBilling instance isn't displaying the language they set in the configuration file. This is not a bug and it is just FOSSBilling using whatever your browser says your preferred language is.
+
+The logic flow of this is as follows:
+![locale logic flowchart](/img/docs/locale-logic-flow.png)
+
+### What counts as a matching locale?
+
+- FOSSBilling will only use the primary preferred locale based off the language header. Any other language listed in the header will be ignored.
+- A matching locale is either a locale that matches exactly (`en_US` and `en_US`) or a locale that's similar (`en_GB` and `en_US`)

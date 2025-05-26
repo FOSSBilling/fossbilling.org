@@ -1,5 +1,3 @@
-"use client";
-
 export function ThemesAnimation(props) {
     return (
       <svg

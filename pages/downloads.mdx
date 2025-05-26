@@ -1,0 +1,73 @@
+import Link from 'next/link'
+import cn from 'clsx'
+import { useState } from 'react'
+import { motion } from "framer-motion"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDownload, faCode } from '@fortawesome/free-solid-svg-icons'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { useData } from 'nextra/hooks'
+import Date from '../components/Date'
+import { Card, Cards } from '../components/Card/'
+
+import { Features, Feature } from '../components/Features'
+
+<div className="home-content">
+  <div className="content-container">
+    <h1 className="headline">Downloads</h1>
+    <p className="subtitle">Before downloading, please keep in mind: <br />- FOSSBilling is currently considered pre-production software <br />- You should have a strong technical knowledge <br />- Due to the pre-production nature of FOSSBilling, you should <strong>always</strong> read the release notes before updating <br />- We recommend understanding PHP and software development so you may aid in FOSSBilling development as well as resolve issues for yourself if needed <br />- FOSSBilling currently does not function correctly when placed under a sub-folder, so use a sub-domain instead</p>
+  </div>
+
+  <div className="features-container">
+    <div className="content-container">
+      <Features>
+        <Feature large centered>
+            <h3>Releases <br className="show-on-mobile"/>(v<LatestVersion />)</h3>
+            <h4>Released on <ReleasedOn /></h4>
+            <p>Download the latest release of FOSSBilling. This is the recommended choice for all users.<br /></p>
+            <p>You may want to read the <a href="https://fossbilling.org//docs/getting-started/requirements">system requirements</a> before installing.</p>
+
+            <div className='mt-4 gap-4 flex justify-center'>
+                <Card icon={<FontAwesomeIcon icon={faDownload} size="xl" />} title="Download now" href="/downloads/stable"/>
+            </div>
+        </Feature>
+
+        <Feature centered>
+            <h3><FontAwesomeIcon icon={ faCode } /> Preview builds</h3>
+            <p>If you are a developer, you might want to use this build instead. Preview builds are automatically generated from the main branch after each commit.</p>
+            <div className='mt-4 gap-4 flex justify-center'>
+                <Card icon={<FontAwesomeIcon icon={faDownload} size="xl" />} title="Download now" href="/downloads/preview"/>
+            </div>
+        </Feature>
+      </Features>
+    </div>
+  </div>
+</div>
+
+export const getStaticProps = ({ params }) => {
+  return fetch(`https://api.github.com/repos/FOSSBilling/FOSSBilling/releases`)
+    .then(res => res.json())
+    .then(releases => ({
+      props: {
+        // We add an `ssg` field to the page props,
+        // which will be provided to the Nextra `useData` hook.
+        ssg: {
+          latest_version: releases[0].tag_name,
+          released_on: releases[0].published_at,
+        }
+      },
+      // The page will be considered as stale and regenerated every 10 minutes. Release data is not updated that often, so 10 minutes should be fine.
+      revalidate: 600
+    }))
+}
+ 
+export const LatestVersion = () => {
+  // Get the data from SSG, and render it as a component.
+  const { latest_version } = useData()
+  return <>{ latest_version }</>
+}
+
+export const ReleasedOn = () => {
+  // Get the data from SSG, and render it as a component.
+  const { released_on } = useData()
+  return <Date dateString={released_on} />
+}

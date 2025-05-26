@@ -1,0 +1,127 @@
+---
+title: API Keys
+description: This page documents the "API key" product type that is available within FOSSBilling.
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faWrench, faPersonDigging } from '@fortawesome/free-solid-svg-icons'
+
+# The API Key Product Type
+
+## Current Status
+
+Fully implemented and included as an extension since FOSSBilling version 0.5.3.
+To use it, you must first navigate to the "Extensions" tab from within the administrator panel and install the `API Key Product` extension.
+
+**Note**: Much like some other FOSSBilling extensions, deactivating / removing it will drop the database table associated with it. 
+
+## Basic Usage
+
+The API key product type inside of FOSSBilling is intended to allow you to easily sell API keys from within FOSSBilling that can then be used to access a custom application you've created.
+
+### Creating the product
+
+The first step to selling anything within FOSSBilling is to create the product, and this process is the same for the API key product type.
+Configuration for your API keys is simple yet flexible so that it can be easily applied to custom applications.
+
+ - `Length`: Sets the length of the generated API key that. The default of 32 characters generally is a good fit for most applications.
+ - `Split`: By default, FOSSBilling will split API keys using dashes to make it easier to read. This can be disabled with this option.
+    - Example: The API key `BA90786347C1A4F53CB914D3AC927BDD` would be turned into `BA907863-47C1A4F5-3CB914D3-AC927BDD`.
+    - The dashes do **not** count towards the overall length of the API key.
+    - If an API key is generated with dashes, they must be included when contacting the FOSSBilling API to check its validity.
+ - `Split Interval`: This allows you to configure how frequently the API key will be split by dashes. By default, FOSSBilling splits it every 8 characters.
+    - FOSSBilling will automatically strip off any trailing dashes from an API key that is generated.
+ - `Capitalization`: Configures how FOSSBilling should handle capitalization in the API key that is generated.
+    - `Uppercase`: All letters in the API key will be uppercase. (`BA907863-47C1A4F5-3CB914D3-AC927BDD`)
+    - `Lowercase`: All letters in the API key will be lowercase. (`ba907863-47c1a4f5-3cb914d3-ac927bdd`)
+    - `Mixed`: Produces a random mix of both uppercase and lowercase letters in the API key. (`bBa907863-47c1a4f5-3cb914d3-Ac927bDd`)
+        - Unless you are using a very short API key, this should be selected for personal preference reasons rather than as an attempt in increase the randomness of the API keys.
+
+#### Custom Parameters
+
+You can define as many custom parameters as you wish. These will be tied to any API key ordered with that product type and will be retrievable via the FOSSBilling API.
+This allows you to define custom parameters such as the type of an API key, or it's limitations.
+From there, your application can retrieve those custom parameters and then enforce any limitations on an API key.
+
+**Important**: These API custom parameters will be retrievable by anyone as long as they have their API key and know what the API endpoint is. Do not use these parameters to define information that needs to be private.
+
+## Using the API Endpoints
+
+The following API Endpoints exist:
+1. `/admin/serviceapikey/update` - Used to allow administrators to update the config and validity of an API key.
+2. `/admin/serviceapikey/reset` - Used to allow administrators to reset and regenerate an API key.
+4. `/client/serviceapikey/reset` - Allows a client to reset their API key.
+5. `/guest/serviceapikey/check` - Checks if an API key is valid or not.
+6. `/guest/serviceapikey/get_info` - Similar to the `check` endpoint, except that this will also return any custom parameters that are defined for the API key.
+
+### Updating an API Key
+
+Administrators can update an API key using the `/admin/serviceapikey/update` endpoint, which accepts the following parameters:
+ - int `order_id` (required) The order ID of the API key to update.
+ - array `config` (optional) The new configuration for the API key.
+    - Overrides the previous one, so you must send the complete config rather than only the parameters you want to change.
+
+Response:
+```JSON
+{
+    "result":true,
+    "error":null
+}
+```
+Keep in mind, for security purposes you cannot *change* an API key using this endpoint. You **must** use the `reset` endpoint to generate a new one.
+
+
+### Resetting an API key
+
+Administrators can reset an API key using the `/admin/serviceapikey/reset` endpoint, which accepts the following parameters:
+ - int `order_id` (optional) The order ID of the API key to reset.
+ - string `key` (optional) The API key you need to reset.
+
+It's required to send either the `key` or `order_id` in order to reset an API key, however it's not needed to send both or one over the other.
+
+Response:
+```JSON
+{
+    "result":true,
+    "error":null
+}
+```
+
+Clients may also use the `/client/serviceapikey/reset` API endpoint to reset only their API key. It accepts the same parameters and has the same return.
+ - If they attempt to reset an API key that does not being to their account, FOSSBilling will simply error out stating that the key does not exist.
+
+### Checking the Status of an API Key
+
+Guests (anyone) may use the `/guest/serviceapikey/check` API endpoint to check the validity of an API key. This endpoint accepts the following parameter:
+ - string `key` The API key to check.
+
+Response:
+```JSON
+{
+    "result":true,
+    "error":null
+}
+```
+
+### Getting the API info
+
+If you need to access the API key's validity as well as it's custom parameters, you can use the `/guest/serviceapikey/get_info` API endpoint.
+This accepts the same parameters as the `check` endpoint.
+
+Response:
+```JSON
+{
+  "result": {
+    "valid": 1,
+    "config": { "monthlyLimit": 250, "somethingElse": 1150, "astring": "words" }
+  },
+  "error": null
+}
+```
+
+## Notes
+ - FOSSBilling by default implements a basic rate-limiter on all API requests.
+    - This will help prevent brute-force guessing of the API keys using the `/check` endpoints, however you may want to consider lowering the value to be more restrictive.
+    - There's some [brief documentation](https://fossbilling.org/docs/customizing-fossbilling/config#api-configuration) for these configuration parameters.
+    - Due to this rate limiter, you should design your application to cache API key results locally for a short period of time. This will help avoid any rate-limiting as well as reduce unnecessary API requests to the FOSSBilling server.
+ - Clients can at any time reset and view their API key. If you wish to revoke access, you should change it's validity rather than resetting the API key.

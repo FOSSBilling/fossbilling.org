@@ -61,6 +61,16 @@
   color: #fff;
   background-image: url(/assets/img/admin_dark.png);
 }
+#os-card {
+  min-height: 300px;
+  background-image: linear-gradient(to top, transparent, #fff 50%), url(/assets/syntax-highlighting.svg);
+  background-size: 634px;
+  background-position: -6px calc(100% + 4px);
+  background-repeat: no-repeat;
+}
+.dark #os-card {
+  background-image: linear-gradient(to top, transparent, #202020 50%), url(/assets/syntax-highlighting.svg);
+}
 @media screen and (max-width: 1200px) {
   #os-card {
     aspect-ratio: auto;

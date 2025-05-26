@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start"
@@ -22,8 +22,8 @@
     "framer-motion": "^12.0.0",
     "next": "^15.0.0",
     "next-sitemap": "^4.2.3",
-    "nextra": "^4.0.0",
-    "nextra-theme-docs": "^4.0.0",
+    "nextra": "^3.0.0",
+    "nextra-theme-docs": "^3.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sharp": "^0.34.0"
@@ -31,9 +31,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "4.1.7",
     "@types/node": "22.15.19",
-    "@types/react": "19.1.5",
     "autoprefixer": "^10.4.16",
-    "pagefind": "^1.0.0",
     "postcss": "^8.4.31",
     "tailwindcss": "^4.0.0",
     "typescript": "5.8.3"

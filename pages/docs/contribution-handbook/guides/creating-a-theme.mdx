@@ -1,0 +1,87 @@
+---
+title: Creating a Theme
+---
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCode, faPersonDigging } from "@fortawesome/free-solid-svg-icons";
+import { Callout } from "nextra/components";
+
+# <FontAwesomeIcon icon={faCode} /> Creating a theme
+
+<Callout type="warning" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+    As we progress toward a 1.0.0 release, developers should anticipate changes to FOSSBilling that necessitate attention before custom modules and integrations regain full functionality.
+
+    These modifications will be confined to the 0.x releases and will be outlined in the 'breaking changes' section of the release notes. We are working to add these items to our roadmap to enhance visibility for external developers.
+
+    These pre-v1 releases are providing us the opportunity to update obsolete systems and replace cumbersome implementations inherited from the BoxBilling project so we appreciate the patience of external developers.
+</Callout>
+
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+  This guide is incomplete. Please help us complete it using the **"Edit this
+  page"** button in the sidebar. Thanks!
+</Callout>
+
+## Understanding how themes work in FOSSBilling
+
+- FOSSBilling uses the [Twig](https://twig.symfony.com/) templating engine to render the HTML for the user interface.
+- All custom twig filters can be found [here](https://fossbilling.org/docs/contribution-handbook/twig-filters).
+- Themes operate by overriding templates found in modules. To do so, simply have a template within your theme's `html` folder that matches the original template name you wish to override.
+- You can find the expected theme structure in the [folder structure documentation](https://fossbilling.org/docs/contribution-handbook/file-structure#themes).
+
+## Twig Loader Template Priority
+
+Twig will load templates in the following order.
+"Huraga" has been used as the example theme.
+
+1. Custom HTML templates (`themes/huraga/html_custom`)
+2. Theme HTML templates  (`themes/huraga/html`)
+3. The relevant modules's HTML folder (`modules/example/html_client`)
+
+## Twig Filters and Functions
+
+Invoices gain access to the same filters that Twig does on the front-end with FOSSBilling.
+You may find a list of these on the [Twig Filters & Functions](https://fossbilling.org/docs/contribution-handbook/twig-filters) page.
+
+## Working with our security systems.
+
+FOSSBilling has security systems implemented on the back end that will need to be taken into consideration when creating a new theme. Some info on these systems is available on [this page](https://fossbilling.org/docs/security/securing-fossbilling)
+The most important system that you need to account for is the CSRF protection. All API calls will need to provide this API key. Both get and post methods are acceptable.
+
+### Working with the CSRF Protection
+
+- The token for the current user can be accessed through twig as a variable defined as `CSRFToken`, this is also the name you need to use when proving the token via post/get
+- Here is an example of how to add the token to an HTML form:
+  - `<input type="hidden" name="CSRFToken" value="{{ CSRFToken }}"/>`
+- Here is an example of an API call that has the token added to it
+  - `href="{{ 'api/admin/client/group_delete'|link({ 'id': group.id, 'CSRFToken': CSRFToken }) }}"`
+
+## Pulling information from the API via twig
+
+When using twig in FOSSBilling, you have access to access the API programmatically from within your template. Calling the API via twig does not require you to pass the CSRF token.
+
+### Guest API endpoints
+
+The guest API endpoint will always be available to twig templates for both the client and admin areas.
+It can be accessed under the `guest` function.
+
+For example, to get a list of currencies in the system do this: `guest.currency_get_pairs`.
+In this example, you are accessing the `get_pairs` API endpoint under the `currency` module. This would be equal to calling `/api/guest/currency/get_pairs`
+
+### Client API endpoints
+
+The client API endpoint will only be available when a client is authenticated and it can be accessed under the `client` function.
+
+For example, to get a list of invoices for the current client do this: `client.invoice_get_list`.
+In this example, you are accessing the `get_list` API endpoint under the `invoice` module. This would be equal to calling `/api/client/invoice/get_list`
+
+### Admin API endpoints
+
+The admin API endpoint will only be available when a staff member or administrator is authenticated and it can be accessed under the `admin` function.
+
+For example, to get a list of staff member groups do this: `admin.staff_group_get_pairs`.
+In this example, you are accessing the `group_get_pairs` API endpoint under the `staff` module. This would be equal to calling `/api/admin/staff/group_get_pairs`
+
+### Passing parameters to the API through twig
+
+You may pass parameters to the API via an array when calling the API function.
+For example: `admin.extension_config_get({ "ext": "mod_seo" })` will return the configuration for the SEO module.

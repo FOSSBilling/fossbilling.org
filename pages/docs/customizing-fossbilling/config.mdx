@@ -1,0 +1,106 @@
+---
+title: The Configuration File
+description: The configuration file is the best way to tell FOSSBilling how to run. In this guide, we will cover your options to configure FOSSBilling.
+---
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPersonDigging, faWrench } from '@fortawesome/free-solid-svg-icons'
+import { Callout } from 'nextra/components'
+
+# <FontAwesomeIcon icon={faWrench} /> The configuration file
+<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
+    This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
+</Callout>
+
+## Configuration file for FOSSBilling
+The configuration file can be found under **/config.php**. You can adjust the configuration file based on your preferences.
+You can also find the example config file with some documentation [here](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/config-sample.php).
+
+## Configuration Parameters
+
+The following configuration parameters are available for customizing FOSSBilling:
+
+### Security Options
+
+These configuration options allow you to configure the security options inside of FOSSBilling. The default values are recommended unless they are causing issues.
+
+- `security.mode`: Sets the security mode. Available options are `strict` (default) or `regular`.
+- `security.force_https`: Determines whether to force HTTPS connections. Set to `true` to force HTTPS (recommended) or `false` to allow HTTP connections.
+- `security.session_lifespan`: Sets the maximum session lifespan. The default value is `7200` (2 hours).
+
+### Salt
+
+- `salt`: This key is actually used as an encryption key when FOSSBilling needs to perform reversable encryption.
+
+### Installation URL
+
+- `url`: Sets the full URL where FOSSBilling is installed, including the trailing slash.
+
+### Admin Area URL Prefix
+
+- `admin_area_prefix`: Sets the URL prefix to access the FOSSBilling admin area. For example, set it to `/admin` for `https://example.com/admin`.
+
+### Debugging
+
+- `debug`: Enables or disables displaying advanced debugging messages. It is recommended to keep this disabled (`false`) unless you are debugging issues.
+
+### Automatic Updater
+
+- `update_branch`: Configures the update branch for the automatic updater. Currently acceptable options are `"release"` or `"preview"`.
+
+### Stacktrace Configuration
+
+- `log_stacktrace`: Enables or disables stacktraces when an exception is thrown (requires `debug` to be enabled).
+- `stacktrace_length`: Specifies the maximum length of the stacktrace.
+
+### Maintenance Mode
+
+- `maintenance_mode.enabled`: Enables or disables the system maintenance mode. When enabled, it blocks public access to your website, and API endpoints except the allowed ones won't work.
+- `maintenance_mode.allowed_urls`: Specifies URLs that are not blocked during maintenance. Supports wildcard matching.
+- `maintenance_mode.allowed_ips`: Specifies IP/Subnet addresses that are not blocked during maintenance.
+
+### Automatic Cron Execution
+
+- `disable_auto_cron`: Disables the fallback automatic cron execution when logging into the admin panel.
+
+### Default Localization
+
+These configuration options allow you to configure the default localization settings.
+
+- `i18n.locale`: Sets the default locale. The default value is `en_US`.
+- `i18n.timezone`: Sets the default timezone. The default value is `UTC`.
+- `i18n.date_format`: Sets the default date format. Available options are `none`, `short`, `medium`, and `long`.
+- `i18n.time_format`: Sets the default time format. Available options are `none`, `short`, `medium`, and `long`.
+- `i18n.datetime_pattern`: Specifies a custom pattern for formatting date and time.
+
+### Data Storage and Logging
+
+- `path_data`: Sets the location to store sensitive data.
+- `path_logs`: Sets the path to the application log file. (The parameter isn't properly respected by the entire application)
+- `log_to_db`: Enables or disables logging to the database.
+
+### Database Configuration
+
+- `db.type`: Specifies the database type. The default value is `mysql`.
+- `db.host`: Specifies the database hostname. (Usually `127.0.0.1` or `localhost`).
+- `db.name`: Specifies the name of the database for FOSSBilling.
+- `db.user`: Specifies the database username.
+- `db.password`: Specifies the database password.
+- `db.port`: Specifies the database port. The default value is `3306`.
+
+### Twig Configuration
+
+- `twig.debug`: Enables or disables Twig debugging. Set to `true` to enable Twig debug mode.
+- `twig.auto_reload`: Enables or disables Twig auto-reloading templates.
+- `twig.cache`: Sets the cache directory for Twig templates.
+
+### API Configuration
+
+- `api.require_referrer_header`: Determines whether all requests made to the API must have the referrer request header with the same URL as the FOSSBilling installation.
+- `api.allowed_ips`: Specifies the IP addresses that are allowed to access the API. An empty array allows all IPs.
+- `api.rate_span`: Sets the time span for rate limiting in seconds.
+- `api.rate_limit`: Sets the maximum number of requests allowed per time span.
+- `api.throttle_delay`: Specifies the throttling delay in seconds when the rate limit is reached.
+- `api.rate_span_login`: Sets the time span for rate limiting login requests in seconds.
+- `api.rate_limit_login`: Sets the maximum number of login requests allowed per time span.
+- `api.CSRFPrevention`: Enables or disables the usage of a token to protect the system from CSRF attacks.
