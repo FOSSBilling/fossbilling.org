@@ -2,12 +2,7 @@ import nextra from 'nextra'
 import { fileURLToPath } from 'url';
 
 const withNextra = nextra({
-    theme: 'nextra-theme-docs',
-    themeConfig: './theme.config.tsx',
     staticImage: true,
-    search: {
-        codeblocks: false
-    },
     defaultShowCopyCode: true,
 })
 

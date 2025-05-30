@@ -1,0 +1,32 @@
+---
+title: Updating FOSSBilling
+description: This guide describes how to update your FOSSBilling installation.
+---
+
+import { Callout } from 'nextra/components'
+
+# <FAIcon icon="faWrench" /> Updating FOSSBilling
+<Callout type="error" emoji={<FAIcon icon="faHand" />}>
+  Before you do anything, make sure that you do a full backup (or two) of both the database and all files in your FOSSBilling installation.
+
+  Not doing so will leave you with no way to restore your data if something goes wrong.
+</Callout>
+
+There are two main ways to update FOSSBilling: manually or automatically.
+
+## Using the Automatic Updater (Recommended) 
+
+ - FOSSBilling can handle the update process automatically for you. This can be accessed by logging into your admin panel and going to `system` --> `update`.
+ - This will update FOSSBilling using whatever branch is set in the configuration file.  (preview or release)
+	 - The default option for this configuration will depend on if you have installed a preview or a release version of, but it can be changed at anytime. (more information can be found on the [config documentation](https://fossbilling.org/docs/customizing-fossbilling/config)).
+
+## Manually Updating FOSSBilling
+
+ 1. [Download the latest version of FOSSBilling](https://fossbilling.org/downloads/stable).
+ 2. Extract the latest release on-top of your existing installation, overriding existing files.
+ 3. Navigate to `system` --> `update` from within the administrator panel.
+ 4. Click "Apply Patches & Update Configuration".
+
+## Backup Patching Method
+
+In the event that you are unable to accesses the administrator panel to perform patches, FOSSBilling provides a backup patching method that can be accessed by accessing `example.com/run-patcher`. This will run both the configuration and DB migrations.

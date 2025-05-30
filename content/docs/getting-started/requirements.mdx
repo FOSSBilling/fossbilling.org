@@ -1,0 +1,76 @@
+---
+title: System Requirements
+description: Information on FOSSBilling's system requirements
+---
+
+import {
+  faCircleInfo,
+  faPersonDigging,
+  faServer,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
+
+# <FAIcon icon="faServer" /> FOSSBilling's system requirements
+
+## Web server
+
+FOSSBilling will work correctly on any of the following web-servers. For the greatest simplicity we suggest either using Apache or Apache behind an NGINX reverse proxy (with NGINX caching static files).
+
+Most control panels will either come configured like this out-of-the-box or support this configuration.
+
+- Apache with `mod_rewrite` enabled
+- LiteSpeed
+- NGINX running the correct [configuration](https://fossbilling.org/docs/getting-started/installation#webserver-configurations).
+- OpenLiteSpeed
+  - Due to how OpenLiteSpeed handles `.htaccess` files, it's typically not suitable for selling web hosting, however FOSSBilling itself will run on it without any issues.
+
+If you wish to use a web server that is not listed above, you will need to manually create a configuration for it that implements the URL rewriting FOSSBilling relies on using one of the existing configurations as reference.
+
+## PHP
+
+### Version
+
+FOSSBilling Version 0.6.22 supports PHP 8.1, 8.2, and 8.3.
+
+If you need PHP 8.4 support, consider using the current preview build of FOSSBilling, however you should expect a high chance of issues.
+
+### Required extensions
+
+At a minimum for correct functionality, you should have the following extensions installed:
+
+- `intl`
+- `openssl`
+- `pdo_mysql`
+- `xml`
+- `dom`
+- `iconv`
+- `json`
+- `zlib`
+- `curl` >= version 7.34.0. (You may need to rebuild PHP after updating as both cURL on your server and the PHP extension need to be updated)
+
+### Recommended extensions
+
+These extensions may not be needed to make FOSSBilling work, however they are recommended for improved performance, compatibility, and functionality.
+
+- `mbstring`
+- `opcache` (This is PHP's official extension that's used to cache compiled scripts and improve performance. We recommend using this for all PHP applications!)
+- `imagick` or `gmagick`
+- `GD`
+- `bz2` (bzip2)
+- `simplexml` & `xml` for the Plesk API
+
+### Configuration
+
+- `memory_limit`: Should be at least `64M`.
+  - The more modules and extensions you have installed, the greater this will be. Installations under heavy demand may also need their memory limit increased.
+- `max_execution_time`: The default of 30 seconds is typically sufficient, however those with slower servers may consider increasing this to 45 or 60 seconds.
+- To use remote images in your PDFs (images accessed via a URL) you should have `allow_url_fopen` set to `true`.
+
+## Database
+
+FOSSBilling should function correctly on any MySQL compatible database such as MySQL or MariaDB.
+
+Specifically, any of the following:
+
+- `MySQL` >= 8
+- `MariaDB` >= 10.3
