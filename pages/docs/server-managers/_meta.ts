@@ -1,6 +1,6 @@
 export default {
-  "whm": "cPanel/WHM and FOSSBilling",
-  "hestiacp": "HestiaCP and FOSSBilling",
-  "cwp": "CWP and FOSSBilling",
+  "whm": "cPanel/WHM",
+  "hestiacp": "HestiaCP",
+  "cwp": "Control-WebPanel (CWP)",
   "others": "Other Server Managers"
 }
