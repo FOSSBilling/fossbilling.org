@@ -34,6 +34,11 @@ const redirects = async () => [
 
     // Internal redirects
     {
+        source: '/docs/contribution-handbook/:slug*',
+        destination: '/docs/developing-fossbilling/:slug*',
+        permanent: true
+    },
+    {
         source: '/docs/getting-started/apache',
         destination: '/docs/getting-started/installation',
         permanent: true

@@ -14,6 +14,9 @@ export default {
   "product-types": {
     "title": "Product Types Within FOSSBilling"
   },
+  "developing-fossbilling": {
+    "title": "Developing FOSSBilling"
+  },
   "server-managers": {
     "title": "Server Managers in FOSSBilling"
   },
@@ -22,9 +25,6 @@ export default {
   },
   "faq": {
     "title": "FAQ"
-  },
-  "contribution-handbook": {
-    "title": "Contribution Handbook"
   },
   "changelog": {
     "title": "Changelog"
