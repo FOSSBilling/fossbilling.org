@@ -1,5 +1,6 @@
 import nextra from 'nextra'
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'url'
+import redirects from './redirects.mjs'
 
 const withNextra = nextra({
     theme: 'nextra-theme-docs',
@@ -8,14 +9,17 @@ const withNextra = nextra({
     search: {
         codeblocks: false
     },
-    defaultShowCopyCode: true,
+    defaultShowCopyCode: true
 })
 
-export default withNextra({
+const nextConfig = {
     webpack(config) {
         config.module.noParse = [
             fileURLToPath(import.meta.resolve("./node_modules/@typescript/vfs/dist/vfs.esm.js")),
         ];
         return config;
-    }
-})
+    },
+    redirects
+}
+
+export default withNextra(nextConfig)
