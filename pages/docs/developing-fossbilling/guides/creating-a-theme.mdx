@@ -24,9 +24,9 @@ import { Callout } from "nextra/components";
 ## Understanding how themes work in FOSSBilling
 
 - FOSSBilling uses the [Twig](https://twig.symfony.com/) templating engine to render the HTML for the user interface.
-- All custom twig filters can be found [here](https://fossbilling.org/docs/contribution-handbook/twig-filters).
+- All custom twig filters can be found [here](/docs/developing-fossbilling/twig-filters).
 - Themes operate by overriding templates found in modules. To do so, simply have a template within your theme's `html` folder that matches the original template name you wish to override.
-- You can find the expected theme structure in the [folder structure documentation](https://fossbilling.org/docs/contribution-handbook/file-structure#themes).
+- You can find the expected theme structure in the [folder structure documentation](/docs/developing-fossbilling/file-structure#themes).
 
 ## Twig Loader Template Priority
 
@@ -40,11 +40,11 @@ Twig will load templates in the following order.
 ## Twig Filters and Functions
 
 Invoices gain access to the same filters that Twig does on the front-end with FOSSBilling.
-You may find a list of these on the [Twig Filters & Functions](https://fossbilling.org/docs/contribution-handbook/twig-filters) page.
+You may find a list of these on the [Twig Filters & Functions](/docs/developing-fossbilling/twig-filters) page.
 
 ## Working with our security systems.
 
-FOSSBilling has security systems implemented on the back end that will need to be taken into consideration when creating a new theme. Some info on these systems is available on [this page](https://fossbilling.org/docs/security/securing-fossbilling)
+FOSSBilling has security systems implemented on the back end that will need to be taken into consideration when creating a new theme. Some info on these systems is available on [this page](/docs/security/securing-fossbilling)
 The most important system that you need to account for is the CSRF protection. All API calls will need to provide this API key. Both get and post methods are acceptable.
 
 ### Working with the CSRF Protection

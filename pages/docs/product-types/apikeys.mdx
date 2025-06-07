@@ -122,6 +122,6 @@ Response:
 ## Notes
  - FOSSBilling by default implements a basic rate-limiter on all API requests.
     - This will help prevent brute-force guessing of the API keys using the `/check` endpoints, however you may want to consider lowering the value to be more restrictive.
-    - There's some [brief documentation](https://fossbilling.org/docs/customizing-fossbilling/config#api-configuration) for these configuration parameters.
+    - There's some [brief documentation](/docs/customizing-fossbilling/config#api-configuration) for these configuration parameters.
     - Due to this rate limiter, you should design your application to cache API key results locally for a short period of time. This will help avoid any rate-limiting as well as reduce unnecessary API requests to the FOSSBilling server.
  - Clients can at any time reset and view their API key. If you wish to revoke access, you should change it's validity rather than resetting the API key.

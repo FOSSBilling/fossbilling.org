@@ -18,7 +18,7 @@ The gateway itself provides no way to handle payments and only acts as a method 
 
 ## Templates
 
-When entering a custom template for the custom payment gateway, you should know that it's powered by twig and has the same twig [filters and functions](https://fossbilling.org/docs/contribution-handbook/twig-filters) as the rest of the software does.
+When entering a custom template for the custom payment gateway, you should know that it's powered by twig and has the same twig [filters and functions](/docs/developing-fossbilling/twig-filters) as the rest of the software does.
 
 Some [basic variables](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/library/Payment/Adapter/Custom.php#L61-L65) are passed to twig, allowing you to display some additional information to the client.
 To view the contents of the `invoice` variable, edit your `config.php` file to enable debug mode for twig and then place the following contents into your template:
