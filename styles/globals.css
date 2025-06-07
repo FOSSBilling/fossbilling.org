@@ -8,6 +8,7 @@
 }
 .features-container {
   margin: 4rem 0 0;
+  padding-bottom: 2rem;
   background-color: #f3f4f6;
   border-bottom: 1px solid #e5e7eb;
 }
