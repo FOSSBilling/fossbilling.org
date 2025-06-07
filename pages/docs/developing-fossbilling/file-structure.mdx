@@ -2,13 +2,18 @@
 title: FOSSBilling File Structure
 ---
 
+import { Callout } from "nextra/components";
+
 # FOSSBilling File Structure
 
-The file structure of FOSSBilling may be unfamiliar to new developers because it is not based on a modern framework. This guide aims to help developers understand the file structure of FOSSBilling in order to make contributions.
+FOSSBilling's file structure may feel unfamiliar to new developers since it is not based on a modern framework.
+This guide is here to help you quickly get comfortable with how everything is organized so you can jump right into it.
 
 ## The Main Source Code
 
-The main source code for FOSSBilling is located in the ["src"](https://github.com/FOSSBilling/FOSSBilling/tree/main/src) directory within the project repository. This directory contains most of the code for the project, with the exception of tests and a few other files. This guide will primarily focus on the source code found in the "src" directory.
+The source code for FOSSBilling lives in the ["src"](https://github.com/FOSSBilling/FOSSBilling/tree/main/src) directory within the project repository.
+
+You'll find almost all of the project's code here, except for tests and a few other files. This guide will primarily focus on the source code found in the "src" directory.
 
 ### Data
 
@@ -21,26 +26,28 @@ The "data" folder within the source code is mostly empty, but it is an important
 _File path: `/src/install`_
 
 The "install" directory contains the files necessary for installing FOSSBilling, such as the installation wizard and default SQL content.
+The folder is automatically removed once the installation is completed.
 
 ### Library
 
 _File path: `/src/library`_
 
-The "library" folder serves as a general library for the FOSSBilling application. It contains several subfolders, which hold various resources and code used by the application. In the following section, we will describe the contents of these subfolders.
+The "library" directory serves as a general-purpose library for FOSSBilling. It contains several subfolders, each holding different resources and core code. In the following section, we will describe the contents of these subfolders.
 
 #### API
 
 _File path: `/src/library/Api`_
 
-The "API" folder contains some of the core files for the FOSSBilling API, including the abstract class, handler, and JavaScript API wrapper.
-The JavaScript API wrapper is located at `src/library/API.js` and is the most commonly used file in this directory. Documentation for the wrapper can be found [here](https://fossbilling.org/docs/api/javascript)
+The "API" folder contains some of the core files for the FOSSBilling API, including the abstract class, handler, and the JavaScript API wrapper.
+
+The most commonly used file here is the JavaScript wrapper at `src/library/API.js`. This wrapper makes it easy to interact with the backend from within themes. You can find detailed documentation for using the wrapper [here](javascript).
 
 #### Box
 
 _File path: `/src/library/Box`_
 
-The "Box" directory is named after BoxBilling and holds classes that originate from BoxBilling code.
-Many of these classes are older and are in the prosses of being cleaned up and refactored into new FOSSBilling classes.
+Named after BoxBilling (FOSSBilling's predecessor), this folder contains some legacy classes that are being gradually improved and replaced.
+
 Some examples of the types of classes found in this directory include classes for tools, translations, exception handling, custom Twig extensions, and more.
 
 #### FOSSBilling
@@ -48,7 +55,7 @@ Some examples of the types of classes found in this directory include classes fo
 _File path: `/src/library/FOSSBilling`_
 
 The "FOSSBilling" directory holds classes that are brand-new or rewritten classes since we've forked from BoxBilling.
-For the moment, these are mostly specific to the FOSSBilling core and don't provide functionality that many module developers will need to interact with.
+For the moment, these are mostly specific to the FOSSBilling core. Most module developers won't need to interact with the classes here often, but it's useful to know this is where new core features live.
 
 #### Model
 
@@ -61,21 +68,28 @@ The "Model" directory contains all of the models used in FOSSBilling. It is unli
 _File path: `/src/library/Payment`_
 
 The "Payment" directory is important and contains the library files for payment adapters and invoice handling.
-For most developers, the subfolder `src/library/Payment/Adapter` will be of particular interest, as it contains the payment adapters for FOSSBilling, which extend the classes defined in the parent directory.
+
+For most developers, the subfolder `src/library/Payment/Adapter` will be of particular interest, as it contains the payment adapters for FOSSBilling. [Here's a guide to creating a payment gateway](guides/creating-a-payment-gateway) to help you along.
 
 #### Registrar
 
 _File path: `/src/library/Registrar`_
 
 The "Registrar" directory holds the classes and files for domain registrar adapters used by FOSSBilling.
-The actual adapters are located in the subfolder `src/library/Registrar/Adapter` and extend classes from the parent directory.
+
+Actual adapters are inside `src/library/Registrar/Adapter`. If you want to create your own, [here's a guide to help you build a domain registrar integration](guides/creating-a-registrar-integration).
 
 #### Server
 
+<Callout type="info">
+These are intended for shared hosting control panels like cPanel, Plesk, or HestiaCP. For more complex product types like VPS or game servers, consider creating a dedicated product module instead.
+</Callout>
+
 _File path: `/src/library/Server`_
 
-The "Registrar" directory holds the classes and files for server managers used by FOSSBilling.
-The actual server managers are located in the subfolder `src/library/Server/Manager` and extend classes from the parent directory.
+This folder contains the classes and files for server managers. You'll find the managers themselves under `src/library/Server/Manager`.
+
+Documentation for creating a server manager can be found [here](guides/creating-a-server-manager).
 
 ### Locale
 
@@ -107,7 +121,10 @@ The "Themes" folder holds a directory for each theme that is installed inside of
 Themes should have the following file structure:
 
 - `assets` - This directory should hold theme assets such as JS, CSS, and images.
-- `config` - If the theme has configuration options, then this folder will have a `settings.html` file to define the configurable options for that theme.
+- `config` - If the theme has configuration options, this folder will have a `settings.html.twig` file to define the configurable options for that theme.
 - `html` - This directory hold the twig templates used as the HTML for the theme. If needed, a theme can define custom pages for modules by naming a twig template to be the same name as the one the module uses which will then be loaded instead of the module's template.
 - `html_custom` - An optional directory that end-users can use to provide templates which will take priority over all other templates. Themes should not place their templates here, as the purpose of this directory is to make customizing a theme easier.
 - `manifest.json` - The "manifest.json" file is the theme's manifest file, which defines various details about the theme, such as its version, name, and description.
+
+
+Every contribution, big or small, helps make the project better for everyone! If you need help with anything, don't hesitate to reach out. Join our [Discord community](/discord) or create a new thread in our [forums](https://forum.fossbilling.org).
