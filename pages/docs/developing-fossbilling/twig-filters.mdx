@@ -4,25 +4,27 @@ title: FOSSBilling's Twig Filters & Functions
 
 # Twig Filters & Functions
 
-FOSSBilling utilizes the popular twig templating engine for various purposes (front-end, email templates, PDFs, ect).
-This documentation covers what twig filters FOSSBilling includes so that developers can better understand what's available to work with.
+FOSSBilling utilizes the popular Twig templating engine for various purposes (front-end, email templates, PDFs, etc.).
+This documentation covers what Twig filters FOSSBilling includes so that developers can better understand what's available to work with.
 
 ## From Twig
 
-FOSSBilling includes all of the default twig filters plus the following additional filters through extensions:
+FOSSBilling includes all the default Twig filters, plus the following additional filters through extensions:
 
 - The [Intl Extra Extension](https://github.com/twigphp/intl-extra) & associated filters
 
-## Custom
+## By FOSSBilling
 
-FOSSBilling has quite a few custom filters included in it. Here's the full list of them with further documentation coming in the future:
+FOSSBilling has quite a few custom filters included in it. These filters come from [`/library/Box/TwigExtensions.php`](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/library/Box/TwigExtensions.php).
+
+Here’s a complete list, with more detailed documentation to come:
 
 - `trans`: The translation filter.
 - `alink`: Accepts a URI and turns it into a link for the administrator panel.
 - `link`: Generates a full link for the FOSSBilling installation off of a URI.
 - `autolink`: Automatically generates an HTML link element.
 - `gravatar`: Accepts an email and optionally size and generates a gravatar image for it.
-- `markdown`: Parses markdown into HTML, escaping HTML and removing unsafe links (`javascript:`, `vbscript:`, `file:`, and most `data:` links`
+- `markdown`: Parses markdown into HTML, escaping HTML and removing unsafe links (`javascript:`, `vbscript:`, `file:`, and most `data:` links)
   - Follows the CommonMark spec with GitHub markdown extensions enable via the `league/commonmark` package.
 - `truncate`: Truncates a string down to a given maximum length.
 - `timeago` Accepts a `ISO 8601` date format and displays how long ago it was.
@@ -41,3 +43,4 @@ FOSSBilling has quite a few custom filters included in it. Here's the full list 
 - `money_without_currency`: Formats a price for a given currency without displaying the currency symbol.
 - `money_convert`: Like `money` except it also converts the currency.
 - `money_convert_without_currency`: Like `money_without_currency` except it also converts the currency.
+- `iplookup`: Returns a clickable admin panel link to lookup the provided IP.

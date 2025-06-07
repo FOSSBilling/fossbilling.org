@@ -4,43 +4,125 @@ title: API Reference
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPersonDigging } from '@fortawesome/free-solid-svg-icons'
-import { Callout } from 'nextra/components'
+import { Callout, Tabs } from 'nextra/components'
 
 # API Reference
 
 This document describes the resources that make up the official FOSSBilling API.
 
 <Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
-    A more complete guide to using the API is in progress. At this moment there are no major breaking API changes between the last BoxBilling release and current FOSSBilling preview builds and you can also refer to the BoxBilling API documentation.
+    A comprehensive API guide is currently in progress. Meanwhile, since there have been no major breaking changes since the last BoxBilling release, you can also refer to the [BoxBilling API documentation](https://docs.boxbilling.org/en/latest/index.html) for additional reference.
 </Callout>
 
 ## API endpoints
 
 FOSSBilling provides 3 main API entrypoints:
 
- - `example.com/api/admin/*`: The admin entrypoint. Authenticated administrators can access this endpoint.
- - `example.com/api/client/*`: The client entrypoint. Authenticated clients can access this endpoint.
- - `example.com/api/guest/*`: The admin entrypoint. Anybody can access this, even without being authenticated.
+ - `example.com/api/admin/*`: For authenticated **administrators** managing the system.
+ - `example.com/api/client/*`: For authenticated **clients** managing their services.
+ - `example.com/api/guest/*`: Open to **anyone**, no authentication required, typically for public information.
 
 ## Schema
 
-- All Requests are made via POST method.
+- All requests are made via POST method.
 - All data is sent and received as JSON.
-- All methods names are lowercase and words are separated by an underscore.
-- Blank fields are included as null instead of being omitted.
-- All timestamps are returned in ISO 8601 format.
+- Method names are all lowercase with words separated by underscores (e.g., `change_password`).
+- Blank fields are included as `null` instead of being omitted.
+- All timestamps are returned in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
 
 ## Authentication
 
-- Usernames are `admin` or `client`.
-- The authentication password is an API key which can be retrieved from your profile in the FOSSBilling Admin area.
+- Usernames are either `admin` or `client`, depending on the API endpoint. The guest entrypoint won't require authentication, thus no username.
+- The password is your **API key**, available in the client profile or in the FOSSBilling admin dashboard.
 - The API uses cookies to store sessions.
-- Authentication credentials should be provided via HTTP authorization headers and be base64 encoded.
-	- Example: If you want to access the `admin` API endpoint, you must send `admin` as the HTTP authentication username and provide your API key as the HTTP authentication password.
-    - Most HTTP clients will automatically base64 encode your authorization headers.
+- Authentication credentials should be sent via HTTP Basic Authentication headers, base64 encoded.  
+  For example, to access the admin API:
+  ```http
+  Authorization: Basic base64_encode('admin:YOUR_API_KEY')
+  ```
+- Most HTTP clients (like curl or Postman) handle the encoding automatically.
 
-## Requests
+## Example request
+<Tabs items={['curl', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```bash
+# Example curl request to authenticate and call an admin API endpoint
 
-- All Requests are made via the POST method.
-- Data can be sent as JSON string or POST form.
-- All responses are sent as JSON.
+curl -X POST "https://example.com/api/admin/staff/create" \
+  -H "Authorization: Basic $(echo -n 'admin:YOUR_API_KEY' | base64)" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "hello@fossbilling.org",
+    "password": "Testing123+",
+    "name": "John Doe",
+    "admin_group_id": 1,
+    "status": "active"
+  }'
+
+# Replace YOUR_API_KEY with your actual API key and adjust the payload as needed.
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+  ```python
+# Example Python request to authenticate and call an admin API endpoint
+
+import requests
+from requests.auth import HTTPBasicAuth
+
+url = "https://example.com/api/admin/staff/create" # /api/{role}/{module}/{endpoint}
+api_key = "YOUR_API_KEY"
+
+payload = {
+    "email": "hello@fossbilling.org",
+    "password": "Testing123+",
+    "name": "John Doe",
+    "admin_group_id": 1,
+    "status": "active"
+}
+
+auth = HTTPBasicAuth('admin', api_key)
+headers = {
+    "Content-Type": "application/json"
+}
+
+response = requests.post(url, json=payload, auth=auth)
+print(response.json())
+
+# Replace YOUR_API_KEY with your actual API key and adjust the request as needed.
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+  ```javascript
+// Example JavaScript request to authenticate and call an admin API endpoint
+
+const url = "https://example.com/api/admin/staff/create"; // /api/{role}/{module}/{endpoint}
+const apiKey = "YOUR_API_KEY";
+
+const payload = {
+  email: "hello@fossbilling.org",
+  password: "Testing123+",
+  name: "John Doe",
+  admin_group_id: 1,
+  status: "active"
+};
+
+const headers = new Headers();
+headers.set("Content-Type", "application/json");
+headers.set("Authorization", "Basic " + btoa("admin:" + apiKey));
+
+fetch(url, {
+  method: "POST",
+  headers: headers,
+  body: JSON.stringify(payload)
+})
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error("Error:", error));
+
+// Replace YOUR_API_KEY with your actual API key and adjust the request as needed.
+```
+  </Tabs.Tab>
+</Tabs>
+
+
+If you're new to API development or need help getting started, join our [Discord](/discord) community or post questions in our [forums](https://forum.fossbilling.org). Happy coding!
