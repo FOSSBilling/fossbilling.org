@@ -101,11 +101,11 @@ const url = "https://example.com/api/admin/staff/create"; // /api/{role}/{module
 const apiKey = "YOUR_API_KEY";
 
 const payload = {
-  email: "hello@fossbilling.org",
-  password: "Testing123+",
-  name: "John Doe",
-  admin_group_id: 1,
-  status: "active"
+    email: "hello@fossbilling.org",
+    password: "Testing123+",
+    name: "John Doe",
+    admin_group_id: 1,
+    status: "active"
 };
 
 const headers = new Headers();
@@ -113,13 +113,13 @@ headers.set("Content-Type", "application/json");
 headers.set("Authorization", "Basic " + btoa("admin:" + apiKey));
 
 fetch(url, {
-  method: "POST",
-  headers: headers,
-  body: JSON.stringify(payload)
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(payload)
 })
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error("Error:", error));
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error("Error:", error));
 
 // Replace YOUR_API_KEY with your actual API key and adjust the request as needed.
 ```
