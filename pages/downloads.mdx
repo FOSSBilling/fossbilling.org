@@ -7,7 +7,7 @@ import { faDownload, faCode } from '@fortawesome/free-solid-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { useData } from 'nextra/hooks'
 import Date from '../components/Date'
-import { Card, Cards } from '../components/Card/'
+import { Cards } from 'nextra/components'
 
 import { Features, Feature } from '../components/Features'
 
@@ -27,7 +27,7 @@ import { Features, Feature } from '../components/Features'
             <p>You may want to read the <a href="https://fossbilling.org//docs/getting-started/requirements">system requirements</a> before installing.</p>
 
             <div className='mt-4 gap-4 flex justify-center'>
-                <Card icon={<FontAwesomeIcon icon={faDownload} size="xl" />} title="Download now" href="/downloads/stable"/>
+                <Cards.Card icon={<FontAwesomeIcon icon={faDownload} size="xl" />} title="Download now" href="/downloads/stable"/>
             </div>
         </Feature>
 
@@ -35,7 +35,7 @@ import { Features, Feature } from '../components/Features'
             <h3><FontAwesomeIcon icon={ faCode } /> Preview builds</h3>
             <p>If you are a developer, you might want to use this build instead. Preview builds are automatically generated from the main branch after each commit.</p>
             <div className='mt-4 gap-4 flex justify-center'>
-                <Card icon={<FontAwesomeIcon icon={faDownload} size="xl" />} title="Download now" href="/downloads/preview"/>
+                <Cards.Card icon={<FontAwesomeIcon icon={faDownload} size="xl" />} title="Download now" href="/downloads/preview"/>
             </div>
         </Feature>
       </Features>
