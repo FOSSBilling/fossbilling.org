@@ -11,11 +11,11 @@ export default {
   "customizing-fossbilling": {
     "title": "Customizing FOSSBilling"
   },
-  "product-types": {
-    "title": "Product Types Within FOSSBilling"
-  },
   "developing-fossbilling": {
     "title": "Developing FOSSBilling"
+  },
+  "product-types": {
+    "title": "Product Types Within FOSSBilling"
   },
   "server-managers": {
     "title": "Server Managers in FOSSBilling"

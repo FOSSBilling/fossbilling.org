@@ -11,12 +11,20 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
 import { Features, Feature } from '../components/Features'
 import { LogoSlider } from '../components/LogoSlider'
+import { Button } from '../components/Button'
 
 <div className="home-content">
   <div className="content-container">
     <h1 className="headline">Free and open source <br className='sm:block hidden'/>hosting automation.</h1>
     <p className="subtitle">Empower your hosting business with FOSSBilling, <br className='sm:block hidden'/>the free and open-source solution for efficient billing and client management.</p>
-    <p className="subtitle"><Link href="/docs">Get started →</Link><br className="show-on-mobile"/><span className="text-sm">...or jump straight to [installing FOSSBilling](/docs/getting-started)</span></p>
+    <Link href="/docs">
+      <Button text="Get started" />
+    </Link>
+    <Link href="/downloads">
+      <Button text="Download FOSSBilling" />
+    </Link>
+    <br /><br />
+    <Link href="/docs/getting-started"><span className="text-blue-700 hover:text-blue-800 dark:text-blue-600 dark:hover:text-blue-700 hover:underline hover:underline-offset-2">Installation instructions</span></Link>
   </div>
 
   <div className="features-container">

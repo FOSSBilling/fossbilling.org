@@ -2,19 +2,21 @@
 
 .content-container {
   max-width: 90rem;
-  padding-left: max(env(safe-area-inset-left),1.5rem);
-  padding-right: max(env(safe-area-inset-right),1.5rem);
+  padding-left: max(env(safe-area-inset-left), 1.5rem);
+  padding-right: max(env(safe-area-inset-right), 1.5rem);
   margin: 0 auto;
 }
+
 .features-container {
   margin: 4rem 0 0;
   padding-bottom: 2rem;
   background-color: #f3f4f6;
   border-bottom: 1px solid #e5e7eb;
 }
+
 .dark .features-container {
   background-color: #000;
-  border-bottom: 1px solid rgb(38,38,38);
+  border-bottom: 1px solid rgb(38, 38, 38);
 }
 
 .logo {
@@ -22,6 +24,7 @@
   height: 34.5px;
   width: 161.5px;
 }
+
 .dark .logo {
   background-image: url('/assets/img/logo_white.svg');
   height: 34.5px;
@@ -38,27 +41,32 @@
   margin-top: 3.4rem;
   line-height: 1.1;
 }
+
 .subtitle {
   font-size: 1.3rem;
   font-size: min(1.3rem, max(3.5vw, 1.2rem));
   font-feature-settings: initial;
   line-height: 1.6;
 }
+
 .nextjs-link {
   color: currentColor;
   text-decoration: none;
   font-weight: 600;
 }
+
 #admin-card {
   background-image: url(/assets/img/admin.png);
   background-size: cover;
   color: rgb(27, 27, 27);
-  text-shadow: 0 0 1rem rgba(0,0,0,0.2);
+  text-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
 }
+
 .dark #admin-card {
   color: #fff;
   background-image: url(/assets/img/admin_dark.png);
 }
+
 #os-card {
   min-height: 300px;
   background-image: linear-gradient(to top, transparent, #fff 50%), url(/assets/syntax-highlighting.svg);
@@ -66,25 +74,31 @@
   background-position: -6px calc(100% + 4px);
   background-repeat: no-repeat;
 }
+
 .dark #os-card {
   background-image: linear-gradient(to top, transparent, #202020 50%), url(/assets/syntax-highlighting.svg);
 }
+
 @media screen and (max-width: 1200px) {
   #os-card {
     aspect-ratio: auto;
   }
+
   .headline {
     letter-spacing: -.08rem;
   }
 }
+
 @media screen and (max-width: 1024px) {
   #admin-card {
     aspect-ratio: 135/86;
   }
+
   #os-card {
     background-size: 136%;
   }
 }
+
 @media screen and (max-width: 768px) {
   #admin-card {
     background-position: -26px 0;
@@ -95,11 +109,52 @@
   }
 }
 
+body {
+  font-feature-settings: 'rlig' 1, 'calt' 1;
+}
+
+.home-content p {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  line-height: 1.75em;
+}
+
+.home-content a {
+  --tw-ring-color: hsl(var(--nextra-primary-hue) 100% 50%/0.3);
+  --tw-text-opacity: 1;
+  color: hsl(var(--nextra-primary-hue) 100% 50% / var(--tw-text-opacity));
+}
+
+code.text-\[\.9em\] {
+  font-size: 14px;
+}
+
+@media screen and (max-width: 1200px) {
+  .home-content .hide-medium {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .home-content p {
+    font-size: 0.9rem;
+  }
+
+  .home-content .hide-small {
+    display: none;
+  }
+}
+
 /* Logo slider */
 
 @keyframes scroll-marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .marquee-track {
@@ -113,17 +168,20 @@
 
 /* Light mode: dark gray logos by default */
 .logo-img {
-  filter: brightness(0) invert(0.1); /* near-black */
+  filter: brightness(0) invert(0.1);
+  /* near-black */
 }
 
 /* Dark mode: white logos */
 .dark .logo-img {
-  filter: brightness(0) invert(1); /* pure white */
+  filter: brightness(0) invert(1);
+  /* pure white */
 }
 
 /* Hover effect (gray in both modes) */
 .logo-img:hover {
-  filter: brightness(0) invert(0.6); /* gray tone */
+  filter: brightness(0) invert(0.6);
+  /* gray tone */
 }
 
 .logo-slider {
@@ -162,4 +220,3 @@
 .dark .logo-slider::after {
   background: linear-gradient(to left, black 0%, transparent 100%);
 }
-
