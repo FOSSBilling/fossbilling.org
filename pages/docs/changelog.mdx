@@ -60,11 +60,20 @@ This FOSSBilling release adds support for PHP 8.4 and removes support for PHP 8.
   - Deleting a domain product from the cart now only removes its associated addons, instead of removing all addons of the same type across the cart.
   - Fixed a positioning issue with the cookie consent banner.
   - Fixed the keywords meta tag not being applied with the Huraga theme.
+  - Fixed some parts of the client area that were missing pagination functionality.
+  - Fixed suffix and prefix options with the Huraga theme.
+  - Fixed the option to display company info in the client area footer.
+  - Fixed the client area denying access to the TOS and Privacy Policy pages for guests if the guest dashboard is disabled.
+  - Resolved an issue with tax calculation.
+  - Fixes and improvements to the DirectAdmin integration.
+  - Resolved certain situations that could cause odd renewal date behavior for manually created orders.
+  - Resolved some logic issues with the permissions system.
 
 ### 📝 Changes
 
  - The fallback cron behavior is now automatically disabled for production installations to help reduce confusion.
  - Hid the quantity control options for products as it is not fully implemented.
+ - API endpoints will now return permission errors when they occur
 
 ## 0.6.22 (6-20-2024)
 
