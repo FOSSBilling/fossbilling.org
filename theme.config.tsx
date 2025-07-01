@@ -25,9 +25,9 @@ export default {
         icon: <FontAwesomeIcon icon={faDiscord} size="xl" />,
     },
     banner: {
-        key: 'mollie',
-        content: <a href="https://github.com/NerdbyteIO/FOSSBilling-CyberPanel" target="_blank">
-          ⭐️ There's now a community maintained integration for CyberPanel! Click here to check it out.
+        key: '0.7.0-release',
+        content: <a href="https://github.com/FOSSBilling/FOSSBilling/releases/latest" target="_blank">
+          🎉 FOSSBilling 0.7.0 is released! Read more →
         </a>,
     },
     feedback: {
