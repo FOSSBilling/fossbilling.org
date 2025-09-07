@@ -8,6 +8,27 @@ Below are the changelogs for all FOSSBilling releases ordered most recent to old
 
 Dates are displayed as `MM-DD-YYYY`.
 
+## 0.7.2 (9-07-2025)
+
+### 🐛 Bug Fixes
+
+- Fix an issue with invoice authentication which was causing problems with the cronjob tasks, renewals, and payments using certain payment gateways like PayPal.
+- Fixed an oversight which could cause the `account_get_list` API endpoint in the hosting service module to return data for a different service.
+- In the huraga theme, people can no longer hit the checkout button before being logged in.
+- We've fixed around a dozen mistakes in exception logging.
+- Fixed the "service" breadcrumb in the huraga theme.
+- Fixed an error that would appear when trying to generate an API key from your admin panel profile.
+- Fixed an error that would be seen if trying to update a client profile without providing a birthdate.
+
+### ➕ New Features
+
+- The about page now includes info on installed modules.
+- The `Server_Client` class now has methods to get the client's first and last name.
+
+### 📝 Changes
+
+- Internally, file and path handling has been refactored to utilize Symfony's components.
+
 ## 0.7.1 (7-02-2025)
 
 ### 🐛 Bug Fixes
