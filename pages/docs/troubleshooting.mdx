@@ -105,17 +105,7 @@ If you're having errors after updating, the following steps may help you resolve
 If you're seeing a message similar to this in the FOSSBilling dashboard, that means that cron has not run in 15 minutes or longer, which is problematic as FOSSBilling relies on this functionality to work as intended.
 ![FOSSBilling warning about cron execution](/img/guides/install/cron-warning.png)
 
-<Callout type="info">
-  Note: by default FOSSBilling includes a fallback cron behavior which will be
-  run when cron goes past 15 minutes since it's last execution & you access the
-  administrator dashboard. So if you see this message and then go check the last
-  execution time, it will be quite recent & this does not mean cron is working
-  correctly!
-</Callout>
-
 1. Check for any errors in the FOSSBilling [error log](/docs/faq#where-can-i-find-error-logs).
-   - FOSSBilling will try to alert you if the PHP version is out of date, however in some cases newer PHP features on older versions results in a PHP compile error which we cannot handle. See the lower steps to resolve this. Below are any known examples of these errors:
-     - `Cannot use 'final' as constant modifier`: This error occurs when cron is being run with a PHP version older 8.1.
 2. Validate you have correctly configured cron to run once every 5 minutes. FOSSBilling will display a crontab example with the correct path for your installation under the cron settings (/admin/extension/settings/cron)
 3. If you're using a control panel with multiple users, log into your user account via the CLI and enter `php -v` to see what the default PHP version is under your account. If it's less than FOSSBilling's minimum PHP version, follow the below steps to correct it.
 
@@ -126,8 +116,8 @@ Because cron is executed as a command on the host server, these steps aren't ass
 These steps may help you resolve this issue:
 
 1.  If your control panel gives you a PHP version selector for cron, use that to select one that meets FOSSBilling's requirements.
-2.  Try specifying a different PHP binary to use in the cron job (Examples: `php8.1` or `/usr/bin/php8.1` instead of simply using `php`)
-3.  Remove any PHP versions less than 8.1 to ensure it can't use an incorrect version.
+2.  Try specifying a different PHP binary to use in the cron job (Examples: `php8.2` or `/usr/bin/php8.2` instead of simply using `php`)
+2.  Remove any PHP versions less than 8.2 to ensure it can't use an incorrect version.
 4.  Contact the maintainers of your control panel and how to select a different PHP version for cron.
 5.  Switch to utilizing [cronjob API endpoint](/docs/getting-started/installation#utilizing-a-remote-service-to-activate-cron) by either using `wget` to call the API endpoint via a cronjob or by using an external service.
     - Note: cron may sometimes be long-running. Calling the API endpoint to run cron should be treated as a final resort as you run into a higher chance of running into timeouts. You should consider increasing the timeout limit on your server if you will be using this.
