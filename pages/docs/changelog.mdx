@@ -13,6 +13,7 @@ Dates are displayed as `MM-DD-YYYY`.
 ### 🐛 Bug Fixes
 
 - Fix an issue with invoice authentication which was causing problems with the cronjob tasks, renewals, and payments using certain payment gateways like PayPal.
+  - Credit and a thank you to @ktaog6 on GitHub for identifying the problem and providing a pull request!
 - Fixed an oversight which could cause the `account_get_list` API endpoint in the hosting service module to return data for a different service.
 - In the huraga theme, people can no longer hit the checkout button before being logged in.
 - We've fixed around a dozen mistakes in exception logging.
