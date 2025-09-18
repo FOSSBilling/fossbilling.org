@@ -1,0 +1,225 @@
+---
+title: License
+description: This page documents the License product type and its available API endpoints within FOSSBilling.
+---
+
+# The License Product Type
+
+## Current Status
+
+The license product type is included with FOSSBilling by default, but you must install and enable it from the Extensions tab.
+
+It allows administrators to issue, configure, and validate software licenses for 3rd party applications.
+External applications can then query the system to verify whether a license is valid.
+
+## Basic Usage
+
+The license product type is intended for scenarios where you need to enforce licensing rules on software or services you distribute.
+Licenses can be restricted or validated against several parameters:
+
+* **IP address**
+* **Hostname**
+* **Installation path**
+* **Version**
+
+You may also configure which validation plugin is used, allowing for flexible licensing strategies.
+
+### Creating the Product
+
+As with all product types in FOSSBilling, the first step is to create a new product.
+Once created, you can configure license validation rules to match your needs:
+
+* `plugin`: Select which license validation plugin should be used.
+* `prefix`: Optionally provide a prefix for the generated license keys
+* `length`: Specify the length of the key. For the `Simple` module, this is 25 by default.
+* `validate_ip`: Enable or disable validation by IP address.
+* `validate_host`: Enable or disable validation by hostname.
+* `validate_path`: Enable or disable validation by installation path.
+* `validate_version`: Enable or disable validation by version.
+
+These options give you fine-grained control over how a license is validated in your system.
+
+---
+
+## Using the API Endpoints
+
+The following API endpoints exist:
+
+| Endpoint                              | Scope  | Description                                                   |
+|---------------------------------------|--------|---------------------------------------------------------------|
+| `/admin/servicelicense/plugin_get_pairs` | Admin  | Returns a list of available license plugins.                  |
+| `/admin/servicelicense/update`        | Admin  | Updates license validation parameters for a given order.      |
+| `/admin/servicelicense/reset`         | Admin  | Resets a license to its default validation rules.             |
+| `/guest/servicelicense/check`         | Guest  | Validates a license from an external system.                  |
+
+---
+
+### Getting Available License Plugins
+
+Administrators can use `/admin/servicelicense/plugin_get_pairs` to retrieve a list of available license plugins.
+
+Response:
+
+```json
+{
+    "result": {
+        "Simple": "Simple",
+        "PluginB": "PluginB"
+    },
+    "error": null
+}
+```
+
+---
+
+### Updating a License
+
+Administrators can update a license using `/admin/servicelicense/update`.
+
+**Parameters:**
+
+* int `order_id` (required) – The order ID of the license.
+* string `plugin` (optional) – New license plugin name.
+* bool `validate_ip` (optional) – Whether to validate IP addresses.
+* bool `validate_host` (optional) – Whether to validate hostnames.
+* bool `validate_path` (optional) – Whether to validate installation paths.
+* bool `validate_version` (optional) – Whether to validate versions.
+* array `ips`, `hosts`, `paths`, `versions` (optional) – Allowed values for each.
+
+Response:
+
+```json
+{
+    "result": true,
+    "error": null
+}
+```
+
+---
+
+### Resetting a License
+
+Administrators can reset a license using `/admin/servicelicense/reset`.
+
+**Parameters:**
+
+* int `order_id` (required) – The order ID of the license to reset.
+
+Response:
+
+```json
+{
+    "result": true,
+    "error": null
+}
+```
+
+---
+
+### Checking a License
+
+Guests (anyone) can verify a license using `/guest/servicelicense/check`.
+This endpoint automatically detects the requester's IP and accepts additional parameters for validation.
+
+**Parameters:**
+
+* string `license` (required) – The license key
+* string `host` (required) - The hostname
+* string `version` (required) - The version of the software
+* string `path` (required) - The path of the software
+
+If you disabled the validation of `host`, `version` or `path`, you may as well provide a dummy value for them.
+
+Response for an active license:
+
+```json
+{
+    "result": {
+        "licensed_to": "Client Name",
+        "created_at": "2025-01-01 12:00:00",
+        "expires_at": null,
+        "valid": true
+    },
+    "error": null
+}
+```
+
+Error response:
+
+```json
+{
+    "result": null,
+    "error": {
+        "message": "Your license key is invalid.",
+        "code": 1005
+    }
+}
+```
+
+---
+
+## Custom Plugins
+The license product type in FOSSBilling supports pluggable license generators.
+This allows you to define how licenses are created and validated, providing full control over your licensing strategy.
+
+A default plugin (`Simple`) is included with FOSSBilling, but you can easily create your own.
+
+### Creating a Plugin
+FOSSBilling will automatically detect new license plugins placed in:
+
+```
+/modules/Servicelicense/Plugin/
+```
+
+Each plugin must follow these rules:
+
+* The class must be named `License_PluginName`.
+* The file must be saved as `PluginName.php` inside the `Plugin/` directory.
+* The plugin **must** implement a `generate` method that returns the generated license string.
+
+### Example: Simple Plugin
+
+The `Simple` plugin demonstrates how license keys can be generated. It generates a license key with the following behavior:
+
+* Default length of **25 characters** (can be customized via config).
+* Supports an optional `prefix`.
+* Inserts a `-` every 5 characters for readability.
+* Uses uppercase letters and digits `1–9`.
+
+Example output with a prefix `MYAPP`:
+
+```
+MYAPP-ABCD1-EFGH2-IJKL3-MNOP4
+```
+
+---
+
+### Optional Validation Rules
+
+In addition to license generation, plugins may define custom validation logic.
+This is done by implementing a `validate` method in your plugin.
+
+```php
+public function validate(\Model_ServiceLicense $service, array $data)
+{
+    if (!$validation_rule) {
+        throw new \LogicException('Validation rule did not pass', 1020);
+    }
+
+    return [
+        'extraKey' => 'extraValue'
+    ];
+}
+```
+
+* This method is only called **after built-in validations** (expiration, IP, hostname, version, and path) have passed.
+* If validation fails, throw a `LogicException`.
+* The returned array will be included in the API response, allowing you to pass back extra information.
+
+---
+
+### Notes
+
+* Please review the default `Simple` plugin in:
+  `src/modules/Servicelicense/Plugin/Simple.php`.
+* Be cautious when implementing custom validation rules as errors will prevent licenses from validating.
