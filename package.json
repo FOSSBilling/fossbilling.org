@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.8",
-    "@types/node": "22.18.11",
+    "@types/node": "22.18.12",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "tailwindcss": "^4.1.8",
