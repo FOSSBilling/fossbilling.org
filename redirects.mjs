@@ -31,6 +31,16 @@ const redirects = async () => [
         destination: 'https://download.fossbilling.org/FOSSBilling-preview.zip',
         permanent: true
     },
+    {
+        source: "/api/releases",
+        destination: "https://api.fossbilling.net/releases/v1",
+        permanent: true
+    },
+    {
+        source: "/api/central-alerts/*",
+        destination: "https://api.fossbilling.net/central-alerts/v1/*",
+        permanent: true
+    },
 
     // Internal redirects
     {
