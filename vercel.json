@@ -43,6 +43,11 @@
             "source": "/docs/getting-started/plesk",
             "destination": "/docs/getting-started/shared",
             "permanent": true
+          },
+          {
+            "source": "/api/releases",
+            "destination": "https://api.fossbilling.net/releases/v1",
+            "permanent": true
           }
       ]
 }
