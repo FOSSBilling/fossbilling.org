@@ -1,6 +1,5 @@
 import nextra from 'nextra'
 import { fileURLToPath } from 'url'
-import redirects from './redirects.mjs'
 
 const withNextra = nextra({
     theme: 'nextra-theme-docs',
