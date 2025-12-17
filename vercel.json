@@ -40,8 +40,8 @@
             "permanent": true
         },
         {
-            "source": "/api/central-alerts/*",
-            "destination": "https://api.fossbilling.net/central-alerts/v1/*",
+            "source": "/api/central-alerts/:query*",
+            "destination": "https://api.fossbilling.net/central-alerts/v1/:query*",
             "permanent": true
         },
         {
