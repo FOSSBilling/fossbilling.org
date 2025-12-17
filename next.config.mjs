@@ -18,7 +18,6 @@ const nextConfig = {
         ];
         return config;
     },
-    redirects
 }
 
 export default withNextra(nextConfig)
