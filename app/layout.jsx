@@ -30,11 +30,7 @@ const banner = (
 const navbar = (
   <DocsNavbar
     key="navbar"
-    logo={
-      <>
-        <span className="logo"></span>
-      </>
-    }
+    logo={<span className="logo"></span>}
     projectLink="https://github.com/FOSSBilling/FOSSBilling"
     chatLink="https://fossbilling.org/discord"
   />
