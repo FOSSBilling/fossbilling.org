@@ -20,7 +20,8 @@ export default {
   },
   "docs": {
     "title": "Documentation",
-    "type": "doc"
+    "type": "doc",
+    "display": "children"
   },
   "downloads": {
     "title": "Downloads",

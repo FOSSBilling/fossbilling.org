@@ -1,8 +1,14 @@
-import { Footer, Layout, Navbar } from 'nextra-theme-docs'
+import { Footer, Layout } from 'nextra-theme-docs'
 import { Banner, Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
+import { config } from '@fortawesome/fontawesome-svg-core'
+import DocsNavbar from '../components/DocsNavbar'
+import '@fortawesome/fontawesome-svg-core/styles.css'
 import 'nextra-theme-docs/style.css'
 import '../styles/globals.css'
+import { Fragment } from 'react'
+
+config.autoAddCss = false
 
 export const metadata = {
   title: {
@@ -22,7 +28,8 @@ const banner = (
 )
 
 const navbar = (
-  <Navbar
+  <DocsNavbar
+    key="navbar"
     logo={
       <>
         <span className="logo"></span>
@@ -48,11 +55,12 @@ export default async function RootLayout({ children }) {
         <Layout
           banner={banner}
           navbar={navbar}
+          copyPageButton={false}
           pageMap={pageMap}
           docsRepositoryBase="https://github.com/FOSSBilling/FOSSBilling.org/blob/main"
           sidebar={{ defaultMenuCollapseLevel: 1 }}
           footer={
-            <Footer>
+            <Footer key="footer">
               <div>
                 <div className="mb-2">
                   <a href="mailto:hello@fossbilling.org" className="hover:text-gray-500 dark:hover:text-gray-300">hello@fossbilling.org</a>
@@ -91,7 +99,7 @@ export default async function RootLayout({ children }) {
             </Footer>
           }
         >
-          {children}
+          <Fragment key="content">{children}</Fragment>
         </Layout>
       </body>
     </html>
