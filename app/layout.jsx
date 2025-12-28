@@ -19,8 +19,8 @@ export const metadata = {
 }
 
 const banner = (
-  <Banner storageKey="0.7.0-release">
-    🎉 FOSSBilling 0.7.0 is released!{' '}
+  <Banner storageKey="0.7.2-release">
+    🎉 FOSSBilling 0.7.2 is released!{' '}
     <a href="https://github.com/FOSSBilling/FOSSBilling/releases/latest" target="_blank">
       Read more →
     </a>
