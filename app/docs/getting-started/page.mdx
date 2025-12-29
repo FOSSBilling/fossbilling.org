@@ -1,0 +1,41 @@
+---
+title: Getting Started
+asIndexPage: true
+---
+
+import { Cards } from 'nextra/components'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDocker, faCpanel } from '@fortawesome/free-brands-svg-icons'
+import { faServer, faBoxOpen, faCode } from '@fortawesome/free-solid-svg-icons'
+
+# Getting Started
+
+Getting started with FOSSBilling only takes a few minutes. Just choose your preferred installation method and you can begin using the system right away.
+
+<Cards>
+  <Cards.Card
+    icon={<FontAwesomeIcon icon={faServer} size="xl" />}
+    title="System requirements"
+    href="/docs/getting-started/requirements"
+  />
+  <Cards.Card
+    icon={<FontAwesomeIcon icon={faCpanel} size="xl" />}
+    title="Standard Installation"
+    href="/docs/getting-started/installation"
+  />
+  <Cards.Card
+    icon={<FontAwesomeIcon icon={faDocker} size="xl" />}
+    title="Docker Installation"
+    href="/docs/getting-started/docker"
+  />
+  <Cards.Card
+    icon={<FontAwesomeIcon icon={faBoxOpen} size="xl" />}
+    title="Migrate from BoxBilling"
+    href="/docs/getting-started/migrate-from-boxbilling"
+  />
+  <Cards.Card
+    icon={<FontAwesomeIcon icon={faCode} size="xl" />}
+    title="Build from code"
+    href="/docs/getting-started/building"
+  />
+</Cards>
