@@ -47,10 +47,6 @@ export default {
     "title": "Translate",
     "href": "https://translate.fossbilling.org/"
   },
-  "forum": {
-    "title": "Forum",
-    "href": "https://forum.fossbilling.org/"
-  },
   "donate": {
     "title": "Donate",
     "type": "menu",
