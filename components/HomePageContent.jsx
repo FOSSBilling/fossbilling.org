@@ -14,7 +14,6 @@ import {
   faCode,
   faHeart,
   faArrowRight,
-  faCheckCircle,
   faLock,
   faUsers,
   faLanguage,
