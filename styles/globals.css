@@ -289,7 +289,7 @@ code.text-\[\.9em\] {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: white;
   font-size: 1.25rem;
   margin-bottom: 1rem;
@@ -320,7 +320,7 @@ code.text-\[\.9em\] {
 .feature-card-link {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #3b82f6;
+  color: #2563eb;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -408,7 +408,7 @@ code.text-\[\.9em\] {
   max-width: 600px;
   margin: 0 auto;
   padding: 3rem 2rem;
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
   border-radius: 1.5rem;
   color: white;
 }
@@ -493,12 +493,12 @@ code.text-\[\.9em\] {
 .community-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
-  border-color: #3b82f6;
+  border-color: #2563eb;
 }
 
 .dark .community-card:hover {
   box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
-  border-color: #3b82f6;
+  border-color: #2563eb;
 }
 
 .community-card svg {
@@ -512,7 +512,7 @@ code.text-\[\.9em\] {
 }
 
 .community-card:hover svg {
-  color: #3b82f6;
+  color: #2563eb;
 }
 
 .community-card h3 {
