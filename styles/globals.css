@@ -14,8 +14,9 @@
   border-bottom: 1px solid #e5e7eb;
   width: 100vw;
   max-width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
   box-sizing: border-box;
 }
 
