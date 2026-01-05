@@ -125,6 +125,31 @@ code.text-\[\.9em\] {
   will-change: transform;
 }
 
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+
+  .feature-card,
+  .community-card {
+    transition: none;
+  }
+
+  .feature-card:hover,
+  .community-card:hover {
+    transform: none;
+  }
+
+  .feature-card-link .arrow {
+    transition: none;
+  }
+
+  .feature-card:hover .feature-card-link .arrow {
+    transform: none;
+  }
+}
+
 .logo-img {
   @apply opacity-90 transition-all duration-300;
 }
