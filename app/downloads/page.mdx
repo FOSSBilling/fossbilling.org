@@ -3,39 +3,71 @@ title: Downloads
 type: page
 ---
 
+import { Callout } from 'nextra/components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload, faCode } from '@fortawesome/free-solid-svg-icons'
-import { Cards } from 'nextra/components'
-
-import { Features, Feature } from '../../components/Features'
+import { faBook, faServer, faClockRotateLeft, faDocker } from '@fortawesome/free-solid-svg-icons'
+import { faDocker as faDockerBrand } from '@fortawesome/free-brands-svg-icons'
+import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons'
+import { DownloadCards } from '../../components/DownloadCards'
 
 <div className="home-content">
   <div className="content-container">
     <h1 className="headline">Downloads</h1>
-    <p className="subtitle">Before downloading, please keep in mind: <br />- FOSSBilling is currently considered pre-production software <br />- You should have a strong technical knowledge <br />- Due to the pre-production nature of FOSSBilling, you should <strong>always</strong> read the release notes before updating <br />- We recommend understanding PHP and software development so you may aid in FOSSBilling development as well as resolve issues for yourself if needed <br />- FOSSBilling currently does not function correctly when placed under a sub-folder, so use a sub-domain instead</p>
+    <p className="subtitle">Download the latest version of FOSSBilling and start managing your hosting business.</p>
+
+    <Callout type="warning" title="Before you install">
+      - FOSSBilling is currently **pre-production software**
+      - Always read the [release notes](https://github.com/FOSSBilling/FOSSBilling/releases) before updating
+      - Some technical knowledge of PHP and web hosting is recommended
+      - You must install FOSSBilling on a subdomain or the top level domain, not in a subfolder
+    </Callout>
   </div>
 
   <div className="features-container">
-    <div className="content-container">
-      <Features>
-        <Feature large centered>
-            <h3>Releases <br className="show-on-mobile"/>(preview)</h3>
-            <p>Download the latest release of FOSSBilling. This is the recommended choice for all users.<br /></p>
-            <p>You may want to read the <a href="https://fossbilling.org//docs/getting-started/requirements">system requirements</a> before installing.</p>
+    <div className="content-container" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+      <DownloadCards />
 
-            <div className='mt-4 gap-4 flex justify-center'>
-                <Cards.Card icon={<FontAwesomeIcon icon={faDownload} size="xl" />} title="Download now" href="https://github.com/FOSSBilling/FOSSBilling/releases"/>
-            </div>
-        </Feature>
+      <div className="quick-links">
+        <a href="/docs/getting-started/requirements" className="quick-link">
+          <FontAwesomeIcon icon={faServer} />
+          <span>System Requirements</span>
+        </a>
+        <a href="/docs/getting-started/installation" className="quick-link">
+          <FontAwesomeIcon icon={faBook} />
+          <span>Installation Guide</span>
+        </a>
+        <a href="/docs/getting-started/docker" className="quick-link">
+          <FontAwesomeIcon icon={faDockerBrand} />
+          <span>Docker Setup</span>
+        </a>
+        <a href="/docs/changelog" className="quick-link">
+          <FontAwesomeIcon icon={faClockRotateLeft} />
+          <span>Changelog</span>
+        </a>
+      </div>
+    </div>
+  </div>
 
-        <Feature centered>
-            <h3><FontAwesomeIcon icon={ faCode } /> Preview builds</h3>
-            <p>If you are a developer, you might want to use this build instead. Preview builds are automatically generated from the main branch after each commit.</p>
-            <div className='mt-4 gap-4 flex justify-center'>
-                <Cards.Card icon={<FontAwesomeIcon icon={faDownload} size="xl" />} title="Download now" href="https://github.com/FOSSBilling/FOSSBilling/releases"/>
-            </div>
-        </Feature>
-      </Features>
+  <div className="content-container">
+    <div className="need-help-section">
+      <h2>Need help?</h2>
+      <p>Get assistance from the community or browse the documentation.</p>
+      <div className="need-help-links">
+        <a href="/discord" className="need-help-link">
+          <FontAwesomeIcon icon={faDiscord} />
+          <div>
+            <strong>Discord</strong>
+            <span>Chat with the community</span>
+          </div>
+        </a>
+        <a href="/docs" className="need-help-link">
+          <FontAwesomeIcon icon={faBook} />
+          <div>
+            <strong>Documentation</strong>
+            <span>Read the docs</span>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </div>
