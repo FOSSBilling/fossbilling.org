@@ -34,6 +34,9 @@ yarn-error.log*
 # Vercel
 .vercel
 
+# Cloudflare Workers
+.open-next/
+
 # VSCode
 .vscode/*
 public/robots.txt

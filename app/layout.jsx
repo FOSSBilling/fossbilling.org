@@ -46,6 +46,11 @@ export default async function RootLayout({ children }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site:domain" content="fossbilling.org" />
         <meta name="twitter:url" content="https://fossbilling.org" />
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "YOUR_CLOUDFLARE_ANALYTICS_TOKEN"}'
+        ></script>
       </Head>
       <body>
         <Layout

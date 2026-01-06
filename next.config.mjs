@@ -77,3 +77,6 @@ const nextConfig = {
 }
 
 export default withNextra(nextConfig)
+
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+initOpenNextCloudflareForDev();
