@@ -12,6 +12,12 @@ export function Feature({
   lightOnly,
   className,
   ...props
+}: {
+  large?: boolean;
+  centered?: boolean;
+  children?: React.ReactNode;
+  lightOnly?: boolean;
+  className?: string;
 }) {
   return (
     <motion.div
@@ -33,6 +39,6 @@ export function Feature({
   )
 }
 
-export function Features({ children }) {
+export function Features({ children }: { children: React.ReactNode }) {
   return <div className={styles.features}>{children}</div>
 }

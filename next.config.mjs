@@ -48,7 +48,7 @@ const nextConfig = {
         permanent: true
       },
       {
-        source: '/docs/contribution-handbook/:slug*',
+        source: '/docs/contribution-handbook//:slug*',
         destination: '/docs/developing-fossbilling/:slug*',
         permanent: true
       },
