@@ -31,8 +31,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# Vercel
-.vercel
+# Cloudflare Workers
+.open-next/
+.wrangler/
 
 # VSCode
 .vscode/*
