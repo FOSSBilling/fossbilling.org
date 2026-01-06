@@ -2,6 +2,7 @@
 
 import cn from 'clsx'
 import { motion } from 'motion/react'
+import type { ComponentPropsWithoutRef } from 'react'
 
 import styles from './style.module.css'
 
@@ -18,7 +19,7 @@ export function Feature({
   children?: React.ReactNode;
   lightOnly?: boolean;
   className?: string;
-} & Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'children'>) {
+} & Omit<ComponentPropsWithoutRef<typeof motion.div>, 'className' | 'children'>) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
