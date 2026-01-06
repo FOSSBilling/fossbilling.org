@@ -1,6 +1,6 @@
 // The original idea is from the Symfony blog: https://symfony.com/blog
 
-export function ContributedBy({ username, pullRequestNumber }) {
+export function ContributedBy({ username, pullRequestNumber }: { username: string; pullRequestNumber: number | string }) {
     const userLink = `https://github.com/${username}`;
     const pullRequestLink = `https://github.com/FOSSBilling/FOSSBilling/pull/${pullRequestNumber}`;
     const avatarLink = `https://avatars.githubusercontent.com/${username}`;

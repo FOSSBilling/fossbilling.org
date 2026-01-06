@@ -1,7 +1,8 @@
 'use client'
 
 import cn from 'clsx'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
+import type { ComponentPropsWithoutRef } from 'react'
 
 import styles from './style.module.css'
 
@@ -12,7 +13,13 @@ export function Feature({
   lightOnly,
   className,
   ...props
-}) {
+}: {
+  large?: boolean;
+  centered?: boolean;
+  children?: React.ReactNode;
+  lightOnly?: boolean;
+  className?: string;
+} & Omit<ComponentPropsWithoutRef<typeof motion.div>, 'className' | 'children'>) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -33,6 +40,6 @@ export function Feature({
   )
 }
 
-export function Features({ children }) {
+export function Features({ children }: { children: React.ReactNode }) {
   return <div className={styles.features}>{children}</div>
 }
