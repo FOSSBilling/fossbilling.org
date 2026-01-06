@@ -19,7 +19,7 @@
   ],
   "observability": {
     "logs": {
-      "enabled": true,
+      "enabled": true
     }
 }
 }
