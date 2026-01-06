@@ -18,7 +18,7 @@ export function Feature({
   children?: React.ReactNode;
   lightOnly?: boolean;
   className?: string;
-}) {
+} & React.HTMLAttributes<HTMLDivElement>) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
