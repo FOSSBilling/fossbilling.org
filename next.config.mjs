@@ -43,8 +43,8 @@ const nextConfig = {
         permanent: true
       },
       {
-        source: '/api/central-alerts/:query*',
-        destination: 'https://api.fossbilling.net/central-alerts/v1/:query*',
+        source: '/api/central-alerts/:path*',
+        destination: 'https://api.fossbilling.net/central-alerts/v1/:path*',
         permanent: true
       },
       {
