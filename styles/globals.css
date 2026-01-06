@@ -78,12 +78,6 @@ body {
   font-feature-settings: 'rlig' 1, 'calt' 1;
 }
 
-.home-content p {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  line-height: 1.75em;
-}
-
 .home-content a {
   --tw-ring-color: hsl(var(--nextra-primary-hue) 100% 50%/0.3);
   --tw-text-opacity: 1;
@@ -863,4 +857,239 @@ code.text-\[\.9em\] {
 
 .dark .need-help-link span {
   color: #9ca3af;
+}
+
+/* Demo Cards */
+.demo-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media screen and (max-width: 700px) {
+  .demo-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.demo-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.75rem;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+}
+
+.dark .demo-card {
+  background: #18181b;
+  border-color: #27272a;
+}
+
+.demo-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.demo-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.demo-card-admin .demo-card-icon {
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  color: white;
+}
+
+.demo-card-client .demo-card-icon {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+}
+
+.demo-card-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
+}
+
+.dark .demo-card-header h3 {
+  color: #f9fafb;
+}
+
+.demo-card-description {
+  font-size: 0.9rem;
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0 0 1.25rem 0 !important;
+}
+
+.dark .demo-card-description {
+  color: #9ca3af;
+}
+
+.demo-credentials {
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dark .demo-credentials {
+  background: #27272a;
+}
+
+.demo-credential-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.demo-credential-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.dark .demo-credential-label {
+  color: #9ca3af;
+}
+
+.demo-credential-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.demo-credential-value code {
+  font-size: 0.875rem;
+  color: #111827;
+  background: none;
+  padding: 0;
+}
+
+.dark .demo-credential-value code {
+  color: #f9fafb;
+}
+
+.demo-copy-button {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: #9ca3af;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-copy-button:hover {
+  color: #2563eb;
+}
+
+.dark .demo-copy-button:hover {
+  color: #60a5fa;
+}
+
+.home-content .demo-card-button,
+.demo-card-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  margin-top: auto;
+  color: white !important;
+}
+
+.demo-card-admin .demo-card-button {
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+}
+
+.demo-card-client .demo-card-button {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.home-content .demo-card-button:hover,
+.demo-card-button:hover {
+  opacity: 0.9;
+  color: white !important;
+}
+
+/* Demo Page What to Try Section */
+.demo-features-section {
+  max-width: 900px;
+  margin: 2rem auto 0;
+}
+
+.demo-features-section h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #111827;
+  text-align: center;
+}
+
+.dark .demo-features-section h3 {
+  color: #f9fafb;
+}
+
+.demo-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+@media screen and (max-width: 700px) {
+  .demo-features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.demo-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+  padding: 0.5rem 0.75rem;
+  background: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.dark .demo-feature-item {
+  background: #18181b;
+  border-color: #27272a;
+  color: #d1d5db;
+}
+
+.demo-feature-item svg {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.dark .demo-feature-item svg {
+  color: #60a5fa;
 }

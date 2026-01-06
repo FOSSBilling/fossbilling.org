@@ -97,7 +97,7 @@ export function HomePageContent() {
           Free and open source<br className='sm:block hidden'/>hosting automation.
         </motion.h1>
         <motion.p
-          className="subtitle"
+          className="subtitle mt-6"
           initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           animate={heroAnimate}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
