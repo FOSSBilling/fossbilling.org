@@ -33,10 +33,10 @@ export default async function GitHubStarButton() {
     <Link
       href="https://github.com/FOSSBilling/FOSSBilling"
       target="_blank"
-      className="group flex items-center gap-2 rounded-md bg-black/10 px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-black/20 dark:bg-white/10 dark:text-gray-200 dark:hover:bg-white/20"
+      className="group flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-800 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-white/10 dark:text-gray-200 dark:hover:bg-white/20"
       aria-label="Star FOSSBilling on GitHub"
     >
-      <GitHubIcon className="h-4 w-4" />
+      <GitHubIcon className="h-4 w-4 text-gray-700 dark:text-gray-200" />
       <span>Star</span>
       {stars !== null && (
         <>
