@@ -35,7 +35,7 @@ const navbar = (
     projectLink={null}
     chatLink="https://fossbilling.org/discord"
   >
-    <GitHubStarButton/>
+    <GitHubStarButton />
   </DocsNavbar>
 )
 

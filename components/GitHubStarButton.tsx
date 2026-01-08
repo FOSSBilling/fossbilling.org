@@ -10,7 +10,9 @@ async function getStarCount() {
     })
     
     if (!res.ok) {
-      throw new Error('Failed to fetch stars')
+      const errorBody = await res.text().catch(() => '')
+      const message = `Failed to fetch stars: HTTP ${res.status} ${res.statusText}` + (errorBody ? ` - ${errorBody}` : '')
+      throw new Error(message)
     }
 
     const data = await res.json()
