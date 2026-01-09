@@ -306,10 +306,6 @@ code.text-\[\.9em\] {
 }
 
 .feature-card {
-  padding: 1.75rem;
-}
-
-.feature-card {
   background: white;
   border-radius: 1rem;
   padding: 1.75rem;
