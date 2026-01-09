@@ -21,6 +21,11 @@ async function getLatestStableRelease(): Promise<{ release: Release | null; erro
     const response = await fetch('https://api.fossbilling.net/versions/v1', {
       next: { revalidate: 3600 } // Cache for 1 hour
     })
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
     const data: ApiResponse = await response.json()
 
     if (data.error_code !== 0) {
