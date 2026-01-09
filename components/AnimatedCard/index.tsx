@@ -1,5 +1,6 @@
 'use client'
 
+import cn from 'clsx'
 import { motion, useReducedMotion } from 'motion/react'
 import type { ComponentPropsWithoutRef } from 'react'
 
@@ -28,8 +29,8 @@ export function AnimatedCard({
   return (
     <motion.div
       {...motionProps}
-      className={className}
       {...props}
+      className={cn(className)}
     >
       {children}
     </motion.div>
