@@ -1,10 +1,9 @@
+import { parseISO, format } from 'date-fns'
+import { enUS } from 'date-fns/locale'
+
 export function formatDate(isoDate: string): string {
-  const date = new Date(isoDate)
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  })
+  const date = parseISO(isoDate)
+  return format(date, 'd LLLL yyyy', { locale: enUS })
 }
 
 export function formatBytes(bytes: number): string {
