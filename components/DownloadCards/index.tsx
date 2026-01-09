@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload, faCode, faCalendar, faHardDrive } from '@fortawesome/free-solid-svg-icons'
+import { formatDate, formatBytes } from '../../lib/format'
 
 interface Release {
   version: string
@@ -15,24 +16,7 @@ interface ApiResponse {
   error_code: number
 }
 
-function formatBytes(bytes: number): string {
-  if (bytes === 0) return '0 B'
-  const k = 1024
-  const sizes = ['B', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
-}
-
-function formatDate(isoDate: string): string {
-  const date = new Date(isoDate)
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  })
-}
-
-async function getLatestStableRelease(): Promise<Release | null> {
+async function getLatestStableRelease(): Promise<{ release: Release | null; error: Error | null }> {
   try {
     const response = await fetch('https://api.fossbilling.net/versions/v1', {
       next: { revalidate: 3600 } // Cache for 1 hour
@@ -40,7 +24,7 @@ async function getLatestStableRelease(): Promise<Release | null> {
     const data: ApiResponse = await response.json()
 
     if (data.error_code !== 0) {
-      return null
+      return { release: null, error: new Error('API returned error code') }
     }
 
     const releases = Object.values(data.result)
@@ -49,14 +33,15 @@ async function getLatestStableRelease(): Promise<Release | null> {
       new Date(b.released_on).getTime() - new Date(a.released_on).getTime()
     )
 
-    return releases.find(r => !r.is_prerelease) || null
+    const release = releases.find(r => !r.is_prerelease) || null
+    return { release, error: null }
   } catch (err) {
     console.error('Error fetching releases:', err)
-    return null
+    return { release: null, error: err instanceof Error ? err : new Error('Unknown error') }
   }
 }
 
-function StableCard({ release }: { release: Release | null }) {
+function StableCard({ release, error }: { release: Release | null; error: Error | null }) {
   return (
     <div className="download-card">
       <div className="download-card-header">
@@ -68,7 +53,12 @@ function StableCard({ release }: { release: Release | null }) {
         Recommended for regular use.<br />Keep in mind that FOSSBilling is pre-production software.
       </p>
 
-      {release ? (
+      {error ? (
+        <div className="download-cards-error">
+          Failed to load version info.{' '}
+          <a href="https://github.com/FOSSBilling/FOSSBilling/releases">View releases on GitHub</a>
+        </div>
+      ) : release ? (
         <>
           <div className="download-card-version">
             v{release.version}
@@ -130,11 +120,11 @@ function PreviewCard() {
 }
 
 export async function DownloadCards() {
-  const stableRelease = await getLatestStableRelease()
+  const { release: stableRelease, error } = await getLatestStableRelease()
 
   return (
     <div className="download-cards-grid">
-      <StableCard release={stableRelease} />
+      <StableCard release={stableRelease} error={error} />
       <PreviewCard />
     </div>
   )
