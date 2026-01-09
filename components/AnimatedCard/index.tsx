@@ -28,8 +28,8 @@ export function AnimatedCard({
   return (
     <motion.div
       {...motionProps}
-      className={className}
       {...props}
+      className={className}
     >
       {children}
     </motion.div>
