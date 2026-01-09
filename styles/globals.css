@@ -285,31 +285,6 @@ code.text-\[\.9em\] {
   box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
 }
 
-/* Base Card Styles */
-.card-base {
-  background: white;
-  border-radius: 1rem;
-  border: 1px solid #e5e7eb;
-}
-
-.dark .card-base {
-  background: #18181b;
-  border-color: #27272a;
-}
-
-.card-hover {
-  transition: all 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
-}
-
-.dark .card-hover:hover {
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
-}
-
 /* Feature Cards Grid */
 .feature-cards-grid {
   display: grid;
