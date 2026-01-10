@@ -10,6 +10,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 import 'nextra-theme-docs/style.css'
 import '../styles/globals.css'
 import { Fragment } from 'react'
+import GitHubStarButton from '../components/GitHubStarButton'
 
 config.autoAddCss = false
 
@@ -34,9 +35,11 @@ const navbar = (
   <DocsNavbar
     key="navbar"
     logo={<span className="logo"></span>}
-    projectLink="https://github.com/FOSSBilling/FOSSBilling"
+    projectLink={null}
     chatLink="https://fossbilling.org/discord"
-  />
+  >
+    <GitHubStarButton />
+  </DocsNavbar>
 )
 
 export default async function RootLayout({ children }) {
