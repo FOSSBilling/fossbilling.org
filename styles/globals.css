@@ -38,7 +38,6 @@
 }
 
 .headline {
-  font-size: 3.125rem;
   font-size: min(4.375rem, max(8vw, 2.5rem));
   font-weight: 700;
   font-feature-settings: initial;
@@ -49,7 +48,6 @@
 }
 
 .subtitle {
-  font-size: 1.3rem;
   font-size: min(1.3rem, max(3.5vw, 1.2rem));
   font-feature-settings: initial;
   line-height: 1.6;
@@ -148,10 +146,7 @@ code.text-\[\.9em\] {
 .logo-img {
   opacity: 0.9;
   transition: all 0.3s;
-}
-
-/* Light mode: dark gray logos by default */
-.logo-img {
+  /* Light mode: dark gray logos by default */
   filter: brightness(0) invert(0.1);
   /* near-black */
 }
@@ -233,31 +228,6 @@ code.text-\[\.9em\] {
 
 .dark .section-header p {
   color: #9ca3af;
-}
-
-/* Base Card Styles */
-.card-base {
-  background: white;
-  border-radius: 1rem;
-  border: 1px solid #e5e7eb;
-}
-
-.dark .card-base {
-  background: #18181b;
-  border-color: #27272a;
-}
-
-.card-hover {
-  transition: all 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
-}
-
-.dark .card-hover:hover {
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
 }
 
 /* Base Card Styles */
