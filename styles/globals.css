@@ -1,5 +1,15 @@
 @import 'tailwindcss';
 
+:root {
+  --features-bg-color: #f3f4f6;
+  --border-color-features: #e5e7eb;
+  --features-bg-dark: #000;
+}
+
+.dark {
+  --border-color-features: rgb(38, 38, 38);
+}
+
 .content-container {
   max-width: 90rem;
   padding-left: max(env(safe-area-inset-left), 1.5rem);
@@ -10,8 +20,8 @@
 .features-container {
   margin: 4rem 0 0;
   padding-bottom: 2rem;
-  background-color: #f3f4f6;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: var(--features-bg-color);
+  border-bottom: 1px solid var(--border-color-features);
   width: 100vw;
   max-width: 100vw;
   position: relative;
@@ -21,8 +31,8 @@
 }
 
 .dark .features-container {
-  background-color: #000;
-  border-bottom: 1px solid rgb(38, 38, 38);
+  background-color: var(--features-bg-dark);
+  border-bottom: 1px solid var(--border-color-features);
 }
 
 .logo {
@@ -183,21 +193,21 @@ code.text-\[\.9em\] {
 
 .logo-slider::before {
   left: 0;
-  background: linear-gradient(to right, #f3f4f6 0%, transparent 100%);
+  background: linear-gradient(to right, var(--features-bg-color) 0%, transparent 100%);
 }
 
 .logo-slider::after {
   right: 0;
-  background: linear-gradient(to left, #f3f4f6 0%, transparent 100%);
+  background: linear-gradient(to left, var(--features-bg-color) 0%, transparent 100%);
 }
 
 /* Dark mode adjustments */
 .dark .logo-slider::before {
-  background: linear-gradient(to right, black 0%, transparent 100%);
+  background: linear-gradient(to right, var(--features-bg-dark) 0%, transparent 100%);
 }
 
 .dark .logo-slider::after {
-  background: linear-gradient(to left, black 0%, transparent 100%);
+  background: linear-gradient(to left, var(--features-bg-dark) 0%, transparent 100%);
 }
 
 /* Section Headers */
