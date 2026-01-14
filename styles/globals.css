@@ -203,11 +203,11 @@ code.text-\[\.9em\] {
 
 /* Dark mode adjustments */
 .dark .logo-slider::before {
-  background: linear-gradient(to right, black 0%, transparent 100%);
+  background: linear-gradient(to right, var(--features-bg-dark) 0%, transparent 100%);
 }
 
 .dark .logo-slider::after {
-  background: linear-gradient(to left, black 0%, transparent 100%);
+  background: linear-gradient(to left, var(--features-bg-dark) 0%, transparent 100%);
 }
 
 /* Section Headers */
