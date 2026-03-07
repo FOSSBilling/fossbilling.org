@@ -3,7 +3,7 @@ title: The "Custom" Payment Gateway
 ---
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCode, faPersonDigging } from '@fortawesome/free-solid-svg-icons'
+import { faCode } from '@fortawesome/free-solid-svg-icons'
 import { Callout } from 'nextra/components'
 
 # The "Custom" payment gateway
@@ -19,6 +19,10 @@ When a client selects the Custom payment gateway to pay an invoice, FOSSBilling 
 - **Payment instructions** (e.g., bank account details, payment reference numbers)
 - **Invoice data** rendered dynamically using Twig template syntax
 - **HTML and JavaScript** for custom formatting or behavior
+
+<Callout type="warning" icon={<FontAwesomeIcon icon={faCode} />}>
+Because this content is rendered in the client area, only trusted administrators should edit these templates. Avoid including untrusted or third-party JavaScript (for example, copy-pasted snippets or scripts loaded directly from unknown external sources), as this can expose your clients to cross-site scripting (XSS) or supply-chain attacks.
+</Callout>
 
 After the client follows your instructions and you confirm the payment, an admin can manually mark the invoice as paid from the admin panel.
 
