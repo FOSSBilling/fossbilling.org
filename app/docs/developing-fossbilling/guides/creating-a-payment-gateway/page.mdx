@@ -1,26 +1,1033 @@
 ---
 title: Creating a Payment Gateway
+description: A comprehensive guide to developing custom payment gateway adapters for FOSSBilling, covering architecture, implementation, and best practices.
 ---
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCode, faPersonDigging } from '@fortawesome/free-solid-svg-icons'
+import { faCreditCard, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { Callout } from 'nextra/components'
 
-# Creating a payment adapter
+# <FontAwesomeIcon icon={faCreditCard} /> Creating a Payment Gateway
 
-<Callout type="warning" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
-    As we progress toward a 1.0.0 release, developers should anticipate changes to FOSSBilling that necessitate attention before custom modules and integrations regain full functionality.
+This guide walks you through creating a custom payment gateway adapter for FOSSBilling. A payment gateway adapter is a PHP class that integrates an external payment provider (like Stripe, PayPal, or any custom payment processor) into FOSSBilling's invoicing and billing system.
 
-    These modifications will be confined to the 0.x releases and will be outlined in the 'breaking changes' section of the release notes. We are working to add these items to our roadmap to enhance visibility for external developers.
+By the end of this guide, you will understand:
 
-    These pre-v1 releases are providing us the opportunity to update obsolete systems and replace cumbersome implementations inherited from the BoxBilling project so we appreciate the patience of external developers.
+- How the payment flow works end-to-end
+- Where to place your adapter file and how to name the class
+- Which methods to implement and what they do
+- How to handle IPN/webhook callbacks
+- How to support both one-time and subscription payments
+
+## How Payment Gateways Work
+
+Before writing code, it helps to understand the full payment lifecycle in FOSSBilling. There are two main flows: one for initiating a payment, and one for receiving the payment confirmation.
+
+### Payment Initiation Flow
+
+When a client clicks "Pay" on an invoice, the following happens:
+
+```
+Client clicks "Pay"
+        |
+        v
+Guest API: invoice/payment
+        |
+        v
+FOSSBilling loads the gateway adapter
+        |
+        v
+Calls adapter's getHtml() method
+        |
+        v
+Returns HTML to client browser
+        |
+        +---> Embedded form (e.g. Stripe Elements)
+        |         Client completes payment in-page
+        |         Gateway redirects to callback URL
+        |
+        +---> Redirect form (e.g. PayPal)
+                  Client is redirected to gateway site
+                  Client completes payment externally
+                  Gateway posts back to callback URL
+```
+
+### IPN / Webhook Callback Flow
+
+After the payment is completed (or when the gateway sends a notification), FOSSBilling processes it through `ipn.php`:
+
+```
+Gateway sends POST/GET to ipn.php?gateway_id=X&invoice_id=Y
+        |
+        v
+ipn.php creates a transaction record (status: "received")
+        |
+        v
+Loads the payment gateway adapter by gateway_id
+        |
+        v
+Calls adapter's processTransaction() method
+        |
+        v
+Adapter verifies payment with gateway API
+        |
+        v
+Adapter adds funds to client balance
+        |
+        v
+Adapter pays the invoice with those funds
+        |
+        v
+Transaction marked as "processed"
+        |
+        v
+ipn.php returns JSON response (or redirects client)
+```
+
+The key takeaway is that your adapter has two main responsibilities:
+
+1. **`getHtml()`** -- Generate the payment form or UI that the client interacts with.
+2. **`processTransaction()`** -- Handle the callback from the payment gateway, verify the payment, and mark the invoice as paid.
+
+## Getting Started
+
+### File Placement
+
+Payment adapter files reside under `src/library/Payment/Adapter/`. FOSSBilling discovers adapters by scanning this directory for PHP files. You have two placement options:
+
+```
+src/library/Payment/Adapter/
+├── MyGateway.php                    # Option 1: Single file
+├── MyGateway/
+│   └── MyGateway.php                # Option 2: Subdirectory (for complex adapters)
+├── Stripe.php                       # Built-in adapter
+├── PayPalEmail.php                  # Built-in adapter
+├── Custom.php                       # Built-in adapter
+└── ClientBalance.php                # Built-in adapter
+```
+
+Use a subdirectory if your adapter has additional dependencies, helper files, or assets (like a logo image).
+
+### Naming Conventions
+
+Your adapter class must follow this naming pattern:
+
+- **File name:** `MyGateway.php` (PascalCase)
+- **Class name:** `Payment_Adapter_MyGateway` (prefixed with `Payment_Adapter_`)
+
+The gateway "code" (used internally by FOSSBilling) is derived from the file name without the extension. For example, `MyGateway.php` produces a gateway code of `MyGateway`.
+
+### Gateway Logo
+
+If you want to provide a logo for your gateway, place an image file at one of these locations:
+
+- `src/library/Payment/Adapter/mygateway.png` -- Next to the adapter file
+- `src/data/assets/gateways/mygateway.png` -- In the data directory
+
+Then reference it in your `getConfig()` method (described below). If no logo is found, FOSSBilling uses a default gateway image.
+
+## Adapter Class Structure
+
+A modern FOSSBilling payment adapter is a PHP class that implements `FOSSBilling\InjectionAwareInterface` and defines three core methods. Here is the minimal skeleton:
+
+```php
+<?php
+
+class Payment_Adapter_MyGateway implements FOSSBilling\InjectionAwareInterface
+{
+    protected ?Pimple\Container $di = null;
+
+    public function __construct(private $config)
+    {
+        // Validate required configuration
+        if (!isset($this->config['api_key'])) {
+            throw new Payment_Exception(
+                'The ":pay_gateway" payment gateway is not fully configured. Please configure the :missing',
+                [':pay_gateway' => 'MyGateway', ':missing' => 'API Key'],
+                4001
+            );
+        }
+    }
+
+    public function setDi(Pimple\Container $di): void
+    {
+        $this->di = $di;
+    }
+
+    public function getDi(): ?Pimple\Container
+    {
+        return $this->di;
+    }
+
+    public static function getConfig(): array
+    {
+        // Declare capabilities, description, logo, and configuration form fields
+    }
+
+    public function getHtml($api_admin, $invoice_id, $subscription): string
+    {
+        // Generate the payment form/widget shown to the client
+    }
+
+    public function processTransaction($api_admin, $id, $data, $gateway_id): void
+    {
+        // Handle IPN/webhook: verify payment, add funds, pay invoice
+    }
+}
+```
+
+### The Constructor
+
+The constructor receives a `$config` array containing:
+
+- Any configuration values the admin has set through the admin panel (from `getConfig()` form fields)
+- System-provided URLs for redirects and callbacks (see [Configuration URLs](#configuration-urls-reference))
+- `test_mode` -- Whether the gateway is in test/sandbox mode
+
+You should validate that all required configuration values are present and throw a `Payment_Exception` if anything is missing. This prevents the adapter from being used in an unconfigured state.
+
+```php
+public function __construct(private $config)
+{
+    if ($this->config['test_mode']) {
+        if (!isset($this->config['test_api_key'])) {
+            throw new Payment_Exception("Test API Key missing for (example gateway)");
+        }
+    } else {
+        if (!isset($this->config['api_key'])) {
+            throw new Payment_Exception("Live API Key missing for (example gateway)");
+        }
+    }
+}
+```
+
+## The `getConfig()` Method
+
+This static method tells FOSSBilling about your gateway's capabilities and configuration options. It returns an associative array.
+
+```php
+public static function getConfig(): array
+{
+    return [
+        'supports_one_time_payments' => true,
+        'supports_subscriptions' => false,
+        'description' => 'Accept payments via MyGateway. Enter your API credentials to get started.',
+        'logo' => [
+            'logo' => 'mygateway.png',
+            'height' => '30px',
+            'width' => '65px',
+        ],
+        'form' => [
+            'api_key' => [
+                'text', [
+                    'label' => 'Live API Key:',
+                ],
+            ],
+            'api_secret' => [
+                'text', [
+                    'label' => 'Live API Secret:',
+                ],
+            ],
+            'test_api_key' => [
+                'text', [
+                    'label' => 'Test API Key:',
+                    'required' => false,
+                ],
+            ],
+            'test_api_secret' => [
+                'text', [
+                    'label' => 'Test API Secret:',
+                    'required' => false,
+                ],
+            ],
+        ],
+    ];
+}
+```
+
+### Configuration Keys
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `supports_one_time_payments` | `bool` | Whether the gateway can process single payments. |
+| `supports_subscriptions` | `bool` | Whether the gateway can handle recurring/subscription payments. |
+| `can_load_in_iframe` | `bool` | If `true`, the payment form will be displayed inside the invoice page. If `false` or not set, the client is taken to a separate payment page. |
+| `description` | `string` | A short description shown to admins in the gateway configuration screen. |
+| `logo` | `array` | Logo configuration with `logo` (filename), `height`, and `width`. |
+| `form` | `array` | Form fields for the admin configuration panel (see below). |
+
+### Form Field Types
+
+The `form` array defines configuration fields that appear in the admin panel when editing the gateway. Each entry maps a config key to a field definition:
+
+```php
+'form' => [
+    'config_key' => [
+        'field_type', [
+            'label' => 'Human-readable label:',
+            'required' => true,  // optional, defaults to true
+        ],
+    ],
+],
+```
+
+Supported field types:
+
+| Type | Description | Example Use |
+|------|-------------|-------------|
+| `text` | Single-line text input | API keys, email addresses |
+| `textarea` | Multi-line text input | Custom HTML templates, instructions |
+
+The values entered by the admin are stored as JSON in the database and are made available to your adapter via `$this->config['config_key']` at runtime.
+
+## The `getHtml()` Method
+
+This method generates the HTML content shown to the client when they select your gateway to pay an invoice. It is called by FOSSBilling when the client initiates a payment.
+
+```php
+public function getHtml($api_admin, $invoice_id, $subscription): string
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `$api_admin` | `Api_Handler` | System API handler (admin-level access). Use for reading invoice data. |
+| `$invoice_id` | `int` | The ID of the invoice being paid. |
+| `$subscription` | `bool` | `true` if this is a recurring/subscription payment, `false` for one-time. |
+
+### Return Value
+
+Return a string of HTML. This HTML is rendered in the client's browser, either embedded on the invoice page (if `can_load_in_iframe` is `true` in your config) or on a dedicated payment page.
+
+### Common Patterns
+
+There are two main approaches for the payment HTML:
+
+**Pattern 1: Redirect Form** -- Generate a form with hidden fields that submits to the external payment gateway. Suitable for gateways like PayPal that handle payment on their own site.
+
+```php
+public function getHtml($api_admin, $invoice_id, $subscription): string
+{
+    $invoice = $api_admin->invoice_get(['id' => $invoice_id]);
+
+    $fields = [
+        'merchant_id'  => $this->config['api_key'],
+        'amount'       => number_format($invoice['total'], 2, '.', ''),
+        'currency'     => $invoice['currency'],
+        'description'  => 'Payment for invoice ' . $invoice['serie'] . sprintf('%05s', $invoice['nr']),
+        'callback_url' => $this->config['notify_url'],
+        'success_url'  => $this->config['thankyou_url'],
+        'cancel_url'   => $this->config['cancel_url'],
+        'reference'    => $invoice['id'],
+    ];
+
+    $url = 'https://api.mygateway.com/checkout';
+
+    $form = '<form name="payment_form" action="' . $url . '" method="post">' . PHP_EOL;
+    foreach ($fields as $key => $value) {
+        $form .= sprintf('<input type="hidden" name="%s" value="%s" />', $key, $value) . PHP_EOL;
+    }
+    $form .= '<input class="btn btn-primary" type="submit" value="Pay with MyGateway" />' . PHP_EOL;
+    $form .= '</form>' . PHP_EOL;
+
+    // Optional: auto-submit the form for a seamless redirect
+    if (isset($this->config['auto_redirect']) && $this->config['auto_redirect']) {
+        $form .= "<script>document.addEventListener('DOMContentLoaded', function() {
+            document.forms['payment_form'].submit();
+        });</script>";
+    }
+
+    return $form;
+}
+```
+
+**Pattern 2: Embedded Payment UI** -- For gateways that provide a JavaScript SDK (like Stripe), you embed their payment widget directly in the page.
+
+```php
+public function getHtml($api_admin, $invoice_id, $subscription): string
+{
+    $invoiceModel = $this->di['db']->load('Invoice', $invoice_id);
+
+    // Create a payment session via the gateway's API
+    $session = $this->createPaymentSession($invoiceModel);
+
+    // Build the callback URL for after payment completes
+    $payGatewayService = $this->di['mod_service']('Invoice', 'PayGateway');
+    $payGateway = $this->di['db']->findOne('PayGateway', 'gateway = ?', ['MyGateway']);
+    $callbackUrl = $payGatewayService->getCallbackUrl($payGateway, $invoiceModel);
+
+    return '<div id="payment-container"></div>
+        <script src="https://js.mygateway.com/v1/"></script>
+        <script>
+            MyGateway.init("' . $this->config['pub_key'] . '");
+            MyGateway.mount("#payment-container", {
+                sessionId: "' . $session->id . '",
+                onComplete: function(result) {
+                    window.location.href = "' . $callbackUrl
+                        . '&payment_id=' . '" + result.paymentId
+                        . "&redirect=true&invoice_hash=' . $invoiceModel->hash . '";
+                }
+            });
+        </script>';
+}
+```
+
+### Accessing Invoice Data
+
+You have two ways to access invoice data in `getHtml()`:
+
+1. **Via the API handler:** `$api_admin->invoice_get(['id' => $invoice_id])` -- returns the invoice as an associative array with all details including `client`, `lines`, `total`, `currency`, etc.
+
+2. **Via the DI container:** `$this->di['db']->load('Invoice', $invoice_id)` -- returns the raw `Model_Invoice` RedBeanPHP model, which you can pass to service methods.
+
+The API handler approach is simpler for most use cases. Use the DI container when you need to interact with services directly (for example, calculating totals using `$invoiceService->getTotalWithTax($invoiceModel)`).
+
+## The `processTransaction()` Method
+
+This is the most critical method. It is called when the payment gateway sends a callback (IPN/webhook) to `ipn.php`. Your adapter must verify the payment, add funds to the client's balance, and pay the invoice.
+
+```php
+public function processTransaction($api_admin, $id, $data, $gateway_id): void
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `$api_admin` | `Api_Handler` | System API handler with admin-level access. |
+| `$id` | `int` | The FOSSBilling transaction ID (auto-created before your method is called). |
+| `$data` | `array` | The IPN/callback data (see structure below). |
+| `$gateway_id` | `int` | The ID of the payment gateway in FOSSBilling. |
+
+### The `$data` Array Structure
+
+The `$data` array contains everything FOSSBilling received from the callback request:
+
+```php
+$data = [
+    'get'                => $_GET,         // Query string parameters
+    'post'               => $_POST,        // POST body parameters
+    'http_raw_post_data' => '...',         // Raw POST body (useful for JSON webhooks)
+    'server'             => $_SERVER,      // Server variables
+    'invoice_id'         => 123,           // Invoice ID (if provided in the callback URL)
+    'gateway_id'         => 5,             // Gateway ID
+];
+```
+
+For gateways that send JSON webhooks, parse the raw body:
+
+```php
+$payload = json_decode($data['http_raw_post_data'], true);
+```
+
+For gateways that use standard POST parameters:
+
+```php
+$ipn = $data['post'];
+$transactionId = $ipn['transaction_id'];
+```
+
+### Implementation Steps
+
+Here is the recommended sequence for processing a transaction:
+
+```php
+public function processTransaction($api_admin, $id, $data, $gateway_id): void
+{
+    // 1. Load the transaction and associated invoice
+    $tx = $this->di['db']->getExistingModelById('Transaction', $id);
+
+    if ($tx->invoice_id) {
+        $invoice = $this->di['db']->getExistingModelById('Invoice', $tx->invoice_id);
+    } else {
+        $invoice = $this->di['db']->getExistingModelById('Invoice', $data['get']['invoice_id']);
+        $tx->invoice_id = $invoice->id;
+    }
+
+    // 2. Verify the payment with the gateway's API
+    $paymentId = $data['get']['payment_id'] ?? $data['post']['payment_id'] ?? null;
+    $payment = $this->verifyPaymentWithGateway($paymentId);
+
+    // 3. Update the transaction record with gateway data
+    $tx->txn_id = $payment['id'];
+    $tx->txn_status = $payment['status'];
+    $tx->amount = $payment['amount'];
+    $tx->currency = $payment['currency'];
+
+    // 4. If the payment succeeded and hasn't been processed yet, apply it
+    if ($payment['status'] === 'completed' && $tx->status !== 'processed') {
+        $clientService = $this->di['mod_service']('Client');
+        $invoiceService = $this->di['mod_service']('Invoice');
+
+        // Add funds to the client's account balance
+        $client = $this->di['db']->getExistingModelById('Client', $invoice->client_id);
+        $clientService->addFunds($client, $payment['amount'], 'MyGateway payment ' . $payment['id'], [
+            'amount'      => $payment['amount'],
+            'description' => 'MyGateway transaction ' . $payment['id'],
+            'type'        => 'transaction',
+            'rel_id'      => $tx->id,
+        ]);
+
+        // Pay the invoice using the client's balance
+        // Skip for deposit invoices -- the funds were already added above
+        if ($tx->invoice_id && !$invoiceService->isInvoiceTypeDeposit($invoice)) {
+            $invoiceService->payInvoiceWithCredits($invoice);
+        } elseif (!$tx->invoice_id) {
+            $invoiceService->doBatchPayWithCredits(['client_id' => $client->id]);
+        }
+
+        $tx->status = 'processed';
+    } elseif (in_array($payment['status'], ['failed', 'canceled'])) {
+        $tx->status = 'error';
+        $tx->error = 'Payment ' . $payment['status'] . ': ' . ($payment['error_message'] ?? '');
+    } else {
+        // Payment is still pending or in an intermediate state
+        $tx->status = 'received';
+    }
+
+    // 5. Save the transaction
+    $tx->updated_at = date('Y-m-d H:i:s');
+    $this->di['db']->store($tx);
+}
+```
+
+### Transaction Statuses
+
+FOSSBilling tracks transactions through these internal statuses:
+
+| Status | Meaning |
+|--------|---------|
+| `received` | Transaction created, not yet processed. |
+| `approved` | IPN validated and parsed (used by legacy adapters). |
+| `processed` | Payment completed and applied to the invoice. |
+| `error` | Something went wrong (payment failed, verification failed, etc.). |
+
+In a modern adapter's `processTransaction()`, you typically set the status to either `processed` (success) or `error` (failure), or leave it as `received` if the payment is still pending.
+
+### Important: The Two-Step Payment Model
+
+FOSSBilling uses a two-step model to apply payments:
+
+1. **Add funds** to the client's account balance (`$clientService->addFunds(...)`)
+2. **Pay the invoice** using those funds (`$invoiceService->payInvoiceWithCredits(...)`)
+
+This design means every payment flows through the client's balance, creating a clear audit trail. Even if a client overpays, the excess remains as a credit balance that can be used for future invoices.
+
+<Callout type="warning" emoji={<FontAwesomeIcon icon={faTriangleExclamation} />}>
+    Always check for **deposit invoices** before calling `payInvoiceWithCredits()`. Deposit invoices exist solely to add funds to a client's balance. If you try to pay a deposit invoice with credits, you would be paying the invoice using the very funds it just added, resulting in a zero-sum operation. Use `$invoiceService->isInvoiceTypeDeposit($invoice)` to check.
 </Callout>
 
-<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
-    This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
-    If you're looking to create your own extension, this documentation will tell you the bare minimum required, but looking at existing extensions will probably be necessary to get a complete idea on how to write one.
+## Configuration URLs Reference
+
+When your adapter is instantiated, FOSSBilling injects several URLs into `$this->config`. These URLs are pre-built and ready to use:
+
+| Config Key | Purpose | When to Use |
+|------------|---------|-------------|
+| `notify_url` | IPN/webhook callback URL. Points to `ipn.php?gateway_id=X&invoice_id=Y`. | Set this as the callback/webhook URL in the payment gateway's API. The gateway should POST payment notifications here. |
+| `return_url` | Redirect URL after successful payment. Points to the invoice page with `status=ok`. | Use for gateways that redirect the client back to your site after payment (e.g., PayPal's `return` parameter). |
+| `cancel_url` | Redirect URL if the client cancels. Points to the invoice page with `status=cancel`. | Use for gateways that support a cancellation redirect. |
+| `redirect_url` | Combined callback + redirect URL. Like `notify_url` but includes `redirect=1` and `invoice_hash`. After processing the IPN, the client is redirected to the invoice page. | Use for gateways that have a single return URL where both the IPN data and the client redirect must happen at the same endpoint. |
+| `thankyou_url` | Thank-you page URL with session restoration. | Use as the post-payment landing page for a better user experience. |
+| `invoice_url` | Direct link to the invoice page. | Useful for displaying in payment instructions or receipts. |
+| `test_mode` | Whether the gateway is in test/sandbox mode (boolean). | Use to switch between live and sandbox API endpoints and credentials. |
+| `auto_redirect` | Whether to auto-submit redirect forms (boolean). | If `true`, automatically redirect the client without requiring them to click "Pay". |
+
+### Building the Callback URL Manually
+
+In some cases (like when generating an embedded payment form), you may need to build the callback URL yourself with additional query parameters. You can use the `ServicePayGateway` to get the base callback URL:
+
+```php
+$payGatewayService = $this->di['mod_service']('Invoice', 'PayGateway');
+$payGateway = $this->di['db']->findOne('PayGateway', 'gateway = ?', ['MyGateway']);
+$callbackUrl = $payGatewayService->getCallbackUrl($payGateway, $invoiceModel);
+
+// Append extra parameters
+$fullUrl = $callbackUrl . '&payment_id=' . $paymentId . '&redirect=true&invoice_hash=' . $invoiceModel->hash;
+```
+
+Including `redirect=true` (or `redirect=1`) and `invoice_hash` in the URL tells `ipn.php` to redirect the client to the invoice page after processing, rather than returning a JSON response.
+
+## Dependency Injection
+
+Implementing `FOSSBilling\InjectionAwareInterface` gives your adapter access to the full FOSSBilling dependency injection container. This lets you access any service, database models, and utilities.
+
+### Common DI Services
+
+Here are the services you will most commonly use:
+
+```php
+// Load a database model by ID
+$invoice = $this->di['db']->load('Invoice', $invoice_id);
+$invoice = $this->di['db']->getExistingModelById('Invoice', $invoice_id);
+
+// Find a model with conditions
+$gateway = $this->di['db']->findOne('PayGateway', 'gateway = ?', ['MyGateway']);
+
+// Run raw SQL
+$rows = $this->di['db']->getAll('SELECT * FROM transaction WHERE txn_id = :txn_id', [':txn_id' => $txnId]);
+
+// Access module services
+$invoiceService = $this->di['mod_service']('Invoice');          // Invoice\Service
+$clientService  = $this->di['mod_service']('Client');           // Client\Service
+$systemService  = $this->di['mod_service']('System');           // System\Service
+$payGwService   = $this->di['mod_service']('Invoice', 'PayGateway');  // Invoice\ServicePayGateway
+
+// Common service methods
+$invoiceService->getTotalWithTax($invoiceModel);                // Get invoice total with tax
+$invoiceService->payInvoiceWithCredits($invoiceModel);          // Pay invoice from balance
+$invoiceService->isInvoiceTypeDeposit($invoiceModel);           // Check if deposit invoice
+$invoiceService->markAsPaid($invoiceModel, true, true);         // Directly mark as paid
+$clientService->addFunds($client, $amount, $description, $extraData); // Add to client balance
+
+// Utility: generate a URL
+$url = $this->di['tools']->url('/invoice/' . $invoiceModel->hash);
+
+// Logger
+$this->di['logger']->info('MyGateway: Payment processed for invoice #%s', $invoice->id);
+```
+
+### Making HTTP Requests
+
+If you need to call external APIs (to verify payments, create sessions, etc.), use the Symfony HTTP client:
+
+```php
+$httpClient = Symfony\Component\HttpClient\HttpClient::create(['bindto' => BIND_TO]);
+
+$response = $httpClient->request('POST', 'https://api.mygateway.com/verify', [
+    'headers' => [
+        'Authorization' => 'Bearer ' . $this->config['api_key'],
+        'Content-Type'  => 'application/json',
+    ],
+    'json' => [
+        'payment_id' => $paymentId,
+    ],
+]);
+
+$result = $response->toArray();
+```
+
+The `BIND_TO` constant ensures the request uses the server's configured network binding.
+
+## Complete Example
+
+Here is a full, working payment adapter for a fictional "ExamplePay" gateway. This adapter supports one-time payments using a redirect flow:
+
+```php
+<?php
+
+/**
+ * ExamplePay payment adapter for FOSSBilling.
+ *
+ * This is a fictional example demonstrating all the required methods
+ * and best practices for building a payment gateway adapter.
+ */
+class Payment_Adapter_ExamplePay implements FOSSBilling\InjectionAwareInterface
+{
+    protected ?Pimple\Container $di = null;
+
+    public function __construct(private $config)
+    {
+        // Validate configuration based on test mode
+        if ($this->config['test_mode']) {
+            if (empty($this->config['test_merchant_id'])) {
+                throw new Payment_Exception(
+                    'The ":pay_gateway" payment gateway is not fully configured. Please configure the :missing',
+                    [':pay_gateway' => 'ExamplePay', ':missing' => 'Test Merchant ID'],
+                    4001
+                );
+            }
+        } else {
+            if (empty($this->config['merchant_id'])) {
+                throw new Payment_Exception(
+                    'The ":pay_gateway" payment gateway is not fully configured. Please configure the :missing',
+                    [':pay_gateway' => 'ExamplePay', ':missing' => 'Merchant ID'],
+                    4001
+                );
+            }
+            if (empty($this->config['secret_key'])) {
+                throw new Payment_Exception(
+                    'The ":pay_gateway" payment gateway is not fully configured. Please configure the :missing',
+                    [':pay_gateway' => 'ExamplePay', ':missing' => 'Secret Key'],
+                    4001
+                );
+            }
+        }
+    }
+
+    public function setDi(Pimple\Container $di): void
+    {
+        $this->di = $di;
+    }
+
+    public function getDi(): ?Pimple\Container
+    {
+        return $this->di;
+    }
+
+    /**
+     * Gateway configuration: capabilities, description, and admin form fields.
+     */
+    public static function getConfig(): array
+    {
+        return [
+            'supports_one_time_payments' => true,
+            'supports_subscriptions'     => false,
+            'description'                => 'Accept payments via ExamplePay. Enter your merchant credentials to get started.',
+            'logo' => [
+                'logo'   => 'examplepay.png',
+                'height' => '30px',
+                'width'  => '80px',
+            ],
+            'form' => [
+                'merchant_id' => [
+                    'text', [
+                        'label' => 'Live Merchant ID:',
+                    ],
+                ],
+                'secret_key' => [
+                    'text', [
+                        'label' => 'Live Secret Key:',
+                    ],
+                ],
+                'test_merchant_id' => [
+                    'text', [
+                        'label' => 'Test Merchant ID:',
+                        'required' => false,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Generate the payment form shown to the client.
+     */
+    public function getHtml($api_admin, $invoice_id, $subscription): string
+    {
+        $invoice = $api_admin->invoice_get(['id' => $invoice_id]);
+
+        $merchantId = $this->config['test_mode']
+            ? $this->config['test_merchant_id']
+            : $this->config['merchant_id'];
+
+        $amount = number_format($invoice['total'] + $invoice['tax'], 2, '.', '');
+
+        $fields = [
+            'merchant_id'   => $merchantId,
+            'amount'        => $amount,
+            'currency'      => $invoice['currency'],
+            'description'   => 'Payment for invoice ' . $invoice['serie'] . sprintf('%05s', $invoice['nr']),
+            'reference'     => $invoice['id'],
+            'callback_url'  => $this->config['notify_url'],
+            'success_url'   => $this->config['thankyou_url'],
+            'cancel_url'    => $this->config['cancel_url'],
+            'customer_email'=> $invoice['buyer']['email'],
+        ];
+
+        // Build a hidden form that redirects to ExamplePay's checkout page
+        $gatewayUrl = $this->config['test_mode']
+            ? 'https://sandbox.examplepay.com/checkout'
+            : 'https://checkout.examplepay.com/pay';
+
+        $form = '<form name="payment_form" action="' . $gatewayUrl . '" method="post">' . PHP_EOL;
+        foreach ($fields as $key => $value) {
+            $form .= sprintf('<input type="hidden" name="%s" value="%s" />', htmlspecialchars($key), htmlspecialchars((string) $value)) . PHP_EOL;
+        }
+        $form .= '<input class="btn btn-primary" type="submit" value="Pay with ExamplePay" id="payment_button" />' . PHP_EOL;
+        $form .= '</form>' . PHP_EOL;
+
+        // Auto-redirect if configured
+        if (!empty($this->config['auto_redirect'])) {
+            $form .= "<script>document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('payment_button').style.display = 'none';
+                document.forms['payment_form'].submit();
+            });</script>";
+        }
+
+        return $form;
+    }
+
+    /**
+     * Handle the IPN/webhook callback from ExamplePay.
+     */
+    public function processTransaction($api_admin, $id, $data, $gateway_id): void
+    {
+        // 1. Load the transaction record
+        $tx = $this->di['db']->getExistingModelById('Transaction', $id);
+
+        // 2. Determine the invoice
+        if ($tx->invoice_id) {
+            $invoice = $this->di['db']->getExistingModelById('Invoice', $tx->invoice_id);
+        } else {
+            $invoiceId = $data['get']['invoice_id'] ?? $data['post']['reference'] ?? null;
+            if (!$invoiceId) {
+                throw new Payment_Exception('Invoice ID not provided in callback');
+            }
+            $invoice = $this->di['db']->getExistingModelById('Invoice', $invoiceId);
+            $tx->invoice_id = $invoice->id;
+        }
+
+        // 3. Extract the payment ID from the callback data
+        $paymentId = $data['get']['payment_id'] ?? $data['post']['payment_id'] ?? null;
+        if (!$paymentId) {
+            throw new Payment_Exception('Payment ID not provided in callback');
+        }
+
+        // 4. Verify the payment with ExamplePay's API
+        $payment = $this->verifyPayment($paymentId);
+
+        // 5. Update transaction record with gateway data
+        $tx->txn_id = $payment['id'];
+        $tx->txn_status = $payment['status'];
+        $tx->amount = $payment['amount'];
+        $tx->currency = $payment['currency'];
+
+        // 6. Process based on payment status
+        if ($payment['status'] === 'completed' && $tx->status !== 'processed') {
+            $clientService = $this->di['mod_service']('Client');
+            $invoiceService = $this->di['mod_service']('Invoice');
+
+            // Add funds to client balance
+            $client = $this->di['db']->getExistingModelById('Client', $invoice->client_id);
+            $clientService->addFunds($client, $payment['amount'], 'ExamplePay payment ' . $payment['id'], [
+                'amount'      => $payment['amount'],
+                'description' => 'ExamplePay transaction ' . $payment['id'],
+                'type'        => 'transaction',
+                'rel_id'      => $tx->id,
+            ]);
+
+            // Pay the invoice (skip for deposit invoices)
+            if (!$invoiceService->isInvoiceTypeDeposit($invoice)) {
+                $invoiceService->payInvoiceWithCredits($invoice);
+            }
+
+            $tx->status = 'processed';
+        } elseif (in_array($payment['status'], ['failed', 'canceled', 'expired'])) {
+            $tx->status = 'error';
+            $tx->error = 'Payment ' . $payment['status'];
+        } else {
+            $tx->status = 'received';
+        }
+
+        $tx->updated_at = date('Y-m-d H:i:s');
+        $this->di['db']->store($tx);
+    }
+
+    /**
+     * Verify a payment with ExamplePay's API.
+     */
+    private function verifyPayment(string $paymentId): array
+    {
+        $apiKey = $this->config['test_mode']
+            ? $this->config['test_merchant_id']
+            : $this->config['secret_key'];
+
+        $apiBase = $this->config['test_mode']
+            ? 'https://sandbox.examplepay.com/api/v1'
+            : 'https://api.examplepay.com/v1';
+
+        $httpClient = Symfony\Component\HttpClient\HttpClient::create(['bindto' => BIND_TO]);
+        $response = $httpClient->request('GET', $apiBase . '/payments/' . $paymentId, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $apiKey,
+            ],
+        ]);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new Payment_Exception('Failed to verify payment with ExamplePay');
+        }
+
+        return $response->toArray();
+    }
+}
+```
+
+## Supporting Subscription Payments
+
+If your payment gateway supports recurring billing, set `'supports_subscriptions' => true` in `getConfig()` and handle the `$subscription` parameter in `getHtml()`.
+
+When `$subscription` is `true`, the invoice has associated subscription data. You can retrieve it through the API:
+
+```php
+$invoice = $api_admin->invoice_get(['id' => $invoice_id]);
+$subscription = $invoice['subscription'];
+
+// $subscription contains:
+// 'cycle' => 1,       // Billing cycle count (e.g., 1, 3, 12)
+// 'unit'  => 'M',     // Unit: 'D' (day), 'W' (week), 'M' (month), 'Y' (year)
+// 'amount' => 9.99,   // Recurring amount
+```
+
+Your `getHtml()` method should then configure the external gateway for recurring billing using these parameters. The exact implementation depends on how your payment provider handles subscriptions.
+
+### Handling Subscription Callbacks
+
+Subscription-related IPN callbacks typically include events like:
+
+- **Subscription created** -- A new recurring billing agreement was set up.
+- **Recurring payment** -- A scheduled payment was collected.
+- **Subscription canceled** -- The subscription was canceled by the client or gateway.
+- **Payment failed** -- A scheduled payment failed.
+
+In your `processTransaction()`, you can create and manage FOSSBilling subscriptions using the API:
+
+```php
+// When a subscription is created:
+$api_admin->invoice_subscription_create([
+    'client_id'  => $clientId,
+    'gateway_id' => $gateway_id,
+    'currency'   => $currency,
+    'sid'        => $externalSubscriptionId,  // The ID from the payment gateway
+    'status'     => 'active',
+    'period'     => $cycle . $unit,           // e.g., '1M' for monthly
+    'amount'     => $amount,
+    'rel_type'   => 'invoice',
+    'rel_id'     => $invoiceId,
+]);
+
+// When a subscription is canceled:
+$subscription = $api_admin->invoice_subscription_get(['sid' => $externalSubscriptionId]);
+$api_admin->invoice_subscription_update(['id' => $subscription['id'], 'status' => 'canceled']);
+```
+
+For recurring payment events, process them the same way as one-time payments: add funds to the client's balance and pay the associated invoice.
+
+## Installing and Testing Your Gateway
+
+### Installation
+
+Once your adapter file is placed in `src/library/Payment/Adapter/`, it will automatically appear in the admin panel:
+
+1. Navigate to **Configuration > Payment gateways** in the admin panel.
+2. Click the **"New payment gateway"** tab.
+3. Your gateway will appear in the list of available gateways. Click **"Install"**.
+
+{/* <!-- SCREENSHOT PLACEHOLDER: Admin panel showing the "New payment gateway" tab with a list of available gateways and the Install button --> */}
+
+### Configuration
+
+After installing, click on your gateway to configure it:
+
+1. Enter the required credentials (API keys, etc.) in the form fields you defined in `getConfig()`.
+2. Select the accepted currencies.
+3. Enable or disable one-time and subscription payments.
+4. Enable test mode if you want to use sandbox/test credentials.
+5. Toggle the gateway to "Enabled" when ready.
+6. Click **"Update"** to save.
+
+{/* <!-- SCREENSHOT PLACEHOLDER: Admin panel showing the gateway configuration form with fields, currency selection, and enable/test mode toggles --> */}
+
+The **IPN Callback URL** is displayed at the bottom of the configuration page. If your payment gateway requires you to manually register a webhook or callback URL, copy this value into your gateway provider's dashboard.
+
+### Testing
+
+1. **Enable test mode** on the gateway in the admin panel.
+2. **Create a test invoice** and attempt to pay using your gateway.
+3. **Monitor transactions** under **Invoicing > Transactions** in the admin panel. Each callback creates a transaction record you can inspect for debugging.
+4. Verify that:
+   - The payment form renders correctly for the client.
+   - After payment, the callback reaches `ipn.php` and your `processTransaction()` is called.
+   - The transaction status moves from `received` to `processed`.
+   - The client's balance is updated.
+   - The invoice is marked as paid.
+
+<Callout type="info">
+    If you need to debug the IPN callback, check the transaction records in the admin panel. Each transaction stores the full IPN payload (GET, POST, and raw body data), which you can inspect to see exactly what the gateway sent.
 </Callout>
 
-All payment adapters should reside under the `/library/Payment/Adapter` folder. They should all extend the `Payment_AdapterAbstract` class and implement it's functions.
+## Best Practices
 
-The `Payment_AdapterAbstract` class has inline documentation of each function to aid in the development of payment adapters. You can find the most up-to-date version of this [here](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/library/Payment/AdapterAbstract.php)
+### Security
+
+- **Always verify payments server-side.** Never trust client-side data alone. In `processTransaction()`, call the payment gateway's API to confirm the payment status and amount.
+- **Validate the payment amount and currency.** Ensure the amount paid matches the invoice total and that the currency matches. A malicious user could modify form fields to pay a lower amount.
+- **Use HTTPS.** Ensure your FOSSBilling installation uses HTTPS so that callback URLs and API keys are transmitted securely.
+
+### Error Handling
+
+- **Throw `Payment_Exception`** for payment-specific errors. These exceptions support translation placeholders:
+  ```php
+  throw new Payment_Exception(
+      'The ":pay_gateway" payment gateway is not fully configured. Please configure the :missing',
+      [':pay_gateway' => 'MyGateway', ':missing' => 'API Key'],
+      4001
+  );
+  ```
+- **Record errors on the transaction** so admins can see what went wrong:
+  ```php
+  $tx->error = 'Payment verification failed: ' . $errorMessage;
+  $tx->error_code = $errorCode;
+  $tx->status = 'error';
+  $this->di['db']->store($tx);
+  ```
+
+### Duplicate Detection
+
+FOSSBilling has built-in duplicate detection for transactions (based on `txn_id` and IPN payload hashing), but you should also guard against duplicates in your adapter:
+
+```php
+// Check if this specific gateway transaction was already processed
+if ($tx->status === 'processed') {
+    return; // Already handled, nothing to do
+}
+```
+
+### Currency Formatting
+
+Different payment gateways expect amounts in different formats. Some common patterns:
+
+```php
+// Standard: two decimal places (most gateways)
+$amount = number_format($total, 2, '.', '');  // "19.99"
+
+// Integer cents (Stripe, some others)
+$amountInCents = (int) round($total * 100);   // 1999
+
+// No decimals (some currencies like HUF, JPY)
+$amount = number_format($total, 0, '', '');    // "1999"
+```
+
+Always consult your payment gateway's documentation for the expected amount format and handle currency-specific edge cases.
+
+### Logging
+
+Use the DI logger to record important events for debugging:
+
+```php
+$this->di['logger']->info('MyGateway: Payment initiated for invoice #%s, amount %s %s', $invoice->id, $amount, $currency);
+$this->di['logger']->info('MyGateway: Payment verified, txn_id=%s, status=%s', $paymentId, $status);
+$this->di['logger']->error('MyGateway: Payment verification failed for txn_id=%s: %s', $paymentId, $errorMessage);
+```
+
+## Payment-Related Events
+
+FOSSBilling fires several events during the payment lifecycle that you can hook into from other modules. While your adapter does not need to fire these events (FOSSBilling handles it), knowing about them is useful if you need to extend payment behavior:
+
+| Event | When It Fires |
+|-------|--------------|
+| `onBeforeAdminTransactionCreate` | Before a new transaction record is created. |
+| `onAfterAdminTransactionCreate` | After a transaction record is created. |
+| `onAfterAdminTransactionProcess` | After a transaction is processed by the adapter. |
+| `onAfterAdminInvoicePaymentReceived` | After an invoice is marked as paid. Triggers the payment confirmation email. |
+| `onBeforeAdminInvoiceRefund` / `onAfterAdminInvoiceRefund` | Before/after an invoice refund. |
+
+For more information on hooks, see the [Event Hooks](/docs/developing-fossbilling/event-hooks) documentation.
+
+## Reference
+
+### Key Source Files
+
+| File | Description |
+|------|-------------|
+| `src/library/Payment/Adapter/Stripe.php` | Stripe adapter -- good reference for embedded payment UI. |
+| `src/library/Payment/Adapter/PayPalEmail.php` | PayPal adapter -- good reference for redirect flow + subscriptions. |
+| `src/library/Payment/Adapter/Custom.php` | Custom adapter -- simplest reference implementation. |
+| `src/modules/Invoice/ServicePayGateway.php` | Gateway management service (discovery, installation, config). |
+| `src/modules/Invoice/ServiceTransaction.php` | Transaction processing service. |
+| `src/modules/Invoice/Service.php` | Main invoice service (payment initiation, marking as paid). |
+| `src/ipn.php` | IPN entry point that receives callbacks from gateways. |
+
+### Community Payment Gateways
+
+For real-world examples, check the [working extensions and payment modules](/docs/extensions) page, which lists community-maintained payment gateways you can study and use as reference.
