@@ -203,8 +203,8 @@ const DocsNavbar = ({
         )}
         <ClientNavbar className={alignLeft ? 'x:me-auto' : ''}>
           {projectLink && <Anchor href={projectLink}>{projectIcon}</Anchor>}
-          {chatLink && <Anchor href={chatLink}>{chatIcon}</Anchor>}
           {children}
+          {chatLink && <Anchor href={chatLink}>{chatIcon}</Anchor>}
         </ClientNavbar>
       </nav>
     </header>
