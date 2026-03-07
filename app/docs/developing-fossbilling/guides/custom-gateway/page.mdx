@@ -3,29 +3,102 @@ title: The "Custom" Payment Gateway
 ---
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCode, faPersonDigging } from '@fortawesome/free-solid-svg-icons'
+import { faCode } from '@fortawesome/free-solid-svg-icons'
 import { Callout } from 'nextra/components'
 
 # The "Custom" payment gateway
 
-<Callout type="info" emoji={<FontAwesomeIcon icon={faPersonDigging} />}>
-    This guide is incomplete. Please help us complete it using the **"Edit this page"** button in the sidebar. Thanks!
-    If you're looking to create your own extension, this documentation will tell you the bare minimum required, but looking at existing extensions will probably be necessary to get a complete idea on how to write one.
+The "Custom" payment gateway is a built-in adapter in FOSSBilling that acts as a generic, manually-processed payment method. Unlike external gateways such as Stripe or PayPal, the Custom gateway does not connect to any payment processor. Instead, it displays configurable instructions to your client so you can handle transactions manually (e.g., bank transfers, cash payments, or other offline methods).
+
+If you are looking to build your own payment gateway that integrates with an external payment provider, see the [Creating a Payment Gateway](/docs/developing-fossbilling/guides/creating-a-payment-gateway) guide instead.
+
+## How It Works
+
+When a client selects the Custom payment gateway to pay an invoice, FOSSBilling renders the text you have configured in the admin panel. This text can contain:
+
+- **Payment instructions** (e.g., bank account details, payment reference numbers)
+- **Invoice data** rendered dynamically using Twig template syntax
+- **HTML and JavaScript** for custom formatting or behavior
+
+<Callout type="warning" icon={<FontAwesomeIcon icon={faCode} />}>
+Because this content is rendered in the client area, only trusted administrators should edit these templates. Avoid including untrusted or third-party JavaScript (for example, copy-pasted snippets or scripts loaded directly from unknown external sources), as this can expose your clients to cross-site scripting (XSS) or supply-chain attacks.
 </Callout>
 
-The "Custom" payment gateway in FOSSBilling is a generic payment gateway which can be used as a last resort.
-The gateway itself provides no way to handle payments and only acts as a method to display instructions to your client so that you may manually process a transaction.
+After the client follows your instructions and you confirm the payment, an admin can manually mark the invoice as paid from the admin panel.
+
+## Configuration
+
+Navigate to **Configuration > Payment gateways** and click on the Custom gateway. You will see two text fields:
+
+- **Single payment information** -- Displayed when the client is making a one-time payment.
+- **Subscription information** -- Displayed when the client is setting up a recurring payment.
+
+Both fields support Twig templates and HTML.
 
 ## Templates
 
-When entering a custom template for the custom payment gateway, you should know that it's powered by twig and has the same twig [filters and functions](/docs/developing-fossbilling/twig-filters) as the rest of the software does.
+The Custom gateway templates are rendered using Twig and have access to the same [filters and functions](/docs/developing-fossbilling/twig-filters) available throughout FOSSBilling.
 
-Some [basic variables](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/library/Payment/Adapter/Custom.php#L61-L65) are passed to twig, allowing you to display some additional information to the client.
-To view the contents of the `invoice` variable, edit your `config.php` file to enable debug mode for twig and then place the following contents into your template:
+### Available Variables
+
+The following variables are available in your Custom gateway templates:
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `invoice` | `array` | The full invoice data, including line items, totals, currency, and buyer information. |
+| `_client_id` | `int` | The ID of the client who is paying. |
+
+### Example: Display Payment Instructions with Invoice Details
+
+```HTML
+<div style="padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+    <h3>Bank Transfer Instructions</h3>
+    <p>Please transfer the following amount to our bank account:</p>
+    <ul>
+        <li><strong>Amount:</strong> {{ invoice.total }} {{ invoice.currency }}</li>
+        <li><strong>Reference:</strong> INV-{{ invoice.serie }}{{ '%05d'|format(invoice.nr) }}</li>
+        <li><strong>Bank:</strong> Example Bank</li>
+        <li><strong>IBAN:</strong> GB00 XXXX 0000 0000 0000 00</li>
+        <li><strong>BIC/SWIFT:</strong> EXAMPLEXX</li>
+    </ul>
+    <p>Your invoice will be marked as paid once we confirm the transfer. This may take 1-3 business days.</p>
+</div>
+```
+
+### Debugging: Inspecting Available Data
+
+To see all the data available in the `invoice` variable, temporarily enable Twig debug mode in your `config.php` file and add the following to your template:
+
 ```HTML
 <pre>
     {{ dump(invoice) }}
 </pre>
 ```
 
-Be sure to disable debug mode for twig once you are done.
+This will print the full invoice data structure, showing all available fields you can use in your template. Be sure to disable Twig debug mode when you are done.
+
+### Example: Display a Different Message Based on Currency
+
+```HTML
+{% if invoice.currency == 'EUR' %}
+    <p>Please transfer to our European bank account: DE00 0000 0000 0000 0000 00</p>
+{% elseif invoice.currency == 'USD' %}
+    <p>Please transfer to our US bank account: 1234567890 (Routing: 021000021)</p>
+{% else %}
+    <p>Please contact support for payment instructions in {{ invoice.currency }}.</p>
+{% endif %}
+```
+
+## Marking Invoices as Paid
+
+After a client follows the payment instructions and you confirm receipt of the funds:
+
+1. Navigate to **Invoicing > Invoices** in the admin panel.
+2. Find the relevant invoice and open it.
+3. Click **"Mark as paid"** to complete the transaction.
+
+This will update the invoice status, activate any associated services (like hosting accounts), and send a payment confirmation email to the client.
+
+## Source Code
+
+The Custom adapter source code is located at [`src/library/Payment/Adapter/Custom.php`](https://github.com/FOSSBilling/FOSSBilling/blob/main/src/library/Payment/Adapter/Custom.php). It is one of the simplest adapters in the codebase and serves as a good starting point if you want to understand how payment adapters work before [building your own](/docs/developing-fossbilling/guides/creating-a-payment-gateway).
