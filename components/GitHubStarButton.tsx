@@ -6,7 +6,7 @@ import Link from 'next/link'
 async function getStarCount() {
   try {
     const res = await fetch('https://api.github.com/repos/FOSSBilling/FOSSBilling', {
-      next: { revalidate: 7200 } // Cache for 2 hours
+      next: { revalidate: 24 * 60 * 60 } // Cache for 24 hours
     })
     
     if (!res.ok) {
@@ -39,7 +39,6 @@ export default async function GitHubStarButton() {
       aria-label="Star FOSSBilling on GitHub"
     >
       <GitHubIcon className="h-4 w-4 text-gray-700 dark:text-gray-200" />
-      <span>Star</span>
       {stars !== null && (
         <>
           <div className="h-4 w-px bg-gray-300 dark:bg-gray-600" />
