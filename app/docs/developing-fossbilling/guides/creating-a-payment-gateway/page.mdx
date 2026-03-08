@@ -211,6 +211,7 @@ public static function getConfig(): array
     return [
         'supports_one_time_payments' => true,
         'supports_subscriptions' => false,
+        'can_load_in_iframe' => false,
         'description' => 'Accept payments via MyGateway. Enter your API credentials to get started.',
         'logo' => [
             'logo' => 'mygateway.png',
@@ -315,7 +316,7 @@ public function getHtml($api_admin, $invoice_id, $subscription): string
         'merchant_id'  => $this->config['api_key'],
         'amount'       => number_format($invoice['total'], 2, '.', ''),
         'currency'     => $invoice['currency'],
-        'description'  => 'Payment for invoice ' . $invoice['serie'] . sprintf('%05s', $invoice['nr']),
+        'description'  => 'Payment for invoice ' . $invoice['serie_nr'],
         'callback_url' => $this->config['notify_url'],
         'success_url'  => $this->config['thankyou_url'],
         'cancel_url'   => $this->config['cancel_url'],
@@ -445,7 +446,11 @@ public function processTransaction($api_admin, $id, $data, $gateway_id): void
     if ($tx->invoice_id) {
         $invoice = $this->di['db']->getExistingModelById('Invoice', $tx->invoice_id);
     } else {
-        $invoice = $this->di['db']->getExistingModelById('Invoice', $data['get']['invoice_id']);
+        $invoiceId = $data['get']['invoice_id'] ?? $data['post']['invoice_id'] ?? null;
+        if (!$invoiceId) {
+            throw new Payment_Exception('Invoice ID not provided in callback');
+        }
+        $invoice = $this->di['db']->getExistingModelById('Invoice', $invoiceId);
         $tx->invoice_id = $invoice->id;
     }
 
@@ -677,6 +682,7 @@ class Payment_Adapter_ExamplePay implements FOSSBilling\InjectionAwareInterface
         return [
             'supports_one_time_payments' => true,
             'supports_subscriptions'     => false,
+            'can_load_in_iframe'         => false,
             'description'                => 'Accept payments via ExamplePay. Enter your merchant credentials to get started.',
             'logo' => [
                 'logo'   => 'examplepay.png',
@@ -715,13 +721,13 @@ class Payment_Adapter_ExamplePay implements FOSSBilling\InjectionAwareInterface
             ? $this->config['test_merchant_id']
             : $this->config['merchant_id'];
 
-        $amount = number_format($invoice['total'] + $invoice['tax'], 2, '.', '');
+        $amount = number_format($invoice['total'], 2, '.', '');
 
         $fields = [
             'merchant_id'   => $merchantId,
             'amount'        => $amount,
             'currency'      => $invoice['currency'],
-            'description'   => 'Payment for invoice ' . $invoice['serie'] . sprintf('%05s', $invoice['nr']),
+            'description'   => 'Payment for invoice ' . $invoice['serie_nr'],
             'reference'     => $invoice['id'],
             'callback_url'  => $this->config['notify_url'],
             'success_url'   => $this->config['thankyou_url'],
