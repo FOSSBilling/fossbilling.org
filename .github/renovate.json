@@ -16,5 +16,11 @@
     ":rebaseStalePrs"
   ],
   "automergeSchedule": ["at any time"],
-  "automergeStrategy": "squash"
+  "automergeStrategy": "squash",
+  "packageRules": [
+    {
+      "matchPackageNames": ["next"],
+      "automerge": false
+    }
+  ]
 }
