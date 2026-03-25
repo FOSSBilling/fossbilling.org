@@ -17,10 +17,4 @@
   ],
   "automergeSchedule": ["at any time"],
   "automergeStrategy": "squash",
-  "packageRules": [
-    {
-      "matchPackageNames": ["next"],
-      "automerge": false
-    }
-  ]
 }
