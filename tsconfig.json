@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "target": "es6",
     "lib": [
       "dom",
@@ -21,7 +20,7 @@
     "resolveJsonModule": true,
     "paths": {
       "@components/*": [
-        "components/*"
+        "./components/*"
       ]
     },
     "plugins": [
