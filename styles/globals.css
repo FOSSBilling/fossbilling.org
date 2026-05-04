@@ -285,7 +285,6 @@ code.text-\[\.9em\] {
   }
 }
 
-.card-base,
 .feature-card {
   background: white;
   border-radius: 1rem;
@@ -294,7 +293,6 @@ code.text-\[\.9em\] {
   border: 1px solid #e5e7eb;
 }
 
-.dark .card-base,
 .dark .feature-card {
   background: #18181b;
   border-color: #27272a;
@@ -575,20 +573,15 @@ code.text-\[\.9em\] {
 }
 
 /* Base card style to avoid duplicating common card properties */
-.card-base,
 .download-card {
   background: white;
   border-radius: 1rem;
   border: 1px solid #e5e7eb;
-}
-
-.download-card {
   padding: 1.75rem;
   text-align: center;
   min-width: 0;
 }
 
-.dark .card-base,
 .dark .download-card {
   background: #18181b;
   border-color: #27272a;
@@ -908,7 +901,6 @@ code.text-\[\.9em\] {
   }
 }
 
-.card-base,
 .demo-card {
   padding: 1.75rem;
   display: flex;
