@@ -10,7 +10,10 @@ async function getStarCount() {
     })
     
     if (!res.ok) {
-      const errorBody = await res.text().catch(() => '')
+      const errorBody = await res.text().catch((bodyError) => {
+        console.error('Error reading error response body:', bodyError)
+        return ''
+      })
       const message = `Failed to fetch stars: HTTP ${res.status} ${res.statusText}` + (errorBody ? ` - ${errorBody}` : '')
       throw new Error(message)
     }
@@ -23,9 +26,10 @@ async function getStarCount() {
   }
 }
 
+const compactNumberFormatter = new Intl.NumberFormat("en", { notation: "compact" });
+
 function formatCompactNumber(number: number) {
-  const formatter = Intl.NumberFormat("en", { notation: "compact" });
-  return formatter.format(number);
+  return compactNumberFormatter.format(number);
 }
 
 export default async function GitHubStarButton() {

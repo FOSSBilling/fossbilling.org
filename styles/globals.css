@@ -1,4 +1,6 @@
-@import 'tailwindcss';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 :root {
   --features-bg-color: #f3f4f6;
@@ -285,6 +287,7 @@ code.text-\[\.9em\] {
   }
 }
 
+.card-base,
 .feature-card {
   background: white;
   border-radius: 1rem;
@@ -293,11 +296,13 @@ code.text-\[\.9em\] {
   border: 1px solid #e5e7eb;
 }
 
+.dark .card-base,
 .dark .feature-card {
   background: #18181b;
   border-color: #27272a;
 }
 
+.card-hover:hover,
 .feature-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
@@ -501,13 +506,6 @@ code.text-\[\.9em\] {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 2rem 1.5rem;
-  background: white;
-  border-radius: 1rem;
-  border: 1px solid #e5e7eb;
-  transition: all 0.3s ease;
-  color: inherit;
-  text-decoration: none;
 }
 
 .dark .community-card {
@@ -578,15 +576,21 @@ code.text-\[\.9em\] {
   }
 }
 
+/* Base card style to avoid duplicating common card properties */
+.card-base,
 .download-card {
   background: white;
   border-radius: 1rem;
-  padding: 1.75rem;
   border: 1px solid #e5e7eb;
+}
+
+.download-card {
+  padding: 1.75rem;
   text-align: center;
   min-width: 0;
 }
 
+.dark .card-base,
 .dark .download-card {
   background: #18181b;
   border-color: #27272a;
@@ -906,11 +910,9 @@ code.text-\[\.9em\] {
   }
 }
 
+.card-base,
 .demo-card {
-  background: white;
-  border-radius: 1rem;
   padding: 1.75rem;
-  border: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
 }
