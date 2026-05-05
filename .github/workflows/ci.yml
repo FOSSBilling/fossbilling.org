@@ -1,12 +1,12 @@
 name: CI
 
-permissions:
-  contents: read
-
 on:
   push:
   pull_request:
     branches: main
+
+permissions:
+  contents: read
 
 jobs:
   typecheck:
