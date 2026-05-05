@@ -5,12 +5,18 @@ import Link from 'next/link'
 
 async function getStarCount() {
   try {
+    const githubToken = process.env.GITHUB_TOKEN
+    const headers: Record<string, string> = {
+      'Accept': 'application/vnd.github+json',
+      'User-Agent': 'fossbilling-website' // GitHub API requires a User-Agent header
+    }
+
+    if (githubToken) {
+      headers['Authorization'] = `Bearer ${githubToken}` // Use a GitHub token if available to increase rate limits
+    }
+
     const ghRequest = new Request('https://api.github.com/repos/FOSSBilling/FOSSBilling', {
-      headers: {
-        'Accept': 'application/vnd.github+json',
-        'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`, // Use a GitHub token if available to increase rate limits
-        'User-Agent': 'fossbilling-website' // GitHub API requires a User-Agent header
-      }
+      headers
     })
 
     const res = await fetch(ghRequest, {
