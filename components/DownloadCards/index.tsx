@@ -12,7 +12,7 @@ interface Release {
 }
 
 interface ApiResponse {
-  result: Record<string, Release>
+  result: Record<string, unknown>
   error_code: number
 }
 
@@ -55,7 +55,7 @@ function isApiResponse(value: unknown): value is ApiResponse {
 
   const response = value as Partial<ApiResponse>
   return (
-    response.error_code === 0 &&
+    typeof response.error_code === 'number' &&
     !!response.result &&
     typeof response.result === 'object' &&
     !Array.isArray(response.result)
@@ -76,6 +76,10 @@ async function getLatestStableRelease(): Promise<{ release: Release | null; erro
 
     if (!isApiResponse(data)) {
       return { release: null, error: new Error('API returned an invalid response') }
+    }
+
+    if (data.error_code !== 0) {
+      return { release: null, error: new Error(`API returned error code: ${data.error_code}`) }
     }
 
     const releases = Object.values(data.result).filter(isRelease)
