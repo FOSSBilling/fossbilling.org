@@ -5,7 +5,21 @@ import Link from 'next/link'
 
 async function getStarCount() {
   try {
-    const res = await fetch('https://api.github.com/repos/FOSSBilling/FOSSBilling', {
+    const githubToken = process.env.GITHUB_TOKEN
+    const headers: Record<string, string> = {
+      'Accept': 'application/vnd.github+json',
+      'User-Agent': 'fossbilling-website' // GitHub API requires a User-Agent header
+    }
+
+    if (githubToken) {
+      headers['Authorization'] = `Bearer ${githubToken}` // Use a GitHub token if available to increase rate limits
+    }
+
+    const ghRequest = new Request('https://api.github.com/repos/FOSSBilling/FOSSBilling', {
+      headers
+    })
+
+    const res = await fetch(ghRequest, {
       next: { revalidate: 24 * 60 * 60 } // Cache for 24 hours
     })
     
@@ -18,8 +32,8 @@ async function getStarCount() {
       throw new Error(message)
     }
 
-    const data = await res.json()
-    return data.stargazers_count
+    const data: unknown = await res.json()
+    return (data as { stargazers_count: number }).stargazers_count
   } catch (error) {
     console.error('Error fetching star count:', error)
     return null
