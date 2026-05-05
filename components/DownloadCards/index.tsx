@@ -16,6 +16,52 @@ interface ApiResponse {
   error_code: number
 }
 
+const allowedDownloadHosts = new Set([
+  'github.com',
+  'download.fossbilling.org'
+])
+
+function isValidDownloadUrl(url: string): boolean {
+  try {
+    const parsedUrl = new URL(url)
+    return parsedUrl.protocol === 'https:' && allowedDownloadHosts.has(parsedUrl.hostname)
+  } catch {
+    return false
+  }
+}
+
+function isRelease(value: unknown): value is Release {
+  if (!value || typeof value !== 'object') {
+    return false
+  }
+
+  const release = value as Partial<Release>
+  return (
+    typeof release.version === 'string' &&
+    typeof release.released_on === 'string' &&
+    typeof release.minimum_php_version === 'string' &&
+    typeof release.download_url === 'string' &&
+    typeof release.size_bytes === 'number' &&
+    Number.isFinite(release.size_bytes) &&
+    typeof release.is_prerelease === 'boolean' &&
+    isValidDownloadUrl(release.download_url)
+  )
+}
+
+function isApiResponse(value: unknown): value is ApiResponse {
+  if (!value || typeof value !== 'object') {
+    return false
+  }
+
+  const response = value as Partial<ApiResponse>
+  return (
+    response.error_code === 0 &&
+    !!response.result &&
+    typeof response.result === 'object' &&
+    !Array.isArray(response.result)
+  )
+}
+
 async function getLatestStableRelease(): Promise<{ release: Release | null; error: Error | null }> {
   try {
     const response = await fetch('https://api.fossbilling.net/versions/v1', {
@@ -26,13 +72,13 @@ async function getLatestStableRelease(): Promise<{ release: Release | null; erro
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     
-    const data: ApiResponse = await response.json()
+    const data: unknown = await response.json()
 
-    if (data.error_code !== 0) {
-      return { release: null, error: new Error('API returned error code') }
+    if (!isApiResponse(data)) {
+      return { release: null, error: new Error('API returned an invalid response') }
     }
 
-    const releases = Object.values(data.result)
+    const releases = Object.values(data.result).filter(isRelease)
 
     releases.sort((a, b) =>
       new Date(b.released_on).getTime() - new Date(a.released_on).getTime()
