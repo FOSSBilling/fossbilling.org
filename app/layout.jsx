@@ -25,7 +25,7 @@ export const metadata = {
 const banner = (
   <Banner storageKey="0.7.2-release">
     🎉 FOSSBilling 0.7.2 is released!{' '}
-    <a href="https://github.com/FOSSBilling/FOSSBilling/releases/latest" target="_blank">
+    <a href="https://github.com/FOSSBilling/FOSSBilling/releases/latest" target="_blank" rel="noopener noreferrer">
       Read more →
     </a>
   </Banner>
@@ -68,20 +68,20 @@ export default async function RootLayout({ children }) {
                   <a href="mailto:hello@fossbilling.org" className="hover:text-gray-500 dark:hover:text-gray-300">hello@fossbilling.org</a>
                 </div>
                 <div className="mb-6">
-                  <a href="/discord" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank" aria-label="Discord">
+                  <a href="/discord" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank" rel="noopener noreferrer" aria-label="Discord">
                     <FontAwesomeIcon icon={faDiscord} size="lg" className="mr-4" />
                   </a>
-                  <a href="https://fosstodon.org/@fossbilling" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank" aria-label="Mastodon">
+                  <a href="https://fosstodon.org/@fossbilling" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank" rel="noopener noreferrer" aria-label="Mastodon">
                     <FontAwesomeIcon icon={faMastodon} size="lg" className="mr-4" />
                   </a>
-                  <a href="https://twitter.com/FOSSBilling" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank" aria-label="X (Twitter)">
+                  <a href="https://twitter.com/FOSSBilling" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
                     <FontAwesomeIcon icon={faXTwitter} size="lg" className="mr-4" />
                   </a>
-                  <a href="https://status.fossbilling.org/" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank" aria-label="Status page">
+                  <a href="https://status.fossbilling.org/" className="hover:text-gray-500 dark:hover:text-gray-300" target="_blank" rel="noopener noreferrer" aria-label="Status page">
                     <FontAwesomeIcon icon={faServer} size="lg" className="mr-4" />
                   </a>
                 </div>
-                <p className="mt-6 text-xs">© {new Date().getFullYear()}, The FOSSBilling project. Content licensed under the <a href="https://github.com/FOSSBilling/fossbilling.org/blob/main/LICENSE" target="_blank">Apache 2.0 license</a>.</p>
+                <p className="mt-6 text-xs">© {new Date().getFullYear()}, The FOSSBilling project. Content licensed under the <a href="https://github.com/FOSSBilling/fossbilling.org/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Apache 2.0 license</a>.</p>
               </div>
             </Footer>
           }

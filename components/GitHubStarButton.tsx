@@ -53,6 +53,7 @@ export default async function GitHubStarButton() {
     <Link
       href="https://github.com/FOSSBilling/FOSSBilling"
       target="_blank"
+      rel="noopener noreferrer"
       className="group flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-800 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-white/10 dark:text-gray-200 dark:hover:bg-white/20"
       aria-label="Star FOSSBilling on GitHub"
     >

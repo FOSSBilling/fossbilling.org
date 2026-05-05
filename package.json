@@ -40,5 +40,10 @@
     "postcss": "^8.4.31",
     "tailwindcss": "^4.1.8",
     "typescript": "6.0.3"
+  },
+  "overrides": {
+    "mermaid": {
+      "uuid": "^14.0.0"
+    }
   }
 }
