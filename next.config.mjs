@@ -1,5 +1,4 @@
 import nextra from 'nextra'
-import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const withNextra = nextra({
   latex: true
@@ -111,5 +110,6 @@ const nextConfig = {
 export default withNextra(nextConfig)
 
 if (process.env.NODE_ENV === 'development') {
+  const { initOpenNextCloudflareForDev } = await import("@opennextjs/cloudflare");
   initOpenNextCloudflareForDev();
 }

@@ -33,7 +33,16 @@ async function getStarCount() {
     }
 
     const data: unknown = await res.json()
-    return (data as { stargazers_count: number }).stargazers_count
+    if (
+      typeof data === 'object' &&
+      data !== null &&
+      'stargazers_count' in data &&
+      typeof (data as { stargazers_count: unknown }).stargazers_count === 'number'
+    ) {
+      return (data as { stargazers_count: number }).stargazers_count
+    }
+
+    throw new Error('Invalid GitHub API response: missing or non-numeric stargazers_count')
   } catch (error) {
     console.error('Error fetching star count:', error)
     return null
