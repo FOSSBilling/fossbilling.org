@@ -22,9 +22,11 @@ export const metadata = {
   description: 'Empower your hosting business with FOSSBilling, the free and open-source solution for efficient billing and client management.'
 }
 
+const RELEASE_VERSION = '0.7.2'
+
 const banner = (
-  <Banner storageKey="0.7.2-release">
-    🎉 FOSSBilling 0.7.2 is released!{' '}
+  <Banner storageKey={`${RELEASE_VERSION}-release`}>
+    🎉 FOSSBilling {RELEASE_VERSION} is released!{' '}
     <a href="https://github.com/FOSSBilling/FOSSBilling/releases/latest" target="_blank" rel="noopener noreferrer">
       Read more →
     </a>
