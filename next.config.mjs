@@ -7,7 +7,7 @@ const withNextra = nextra({
 const securityHeaders = [
   {
     key: 'Content-Security-Policy',
-    value: "base-uri 'self'; object-src 'none'; frame-ancestors 'none'"
+    value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'"
   },
   {
     key: 'Referrer-Policy',
@@ -110,6 +110,11 @@ const nextConfig = {
 export default withNextra(nextConfig)
 
 if (process.env.NODE_ENV === 'development') {
-  const { initOpenNextCloudflareForDev } = await import("@opennextjs/cloudflare");
-  initOpenNextCloudflareForDev();
+  import('@opennextjs/cloudflare')
+    .then(({ initOpenNextCloudflareForDev }) => {
+      initOpenNextCloudflareForDev()
+    })
+    .catch((error) => {
+      console.error('Failed to initialize OpenNext Cloudflare dev helper:', error)
+    })
 }
