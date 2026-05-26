@@ -30,8 +30,10 @@ export default function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}})()` }} />
       </head>
       <body className="min-h-screen bg-white dark:bg-[#111111] text-gray-900 dark:text-gray-100 antialiased">
-        <Banner />
-        <Navbar starButton={<GitHubStarButton />} />
+        <div className="sticky top-0 z-30">
+          <Banner />
+          <Navbar starButton={<GitHubStarButton />} />
+        </div>
         <main>{children}</main>
         <footer className="border-t border-gray-200 dark:border-gray-800 py-8">
           <div className="content-container">

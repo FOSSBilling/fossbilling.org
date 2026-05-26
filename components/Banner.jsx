@@ -18,7 +18,7 @@ export default function Banner() {
   if (hidden) return null
 
   return (
-    <div className="sticky top-0 z-40 bg-black text-white text-center text-sm py-2 px-4">
+    <div className="z-40 bg-black text-white text-center text-sm py-2 px-4">
       FOSSBilling {RELEASE_VERSION} is released!{' '}
       <a
         href="https://github.com/FOSSBilling/FOSSBilling/releases/latest"

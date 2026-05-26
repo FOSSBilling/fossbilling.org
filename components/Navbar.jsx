@@ -109,7 +109,7 @@ export default function Navbar({ starButton }) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-30 w-full print:hidden">
+    <header className="z-30 w-full print:hidden">
       <div className="absolute inset-0 -z-1 border-b border-gray-200 dark:border-gray-800 backdrop-blur-md bg-white/70 dark:bg-[#111111]/70" />
       <nav className="mx-auto flex max-w-[90rem] items-center justify-between gap-4 pl-[max(env(safe-area-inset-left),1.5rem)] pr-[max(env(safe-area-inset-right),1.5rem)]" style={{ height: '64px' }}>
         <Link href="/" className="flex items-center" aria-label="Home page">
