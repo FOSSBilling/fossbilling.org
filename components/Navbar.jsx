@@ -148,6 +148,10 @@ export default function Navbar({ starButton }) {
         </div>
 
         <div className="flex md:hidden items-center gap-2">
+          {starButton}
+          <a href="/discord" target="_blank" rel="noopener noreferrer" aria-label="Discord" className="p-2 text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+            <FontAwesomeIcon icon={faDiscord} size="lg" />
+          </a>
           <ThemeToggle />
           <button
             aria-label="Menu"
@@ -190,12 +194,6 @@ export default function Navbar({ starButton }) {
                 </Link>
               )
             )}
-            <div className="pt-2">
-              {starButton}
-            </div>
-            <a href="/discord" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1">
-              <FontAwesomeIcon icon={faDiscord} /> Discord
-            </a>
           </div>
         </div>
       )}
