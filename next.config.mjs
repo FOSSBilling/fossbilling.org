@@ -100,6 +100,11 @@ const nextConfig = {
         destination: '/public/img/logo.svg',
         permanent: true
       },
+      {
+        source: '/public/img/gh-download-button.png',
+        destination: '/public/img/gh/download-button.png',
+        permanent: true
+      }
     ]
   }
 }

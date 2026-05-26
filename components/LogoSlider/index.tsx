@@ -1,13 +1,13 @@
 const logos = [
   { name: "cPanel", src: "/img/logos/cpanel.svg" },
-  { name: "Plesk", src: "/img/logos/plesk.png" },
-  { name: "DirectAdmin", src: "/img/logos/directadmin.png" },
+  { name: "Plesk", src: "/img/logos/plesk.svg" },
+  { name: "DirectAdmin", src: "/img/logos/directadmin.svg" },
   { name: "ISPConfig", src: "/img/logos/ispconfig.png" },
-  { name: "HestiaCP", src: "/img/logos/hestiacp.png" },
+  { name: "HestiaCP", src: "/img/logos/hestiacp.svg" },
   { name: "PayPal", src: "/img/logos/paypal.svg" },
-  { name: "Stripe", src: "/img/logos/stripe.png" },
-  { name: "Mollie", src: "/img/logos/mollie.png" },
-  { name: "Namecheap", src: "/img/logos/namecheap.png" }
+  { name: "Stripe", src: "/img/logos/stripe.svg" },
+  { name: "Mollie", src: "/img/logos/mollie.svg" },
+  { name: "Namecheap", src: "/img/logos/namecheap.svg" }
 ]
 
 export function LogoSlider() {
