@@ -1,14 +1,9 @@
-import nextra from 'nextra'
-
-const withNextra = nextra({
-  latex: true,
-  search: false
-})
+const isDev = process.env.NODE_ENV === 'development'
 
 const securityHeaders = [
   {
     key: 'Content-Security-Policy',
-    value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'"
+    value: `default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://api.github.com https://api.fossbilling.net`
   },
   {
     key: 'Referrer-Policy',
@@ -30,10 +25,6 @@ const securityHeaders = [
 
 const nextConfig = {
   reactStrictMode: true,
-  // Use webpack instead of turbopack for now due to MDX import issues
-  experimental: {
-    webpackBuildWorker: true
-  },
   async headers() {
     return [
       {
@@ -78,37 +69,12 @@ const nextConfig = {
         source: '/api/central-alerts/:path*',
         destination: 'https://api.fossbilling.net/central-alerts/v1/:path*',
         permanent: true
-      },
-      {
-        source: '/docs/contribution-handbook/:slug*',
-        destination: 'https://docs.fossbilling.org/extensions-and-development/:slug*',
-        permanent: true
-      },
-      {
-        source: '/docs/getting-started/apache',
-        destination: 'https://docs.fossbilling.org/getting-started/installation/',
-        permanent: true
-      },
-      {
-        source: '/docs/getting-started/shared',
-        destination: 'https://docs.fossbilling.org/getting-started/installation/',
-        permanent: true
-      },
-      {
-        source: '/docs/getting-started/nginx',
-        destination: 'https://docs.fossbilling.org/getting-started/installation/',
-        permanent: true
-      },
-      {
-        source: '/docs/getting-started/softaculous',
-        destination: 'https://docs.fossbilling.org/getting-started/installation/',
-        permanent: true
       }
     ]
   }
 }
 
-export default withNextra(nextConfig)
+export default nextConfig
 
 if (process.env.NODE_ENV === 'development') {
   import('@opennextjs/cloudflare')

@@ -1,7 +1,9 @@
 # fossbilling.org
 [![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling.org/main)](https://github.com/fossbilling/fossbilling.org/actions/workflows)
 
-FOSSBilling's website and documentation. Built with [Nextra](https://nextra.site/) on Next.js, deployed to Cloudflare Workers, and available at [fossbilling.org](https://fossbilling.org).
+FOSSBilling's website. Built with Next.js, deployed to Cloudflare Workers, and available at [fossbilling.org](https://fossbilling.org).
+
+Documentation is hosted separately at [docs.fossbilling.org](https://docs.fossbilling.org).
 
 ## Installation
 
@@ -22,7 +24,7 @@ This command starts a local development server at `http://localhost:3000`. Most 
 ## Scripts
 
 - `npm run dev`: local development server
-- `npm run build`: production build (runs Pagefind indexing via `postbuild`)
+- `npm run build`: production build
 - `npm run start`: serve the production build with Next.js
 - `npm run preview`: build + run the OpenNext Cloudflare preview
 - `npm run deploy`: build + deploy to Cloudflare Workers (requires Wrangler auth)
@@ -33,7 +35,3 @@ This command starts a local development server at `http://localhost:3000`. Most 
 ## Deployment Notes
 
 OpenNext handles the Cloudflare Workers build output. The `wrangler.jsonc` configuration and `.open-next` artifacts are produced by the OpenNext build step. Use the `preview`, `deploy`, or `upload` scripts after configuring Wrangler for your Cloudflare account.
-
-## Acknowledgements
-
-This website uses some components from the [Nextra website](https://nextra.site). Nextra is an awesome project and they generously published both the package and their website under the MIT license. You can find the source code of their website [here](https://github.com/shuding/nextra/tree/main/docs).

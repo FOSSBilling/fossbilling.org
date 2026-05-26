@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@variant dark (&:where(.dark, .dark *));
 
 :root {
   --features-bg-color: #f3f4f6;
@@ -87,9 +88,9 @@ body {
 }
 
 .home-content a {
-  --tw-ring-color: hsl(var(--nextra-primary-hue) 100% 50%/0.3);
+  --tw-ring-color: rgb(37 99 235 / 0.3);
   --tw-text-opacity: 1;
-  color: hsl(var(--nextra-primary-hue) 100% 50% / var(--tw-text-opacity));
+  color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 
 code.text-\[\.9em\] {
