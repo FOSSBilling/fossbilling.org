@@ -37,13 +37,13 @@
 }
 
 .logo {
-  background-image: url('/assets/img/logo.svg');
+  background-image: url('/img/logo.svg');
   height: 34.5px;
   width: 161.5px;
 }
 
 .dark .logo {
-  background-image: url('/assets/img/logo_white.svg');
+  background-image: url('/img/logo_white.svg');
   height: 34.5px;
   width: 161.5px;
 }

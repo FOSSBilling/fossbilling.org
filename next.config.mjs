@@ -97,14 +97,9 @@ const nextConfig = {
       },
       {
         source: '/public/img/logo-black.svg',
-        destination: '/public/assets/img/logo.svg',
+        destination: '/public/img/logo.svg',
         permanent: true
       },
-      {
-        source: '/public/img/logo-white.svg',
-        destination: '/public/assets/img/logo_white.svg',
-        permanent: true
-      }
     ]
   }
 }
