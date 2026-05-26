@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook, faServer, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { faDocker as faDockerBrand } from '@fortawesome/free-brands-svg-icons'
@@ -5,7 +6,7 @@ import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 import { DownloadCards } from '../../components/DownloadCards'
 import { Callout } from '../../components/Callout'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Downloads'
 }
 

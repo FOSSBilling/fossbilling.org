@@ -1,17 +1,19 @@
-export function Callout({ type = 'info', title, children }) {
-  const styles = {
+type CalloutType = 'info' | 'warning' | 'error'
+
+export function Callout({ type = 'info', title, children }: { type?: CalloutType; title?: string; children: React.ReactNode }) {
+  const styles: Record<CalloutType, string> = {
     info: 'border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950',
     warning: 'border-yellow-200 bg-yellow-50 dark:border-yellow-900 dark:bg-yellow-950',
     error: 'border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950'
   }
 
-  const iconColor = {
+  const iconColor: Record<CalloutType, string> = {
     info: 'text-blue-600 dark:text-blue-400',
     warning: 'text-yellow-600 dark:text-yellow-400',
     error: 'text-red-600 dark:text-red-400'
   }
 
-  const icons = {
+  const icons: Record<CalloutType, React.ReactNode> = {
     info: (
       <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
         <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z" />

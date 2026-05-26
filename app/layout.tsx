@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDiscord, faMastodon, faXTwitter } from '@fortawesome/free-brands-svg-icons'
@@ -10,7 +11,7 @@ import '../styles/globals.css'
 
 config.autoAddCss = false
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     template: '%s | FOSSBilling',
     default: 'FOSSBilling'
@@ -18,7 +19,7 @@ export const metadata = {
   description: 'Empower your hosting business with FOSSBilling, the free and open-source solution for efficient billing and client management.'
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <head>

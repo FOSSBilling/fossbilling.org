@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'motion/react'
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faDiscord } from '@fortawesome/free-brands-svg-icons'
 import {
@@ -23,7 +24,7 @@ import { LogoSlider } from './LogoSlider'
 import { Button } from './Button'
 import { AnimatedCard } from './AnimatedCard'
 
-function FeatureCard({ icon, title, description, href }) {
+function FeatureCard({ icon, title, description, href }: { icon: IconDefinition; title: string; description: string; href?: string }) {
   const content = (
     <AnimatedCard className="feature-card group">
       <div className="feature-card-icon">
@@ -45,7 +46,7 @@ function FeatureCard({ icon, title, description, href }) {
   return content
 }
 
-function PillarCard({ icon, title, description }) {
+function PillarCard({ icon, title, description }: { icon: IconDefinition; title: string; description: string }) {
   return (
     <AnimatedCard className="pillar-card">
       <div className="pillar-icon">
@@ -60,7 +61,6 @@ function PillarCard({ icon, title, description }) {
 export function HomePageContent() {
   const shouldReduceMotion = useReducedMotion()
 
-  // Hero animation props that respect reduced motion
   const heroInitial = shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
   const heroAnimate = { opacity: 1, y: 0 }
   const heroTransition = shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }

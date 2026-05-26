@@ -1,9 +1,10 @@
+import type { Metadata } from 'next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { DemoCards } from '../../components/DemoCards'
 import { Callout } from '../../components/Callout'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Demo'
 }
 

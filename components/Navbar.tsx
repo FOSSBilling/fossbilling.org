@@ -5,7 +5,21 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 
-const navItems = [
+type NavItemExternal = {
+  title: string
+  href: string
+  items?: undefined
+}
+
+type NavItemWithSubmenu = {
+  title: string
+  href?: undefined
+  items: { title: string; href: string }[]
+}
+
+type NavItem = NavItemExternal | NavItemWithSubmenu
+
+const navItems: NavItem[] = [
   { title: 'Documentation', href: 'https://docs.fossbilling.org/' },
   { title: 'Downloads', href: '/downloads' },
   { title: 'Demo', href: '/demo' },
@@ -60,15 +74,15 @@ function ThemeToggle() {
   )
 }
 
-function DropdownMenu({ label, items }) {
+function DropdownMenu({ label, items }: { label: string; items: { title: string; href: string }[] }) {
   const [open, setOpen] = useState(false)
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null)
   const menuId = `${label.toLowerCase().replace(/\s+/g, '-')}-menu`
   const buttonId = `${menuId}-button`
 
   useEffect(() => {
-    function handleClickOutside(e) {
-      if (ref.current && !ref.current.contains(e.target)) {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false)
       }
     }
@@ -118,7 +132,7 @@ function DropdownMenu({ label, items }) {
   )
 }
 
-export default function Navbar({ starButton }) {
+export default function Navbar({ starButton }: { starButton: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const mobileMenuId = 'mobile-navigation-menu'
   const mobileMenuButtonId = `${mobileMenuId}-button`
@@ -133,7 +147,7 @@ export default function Navbar({ starButton }) {
 
         <div className="hidden md:flex items-center gap-4">
           {navItems.map((item) =>
-            'items' in item ? (
+            item.items ? (
               <DropdownMenu key={item.title} label={item.title} items={item.items} />
             ) : item.href.startsWith('http') ? (
               <a
@@ -198,7 +212,7 @@ export default function Navbar({ starButton }) {
             className="flex flex-col gap-2 p-4"
           >
             {navItems.map((item) =>
-              'items' in item ? (
+              item.items ? (
                 <div key={item.title} role="none">
                   <span
                     id={`mobile-${item.title.toLowerCase().replace(/\s+/g, '-')}-label`}
