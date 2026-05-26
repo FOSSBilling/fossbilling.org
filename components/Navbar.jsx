@@ -63,6 +63,8 @@ function ThemeToggle() {
 function DropdownMenu({ label, items }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
+  const menuId = `${label.toLowerCase().replace(/\s+/g, '-')}-menu`
+  const buttonId = `${menuId}-button`
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -78,6 +80,11 @@ function DropdownMenu({ label, items }) {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
+        type="button"
+        id={buttonId}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        aria-controls={menuId}
         className="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1 cursor-pointer whitespace-nowrap transition-colors"
       >
         {label}
@@ -86,13 +93,19 @@ function DropdownMenu({ label, items }) {
         </svg>
       </button>
       {open && (
-        <div className="absolute right-0 mt-2 w-48 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-lg py-1 z-50">
+        <div
+          id={menuId}
+          role="menu"
+          aria-labelledby={buttonId}
+          className="absolute right-0 mt-2 w-48 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-lg py-1 z-50"
+        >
           {items.map((item) => (
             <a
               key={item.title}
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
+              role="menuitem"
               onClick={() => setOpen(false)}
               className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
