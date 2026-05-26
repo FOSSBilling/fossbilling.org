@@ -39,7 +39,6 @@
   "overrides": {
     "mermaid": {
       "uuid": "^14.0.0"
-    },
-    "zod": "4.3.6"
+    }
   }
 }
