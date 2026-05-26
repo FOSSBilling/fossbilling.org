@@ -1,7 +1,8 @@
 import nextra from 'nextra'
 
 const withNextra = nextra({
-  latex: true
+  latex: true,
+  search: false
 })
 
 const securityHeaders = [

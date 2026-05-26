@@ -132,9 +132,6 @@ const ClientNavbar = ({ children, className }) => {
           )
         })}
       </div>
-      {themeConfig.search && (
-        <div className="x:max-md:hidden">{themeConfig.search}</div>
-      )}
       {children}
       <Button
         aria-label="Menu"
