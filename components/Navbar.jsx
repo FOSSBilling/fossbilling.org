@@ -120,6 +120,8 @@ function DropdownMenu({ label, items }) {
 
 export default function Navbar({ starButton }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const mobileMenuId = 'mobile-navigation-menu'
+  const mobileMenuButtonId = `${mobileMenuId}-button`
 
   return (
     <header className="z-30 w-full print:hidden">
@@ -167,7 +169,12 @@ export default function Navbar({ starButton }) {
           </a>
           <ThemeToggle />
           <button
+            type="button"
+            id={mobileMenuButtonId}
             aria-label="Menu"
+            aria-expanded={mobileOpen}
+            aria-haspopup="menu"
+            aria-controls={mobileMenuId}
             className="p-2 text-gray-600 dark:text-gray-400"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
@@ -184,25 +191,59 @@ export default function Navbar({ starButton }) {
 
       {mobileOpen && (
         <div className="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111111]">
-          <div className="flex flex-col gap-2 p-4">
+          <div
+            id={mobileMenuId}
+            role="menu"
+            aria-labelledby={mobileMenuButtonId}
+            className="flex flex-col gap-2 p-4"
+          >
             {navItems.map((item) =>
               'items' in item ? (
-                <div key={item.title}>
-                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.title}</span>
-                  <div className="ml-4 flex flex-col gap-1 mt-1">
+                <div key={item.title} role="none">
+                  <span
+                    id={`mobile-${item.title.toLowerCase().replace(/\s+/g, '-')}-label`}
+                    className="text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >
+                    {item.title}
+                  </span>
+                  <div
+                    role="group"
+                    aria-labelledby={`mobile-${item.title.toLowerCase().replace(/\s+/g, '-')}-label`}
+                    className="ml-4 flex flex-col gap-1 mt-1"
+                  >
                     {item.items.map((sub) => (
-                      <a key={sub.title} href={sub.href} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1">
+                      <a
+                        key={sub.title}
+                        href={sub.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        role="menuitem"
+                        className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1"
+                      >
                         {sub.title}
                       </a>
                     ))}
                   </div>
                 </div>
               ) : item.href.startsWith('http') ? (
-                <a key={item.title} href={item.href} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1">
+                <a
+                  key={item.title}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  role="menuitem"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1"
+                >
                   {item.title}
                 </a>
               ) : (
-                <Link key={item.title} href={item.href} className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1" onClick={() => setMobileOpen(false)}>
+                <Link
+                  key={item.title}
+                  href={item.href}
+                  role="menuitem"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1"
+                  onClick={() => setMobileOpen(false)}
+                >
                   {item.title}
                 </Link>
               )
