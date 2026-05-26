@@ -69,6 +69,41 @@ const nextConfig = {
         source: '/api/central-alerts/:path*',
         destination: 'https://api.fossbilling.net/central-alerts/v1/:path*',
         permanent: true
+      },
+      {
+        source: '/public/img/wordmark-black.png',
+        destination: 'https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-black_text.png',
+        permanent: true
+      },
+      {
+        source: '/public/img/wordmark-white.png',
+        destination: 'https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-white_text.png',
+        permanent: true
+      },
+      {
+        source: '/public/img/logo-black.png',
+        destination: 'https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-black_text.png',
+        permanent: true
+      },
+      {
+        source: '/public/img/logo.png',
+        destination: 'https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-on-white.png',
+        permanent: true
+      },
+      {
+        source: '/public/logo.png',
+        destination: 'https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-on-white.png',
+        permanent: true
+      },
+      {
+        source: '/public/img/logo-black.svg',
+        destination: '/public/assets/img/logo.svg',
+        permanent: true
+      },
+      {
+        source: '/public/img/logo-white.svg',
+        destination: '/public/assets/img/logo_white.svg',
+        permanent: true
       }
     ]
   }
