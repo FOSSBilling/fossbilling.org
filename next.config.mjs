@@ -80,27 +80,27 @@ const nextConfig = {
       },
       {
         source: '/docs/contribution-handbook/:slug*',
-        destination: '/docs/developing-fossbilling/:slug*',
+        destination: 'https://docs.fossbilling.org/extensions-and-development/:slug*',
         permanent: true
       },
       {
         source: '/docs/getting-started/apache',
-        destination: '/docs/getting-started/installation',
+        destination: 'https://docs.fossbilling.org/getting-started/installation/',
         permanent: true
       },
       {
         source: '/docs/getting-started/shared',
-        destination: '/docs/getting-started/installation',
+        destination: 'https://docs.fossbilling.org/getting-started/installation/',
         permanent: true
       },
       {
         source: '/docs/getting-started/nginx',
-        destination: '/docs/getting-started/installation',
+        destination: 'https://docs.fossbilling.org/getting-started/installation/',
         permanent: true
       },
       {
         source: '/docs/getting-started/softaculous',
-        destination: '/docs/getting-started/installation',
+        destination: 'https://docs.fossbilling.org/getting-started/installation/',
         permanent: true
       }
     ]

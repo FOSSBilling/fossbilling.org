@@ -15,13 +15,7 @@ export default {
   },
   "documentation": {
     "title": "Documentation",
-    "href": "/docs",
-    "type": "page"
-  },
-  "docs": {
-    "title": "Documentation",
-    "type": "doc",
-    "display": "children"
+    "href": "https://docs.fossbilling.org/",
   },
   "downloads": {
     "title": "Downloads",

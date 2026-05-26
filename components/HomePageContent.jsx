@@ -92,8 +92,8 @@ export function HomePageContent() {
           animate={heroAnimate}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
         >
-          <Link href="/docs">
-            <Button text="Get started" />
+          <Link href="https://docs.fossbilling.org/getting-started/">
+            <Button text="Get Started" />
           </Link>
           <Link href="/downloads">
             <Button text="Download FOSSBilling" />
@@ -104,7 +104,7 @@ export function HomePageContent() {
           animate={{ opacity: 1 }}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.3 }}
         >
-          <Link href="/docs/getting-started">
+          <Link href="https://docs.fossbilling.org/getting-started/installation/">
             <span className="text-blue-700 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-400 hover:underline hover:underline-offset-2">
               Installation instructions
             </span>
@@ -128,37 +128,37 @@ export function HomePageContent() {
               icon={faFileInvoiceDollar}
               title="Automated Billing"
               description="Generate invoices automatically, send payment reminders, and support multiple currencies with automatic exchange rate syncing."
-              href="/docs/faq/features#currency-support"
+              href="https://docs.fossbilling.org/support/features/#currency-support"
             />
             <FeatureCard
               icon={faServer}
               title="Hosting Provisioning"
               description="Automatically provision hosting accounts on cPanel, Plesk, DirectAdmin, HestiaCP, and more control panels."
-              href="/docs/product-types/hosting"
+              href="https://docs.fossbilling.org/admin-guide/product-types/hosting/"
             />
             <FeatureCard
               icon={faGlobe}
               title="Domain Management"
               description="Register, transfer, and manage domains with support for multiple registrars and experimental support for EPP-based registries."
-              href="/docs/product-types/domains"
+              href="https://docs.fossbilling.org/admin-guide/product-types/domains/"
             />
             <FeatureCard
               icon={faHeadset}
               title="Support Ticketing"
               description="Built-in helpdesk with email notifications, automatic ticket closure, and support for both clients and guests."
-              href="/docs/faq/features#ticketing--helpdesk"
+              href="https://docs.fossbilling.org/support/features/#tickets--helpdesk"
             />
             <FeatureCard
               icon={faPuzzlePiece}
               title="Extensible Architecture"
               description="Install themes, modules, payment gateways, server managers, and domain registrars from the extension directory."
-              href="/docs/extensions"
+              href="https://docs.fossbilling.org/extensions-and-development/extensions/"
             />
             <FeatureCard
               icon={faShieldHalved}
               title="Security First"
               description="IP blocking, reCAPTCHA, spam protection, CSRF prevention, and activity logging to keep your business safe."
-              href="/docs/security/best-practices"
+              href="https://docs.fossbilling.org/security/best-practices/"
             />
           </div>
         </div>
