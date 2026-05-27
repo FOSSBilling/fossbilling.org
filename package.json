@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind",
     "start": "next start",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
@@ -18,16 +17,12 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-brands-svg-icons": "^7.0.0",
-    "@fortawesome/free-regular-svg-icons": "^7.0.0",
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^3.0.0",
     "@opennextjs/cloudflare": "^1.14.8",
-    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "motion": "^12.24.7",
     "next": "16.2.6",
-    "nextra": "^4.6.1",
-    "nextra-theme-docs": "^4.6.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -36,14 +31,8 @@
     "@types/node": "24.12.4",
     "@types/react": "19.2.14",
     "autoprefixer": "^10.4.16",
-    "pagefind": "^1.0.4",
     "postcss": "^8.4.31",
     "tailwindcss": "^4.1.8",
     "typescript": "6.0.3"
-  },
-  "overrides": {
-    "mermaid": {
-      "uuid": "^14.0.0"
-    }
   }
 }

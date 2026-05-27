@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@variant dark (&:where(.dark, .dark *));
 
 :root {
   --features-bg-color: #f3f4f6;
@@ -36,13 +37,13 @@
 }
 
 .logo {
-  background-image: url('/assets/img/logo.svg');
+  background-image: url('/img/logo.svg');
   height: 34.5px;
   width: 161.5px;
 }
 
 .dark .logo {
-  background-image: url('/assets/img/logo_white.svg');
+  background-image: url('/img/logo_white.svg');
   height: 34.5px;
   width: 161.5px;
 }
@@ -87,9 +88,9 @@ body {
 }
 
 .home-content a {
-  --tw-ring-color: hsl(var(--nextra-primary-hue) 100% 50%/0.3);
+  --tw-ring-color: rgb(37 99 235 / 0.3);
   --tw-text-opacity: 1;
-  color: hsl(var(--nextra-primary-hue) 100% 50% / var(--tw-text-opacity));
+  color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 
 code.text-\[\.9em\] {
@@ -503,6 +504,8 @@ code.text-\[\.9em\] {
   text-align: center;
   background: #fff;
   border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.75rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 

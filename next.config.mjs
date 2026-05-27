@@ -1,13 +1,9 @@
-import nextra from 'nextra'
-
-const withNextra = nextra({
-  latex: true
-})
+const isDev = process.env.NODE_ENV === 'development'
 
 const securityHeaders = [
   {
     key: 'Content-Security-Policy',
-    value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'"
+    value: `default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://api.github.com https://api.fossbilling.net`
   },
   {
     key: 'Referrer-Policy',
@@ -29,10 +25,6 @@ const securityHeaders = [
 
 const nextConfig = {
   reactStrictMode: true,
-  // Use webpack instead of turbopack for now due to MDX import issues
-  experimental: {
-    webpackBuildWorker: true
-  },
   async headers() {
     return [
       {
@@ -79,35 +71,45 @@ const nextConfig = {
         permanent: true
       },
       {
-        source: '/docs/contribution-handbook/:slug*',
-        destination: '/docs/developing-fossbilling/:slug*',
+        source: '/public/img/wordmark-black.png',
+        destination: 'https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-black_text.png',
         permanent: true
       },
       {
-        source: '/docs/getting-started/apache',
-        destination: '/docs/getting-started/installation',
+        source: '/public/img/wordmark-white.png',
+        destination: 'https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-white_text.png',
         permanent: true
       },
       {
-        source: '/docs/getting-started/shared',
-        destination: '/docs/getting-started/installation',
+        source: '/public/img/logo-black.png',
+        destination: 'https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-black_text.png',
         permanent: true
       },
       {
-        source: '/docs/getting-started/nginx',
-        destination: '/docs/getting-started/installation',
+        source: '/public/img/logo.png',
+        destination: 'https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-on-white.png',
         permanent: true
       },
       {
-        source: '/docs/getting-started/softaculous',
-        destination: '/docs/getting-started/installation',
+        source: '/public/logo.png',
+        destination: 'https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-on-white.png',
+        permanent: true
+      },
+      {
+        source: '/public/img/logo-black.svg',
+        destination: '/public/img/logo.svg',
+        permanent: true
+      },
+      {
+        source: '/public/img/gh-download-button.png',
+        destination: '/public/img/gh/download-button.png',
         permanent: true
       }
     ]
   }
 }
 
-export default withNextra(nextConfig)
+export default nextConfig
 
 if (process.env.NODE_ENV === 'development') {
   import('@opennextjs/cloudflare')
