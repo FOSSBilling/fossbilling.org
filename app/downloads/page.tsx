@@ -6,6 +6,8 @@ import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 import { DownloadCards } from '../../components/DownloadCards'
 import { Callout } from '../../components/Callout'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Downloads'
 }
