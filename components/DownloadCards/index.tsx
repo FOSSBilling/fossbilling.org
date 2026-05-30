@@ -21,8 +21,6 @@ const allowedDownloadHosts = new Set([
   'download.fossbilling.org'
 ])
 
-const RELEASE_CACHE_TTL_SECONDS = 60 * 60
-
 function isValidDownloadUrl(url: string): boolean {
   try {
     const parsedUrl = new URL(url)
@@ -66,9 +64,7 @@ function isApiResponse(value: unknown): value is ApiResponse {
 
 async function getLatestStableRelease(): Promise<{ release: Release | null; error: Error | null }> {
   try {
-    const response = await fetch('https://api.fossbilling.net/versions/v1', {
-      next: { revalidate: RELEASE_CACHE_TTL_SECONDS } // Cache for 1 hour
-    })
+    const response = await fetch('https://api.fossbilling.net/versions/v1')
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
