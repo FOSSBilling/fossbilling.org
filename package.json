@@ -29,7 +29,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.8",
     "@types/node": "24.12.4",
-    "@types/react": "19.2.16",
+    "@types/react": "19.2.17",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "tailwindcss": "^4.1.8",
