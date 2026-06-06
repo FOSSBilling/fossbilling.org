@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-const RELEASE_VERSION = '0.8.1'
+const RELEASE_VERSION = '0.8.2'
 
 export default function Banner() {
   const [hidden, setHidden] = useState(false)
