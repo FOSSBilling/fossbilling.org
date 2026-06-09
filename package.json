@@ -1,6 +1,5 @@
 {
   "name": "fossbilling.org",
-  "version": "1.0.0",
   "description": "Official website for FOSSBilling",
   "scripts": {
     "dev": "next dev",
