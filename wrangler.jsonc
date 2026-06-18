@@ -34,5 +34,5 @@
       "binding": "WORKER_SELF_REFERENCE",
       "service": "fossbilling-org-worker"
     }
-  ],
+  ]
 }
