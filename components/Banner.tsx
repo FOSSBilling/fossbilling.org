@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-const RELEASE_VERSION = '0.8.2'
+const RELEASE_VERSION = '0.8.3'
 
 export default function Banner() {
   const [hidden, setHidden] = useState(false)
@@ -19,7 +19,7 @@ export default function Banner() {
 
   return (
     <div className="z-40 bg-black text-white text-center text-sm py-2 px-4">
-      FOSSBilling {RELEASE_VERSION} is released!{' '}
+      FOSSBilling {RELEASE_VERSION} is now available!{' '}
       <a
         href="https://github.com/FOSSBilling/FOSSBilling/releases/latest"
         target="_blank"
