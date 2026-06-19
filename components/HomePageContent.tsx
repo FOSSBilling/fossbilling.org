@@ -106,7 +106,7 @@ export function HomePageContent() {
         >
           <Link href="https://docs.fossbilling.org/getting-started/installation/">
             <span className="text-blue-700 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-400 hover:underline hover:underline-offset-2">
-              Installation instructions
+              Installation Instructions
             </span>
           </Link>
         </motion.div>

@@ -15,7 +15,7 @@ export default function DemoPage() {
         <h1 className="headline">Try FOSSBilling</h1>
         <p className="subtitle mt-4">Explore the admin panel and client area without installing anything.</p>
 
-        <Callout type="info" title="Demo environment">
+        <Callout type="info" title="Demo Environment">
           The demo resets periodically. Any changes you make will be temporary.
         </Callout>
       </div>
