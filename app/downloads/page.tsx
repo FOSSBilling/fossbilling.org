@@ -19,7 +19,7 @@ export default function DownloadsPage() {
         <h1 className="headline">Downloads</h1>
         <p className="mt-2 subtitle">Download the latest version of FOSSBilling and start managing your hosting business.</p>
 
-        <Callout type="warning" title="Before you install">
+        <Callout type="warning" title="Before You Install">
           <ul className="list-disc ml-4 space-y-1">
             <li>FOSSBilling is currently <strong>pre-production software</strong></li>
             <li>Always read the <a href="https://github.com/FOSSBilling/FOSSBilling/releases">release notes</a> before updating</li>
