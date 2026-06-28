@@ -75,7 +75,7 @@ export function HomePageContent() {
           animate={heroAnimate}
           transition={heroTransition}
         >
-          Free and open source<br className='sm:block hidden'/>hosting automation.
+          Free and open source<br className='sm:block hidden'/> hosting automation.
         </motion.h1>
         <motion.p
           className="subtitle mt-6"
@@ -83,7 +83,7 @@ export function HomePageContent() {
           animate={heroAnimate}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
         >
-          Empower your hosting business with FOSSBilling,<br className='sm:block hidden'/>
+          Empower your hosting business with FOSSBilling,<br className='sm:block hidden'/> 
           the free and open-source solution for efficient billing and client management.
         </motion.p>
         <motion.div
