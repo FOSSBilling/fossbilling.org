@@ -75,7 +75,7 @@ export function HomePageContent() {
           animate={heroAnimate}
           transition={heroTransition}
         >
-          Free and open source<br className='sm:block hidden'/>hosting automation.
+          Free and open source<br className='sm:block hidden'/> hosting automation.
         </motion.h1>
         <motion.p
           className="subtitle mt-6"
