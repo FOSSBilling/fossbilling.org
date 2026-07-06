@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 reviews:
-  profile: "assertive"
+  profile: "chill"
   request_changes_workflow: true
   review_status: true
   estimate_code_review_effort: false
