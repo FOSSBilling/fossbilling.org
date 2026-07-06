@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+reviews:
+  profile: "chill"
+  request_changes_workflow: true
+  review_status: true
+  estimate_code_review_effort: false
+  in_progress_fortune: false
+  poem: false
+  high_level_summary_in_walkthrough: true
+  slop_detection:
+    enabled: true
+    label: slop
+  auto_review:
+    enabled: true
+    auto_incremental_review: false
+    labels:
+      - "!do-not-auto-review"
+    ignore_title_keywords:
+      - "[WIP]"
+      - "[Draft]"
+    ignore_usernames:
+      - "renovate[bot]"
+      - "dependabot[bot]"
+      - "github-code-quality[bot]"
+      - "github-advanced-security[bot]"
+      - "github-actions[bot]"
+  finishing_touches:
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+
+chat:
+  art: false
+  allow_non_org_members: false
+  auto_reply: false
+
+knowledge_base:
+  automatic_repository_linking: true
