@@ -8,6 +8,7 @@ reviews:
   poem: false
   high_level_summary_in_walkthrough: true
   slop_detection:
+    enabled: true
     label: slop
   auto_review:
     enabled: true
