@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://cubic.dev/schema/cubic-repository-config.schema.json
+
+# cubic.yaml
+# This file configures AI review behavior, ignore patterns, PR descriptions, and custom rules.
+# Place this file in your repository root to version-control your AI review settings.
+# Settings defined here take precedence over UI-configured settings.
+# See https://docs.cubic.dev/configure/cubic-yaml for documentation.
+
+version: 1
+reviews:
+  enabled: true
+  sensitivity: high
+  incremental_commits: true
+  check_drafts: false
+  architecture_diagrams: false
+  external_contributors_require_manual_review: true
+  resolve_threads_when_addressed: true
+  auto_approve_behavior: live
+  auto_approve: low_risk_only
+  auto_approve_rules:
+    exclude_external_contributors: true
+  auto_ultrareview: disabled
+  ignore:
+    head_branches:
+      - renovate/*
+      - dependabot/*
+    pr_labels:
+      - do-not-auto-review
+    pr_titles:
+      - "Draft*"
+      - "WIP*"
+pr_descriptions:
+  generate: true
+  cubic_review_link: false
+  skip_if_author_description: true
+issues:
+  fix_with_cubic_buttons: true
+  pr_comment_fixes: true
+  fix_commits_to_pr: true
+  auto_fix_sign_commits: true
+  coding_agent_provider: cubic
