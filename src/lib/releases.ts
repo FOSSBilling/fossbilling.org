@@ -130,6 +130,11 @@ export async function getGitHubStarCount(
         cf: {
           cacheTtl: 300,
           cacheEverything: true,
+          cacheTtlByStatus: {
+            '200-299': 300,
+            '500-599': 0,
+            429: 0,
+          },
         },
       },
     );
