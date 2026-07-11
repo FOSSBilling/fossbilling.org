@@ -30,11 +30,11 @@ This command starts a local development server at `http://localhost:4321`. Most 
 - `npm run format`: format source with Prettier
 - `npm run format:check`: verify formatting without writing
 - `npm run cf-typegen`: generate Cloudflare env types in `worker-configuration.d.ts`
-- `npm run cf-deploy`: deploy to Cloudflare Workers (requires Wrangler auth)
+- `npm run deploy`: deploy to Cloudflare Workers (requires Wrangler auth)
 
 ## Deployment Notes
 
-The site is built by Astro into `dist/` and deployed to Cloudflare Workers using Wrangler. Redirects and security headers are configured via `public/_redirects` and `public/_headers`, which are served as static assets. Use `npm run cf-deploy` after configuring Wrangler for your Cloudflare account.
+The site is built by Astro into `dist/` and deployed to Cloudflare Workers using Wrangler. Redirects and security headers are configured via `public/_redirects` and `public/_headers`, which are served as static assets. Use `npm run deploy` after configuring Wrangler for your Cloudflare account.
 
 ## Licensing
 
