@@ -1,13 +1,9 @@
 ---
 import { Star } from '@lucide/astro';
+import { env } from 'cloudflare:workers';
 import { getGitHubStarCount, formatCompactNumber } from '@/lib/releases';
 
-interface Runtime {
-  env?: Record<string, string | undefined>;
-}
-
-const runtime = (Astro.locals as { runtime?: Runtime }).runtime;
-const githubToken = runtime?.env?.GITHUB_TOKEN;
+const githubToken = env.GITHUB_TOKEN;
 const stars = await getGitHubStarCount(githubToken);
 ---
 
