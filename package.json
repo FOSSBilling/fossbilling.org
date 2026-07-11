@@ -6,8 +6,8 @@
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "cf-typegen": "wrangler types",
-    "cf-deploy": "wrangler deploy",
-    "upload": "wrangler deploy",
+    "deploy": "wrangler deploy",
+    "upload": "wrangler versions upload",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
