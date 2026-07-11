@@ -126,6 +126,11 @@ export async function getGitHubStarCount(
       'https://api.github.com/repos/FOSSBilling/FOSSBilling',
       {
         headers,
+        signal: AbortSignal.timeout(5000),
+        cf: {
+          cacheTtl: 300,
+          cacheEverything: true,
+        },
       },
     );
 
