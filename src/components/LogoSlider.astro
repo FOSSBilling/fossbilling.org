@@ -15,7 +15,7 @@ const logos = [
 <div class="logo-slider relative overflow-hidden py-8">
   <div class="marquee-track flex whitespace-nowrap">
     {
-      [...logos, ...logos, ...logos].map((logo) => (
+      logos.map((logo) => (
         <div
           class="mx-8 flex items-center justify-center"
           style="height: 32px; min-width: 150px;"
@@ -23,6 +23,22 @@ const logos = [
           <img
             src={logo.src}
             alt={logo.name}
+            class="logo-img transition-all duration-300"
+            style="height: 100%; width: auto; object-fit: contain;"
+          />
+        </div>
+      ))
+    }
+    {
+      [...logos, ...logos].map((logo) => (
+        <div
+          class="mx-8 flex items-center justify-center"
+          style="height: 32px; min-width: 150px;"
+          aria-hidden="true"
+        >
+          <img
+            src={logo.src}
+            alt=""
             class="logo-img transition-all duration-300"
             style="height: 100%; width: auto; object-fit: contain;"
           />

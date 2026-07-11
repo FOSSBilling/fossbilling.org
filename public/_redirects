@@ -7,12 +7,12 @@
 /downloads/stable https://github.com/FOSSBilling/FOSSBilling/releases/latest/download/FOSSBilling.zip 301
 /downloads/preview https://download.fossbilling.org/FOSSBilling-preview.zip 301
 
-/api/central-alerts/* https://api.fossbilling.net/central-alerts/v1/:splat 301
+/api/central-alerts/* https://api.fossbilling.net/central-alerts/v1/:splat 308
 
 /public/img/wordmark-black.png https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-black_text.png 301
 /public/img/wordmark-white.png https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-white_text.png 301
 /public/img/logo-black.png https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-black_text.png 301
 /public/img/logo.png https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-on-white.png 301
 /public/logo.png https://raw.githubusercontent.com/FOSSBilling/branding/refs/heads/main/logo-png/fossb_logo-on-white.png 301
-/public/img/logo-black.svg /public/img/logo.svg 301
-/public/img/gh-download-button.png /public/img/gh/download-button.png 301
+/public/img/logo-black.svg /img/logo.svg 301
+/public/img/gh-download-button.png /img/gh/download-button.png 301

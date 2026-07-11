@@ -94,37 +94,45 @@ const cards: DemoCardData[] = [
   document
     .querySelectorAll<HTMLButtonElement>('.demo-copy-button')
     .forEach((btn) => {
+      const originalIcon = btn.querySelector('svg');
+      if (!originalIcon) return;
+
+      const checkIcon = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'svg',
+      );
+      checkIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      checkIcon.setAttribute('width', '24');
+      checkIcon.setAttribute('height', '24');
+      checkIcon.setAttribute('viewBox', '0 0 24 24');
+      checkIcon.setAttribute('fill', 'none');
+      checkIcon.setAttribute('stroke', 'currentColor');
+      checkIcon.setAttribute('stroke-width', '2');
+      checkIcon.setAttribute('stroke-linecap', 'round');
+      checkIcon.setAttribute('stroke-linejoin', 'round');
+      const path = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'polyline',
+      );
+      path.setAttribute('points', '20 6 9 17 4 12');
+      checkIcon.appendChild(path);
+
+      let resetTimeout: ReturnType<typeof setTimeout> | undefined;
+
       btn.addEventListener('click', async () => {
         const text = btn.dataset.copy;
         if (!text) return;
         try {
           await navigator.clipboard.writeText(text);
-          const icon = btn.querySelector('svg');
-          if (icon) {
-            const next = document.createElementNS(
-              'http://www.w3.org/2000/svg',
-              'svg',
-            );
-            next.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-            next.setAttribute('width', '24');
-            next.setAttribute('height', '24');
-            next.setAttribute('viewBox', '0 0 24 24');
-            next.setAttribute('fill', 'none');
-            next.setAttribute('stroke', 'currentColor');
-            next.setAttribute('stroke-width', '2');
-            next.setAttribute('stroke-linecap', 'round');
-            next.setAttribute('stroke-linejoin', 'round');
-            const path = document.createElementNS(
-              'http://www.w3.org/2000/svg',
-              'polyline',
-            );
-            path.setAttribute('points', '20 6 9 17 4 12');
-            next.appendChild(path);
-            icon.replaceWith(next);
-            setTimeout(() => {
-              next.replaceWith(icon);
-            }, 2000);
+          if (resetTimeout) clearTimeout(resetTimeout);
+          const current = btn.querySelector('svg');
+          if (current && current !== checkIcon) {
+            current.replaceWith(checkIcon);
           }
+          resetTimeout = setTimeout(() => {
+            checkIcon.replaceWith(originalIcon);
+            resetTimeout = undefined;
+          }, 2000);
         } catch (e) {
           console.error('Failed to copy:', e);
         }

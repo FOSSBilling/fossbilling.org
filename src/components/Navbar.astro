@@ -266,6 +266,7 @@ const navItems = [
   </nav>
 
   <div
+    id="mobile-navigation-menu"
     class="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111111] hidden"
     data-mobile-menu
   >
@@ -380,6 +381,13 @@ const navItems = [
 
       document.addEventListener('click', (e) => {
         if (!wrapper.contains(e.target as Node)) setOpen(false);
+      });
+
+      wrapper.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+          setOpen(false);
+          toggle.focus();
+        }
       });
     });
 

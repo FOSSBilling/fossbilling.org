@@ -19,6 +19,8 @@ const classes = `${baseClasses} ${className}`;
       {text}
     </a>
   ) : (
-    <button class={classes}>{text}</button>
+    <button type="button" class={classes}>
+      {text}
+    </button>
   )
 }

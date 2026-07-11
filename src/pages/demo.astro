@@ -36,16 +36,16 @@ const features = [
 
         <div class="demo-features-section">
           <h3>What you can try</h3>
-          <div class="demo-features-grid">
+          <ul class="demo-features-grid">
             {
               features.map((feature) => (
-                <div class="demo-feature-item">
+                <li class="demo-feature-item">
                   <Check />
                   <span>{feature}</span>
-                </div>
+                </li>
               ))
             }
-          </div>
+          </ul>
         </div>
       </div>
     </div>

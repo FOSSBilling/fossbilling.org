@@ -1,12 +1,12 @@
 ---
 import { Star } from '@lucide/astro';
-import { env } from 'cloudflare:workers';
-import { getGitHubStarCount, formatCompactNumber } from '@/lib/releases';
+import { formatCompactNumber } from '@/lib/releases';
 
-const githubToken = (env as unknown as Record<string, string | undefined>)[
-  'GITHUB_TOKEN'
-];
-const stars = await getGitHubStarCount(githubToken);
+interface Props {
+  stars: number | null;
+}
+
+const { stars } = Astro.props;
 ---
 
 <a

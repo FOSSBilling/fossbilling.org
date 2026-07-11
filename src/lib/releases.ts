@@ -42,6 +42,7 @@ function isRelease(value: unknown): value is Release {
     typeof release.download_url === 'string' &&
     typeof release.size_bytes === 'number' &&
     Number.isFinite(release.size_bytes) &&
+    release.size_bytes >= 0 &&
     typeof release.is_prerelease === 'boolean' &&
     isValidDownloadUrl(release.download_url)
   );
@@ -66,7 +67,9 @@ export async function getLatestStableRelease(): Promise<{
   error: Error | null;
 }> {
   try {
-    const response = await fetch('https://api.fossbilling.net/versions/v1');
+    const response = await fetch('https://api.fossbilling.net/versions/v1', {
+      signal: AbortSignal.timeout(5000),
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
