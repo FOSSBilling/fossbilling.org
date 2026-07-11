@@ -15,7 +15,7 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
-.dev.vars*
+.dev.vars
 !.dev.vars.example
 
 # misc
