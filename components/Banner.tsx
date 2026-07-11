@@ -19,7 +19,7 @@ export default function Banner() {
 
   return (
     <div className="z-40 bg-black text-white text-center text-sm py-2 px-4">
-      FOSSBilling {RELEASE_VERSION} is now available!{' '}
+      <span className="font-semibold">FOSSBilling {RELEASE_VERSION} is now available!</span> We strongly recommend upgrading from older versions.{' '}
       <a
         href="https://github.com/FOSSBilling/FOSSBilling/releases/latest"
         target="_blank"
