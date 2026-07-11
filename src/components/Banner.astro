@@ -1,5 +1,5 @@
 ---
-const RELEASE_VERSION = '0.8.3';
+const RELEASE_VERSION = '0.8.4';
 const storageKey = `${RELEASE_VERSION}-release`;
 ---
 
@@ -8,7 +8,9 @@ const storageKey = `${RELEASE_VERSION}-release`;
   data-banner
   data-banner-key={storageKey}
 >
-  FOSSBilling {RELEASE_VERSION} is now available!{' '}
+  <span class="font-semibold"
+    >FOSSBilling {RELEASE_VERSION} is now available!</span
+  > We strongly recommend upgrading from older versions.{' '}
   <a
     href="https://github.com/FOSSBilling/FOSSBilling/releases/latest"
     target="_blank"
