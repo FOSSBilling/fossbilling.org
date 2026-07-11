@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "fossbilling-org-worker",
+  "name": "fossbilling-org",
   "compatibility_date": "2026-04-21",
   "compatibility_flags": [
     "nodejs_compat",
