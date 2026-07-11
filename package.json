@@ -3,7 +3,7 @@
   "description": "Official website for FOSSBilling",
   "type": "module",
   "author": "FOSSBilling",
-  "license": "Apache-2.0",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "cf-typegen": "wrangler types",
     "cf-deploy": "wrangler deploy",

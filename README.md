@@ -35,3 +35,13 @@ This command starts a local development server at `http://localhost:4321`. Most 
 ## Deployment Notes
 
 The site is built by Astro into `dist/` and deployed to Cloudflare Workers using Wrangler. Redirects and security headers are configured via `public/_redirects` and `public/_headers`, which are served as static assets. Use `npm run cf-deploy` after configuring Wrangler for your Cloudflare account.
+
+## Licensing
+
+Code, configuration, and build tooling in this repository are licensed under the GNU Affero General Public License v3.0 or later. See [LICENSE](./LICENSE).
+
+Website content is licensed under Creative Commons Attribution-ShareAlike 4.0 International. See [LICENSE-content](./LICENSE-content).
+
+Unless otherwise noted, the content license applies to the visible website text, graphics, and design assets.
+
+Logos, wordmarks, trademarks, and other brand assets are not licensed under CC BY-SA 4.0. Third-party marks remain subject to their respective owners' rights.
