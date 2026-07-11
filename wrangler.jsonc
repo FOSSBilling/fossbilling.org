@@ -27,8 +27,5 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS"
-  },
-  "vars": {
-    "GITHUB_TOKEN": ""
   }
 }
