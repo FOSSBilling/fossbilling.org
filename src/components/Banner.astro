@@ -28,29 +28,3 @@ const storageKey = `${RELEASE_VERSION}-release`;
     &times;
   </button>
 </div>
-
-<script>
-  document.querySelectorAll<HTMLElement>('[data-banner]').forEach((banner) => {
-    const key = banner.dataset.bannerKey;
-    if (key) {
-      try {
-        if (localStorage.getItem(key) === '1') {
-          banner.remove();
-          return;
-        }
-      } catch (_) {}
-    }
-
-    const dismiss = banner.querySelector<HTMLButtonElement>(
-      '[data-banner-dismiss]',
-    );
-    dismiss?.addEventListener('click', () => {
-      banner.remove();
-      if (key) {
-        try {
-          localStorage.setItem(key, '1');
-        } catch (_) {}
-      }
-    });
-  });
-</script>
