@@ -1,0 +1,133 @@
+---
+import { UserCog, User, Copy, ExternalLink } from '@lucide/astro';
+
+interface DemoCredentials {
+  email: string;
+  password: string;
+}
+
+interface DemoCardData {
+  type: 'admin' | 'client';
+  title: string;
+  description: string;
+  url: string;
+  credentials: DemoCredentials;
+}
+
+const cards: DemoCardData[] = [
+  {
+    type: 'admin',
+    title: 'Admin Panel',
+    description:
+      'Manage FOSSBilling, configure products, view orders, and handle support tickets.',
+    url: 'https://demo.fossbilling.org/admin',
+    credentials: { email: 'demo@fossbilling.org', password: 'Demo123!' },
+  },
+  {
+    type: 'client',
+    title: 'Client Area',
+    description:
+      'Experience the customer view: browse products, manage services, and submit support requests.',
+    url: 'https://demo.fossbilling.org',
+    credentials: { email: 'client@fossbilling.org', password: 'Demo123!' },
+  },
+];
+---
+
+<div class="demo-cards-grid">
+  {
+    cards.map((card) => (
+      <div class={`demo-card demo-card-${card.type}`}>
+        <div class="demo-card-header">
+          <div class="demo-card-icon">
+            {card.type === 'admin' ? <UserCog /> : <User />}
+          </div>
+          <h3>{card.title}</h3>
+        </div>
+
+        <p class="demo-card-description">{card.description}</p>
+
+        <div class="demo-credentials">
+          <div class="demo-credential-row">
+            <span class="demo-credential-label">Email</span>
+            <div class="demo-credential-value">
+              <code>{card.credentials.email}</code>
+              <button
+                class="demo-copy-button"
+                title="Copy to clipboard"
+                data-copy={card.credentials.email}
+              >
+                <Copy />
+              </button>
+            </div>
+          </div>
+          <div class="demo-credential-row">
+            <span class="demo-credential-label">Password</span>
+            <div class="demo-credential-value">
+              <code>{card.credentials.password}</code>
+              <button
+                class="demo-copy-button"
+                title="Copy to clipboard"
+                data-copy={card.credentials.password}
+              >
+                <Copy />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <a
+          href={card.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="demo-card-button"
+        >
+          Open {card.title}
+          <ExternalLink />
+        </a>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  document
+    .querySelectorAll<HTMLButtonElement>('.demo-copy-button')
+    .forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.dataset.copy;
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          const icon = btn.querySelector('svg');
+          if (icon) {
+            const next = document.createElementNS(
+              'http://www.w3.org/2000/svg',
+              'svg',
+            );
+            next.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            next.setAttribute('width', '24');
+            next.setAttribute('height', '24');
+            next.setAttribute('viewBox', '0 0 24 24');
+            next.setAttribute('fill', 'none');
+            next.setAttribute('stroke', 'currentColor');
+            next.setAttribute('stroke-width', '2');
+            next.setAttribute('stroke-linecap', 'round');
+            next.setAttribute('stroke-linejoin', 'round');
+            const path = document.createElementNS(
+              'http://www.w3.org/2000/svg',
+              'polyline',
+            );
+            path.setAttribute('points', '20 6 9 17 4 12');
+            next.appendChild(path);
+            icon.replaceWith(next);
+            setTimeout(() => {
+              next.replaceWith(icon);
+            }, 2000);
+          }
+        } catch (e) {
+          console.error('Failed to copy:', e);
+        }
+      });
+    });
+</script>

@@ -1,0 +1,91 @@
+---
+import { Download, Code, Calendar, HardDrive } from '@lucide/astro';
+import { formatDate, formatBytes } from '@/lib/format';
+import { getLatestStableRelease } from '@/lib/releases';
+
+Astro.response.headers.set(
+  'Cache-Control',
+  'public, max-age=0, s-maxage=300, stale-while-revalidate=86400',
+);
+
+const { release, error } = await getLatestStableRelease();
+---
+
+<div class="download-cards-grid">
+  <div class="download-card">
+    <div class="download-card-header">
+      <Download class="download-card-icon" />
+      <h3>Latest Release</h3>
+    </div>
+
+    <p class="download-card-description">
+      Recommended for regular use.<br />Keep in mind that FOSSBilling is
+      pre-production software.
+    </p>
+
+    {
+      error ? (
+        <div class="download-cards-error">
+          Failed to load version info.{' '}
+          <a href="https://github.com/FOSSBilling/FOSSBilling/releases">
+            View releases on GitHub
+          </a>
+        </div>
+      ) : release ? (
+        <>
+          <div class="download-card-version">v{release.version}</div>
+
+          <div class="download-card-meta">
+            <span>
+              <Calendar />
+              {formatDate(release.released_on)}
+            </span>
+            <span>
+              <HardDrive />
+              {formatBytes(release.size_bytes)}
+            </span>
+          </div>
+
+          <div class="download-card-php">
+            Requires PHP {release.minimum_php_version}+
+          </div>
+
+          <a href={release.download_url} class="download-card-button">
+            <Download />
+            Download v{release.version}
+          </a>
+        </>
+      ) : (
+        <div class="download-card-empty">
+          <a
+            href="https://github.com/FOSSBilling/FOSSBilling/releases"
+            class="download-card-button"
+          >
+            <Download />
+            View on GitHub
+          </a>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="download-card">
+    <div class="download-card-header">
+      <Code class="download-card-icon" />
+      <h3>Preview Build</h3>
+    </div>
+
+    <p class="download-card-description">
+      Latest development build from the main branch. May contain experimental
+      features and bugs.
+    </p>
+
+    <a
+      href="/downloads/preview"
+      class="download-card-button download-card-button-secondary"
+    >
+      <Code />
+      Download the latest preview
+    </a>
+  </div>
+</div>
