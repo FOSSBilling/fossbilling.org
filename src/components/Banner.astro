@@ -1,0 +1,56 @@
+---
+const RELEASE_VERSION = '0.8.4';
+const storageKey = `${RELEASE_VERSION}-release`;
+---
+
+<div
+  class="z-40 bg-black text-white text-center text-sm py-2 px-4"
+  data-banner
+  data-banner-key={storageKey}
+>
+  <span class="font-semibold"
+    >FOSSBilling {RELEASE_VERSION} is now available!</span
+  > We strongly recommend upgrading from older versions.{' '}
+  <a
+    href="https://github.com/FOSSBilling/FOSSBilling/releases/latest"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="underline hover:text-gray-300"
+  >
+    Read more &rarr;
+  </a>
+  <button
+    type="button"
+    data-banner-dismiss
+    class="ml-4 opacity-70 hover:opacity-100"
+    aria-label="Dismiss"
+  >
+    &times;
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-banner]').forEach((banner) => {
+    const key = banner.dataset.bannerKey;
+    if (key) {
+      try {
+        if (localStorage.getItem(key) === '1') {
+          banner.remove();
+          return;
+        }
+      } catch (_) {}
+    }
+
+    const dismiss = banner.querySelector<HTMLButtonElement>(
+      '[data-banner-dismiss]',
+    );
+    dismiss?.addEventListener('click', () => {
+      banner.remove();
+      if (key) {
+        try {
+          localStorage.setItem(key, '1');
+        } catch (_) {}
+      }
+    });
+  });
+</script>

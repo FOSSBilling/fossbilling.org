@@ -1,0 +1,3 @@
+# GitHub personal access token for the star count button (optional)
+# Without this, the GitHub API is used unauthenticated (lower rate limit)
+GITHUB_TOKEN=

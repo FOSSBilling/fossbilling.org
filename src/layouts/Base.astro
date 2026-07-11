@@ -1,0 +1,200 @@
+---
+import '@/styles/globals.css';
+import Navbar from '@/components/Navbar.astro';
+import Banner from '@/components/Banner.astro';
+import GitHubStarButton from '@/components/GitHubStarButton.astro';
+import { env } from 'cloudflare:workers';
+import { getGitHubStarCount } from '@/lib/releases';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Empower your hosting business with FOSSBilling, the free and open-source solution for efficient billing and client management.',
+} = Astro.props;
+
+const year = new Date().getFullYear();
+const fullTitle =
+  title === 'FOSSBilling' ? 'FOSSBilling' : `${title} | FOSSBilling`;
+
+const githubToken = (env as unknown as Record<string, string | undefined>)[
+  'GITHUB_TOKEN'
+];
+const stars = await getGitHubStarCount(githubToken);
+
+const nonce = (Astro.locals as unknown as Record<string, unknown>)
+  .nonce as string;
+---
+
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Language" content="en" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:domain" content="fossbilling.org" />
+    <meta name="twitter:url" content="https://fossbilling.org" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <script is:inline nonce={nonce}>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (
+            t === 'dark' ||
+            (!t && window.matchMedia('(prefers-color-scheme:dark)').matches)
+          ) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body
+    class="min-h-screen bg-white dark:bg-[#111111] text-gray-900 dark:text-gray-100 antialiased"
+  >
+    <div class="sticky top-0 z-30">
+      <Banner />
+      <Navbar>
+        <GitHubStarButton slot="desktop-extras" stars={stars} />
+        <GitHubStarButton slot="mobile-extras" stars={stars} />
+      </Navbar>
+    </div>
+    <main><slot /></main>
+    <footer class="border-t border-gray-200 dark:border-gray-800 py-8">
+      <div class="content-container">
+        <div class="mb-2">
+          <a
+            href="mailto:hello@fossbilling.org"
+            class="hover:text-gray-500 dark:hover:text-gray-300"
+            >hello@fossbilling.org</a
+          >
+        </div>
+        <div class="mb-6">
+          <a
+            href="/discord"
+            class="hover:text-gray-500 dark:hover:text-gray-300 mr-4"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Discord"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="inline"
+            >
+              <path
+                d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            href="https://fosstodon.org/@fossbilling"
+            class="hover:text-gray-500 dark:hover:text-gray-300 mr-4"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Mastodon"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="inline"
+            >
+              <path
+                d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.107-3.63-.014-5.551zM19.55 14.803h-2.049V9.705c0-1.083-.448-1.614-1.346-1.614-.992 0-1.489.642-1.489 1.908v2.767H12.63v-2.767c0-1.266-.497-1.908-1.49-1.908-.897 0-1.345.531-1.345 1.614v5.098H7.747V9.56c0-1.082.276-1.942.829-2.58.569-.638 1.314-.964 2.24-.964 1.072 0 1.882.412 2.418 1.236l.52.87.518-.87c.537-.824 1.347-1.236 2.42-1.236.924 0 1.67.326 2.24.964.553.638.828 1.498.828 2.58v5.243z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            href="https://twitter.com/FOSSBilling"
+            class="hover:text-gray-500 dark:hover:text-gray-300 mr-4"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="X (Twitter)"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="inline"
+            >
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            href="https://status.fossbilling.org/"
+            class="hover:text-gray-500 dark:hover:text-gray-300 mr-4"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Status page"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="inline"
+            >
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+              <line x1="6" y1="6" x2="6.01" y2="6"></line>
+              <line x1="6" y1="18" x2="6.01" y2="18"></line>
+            </svg>
+          </a>
+        </div>
+        <p class="mt-6 text-xs text-gray-500 dark:text-gray-400">
+          &copy; {year}, The FOSSBilling project. Code licensed under the{' '}
+          <a
+            href="https://github.com/FOSSBilling/fossbilling.org/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener noreferrer">AGPL 3.0</a
+          >. Content licensed under{' '}
+          <a
+            href="https://github.com/FOSSBilling/fossbilling.org/blob/main/LICENSE-content"
+            target="_blank"
+            rel="noopener noreferrer">CC BY-SA 4.0</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      const revealEls = document.querySelectorAll('.reveal');
+      if (
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        'IntersectionObserver' in window
+      ) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: '0px 0px -50px 0px' },
+        );
+        revealEls.forEach((el) => observer.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>

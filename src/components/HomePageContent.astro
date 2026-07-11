@@ -1,0 +1,279 @@
+---
+import {
+  Receipt,
+  Server,
+  Globe,
+  Headset,
+  Puzzle,
+  ShieldCheck,
+  Code,
+  Heart,
+  ArrowRight,
+  Lock,
+  Users,
+  Languages,
+} from '@lucide/astro';
+import LogoSlider from './LogoSlider.astro';
+import Button from './Button.astro';
+import Reveal from './Reveal.astro';
+
+interface FeatureCardData {
+  icon: typeof Server;
+  title: string;
+  description: string;
+  href?: string;
+}
+
+const features: FeatureCardData[] = [
+  {
+    icon: Receipt,
+    title: 'Automated Billing',
+    description:
+      'Generate invoices automatically, send payment reminders, and support multiple currencies with automatic exchange rate syncing.',
+    href: 'https://docs.fossbilling.org/support/features/#currency-support',
+  },
+  {
+    icon: Server,
+    title: 'Hosting Provisioning',
+    description:
+      'Automatically provision hosting accounts on cPanel, Plesk, DirectAdmin, HestiaCP, and more control panels.',
+    href: 'https://docs.fossbilling.org/admin-guide/product-types/hosting/',
+  },
+  {
+    icon: Globe,
+    title: 'Domain Management',
+    description:
+      'Register, transfer, and manage domains with support for multiple registrars and experimental support for EPP-based registries.',
+    href: 'https://docs.fossbilling.org/admin-guide/product-types/domains/',
+  },
+  {
+    icon: Headset,
+    title: 'Support Ticketing',
+    description:
+      'Built-in helpdesk with email notifications, automatic ticket closure, and support for both clients and guests.',
+    href: 'https://docs.fossbilling.org/support/features/#tickets--helpdesk',
+  },
+  {
+    icon: Puzzle,
+    title: 'Extensible Architecture',
+    description:
+      'Install themes, modules, payment gateways, server managers, and domain registrars from the extension directory.',
+    href: 'https://docs.fossbilling.org/extensions-and-development/extensions/',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Security First',
+    description:
+      'IP blocking, reCAPTCHA, spam protection, CSRF prevention, and activity logging to keep your business safe.',
+    href: 'https://docs.fossbilling.org/security/best-practices/',
+  },
+];
+
+const pillars = [
+  {
+    icon: Code,
+    title: '100% Open Source',
+    description:
+      'Licensed under AGPL 3.0. Audit the code, contribute features, or fork it for your needs. No encoded files, no secrets.',
+  },
+  {
+    icon: Lock,
+    title: 'Self-Hosted',
+    description:
+      'Your data stays on your server. Full control over your infrastructure, backups, and security policies.',
+  },
+  {
+    icon: Users,
+    title: 'Community Driven',
+    description:
+      'Active development with contributions from developers worldwide. Join our Discord server to get involved.',
+  },
+];
+
+const community = [
+  {
+    label: 'GitHub',
+    href: 'https://github.com/FOSSBilling/FOSSBilling',
+    description: 'Star the repo, report issues, or contribute code',
+    brand: 'github',
+  },
+  {
+    label: 'Discord',
+    href: '/discord',
+    description: 'Chat with the community and get real-time help',
+    brand: 'discord',
+  },
+  {
+    icon: Languages,
+    label: 'Translate FOSSBilling',
+    href: 'https://translate.fossbilling.org',
+    description: 'Translate FOSSBilling to your language',
+  },
+  {
+    icon: Heart,
+    label: 'Donate',
+    href: 'https://opencollective.com/fossbilling',
+    description: 'Support the project financially',
+  },
+];
+---
+
+<div class="home-content">
+  {/* Hero Section */}
+  <div class="content-container hero-section">
+    <h1 class="headline reveal">
+      Free and open source<br class="sm:block hidden" /> hosting automation.
+    </h1>
+    <p class="subtitle mt-6 reveal">
+      Empower your hosting business with FOSSBilling,<br
+        class="sm:block hidden"
+      />
+      the free and open-source solution for efficient billing and client management.
+    </p>
+    <div class="hero-buttons reveal">
+      <Button
+        text="Get Started"
+        href="https://docs.fossbilling.org/getting-started/"
+      />
+      <Button text="Download FOSSBilling" href="/downloads" />
+    </div>
+    <div class="reveal">
+      <a href="https://docs.fossbilling.org/getting-started/installation/">
+        <span
+          class="text-blue-700 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-400 hover:underline hover:underline-offset-2"
+        >
+          Installation Instructions
+        </span>
+      </a>
+    </div>
+  </div>
+
+  {/* Integrations Section */}
+  <div class="features-container">
+    <LogoSlider />
+
+    {/* Feature Cards Grid */}
+    <div class="content-container">
+      <Reveal class="section-header">
+        <h2>Everything you need to run your hosting business</h2>
+        <p>
+          FOSSBilling provides all the tools you need to manage clients,
+          automate billing, and provision services.
+        </p>
+      </Reveal>
+
+      <div class="feature-cards-grid">
+        {
+          features.map((feature) => {
+            const card = (
+              <div class="feature-card group reveal">
+                <div class="feature-card-icon">
+                  <feature.icon />
+                </div>
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
+                {feature.href && (
+                  <span class="feature-card-link">
+                    Learn more <ArrowRight class="arrow" />
+                  </span>
+                )}
+              </div>
+            );
+            return feature.href ? <a href={feature.href}>{card}</a> : card;
+          })
+        }
+      </div>
+    </div>
+
+    {/* Why FOSSBilling Section */}
+    <div class="content-container why-section">
+      <Reveal class="section-header">
+        <h2>Why choose FOSSBilling?</h2>
+        <p>
+          Built by the community, for the community. No hidden costs, no vendor
+          lock-in.
+        </p>
+      </Reveal>
+
+      <div class="pillars-grid">
+        {
+          pillars.map((pillar) => (
+            <Reveal class="pillar-card">
+              <div class="pillar-icon">
+                <pillar.icon />
+              </div>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.description}</p>
+            </Reveal>
+          ))
+        }
+      </div>
+    </div>
+
+    {/* CTA Section */}
+    <div class="content-container cta-section">
+      <Reveal class="cta-content">
+        <h2>Ready to get started?</h2>
+        <p>
+          Download FOSSBilling today and start managing your hosting business
+          with confidence.
+        </p>
+        <div class="cta-buttons">
+          <Button text="Download FOSSBilling" href="/downloads" />
+          <a href="/demo">
+            <span class="cta-secondary">
+              Try the demo <ArrowRight class="ml-2" />
+            </span>
+          </a>
+        </div>
+      </Reveal>
+    </div>
+
+    {/* Community Section */}
+    <div class="content-container community-section">
+      <Reveal class="section-header">
+        <h2>Join the community</h2>
+        <p>Get help, share ideas, and contribute to FOSSBilling.</p>
+      </Reveal>
+
+      <div class="community-grid">
+        {
+          community.map((item) => (
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="community-card reveal"
+            >
+              {item.brand === 'github' && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                >
+                  <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z" />
+                </svg>
+              )}
+              {item.brand === 'discord' && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" />
+                </svg>
+              )}
+              {item.icon && <item.icon width="32" height="32" />}
+              <h3>{item.label}</h3>
+              <p>{item.description}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</div>

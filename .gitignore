@@ -1,42 +1,31 @@
-### NextJS ###
-# Dependencies
-/node_modules
-/.pnp
-.pnp.js
+# build output
+dist/
+# generated types
+.astro/
 
-# Testing
-/coverage
+# dependencies
+node_modules/
 
-# Next.js
-/.next/
-/out/
-
-# Production
-/build
-
-# Misc
-.DS_Store
-*.pem
-
-# Debug
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
 
-# Local env files
+# environment variables
+.env
+.env.production
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
+.dev.vars
+!.dev.vars.example
 
-# Cloudflare Workers
-.open-next/
+# misc
+.DS_Store
+*.pem
+
+# wrangler files
 .wrangler/
 
-# VSCode
-.vscode/*
-public/robots.txt
-public/sitemap-0.xml
-public/sitemap.xml
+# typecheck
 tsconfig.tsbuildinfo

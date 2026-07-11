@@ -1,0 +1,6 @@
+dist/
+.astro/
+node_modules/
+package-lock.json
+public/img/
+worker-configuration.d.ts
