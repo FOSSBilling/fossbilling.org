@@ -8,10 +8,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   typecheck:
     name: Typecheck
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v7
@@ -19,12 +23,12 @@ jobs:
         with:
           node-version: '24'
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
       - run: npm run check
 
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v7
@@ -32,12 +36,12 @@ jobs:
         with:
           node-version: '24'
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
       - run: npm run build
 
   format:
     name: Format Check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v7
@@ -45,5 +49,5 @@ jobs:
         with:
           node-version: '24'
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
       - run: npm run format:check
