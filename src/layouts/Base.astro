@@ -48,6 +48,7 @@ const ogImage = ogImageUrlFor(Astro.url.pathname);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={`${fullTitle} social preview`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
