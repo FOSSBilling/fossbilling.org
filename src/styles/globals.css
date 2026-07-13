@@ -85,29 +85,9 @@ body {
     'calt' 1;
 }
 
-.home-content a {
-  --tw-ring-color: rgb(37 99 235 / 0.3);
-  --tw-text-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-text-opacity));
-}
-
-code.text-\[\.9em\] {
-  font-size: 14px;
-}
-
-@media screen and (max-width: 1200px) {
-  .home-content .hide-medium {
-    display: none;
-  }
-}
-
 @media screen and (max-width: 720px) {
   .home-content p {
     font-size: 0.9rem;
-  }
-
-  .home-content .hide-small {
-    display: none;
   }
 }
 
@@ -255,31 +235,6 @@ code.text-\[\.9em\] {
   color: #9ca3af;
 }
 
-/* Base Card Styles */
-.card-base {
-  background: white;
-  border-radius: 1rem;
-  border: 1px solid #e5e7eb;
-}
-
-.dark .card-base {
-  background: #18181b;
-  border-color: #27272a;
-}
-
-.card-hover {
-  transition: all 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
-}
-
-.dark .card-hover:hover {
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
-}
-
 /* Scroll reveal animations */
 .reveal {
   opacity: 0;
@@ -353,7 +308,6 @@ code.text-\[\.9em\] {
   justify-content: center;
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: white;
-  font-size: 1.25rem;
   margin-bottom: 1rem;
 }
 
@@ -429,7 +383,6 @@ code.text-\[\.9em\] {
   justify-content: center;
   background: #dbeafe;
   color: #2563eb;
-  font-size: 1.5rem;
   margin: 0 auto 1.25rem;
 }
 
@@ -631,16 +584,6 @@ code.text-\[\.9em\] {
   border-color: #27272a;
 }
 
-/* Reset inherited styles from .home-content */
-.download-card p {
-  margin: 0;
-  line-height: 1.5;
-}
-
-.download-card a {
-  color: inherit;
-}
-
 .download-card-header {
   display: flex;
   align-items: center;
@@ -661,14 +604,13 @@ code.text-\[\.9em\] {
 }
 
 .download-card-icon {
-  font-size: 1.25rem;
   color: #2563eb;
 }
 
 .download-card-description {
   font-size: 0.875rem;
   color: #6b7280;
-  margin: 0 0 1.25rem 0 !important;
+  margin: 0 0 1.25rem 0;
   line-height: 1.5;
 }
 
@@ -716,42 +658,28 @@ code.text-\[\.9em\] {
   color: #6b7280;
 }
 
-.home-content .download-card-button,
 .download-card-button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-  color: white !important;
+  color: white;
   font-weight: 500;
   border-radius: 0.5rem;
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
 
-.home-content .download-card-button:hover,
 .download-card-button:hover {
   opacity: 0.9;
-  color: white !important;
+  color: white;
 }
 
 .download-card-button-secondary {
   background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
 }
 
-.download-card-preview-info {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 1.25rem;
-  padding: 0.5rem 0;
-}
-
-.dark .download-card-preview-info {
-  color: #9ca3af;
-}
-
-.download-card-loading,
 .download-card-empty {
   padding: 2rem 0;
   color: #6b7280;
@@ -761,7 +689,6 @@ code.text-\[\.9em\] {
   gap: 0.5rem;
 }
 
-.dark .download-card-loading,
 .dark .download-card-empty {
   color: #9ca3af;
 }
@@ -790,14 +717,13 @@ code.text-\[\.9em\] {
   margin-top: 2rem;
 }
 
-.home-content .quick-link,
 .quick-link {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
-  color: #4b5563 !important;
+  color: #4b5563;
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
@@ -805,22 +731,19 @@ code.text-\[\.9em\] {
   transition: all 0.2s ease;
 }
 
-.dark .home-content .quick-link,
 .dark .quick-link {
-  color: #d1d5db !important;
+  color: #d1d5db;
   background: #18181b;
   border-color: #27272a;
 }
 
-.home-content .quick-link:hover,
 .quick-link:hover {
-  color: #2563eb !important;
+  color: #2563eb;
   border-color: #2563eb;
 }
 
-.dark .home-content .quick-link:hover,
 .dark .quick-link:hover {
-  color: #60a5fa !important;
+  color: #60a5fa;
   border-color: #60a5fa;
 }
 
@@ -843,7 +766,7 @@ code.text-\[\.9em\] {
 
 .need-help-section > p {
   color: #6b7280;
-  margin: 0 0 1.5rem 0 !important;
+  margin: 0 0 1.5rem 0;
 }
 
 .dark .need-help-section > p {
@@ -857,7 +780,6 @@ code.text-\[\.9em\] {
   gap: 1rem;
 }
 
-.home-content .need-help-link,
 .need-help-link {
   display: flex;
   align-items: center;
@@ -869,28 +791,24 @@ code.text-\[\.9em\] {
   text-decoration: none;
   transition: all 0.2s ease;
   min-width: 200px;
-  color: inherit !important;
+  color: inherit;
 }
 
-.dark .home-content .need-help-link,
 .dark .need-help-link {
   background: #18181b;
   border-color: #27272a;
 }
 
-.home-content .need-help-link:hover,
 .need-help-link:hover {
   border-color: #2563eb;
-  color: inherit !important;
+  color: inherit;
 }
 
-.dark .home-content .need-help-link:hover,
 .dark .need-help-link:hover {
   border-color: #60a5fa;
 }
 
 .need-help-link svg {
-  font-size: 1.5rem;
   color: #6b7280;
 }
 
@@ -946,6 +864,9 @@ code.text-\[\.9em\] {
 }
 
 .demo-card {
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
   padding: 1.75rem;
   display: flex;
   flex-direction: column;
@@ -970,7 +891,6 @@ code.text-\[\.9em\] {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
 }
 
 .demo-card-admin .demo-card-icon {
@@ -998,7 +918,7 @@ code.text-\[\.9em\] {
   font-size: 0.9rem;
   color: #6b7280;
   line-height: 1.5;
-  margin: 0 0 1.25rem 0 !important;
+  margin: 0 0 1.25rem 0;
 }
 
 .dark .demo-card-description {
@@ -1075,7 +995,6 @@ code.text-\[\.9em\] {
   color: #60a5fa;
 }
 
-.home-content .demo-card-button,
 .demo-card-button {
   display: inline-flex;
   align-items: center;
@@ -1087,7 +1006,7 @@ code.text-\[\.9em\] {
   text-decoration: none;
   transition: opacity 0.2s ease;
   margin-top: auto;
-  color: white !important;
+  color: white;
 }
 
 .demo-card-admin .demo-card-button {
@@ -1098,10 +1017,9 @@ code.text-\[\.9em\] {
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
 }
 
-.home-content .demo-card-button:hover,
 .demo-card-button:hover {
   opacity: 0.9;
-  color: white !important;
+  color: white;
 }
 
 /* Demo Page What to Try Section */

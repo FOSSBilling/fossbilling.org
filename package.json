@@ -12,8 +12,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "format": "prettier --write \"{src,public}/**/*.{astro,css,js,json,mjs,ts}\" \"*.{json,mjs,ts}\"",
-    "format:check": "prettier --check \"{src,public}/**/*.{astro,css,js,json,mjs,ts}\" \"*.{json,mjs,ts}\""
+    "format": "prettier --write \"{src,public}/**/*.{astro,css,js,json,mjs,ts}\" \"*.{json,mjs,ts}\" \".github/**/*.{yml,yaml}\" \"*.yaml\"",
+    "format:check": "prettier --check \"{src,public}/**/*.{astro,css,js,json,mjs,ts}\" \"*.{json,mjs,ts}\" \".github/**/*.{yml,yaml}\" \"*.yaml\""
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
@@ -28,9 +28,9 @@
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
-    "@types/node": "24.13.3",
-    "prettier": "3.9.5",
-    "prettier-plugin-astro": "0.14.1",
-    "typescript": "6.0.3"
+    "@types/node": "^24.13.3",
+    "prettier": "^3.9.5",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^6.0.3"
   }
 }

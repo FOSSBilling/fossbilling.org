@@ -21,3 +21,29 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run check
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+
+  format:
+    name: Format check
+    runs-on: ubuntu-latest
+    if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run format:check

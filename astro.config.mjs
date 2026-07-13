@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://fossbilling.org',
-  output: 'server',
+  output: 'static',
   adapter: cloudflare({ prerenderEnvironment: 'node' }),
   integrations: [sitemap()],
   vite: {

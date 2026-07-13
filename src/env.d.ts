@@ -1,7 +1,7 @@
 /// <reference types="astro/client" />
 
-declare namespace App {
-  interface Locals {
-    nonce: string;
+declare namespace Cloudflare {
+  interface Env {
+    GITHUB_TOKEN?: string;
   }
 }

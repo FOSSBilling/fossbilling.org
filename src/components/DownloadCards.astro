@@ -3,11 +3,6 @@ import { Download, Code, Calendar, HardDrive } from '@lucide/astro';
 import { formatDate, formatBytes } from '@/lib/format';
 import { getLatestStableRelease } from '@/lib/releases';
 
-Astro.response.headers.set(
-  'Cache-Control',
-  'public, max-age=0, s-maxage=300, stale-while-revalidate=86400',
-);
-
 const { release, error } = await getLatestStableRelease();
 ---
 
