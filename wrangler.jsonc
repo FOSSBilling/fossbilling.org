@@ -26,6 +26,7 @@
   ],
   "assets": {
     "directory": "./dist",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    "html_handling": "force-trailing-slash"
   }
 }
