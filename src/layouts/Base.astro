@@ -26,8 +26,7 @@ const githubToken = (env as unknown as Record<string, string | undefined>)[
 ];
 const stars = await getGitHubStarCount(githubToken);
 
-const nonce = (Astro.locals as unknown as Record<string, unknown>)
-  .nonce as string;
+const nonce = Astro.locals.nonce;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
@@ -189,6 +188,6 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
       </div>
     </footer>
 
-    <script src="/js/app.js" defer nonce={nonce}></script>
+    <script is:inline src="/js/app.js" defer nonce={nonce}></script>
   </body>
 </html>
