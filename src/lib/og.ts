@@ -37,5 +37,8 @@ export function ogRouteFor(pathname: string): string {
 }
 
 export function ogImageUrlFor(pathname: string, site: URL | undefined): string {
-  return new URL(`/og-image/${ogRouteFor(pathname)}.png`, site).toString();
+  return new URL(
+    `/og-image/${ogRouteFor(pathname)}.png`,
+    site ?? 'https://fossbilling.org',
+  ).toString();
 }
