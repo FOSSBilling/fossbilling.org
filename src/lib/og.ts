@@ -7,7 +7,7 @@ export const ogPages: Record<string, OgPage> = {
   index: {
     title: 'Free and open source hosting automation',
     description:
-      'Empower your hosting business with FOSSBilling, the free and open-source solution for billing and client management.',
+      'The free and open-source billing and client management solution for hosting businesses.',
   },
   downloads: {
     title: 'Downloads',
@@ -36,9 +36,6 @@ export function ogRouteFor(pathname: string): string {
     : DEFAULT_ROUTE;
 }
 
-export function ogImageUrlFor(pathname: string, site: URL | undefined): string {
-  return new URL(
-    `/og-image/${ogRouteFor(pathname)}.png`,
-    site ?? 'https://fossbilling.org',
-  ).toString();
+export function ogImageUrlFor(pathname: string, origin: string | URL): string {
+  return new URL(`/og-image/${ogRouteFor(pathname)}.png`, origin).toString();
 }

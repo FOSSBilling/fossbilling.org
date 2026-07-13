@@ -14,7 +14,7 @@ interface Props {
 
 const {
   title,
-  description = 'Empower your hosting business with FOSSBilling, the free and open-source solution for efficient billing and client management.',
+  description = 'The free and open-source billing and client management solution for hosting businesses.',
 } = Astro.props;
 
 const year = new Date().getFullYear();
@@ -30,7 +30,7 @@ const nonce = (Astro.locals as unknown as Record<string, unknown>)
   .nonce as string;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
-const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.site);
+const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
 ---
 
 <!doctype html>
