@@ -38,6 +38,9 @@ const nonce = (Astro.locals as unknown as Record<string, unknown>)
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://fossbilling.org/og-image.png" />
     <meta name="twitter:domain" content="fossbilling.org" />
     <meta name="twitter:url" content="https://fossbilling.org" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
