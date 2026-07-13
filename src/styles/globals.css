@@ -103,7 +103,8 @@ body {
 }
 
 .marquee-track {
-  animation: scroll-marquee 40s linear infinite;
+  width: max-content;
+  animation: scroll-marquee 60s linear infinite;
   will-change: transform;
 }
 
