@@ -4,7 +4,7 @@ const CONTENT_SECURITY_POLICY =
   "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; " +
   "script-src 'self' 'unsafe-inline' data: https://static.cloudflareinsights.com; " +
   "style-src 'self' 'unsafe-inline'; " +
-  "img-src 'self' data: blob: https://raw.githubusercontent.com; " +
+  `img-src 'self' data: blob: https://raw.githubusercontent.com${import.meta.env.DEV ? ' https://astro.build' : ''}; ` +
   "font-src 'self' data:; " +
   `connect-src 'self' https://api.github.com https://api.fossbilling.net${import.meta.env.DEV ? ' https://astro.build' : ''}`;
 
