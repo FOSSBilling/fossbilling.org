@@ -36,7 +36,7 @@ jobs:
       - run: npm run build
 
   format:
-    name: Format check
+    name: Format Check
     runs-on: ubuntu-latest
     if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
     steps:
