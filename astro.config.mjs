@@ -10,22 +10,6 @@ export default defineConfig({
   output: 'server',
   adapter: cloudflare({ prerenderEnvironment: 'node' }),
   integrations: [sitemap()],
-  security: {
-    csp: {
-      directives: [
-        "default-src 'self'",
-        "base-uri 'self'",
-        "object-src 'none'",
-        "frame-ancestors 'none'",
-        "img-src 'self' data: blob: https://raw.githubusercontent.com",
-        "font-src 'self' data:",
-        "connect-src 'self' https://api.github.com https://api.fossbilling.net",
-      ],
-      scriptDirective: {
-        resources: ["'self'", 'https://static.cloudflareinsights.com'],
-      },
-    },
-  },
   vite: {
     plugins: [tailwindcss()],
     ssr: {
