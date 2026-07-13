@@ -6,7 +6,7 @@ const CONTENT_SECURITY_POLICY =
   "style-src 'self' 'unsafe-inline'; " +
   "img-src 'self' data: blob: https://raw.githubusercontent.com; " +
   "font-src 'self' data:; " +
-  "connect-src 'self' https://api.github.com https://api.fossbilling.net";
+  `connect-src 'self' https://api.github.com https://api.fossbilling.net${import.meta.env.DEV ? ' https://astro.build' : ''}`;
 
 const SECURITY_HEADERS: Record<string, string> = {
   'Referrer-Policy': 'strict-origin-when-cross-origin',
