@@ -50,106 +50,95 @@ const navItems = [
       <span class="logo block"></span>
     </a>
 
-    <div class="hidden md:flex items-center gap-4" data-desktop-nav>
-      {
-        navItems.map((item) =>
-          item.items ? (
-            <div class="relative" data-dropdown>
-              <button
-                type="button"
-                data-dropdown-toggle
-                aria-expanded="false"
-                aria-haspopup="menu"
-                class="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1 cursor-pointer whitespace-nowrap transition-colors"
+    <div class="flex items-center gap-2 md:gap-4">
+      <div class="hidden md:flex items-center gap-4" data-desktop-nav>
+        {
+          navItems.map((item) =>
+            item.items ? (
+              <div class="relative" data-dropdown>
+                <button
+                  type="button"
+                  data-dropdown-toggle
+                  aria-expanded="false"
+                  aria-haspopup="menu"
+                  class="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1 cursor-pointer whitespace-nowrap transition-colors"
+                >
+                  {item.title}
+                  <svg
+                    width="10"
+                    height="6"
+                    viewBox="0 0 10 6"
+                    class="transition-transform"
+                    data-dropdown-chevron
+                  >
+                    <path
+                      d="M1 1l4 4 4-4"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      fill="none"
+                    />
+                  </svg>
+                </button>
+                <div
+                  role="menu"
+                  class="absolute right-0 mt-2 w-48 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-lg py-1 z-50 hidden"
+                  data-dropdown-menu
+                >
+                  {item.items.map((sub) => (
+                    <a
+                      href={sub.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      role="menuitem"
+                      class="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      {sub.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : item.external ? (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 whitespace-nowrap transition-colors"
               >
                 {item.title}
-                <svg
-                  width="10"
-                  height="6"
-                  viewBox="0 0 10 6"
-                  class="transition-transform"
-                  data-dropdown-chevron
-                >
-                  <path
-                    d="M1 1l4 4 4-4"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    fill="none"
-                  />
-                </svg>
-              </button>
-              <div
-                role="menu"
-                class="absolute right-0 mt-2 w-48 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-lg py-1 z-50 hidden"
-                data-dropdown-menu
+              </a>
+            ) : (
+              <a
+                href={item.href}
+                class="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 whitespace-nowrap transition-colors"
               >
-                {item.items.map((sub) => (
-                  <a
-                    href={sub.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    role="menuitem"
-                    class="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    {sub.title}
-                  </a>
-                ))}
-              </div>
-            </div>
-          ) : item.external ? (
-            <a
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 whitespace-nowrap transition-colors"
-            >
-              {item.title}
-            </a>
-          ) : (
-            <a
-              href={item.href}
-              class="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 whitespace-nowrap transition-colors"
-            >
-              {item.title}
-            </a>
-          ),
-        )
-      }
+                {item.title}
+              </a>
+            ),
+          )
+        }
+      </div>
+
+      <slot name="extras" />
+
+      <a
+        href="/discord"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Discord"
+        class="p-2 md:p-0 text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+      >
+        <BrandIcon name="discord" class="h-5 w-5" />
+      </a>
 
       <ThemeToggle />
 
-      <slot name="desktop-extras" />
-
-      <a
-        href="/discord"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Discord"
-        class="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
-      >
-        <BrandIcon name="discord" class="h-5 w-5" />
-      </a>
-    </div>
-
-    <div class="flex md:hidden items-center gap-2">
-      <slot name="mobile-extras" />
-      <a
-        href="/discord"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Discord"
-        class="p-2 text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
-      >
-        <BrandIcon name="discord" class="h-5 w-5" />
-      </a>
-      <ThemeToggle class="text-gray-600 dark:text-gray-400" />
       <button
         type="button"
         data-mobile-toggle
         aria-label="Menu"
         aria-expanded="false"
         aria-controls="mobile-navigation-menu"
-        class="p-2 text-gray-600 dark:text-gray-400"
+        class="p-2 md:hidden text-gray-600 dark:text-gray-400"
       >
         <svg
           width="24"

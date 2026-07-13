@@ -56,10 +56,9 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
     class="min-h-screen bg-white dark:bg-[#111111] text-gray-900 dark:text-gray-100 antialiased"
   >
     <div class="sticky top-0 z-30">
-      <Banner />
+      <Banner server:defer />
       <Navbar>
-        <GitHubStarButton slot="desktop-extras" server:defer />
-        <GitHubStarButton slot="mobile-extras" server:defer />
+        <GitHubStarButton slot="extras" server:defer />
       </Navbar>
     </div>
     <main><slot /></main>

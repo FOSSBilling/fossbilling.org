@@ -1,27 +1,42 @@
-function initBanner() {
-  document.querySelectorAll('[data-banner]').forEach((banner) => {
-    const key = (banner as HTMLElement).dataset.bannerKey;
-    if (key) {
-      try {
-        if (localStorage.getItem(key) === '1') {
-          banner.remove();
-          return;
-        }
-      } catch (e) {}
-    }
+let bannerObserver: MutationObserver | null = null;
 
-    const dismiss = banner.querySelector('[data-banner-dismiss]');
-    if (dismiss) {
-      dismiss.addEventListener('click', () => {
-        banner.remove();
+function initBanner() {
+  bannerObserver?.disconnect();
+
+  const setup = () => {
+    document
+      .querySelectorAll('[data-banner]:not([data-banner-ready])')
+      .forEach((banner) => {
+        (banner as HTMLElement).dataset.bannerReady = '1';
+        const key = (banner as HTMLElement).dataset.bannerKey;
         if (key) {
           try {
-            localStorage.setItem(key, '1');
+            if (localStorage.getItem(key) === '1') {
+              banner.remove();
+              return;
+            }
           } catch (e) {}
         }
+
+        const dismiss = banner.querySelector('[data-banner-dismiss]');
+        if (dismiss) {
+          dismiss.addEventListener('click', () => {
+            banner.remove();
+            if (key) {
+              try {
+                localStorage.setItem(key, '1');
+              } catch (e) {}
+            }
+          });
+        }
       });
-    }
-  });
+  };
+
+  setup();
+
+  bannerObserver = new MutationObserver(setup);
+  bannerObserver.observe(document.body, { childList: true, subtree: true });
+  setTimeout(() => bannerObserver?.disconnect(), 10000);
 }
 
 function updateThemeIcons() {
