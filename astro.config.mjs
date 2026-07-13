@@ -8,7 +8,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://fossbilling.org',
   output: 'server',
-  adapter: cloudflare(),
+  adapter: cloudflare({ prerenderEnvironment: 'node' }),
   integrations: [sitemap()],
   security: {
     csp: {
@@ -28,5 +28,8 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    ssr: {
+      external: ['@resvg/resvg-js'],
+    },
   },
 });
