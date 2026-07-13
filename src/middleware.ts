@@ -10,7 +10,7 @@ const SECURITY_HEADERS: Record<string, string> = {
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const nonce = crypto.randomUUID();
-  (context.locals as unknown as Record<string, unknown>).nonce = nonce;
+  context.locals.nonce = nonce;
 
   const response = await next();
 
