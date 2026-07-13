@@ -2,7 +2,7 @@ import { defineMiddleware } from 'astro:middleware';
 
 const CONTENT_SECURITY_POLICY =
   "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; " +
-  "script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; " +
+  "script-src 'self' 'unsafe-inline' data: https://static.cloudflareinsights.com; " +
   "style-src 'self' 'unsafe-inline'; " +
   "img-src 'self' data: blob: https://raw.githubusercontent.com; " +
   "font-src 'self' data:; " +
