@@ -27,13 +27,10 @@ const socials = [
 
 <div class="mb-6">
   {
-    socials.map((social, i) => (
+    socials.map((social) => (
       <a
         href={social.href}
-        class:list={[
-          'hover:text-gray-500 dark:hover:text-gray-300',
-          i < socials.length - 1 ? 'mr-4' : '',
-        ]}
+        class="hover:text-gray-500 dark:hover:text-gray-300 mr-4"
         target="_blank"
         rel="noopener noreferrer"
         aria-label={social.label}
