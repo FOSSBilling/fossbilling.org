@@ -36,6 +36,6 @@ export function ogRouteFor(pathname: string): string {
     : DEFAULT_ROUTE;
 }
 
-export function ogImageUrlFor(pathname: string): string {
-  return `https://fossbilling.org/og-image/${ogRouteFor(pathname)}.png`;
+export function ogImageUrlFor(pathname: string, site: string): string {
+  return new URL(`/og-image/${ogRouteFor(pathname)}.png`, site).toString();
 }

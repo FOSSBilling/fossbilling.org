@@ -30,7 +30,7 @@ const nonce = (Astro.locals as unknown as Record<string, unknown>)
   .nonce as string;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
-const ogImage = ogImageUrlFor(Astro.url.pathname);
+const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
