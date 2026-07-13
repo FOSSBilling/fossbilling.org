@@ -19,19 +19,20 @@ async function loadAsset(path: string): Promise<Buffer> {
   return readFile(join(ROOT, path));
 }
 
-async function loadDataUrl(path: string, mimeType: string): Promise<string> {
-  const bytes = await loadAsset(path);
-  return `data:${mimeType};base64,${bytes.toString('base64')}`;
-}
+const regularFontPromise = loadAsset('src/assets/fonts/Inter-Regular.ttf');
+const boldFontPromise = loadAsset('src/assets/fonts/Inter-Bold.ttf');
+const logoDataUrlPromise = loadAsset('src/assets/og-logo.svg').then(
+  (bytes) => `data:image/svg+xml;base64,${bytes.toString('base64')}`,
+);
 
 export const GET: APIRoute = async ({ params }) => {
   const route = params.route!;
   const page = ogPages[route] ?? ogPages.index!;
 
   const [regularFont, boldFont, logoDataUrl] = await Promise.all([
-    loadAsset('src/assets/fonts/Inter-Regular.ttf'),
-    loadAsset('src/assets/fonts/Inter-Bold.ttf'),
-    loadDataUrl('src/assets/og-logo.svg', 'image/svg+xml'),
+    regularFontPromise,
+    boldFontPromise,
+    logoDataUrlPromise,
   ]);
 
   const svg = await satori(
