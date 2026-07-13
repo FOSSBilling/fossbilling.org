@@ -26,9 +26,6 @@ const githubToken = (env as unknown as Record<string, string | undefined>)[
 ];
 const stars = await getGitHubStarCount(githubToken);
 
-const nonce = (Astro.locals as unknown as Record<string, unknown>)
-  .nonce as string;
-
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
 ---
@@ -56,7 +53,7 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
     <meta name="twitter:domain" content="fossbilling.org" />
     <meta name="twitter:url" content={canonicalUrl} />
     <link rel="icon" href="/favicon.ico" sizes="any" />
-    <script is:inline nonce={nonce}>
+    <script is:inline>
       (function () {
         try {
           var t = localStorage.getItem('theme');
@@ -189,6 +186,6 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
       </div>
     </footer>
 
-    <script src="/js/app.js" defer nonce={nonce}></script>
+    <script is:inline src="/js/app.js" defer></script>
   </body>
 </html>

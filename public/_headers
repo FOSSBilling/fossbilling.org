@@ -1,5 +1,6 @@
 # Security headers applied to all routes
-# CSP is handled by Astro's security.csp config (meta tag with script/style hashes)
+# CSP and these headers are also set by Astro middleware (src/middleware.ts) for SSR routes
+# CSP itself is handled by Astro's security.csp config (astro.config.mjs)
 
 /*
   Referrer-Policy: strict-origin-when-cross-origin

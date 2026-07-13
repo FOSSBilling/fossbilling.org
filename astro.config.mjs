@@ -22,7 +22,7 @@ export default defineConfig({
         "connect-src 'self' https://api.github.com https://api.fossbilling.net",
       ],
       scriptDirective: {
-        resources: ['https://static.cloudflareinsights.com'],
+        resources: ["'self'", 'https://static.cloudflareinsights.com'],
       },
     },
   },
