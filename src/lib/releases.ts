@@ -69,6 +69,14 @@ export async function getLatestStableRelease(): Promise<{
   try {
     const response = await fetch('https://api.fossbilling.net/versions/v1', {
       signal: AbortSignal.timeout(5000),
+      cf: {
+        cacheTtl: 300,
+        cacheEverything: true,
+        cacheTtlByStatus: {
+          '200-299': 300,
+          '500-599': 0,
+        },
+      },
     });
 
     if (!response.ok) {
@@ -107,6 +115,18 @@ export async function getLatestStableRelease(): Promise<{
       error: err instanceof Error ? err : new Error('Unknown error'),
     };
   }
+}
+
+let releasePromise: Promise<{
+  release: Release | null;
+  error: Error | null;
+}> | null = null;
+
+export function getLatestStableReleaseCached() {
+  if (!releasePromise) {
+    releasePromise = getLatestStableRelease();
+  }
+  return releasePromise;
 }
 
 export async function getGitHubStarCount(

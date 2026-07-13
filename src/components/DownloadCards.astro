@@ -3,11 +3,6 @@ import { Download, Code, Calendar, HardDrive } from '@lucide/astro';
 import { formatDate, formatBytes } from '@/lib/format';
 import { getLatestStableRelease } from '@/lib/releases';
 
-Astro.response.headers.set(
-  'Cache-Control',
-  'public, max-age=0, s-maxage=300, stale-while-revalidate=86400',
-);
-
 const { release, error } = await getLatestStableRelease();
 ---
 
@@ -18,10 +13,7 @@ const { release, error } = await getLatestStableRelease();
       <h2>Latest Release</h2>
     </div>
 
-    <p class="download-card-description">
-      Recommended for regular use.<br />Keep in mind that FOSSBilling is
-      pre-production software.
-    </p>
+    <p class="download-card-description">Recommended for regular use.</p>
 
     {
       error ? (
@@ -85,7 +77,7 @@ const { release, error } = await getLatestStableRelease();
       class="download-card-button download-card-button-secondary"
     >
       <Code />
-      Download the latest preview
+      Download Preview Build
     </a>
   </div>
 </div>

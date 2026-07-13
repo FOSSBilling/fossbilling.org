@@ -35,7 +35,15 @@ This command starts a local development server at `http://localhost:4321`. Most 
 
 ## Deployment Notes
 
-The site is built by Astro into `dist/` and deployed to Cloudflare Workers using Wrangler. Redirects and security headers are configured via `public/_redirects` and `public/_headers`, which are served as static assets. Cloudflare Workers Builds runs `npm run deploy` on the production branch and `npm run upload` on preview branches; use the same commands locally after configuring Wrangler for your Cloudflare account.
+The site is built by Astro into `dist/` and deployed to Cloudflare Workers using Wrangler. The site uses `output: 'static'` with Server Islands for dynamic content (GitHub star count, release version info). Redirects and security headers are configured via `public/_redirects` and `public/_headers`, which are served as static assets. Cloudflare Workers Builds runs `npm run deploy` on the production branch and `npm run upload` on preview branches; use the same commands locally after configuring Wrangler for your Cloudflare account.
+
+### OpenGraph Image Generation
+
+Social preview images are generated at build time using [satori](https://github.com/vercel/satori) and [@resvg/resvg-js](https://github.com/yisibl/resvg-js) in `src/pages/og-image/[route].png.ts`. Fonts in `src/assets/fonts/` and the logo in `src/assets/og-logo.svg` are used exclusively by this pipeline. The `prerenderEnvironment: 'node'` adapter option enables Node-only APIs (`node:fs`, `node:path`) during prerendering.
+
+### Code Review
+
+[Cubic](https://cubic.dev) provides automated AI code review, configured via `cubic.yaml` at the repository root. [Renovate](https://docs.renovatebot.com/) handles dependency updates, configured via `.github/renovate.json`.
 
 ## Licensing
 

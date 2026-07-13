@@ -7,7 +7,7 @@ export const ogPages: Record<string, OgPage> = {
   index: {
     title: 'Free and open source hosting automation',
     description:
-      'The free and open-source billing and client management solution for hosting businesses.',
+      'The free and open source billing and client management solution for hosting businesses.',
   },
   downloads: {
     title: 'Downloads',

@@ -27,8 +27,8 @@ reviews:
     pr_labels:
       - do-not-auto-review
     pr_titles:
-      - "Draft*"
-      - "WIP*"
+      - 'Draft*'
+      - 'WIP*'
 pr_descriptions:
   generate: true
   cubic_review_link: false

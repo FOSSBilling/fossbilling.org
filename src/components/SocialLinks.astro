@@ -1,0 +1,42 @@
+---
+import BrandIcon from './BrandIcon.astro';
+
+const socials = [
+  {
+    href: '/discord',
+    label: 'Discord',
+    icon: 'discord' as const,
+  },
+  {
+    href: 'https://fosstodon.org/@fossbilling',
+    label: 'Mastodon',
+    icon: 'mastodon' as const,
+  },
+  {
+    href: 'https://twitter.com/FOSSBilling',
+    label: 'X (Twitter)',
+    icon: 'x' as const,
+  },
+  {
+    href: 'https://status.fossbilling.org/',
+    label: 'Status page',
+    icon: 'status' as const,
+  },
+];
+---
+
+<div class="mb-6">
+  {
+    socials.map((social) => (
+      <a
+        href={social.href}
+        class="hover:text-gray-500 dark:hover:text-gray-300 mr-4"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={social.label}
+      >
+        <BrandIcon name={social.icon} class="h-5 w-5 inline" />
+      </a>
+    ))
+  }
+</div>
