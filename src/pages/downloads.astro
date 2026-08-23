@@ -48,6 +48,19 @@ import BrandIcon from '../components/BrandIcon.astro';
         class="content-container"
         style="padding-top: 2rem; padding-bottom: 2rem;"
       >
+        <Callout type="warning" title="Security Update">
+          <p>
+            If you're running a version before 0.8, we recommend updating to
+            the latest release as soon as possible. Version 0.8.5 is the
+            recommended security baseline, and several advisories will be
+            published alongside 0.8.6. See the
+            <a href="https://github.com/FOSSBilling/FOSSBilling/releases/latest"
+              >release notes</a
+            >
+            for details.
+          </p>
+        </Callout>
+
         <DownloadCards server:defer>
           <div slot="fallback" class="download-cards-grid">
             <div class="download-card">
