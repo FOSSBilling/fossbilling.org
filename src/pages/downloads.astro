@@ -23,17 +23,21 @@ import BrandIcon from '../components/BrandIcon.astro';
 
       <Callout type="warning" title="Security Update">
         <p>
-          If you're running a version before 0.8, we recommend updating to
-          the latest release as soon as possible. See the <a 
-          href="https://github.com/FOSSBilling/FOSSBilling/releases/latest">
-          release notes</a> for details.
+          If you're running a version before 0.8, we recommend updating to the
+          latest release as soon as possible. See the <a
+            href="https://github.com/FOSSBilling/FOSSBilling/releases/latest"
+          >
+            release notes</a
+          > for details.
         </p>
       </Callout>
     </div>
 
     <div class="features-container">
-      <div class="content-container"
-        style="padding-top: 2rem; padding-bottom: 2rem;">
+      <div
+        class="content-container"
+        style="padding-top: 2rem; padding-bottom: 2rem;"
+      >
         <DownloadCards server:defer>
           <div slot="fallback" class="download-cards-grid">
             <div class="download-card">
