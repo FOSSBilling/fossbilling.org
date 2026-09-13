@@ -26,17 +26,15 @@ const socials = [
 ---
 
 <div class="mb-6">
-  {
-    socials.map((social) => (
-      <a
-        href={social.href}
-        class="hover:text-gray-500 dark:hover:text-gray-300 mr-4"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={social.label}
-      >
-        <BrandIcon name={social.icon} class="h-5 w-5 inline" />
-      </a>
-    ))
-  }
+  {socials.map((social) => (
+    <a
+      href={social.href}
+      class="hover:text-gray-500 dark:hover:text-gray-300 mr-4"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={social.label}
+    >
+      <BrandIcon name={social.icon} class="h-5 w-5 inline" />
+    </a>
+  ))}
 </div>

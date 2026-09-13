@@ -35,57 +35,55 @@ const cards: DemoCardData[] = [
 ---
 
 <div class="demo-cards-grid">
-  {
-    cards.map((card) => (
-      <div class={`demo-card demo-card-${card.type}`}>
-        <div class="demo-card-header">
-          <div class="demo-card-icon">
-            {card.type === 'admin' ? <UserCog /> : <User />}
-          </div>
-          <h3>{card.title}</h3>
+  {cards.map((card) => (
+    <div class={`demo-card demo-card-${card.type}`}>
+      <div class="demo-card-header">
+        <div class="demo-card-icon">
+          {card.type === 'admin' ? <UserCog /> : <User />}
         </div>
-
-        <p class="demo-card-description">{card.description}</p>
-
-        <div class="demo-credentials">
-          <div class="demo-credential-row">
-            <span class="demo-credential-label">Email</span>
-            <div class="demo-credential-value">
-              <code>{card.credentials.email}</code>
-              <button
-                class="demo-copy-button"
-                title="Copy to clipboard"
-                data-copy={card.credentials.email}
-              >
-                <Copy />
-              </button>
-            </div>
-          </div>
-          <div class="demo-credential-row">
-            <span class="demo-credential-label">Password</span>
-            <div class="demo-credential-value">
-              <code>{card.credentials.password}</code>
-              <button
-                class="demo-copy-button"
-                title="Copy to clipboard"
-                data-copy={card.credentials.password}
-              >
-                <Copy />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <a
-          href={card.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="demo-card-button"
-        >
-          Open {card.title}
-          <ExternalLink />
-        </a>
+        <h3>{card.title}</h3>
       </div>
-    ))
-  }
+
+      <p class="demo-card-description">{card.description}</p>
+
+      <div class="demo-credentials">
+        <div class="demo-credential-row">
+          <span class="demo-credential-label">Email</span>
+          <div class="demo-credential-value">
+            <code>{card.credentials.email}</code>
+            <button
+              class="demo-copy-button"
+              title="Copy to clipboard"
+              data-copy={card.credentials.email}
+            >
+              <Copy />
+            </button>
+          </div>
+        </div>
+        <div class="demo-credential-row">
+          <span class="demo-credential-label">Password</span>
+          <div class="demo-credential-value">
+            <code>{card.credentials.password}</code>
+            <button
+              class="demo-copy-button"
+              title="Copy to clipboard"
+              data-copy={card.credentials.password}
+            >
+              <Copy />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <a
+        href={card.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="demo-card-button"
+      >
+        Open {card.title}
+        <ExternalLink />
+      </a>
+    </div>
+  ))}
 </div>

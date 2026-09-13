@@ -52,24 +52,25 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
     <ClientRouter />
     <script is:inline src="/js/theme-init.js"></script>
   </head>
-  <body
-    class="min-h-screen bg-white dark:bg-[#111111] text-gray-900 dark:text-gray-100 antialiased"
-  >
+  <body class="min-h-screen bg-white dark:bg-[#111111] text-gray-900 dark:text-gray-100 antialiased">
     <div class="sticky top-0 z-30">
       <Banner server:defer />
       <Navbar>
         <GitHubStarButton slot="extras" server:defer />
       </Navbar>
     </div>
-    <main><slot /></main>
+    <main>
+      <slot />
+    </main>
     <footer class="border-t border-gray-200 dark:border-gray-800 py-8">
       <div class="content-container">
         <div class="mb-2">
           <a
             href="mailto:hello@fossbilling.org"
             class="hover:text-gray-500 dark:hover:text-gray-300"
-            >hello@fossbilling.org</a
           >
+            hello@fossbilling.org
+          </a>
         </div>
         <SocialLinks />
         <p class="mt-6 text-xs text-gray-500 dark:text-gray-400">
@@ -77,13 +78,19 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
           <a
             href="https://github.com/FOSSBilling/fossbilling.org/blob/main/LICENSE"
             target="_blank"
-            rel="noopener noreferrer">AGPL 3.0</a
-          >. Content licensed under{' '}
+            rel="noopener noreferrer"
+          >
+            AGPL 3.0
+          </a>
+          . Content licensed under{' '}
           <a
             href="https://github.com/FOSSBilling/fossbilling.org/blob/main/LICENSE-content"
             target="_blank"
-            rel="noopener noreferrer">CC BY-SA 4.0</a
-          >.
+            rel="noopener noreferrer"
+          >
+            CC BY-SA 4.0
+          </a>
+          .
         </p>
       </div>
     </footer>

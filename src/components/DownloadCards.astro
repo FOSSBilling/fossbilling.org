@@ -15,50 +15,48 @@ const { release, error } = await getLatestStableRelease();
 
     <p class="download-card-description">Recommended for regular use.</p>
 
-    {
-      error ? (
-        <div class="download-cards-error">
-          Failed to load version info.{' '}
-          <a href="https://github.com/FOSSBilling/FOSSBilling/releases">
-            View releases on GitHub
-          </a>
+    {error ? (
+      <div class="download-cards-error">
+        Failed to load version info.{' '}
+        <a href="https://github.com/FOSSBilling/FOSSBilling/releases">
+          View releases on GitHub
+        </a>
+      </div>
+    ) : release ? (
+      <>
+        <div class="download-card-version">v{release.version}</div>
+
+        <div class="download-card-meta">
+          <span>
+            <Calendar />
+            {formatDate(release.released_on)}
+          </span>
+          <span>
+            <HardDrive />
+            {formatBytes(release.size_bytes)}
+          </span>
         </div>
-      ) : release ? (
-        <>
-          <div class="download-card-version">v{release.version}</div>
 
-          <div class="download-card-meta">
-            <span>
-              <Calendar />
-              {formatDate(release.released_on)}
-            </span>
-            <span>
-              <HardDrive />
-              {formatBytes(release.size_bytes)}
-            </span>
-          </div>
-
-          <div class="download-card-php">
-            Requires PHP {release.minimum_php_version}+
-          </div>
-
-          <a href={release.download_url} class="download-card-button">
-            <Download />
-            Download v{release.version}
-          </a>
-        </>
-      ) : (
-        <div class="download-card-empty">
-          <a
-            href="https://github.com/FOSSBilling/FOSSBilling/releases"
-            class="download-card-button"
-          >
-            <Download />
-            View on GitHub
-          </a>
+        <div class="download-card-php">
+          Requires PHP {release.minimum_php_version}+
         </div>
-      )
-    }
+
+        <a href={release.download_url} class="download-card-button">
+          <Download />
+          Download v{release.version}
+        </a>
+      </>
+    ) : (
+      <div class="download-card-empty">
+        <a
+          href="https://github.com/FOSSBilling/FOSSBilling/releases"
+          class="download-card-button"
+        >
+          <Download />
+          View on GitHub
+        </a>
+      </div>
+    )}
   </div>
 
   <div class="download-card">

@@ -7,32 +7,30 @@ const version = release?.version ?? null;
 const storageKey = version ? `${version}-release` : null;
 ---
 
-{
-  version && storageKey && (
-    <div
-      class="z-40 bg-black text-white text-center text-sm py-2 px-4"
-      data-banner
-      data-banner-key={storageKey}
+{version && storageKey && (
+  <div
+    class="z-40 bg-black text-white text-center text-sm py-2 px-4"
+    data-banner
+    data-banner-key={storageKey}
+  >
+    <span class="font-semibold">FOSSBilling {version} is now available!</span>{' '}
+    If you're on a version before 0.8, we recommend updating for important
+    security improvements.{' '}
+    <a
+      href="https://github.com/FOSSBilling/FOSSBilling/releases/latest"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="underline hover:text-gray-300 inline-flex items-center gap-1"
     >
-      <span class="font-semibold">FOSSBilling {version} is now available!</span>{' '}
-      If you're on a version before 0.8, we recommend updating for important
-      security improvements.{' '}
-      <a
-        href="https://github.com/FOSSBilling/FOSSBilling/releases/latest"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="underline hover:text-gray-300 inline-flex items-center gap-1"
-      >
-        Read more <ArrowRight class="h-3 w-3" />
-      </a>
-      <button
-        type="button"
-        data-banner-dismiss
-        class="ml-4 opacity-70 hover:opacity-100"
-        aria-label="Dismiss"
-      >
-        &times;
-      </button>
-    </div>
-  )
-}
+      Read more <ArrowRight class="h-3 w-3" />
+    </a>
+    <button
+      type="button"
+      data-banner-dismiss
+      class="ml-4 opacity-70 hover:opacity-100"
+      aria-label="Dismiss"
+    >
+      &times;
+    </button>
+  </div>
+)}
