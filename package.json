@@ -30,7 +30,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^24.13.3",
     "prettier": "^3.9.5",
-    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-astro": "^1.0.0",
     "typescript": "^6.0.3"
   },
   "allowScripts": {

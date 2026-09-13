@@ -15,15 +15,13 @@ const stars = await getGitHubStarCount(env.GITHUB_TOKEN);
   aria-label="Star FOSSBilling on GitHub"
 >
   <BrandIcon name="github" class="h-4 w-4 text-gray-700 dark:text-gray-200" />
-  {
-    stars !== null && (
-      <>
-        <div class="h-4 w-px bg-gray-300 dark:bg-gray-600" />
-        <div class="flex items-center gap-1">
-          <Star class="h-3 w-3 text-yellow-500" />
-          <span>{formatCompactNumber(stars)}</span>
-        </div>
-      </>
-    )
-  }
+  {stars !== null && (
+    <>
+      <div class="h-4 w-px bg-gray-300 dark:bg-gray-600" />
+      <div class="flex items-center gap-1">
+        <Star class="h-3 w-3 text-yellow-500" />
+        <span>{formatCompactNumber(stars)}</span>
+      </div>
+    </>
+  )}
 </a>
