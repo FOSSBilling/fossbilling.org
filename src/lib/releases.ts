@@ -117,16 +117,20 @@ export async function getLatestStableRelease(): Promise<{
   }
 }
 
-let releasePromise: Promise<{
-  release: Release | null;
-  error: Error | null;
-}> | null = null;
+let releaseCache: {
+  promise: Promise<{
+    release: Release | null;
+    error: Error | null;
+  }>;
+  fetchedAt: number;
+} | null = null;
 
 export function getLatestStableReleaseCached() {
-  if (!releasePromise) {
-    releasePromise = getLatestStableRelease();
+  const now = Date.now();
+  if (!releaseCache || now - releaseCache.fetchedAt >= 5 * 60 * 1000) {
+    releaseCache = { promise: getLatestStableRelease(), fetchedAt: now };
   }
-  return releasePromise;
+  return releaseCache.promise;
 }
 
 export async function getGitHubStarCount(
