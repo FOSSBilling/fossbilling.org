@@ -124,7 +124,9 @@ let releasePromise: Promise<{
 
 export function getLatestStableReleaseCached() {
   if (!releasePromise) {
-    releasePromise = getLatestStableRelease();
+    releasePromise = getLatestStableRelease().finally(() => {
+      releasePromise = null;
+    });
   }
   return releasePromise;
 }
