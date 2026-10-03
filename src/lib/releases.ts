@@ -12,21 +12,20 @@ interface ApiResponse {
   error_code: number;
 }
 
-const allowedDownloadHosts = new Set([
-  'github.com',
-  'download.fossbilling.org',
-]);
-
-function isValidDownloadUrl(url: string): boolean {
-  try {
-    const parsedUrl = new URL(url);
-    return (
-      parsedUrl.protocol === 'https:' &&
-      allowedDownloadHosts.has(parsedUrl.hostname)
-    );
-  } catch {
+function isValidDownloadUrl(url: string, version: string): boolean {
+  // Bind the raw navigation target to this release's official artifact.
+  // A URL-safe tag prevents separators and URL syntax from entering the path.
+  if (!/^[A-Za-z0-9][A-Za-z0-9.+-]*$/.test(version)) {
     return false;
   }
+
+  const githubRelease = `https://github.com/FOSSBilling/FOSSBilling/releases/download/${version}`;
+  return (
+    url === `${githubRelease}/FOSSBilling.zip` ||
+    url === `${githubRelease}/FOSSBilling-${version}.zip` ||
+    url ===
+      `https://download.fossbilling.org/releases/${version}/FOSSBilling-${version}.zip`
+  );
 }
 
 function isRelease(value: unknown): value is Release {
@@ -44,7 +43,7 @@ function isRelease(value: unknown): value is Release {
     Number.isFinite(release.size_bytes) &&
     release.size_bytes >= 0 &&
     typeof release.is_prerelease === 'boolean' &&
-    isValidDownloadUrl(release.download_url)
+    isValidDownloadUrl(release.download_url, release.version)
   );
 }
 
