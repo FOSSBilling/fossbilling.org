@@ -16,6 +16,7 @@ jobs:
   typecheck:
     name: Typecheck
     runs-on: ubuntu-slim
+    timeout-minutes: 15
     if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v7
@@ -29,6 +30,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-slim
+    timeout-minutes: 15
     if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v7
@@ -42,6 +44,7 @@ jobs:
   format:
     name: Format Check
     runs-on: ubuntu-slim
+    timeout-minutes: 15
     if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.base.repo.id != github.event.pull_request.head.repo.id) || github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v7
