@@ -8,13 +8,16 @@ on:
   schedule:
     - cron: '34 23 * * 6'
 
+permissions:
+  contents: read
+  
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       security-events: write
-      packages: read
       actions: read
       contents: read
 
