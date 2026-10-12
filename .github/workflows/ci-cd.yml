@@ -79,7 +79,7 @@ jobs:
   preview:
     name: Deploy Preview
     needs: [typecheck, format, test, build]
-    if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref_type == 'branch' && github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -98,11 +98,41 @@ jobs:
           name: worker-build
           path: dist/
       - name: Deploy Worker Preview
+        id: preview
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: preview --config dist/server/wrangler.json
+      - name: Record Preview Links
+        uses: actions/github-script@v9
+        env:
+          PREVIEW_URL: ${{ steps.preview.outputs.preview-url }}
+          PREVIEW_BUILD_URL: ${{ steps.preview.outputs.preview-deployment-url }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const path = require('node:path');
+            const links = {
+              sha: context.sha,
+              preview: process.env.PREVIEW_URL,
+              build: process.env.PREVIEW_BUILD_URL,
+            };
+            fs.writeFileSync(path.join(process.env.RUNNER_TEMP, 'preview-links.json'), JSON.stringify(links));
+            await core.summary
+              .addHeading('Cloudflare Preview')
+              .addLink('Latest branch preview', links.preview)
+              .addEOL()
+              .addLink('This build', links.build)
+              .addEOL()
+              .write();
+      - name: Upload Preview Links
+        uses: actions/upload-artifact@v7
+        with:
+          name: preview-links
+          path: ${{ runner.temp }}/preview-links.json
+          if-no-files-found: error
+          retention-days: 30
 
   deploy:
     name: Deploy Production

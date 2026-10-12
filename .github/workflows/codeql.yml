@@ -10,7 +10,7 @@ on:
 
 permissions:
   contents: read
-  
+
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})

@@ -1,0 +1,112 @@
+name: Preview Comment
+
+on:
+  workflow_run:
+    workflows: ['CI/CD']
+    types: [completed]
+  pull_request_target:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  actions: read
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+jobs:
+  comment:
+    if: >-
+      (github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch != 'main') ||
+      (github.event_name == 'pull_request_target' &&
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    steps:
+      # Use only API calls and preview metadata. Never check out or execute PR code.
+      - name: Find Preview Build
+        id: build
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const repo = context.repo;
+            let run = context.payload.workflow_run;
+            if (!run) {
+              const pr = context.payload.pull_request;
+              const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
+                ...repo, workflow_id: 'ci-cd.yml', event: 'push',
+                branch: pr.head.ref, head_sha: pr.head.sha, status: 'success', per_page: 100,
+              });
+              run = runs.find(candidate => candidate.head_repository?.full_name === context.payload.repository.full_name);
+            }
+            if (!run || run.head_repository?.full_name !== context.payload.repository.full_name) return;
+            const prs = await github.paginate(github.rest.pulls.list, {
+              ...repo, state: 'open', base: 'main',
+              head: `${repo.owner}:${run.head_branch}`, per_page: 100,
+            });
+            const numbers = prs.filter(pr =>
+              pr.head.repo?.full_name === context.payload.repository.full_name && pr.head.sha === run.head_sha
+            ).map(pr => pr.number);
+            if (!numbers.length) return;
+            const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
+              ...repo, run_id: run.id, per_page: 100,
+            });
+            if (!artifacts.some(artifact => artifact.name === 'preview-links' && !artifact.expired)) return;
+            core.setOutput('run-id', String(run.id));
+            core.setOutput('sha', run.head_sha);
+            core.setOutput('prs', JSON.stringify(numbers));
+      - name: Download Preview Links
+        if: steps.build.outputs.run-id
+        uses: actions/download-artifact@v8
+        with:
+          name: preview-links
+          path: ${{ runner.temp }}/preview-links
+          run-id: ${{ steps.build.outputs.run-id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update PR Comment
+        if: steps.build.outputs.run-id
+        uses: actions/github-script@v9
+        env:
+          PREVIEW_RUN_ID: ${{ steps.build.outputs.run-id }}
+          PREVIEW_SHA: ${{ steps.build.outputs.sha }}
+          PREVIEW_PRS: ${{ steps.build.outputs.prs }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const path = require('node:path');
+            const links = JSON.parse(fs.readFileSync(path.join(process.env.RUNNER_TEMP, 'preview-links/preview-links.json'), 'utf8'));
+            if (links.sha !== process.env.PREVIEW_SHA) throw new Error('Preview commit does not match the build');
+            const safeUrl = value => {
+              const url = new URL(value);
+              if (url.protocol !== 'https:' || url.username || url.password) throw new Error('Invalid preview URL');
+              return url.href.replaceAll('(', '%28').replaceAll(')', '%29');
+            };
+            const marker = '<!-- cloudflare-preview -->';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${process.env.PREVIEW_RUN_ID}`;
+            const body = [
+              marker,
+              '**Cloudflare preview is ready**',
+              '',
+              `- [Latest branch preview](${safeUrl(links.preview)})`,
+              `- [This build](${safeUrl(links.build)}) · commit \`${links.sha.slice(0, 7)}\``,
+              `- [CI run and job summaries](${runUrl})`,
+            ].join('\n');
+            for (const issue_number of JSON.parse(process.env.PREVIEW_PRS)) {
+              const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: issue_number });
+              if (pr.state !== 'open' || pr.head.sha !== links.sha ||
+                  pr.head.repo?.full_name !== context.payload.repository.full_name) continue;
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                ...context.repo, issue_number, per_page: 100,
+              });
+              const existing = comments.find(comment =>
+                comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker)
+              );
+              if (existing) {
+                await github.rest.issues.updateComment({ ...context.repo, comment_id: existing.id, body });
+              } else {
+                await github.rest.issues.createComment({ ...context.repo, issue_number, body });
+              }
+            }

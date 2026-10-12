@@ -38,17 +38,19 @@ This command starts a local development server at `http://localhost:4321`. Most 
 
 The site is built by Astro into `dist/` and deployed to Cloudflare Workers using Wrangler. The site uses `output: 'static'` with Server Islands for dynamic content (GitHub star count, release version info). Redirects and security headers are configured via `public/_redirects` and `public/_headers`, which are served as static assets.
 
-[GitHub Actions](.github/workflows/ci.yml) runs typechecking, formatting checks, tests, and a build on every branch push and on pull requests targeting `main`. The build also validates the generated Worker configuration with a Wrangler deployment dry run. Deployment jobs wait for all four checks and reuse that build, including Astro's generated `dist/server/wrangler.json` and static assets in `dist/client/`.
+[GitHub Actions](.github/workflows/ci-cd.yml) runs typechecking, formatting checks, tests, and a build on every branch push and on pull requests targeting `main`. The build also validates the generated Worker configuration with a Wrangler deployment dry run. Deployment jobs wait for all four checks and reuse that build, including Astro's generated `dist/server/wrangler.json` and static assets in `dist/client/`.
 
 - Pushes to `main` deploy to production at `https://fossbilling.org`, using the GitHub `production` environment.
-- Pushes to other branches deploy a [Worker Preview](https://developers.cloudflare.com/workers/previews/) named after the branch. The Wrangler action records the preview URL as a GitHub Deployment and in the job summary.
+- Pushes to other branches deploy a [Worker Preview](https://developers.cloudflare.com/workers/previews/) named after the branch. The job summary links to the latest branch preview and the specific build. [Preview Comment](.github/workflows/preview-comment.yml) creates or updates one comment on matching open PRs with both links and the CI run. It also handles PRs opened after a successful branch build (preview links are retained for 30 days). No GitHub Deployment is created for previews.
 - Pull requests validate the proposed merge without deploying. Fork pull requests run the same checks without Cloudflare credentials.
+
+The comment workflow must exist on `main` before its triggers become active. It reads preview metadata through the GitHub API and never checks out or executes PR code. Fork PRs receive CI checks but no preview comment. Comments show the commit they refer to; a failed build does not replace the previous successful preview.
 
 To configure the migration:
 
 1. Add the repository Actions secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Use a Cloudflare API token scoped to the target account with Workers deployment permissions, including the permissions required by this Worker's custom domain and Images binding. See [Cloudflare's GitHub Actions setup](https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/).
 2. Configure the GitHub `production` environment to allow deployments from `main` and apply any desired protection rules.
-3. Configure any runtime secrets needed by previews in Cloudflare's Previews Base settings. Production runtime secrets remain managed in Cloudflare; the Actions `GITHUB_TOKEN` is used to record GitHub Deployments and is not passed to the Worker.
+3. Configure any runtime secrets needed by previews in Cloudflare's Previews Base settings. Production runtime secrets remain managed in Cloudflare; the Actions `GITHUB_TOKEN` is used by the comment workflow and is not passed to the Worker.
 4. Disable automatic Cloudflare Workers Builds for this Worker when enabling these workflows, so each push is deployed by GitHub Actions alone.
 
 For a local deployment, run `npm run build` followed by `npm run cf-deploy` or `npm run cf-preview` after configuring Wrangler authentication. Local commands use Astro's `.wrangler/deploy/config.json` redirect; CI passes the generated configuration explicitly because only `dist/` is transferred between jobs. Wrangler is a direct development dependency, so CI and local commands use the version in `package-lock.json`.
