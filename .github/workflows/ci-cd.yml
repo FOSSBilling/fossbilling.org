@@ -27,7 +27,7 @@ jobs:
       - run: npm run check
 
   format:
-    name: Format Check
+    name: Check Formatting
     runs-on: ubuntu-slim
     timeout-minutes: 15
     steps:
@@ -104,27 +104,31 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: preview --config dist/server/wrangler.json
-      - name: Record Preview Links
+      - name: Add Preview Links to Summary
         uses: actions/github-script@v9
         env:
+          PREVIEW_NAME: ${{ steps.preview.outputs.preview-name }}
           PREVIEW_URL: ${{ steps.preview.outputs.preview-url }}
           PREVIEW_BUILD_URL: ${{ steps.preview.outputs.preview-deployment-url }}
         with:
           script: |
-            const fs = require('node:fs');
-            const path = require('node:path');
-            const links = {
-              sha: context.sha,
+            const previewLinks = {
               preview: process.env.PREVIEW_URL,
               build: process.env.PREVIEW_BUILD_URL,
             };
-            fs.writeFileSync(path.join(process.env.RUNNER_TEMP, 'preview-links.json'), JSON.stringify(links));
+            const tableData = [
+              {data: 'Status', header: true},
+              {data: 'Name', header: true},
+              {data: 'Commit', header: true},
+              {data: 'Preview URL', header: true},
+              {data: steps.preview.outcome === 'success' ? '✅ Deployment successful!' : ' ❌ Deployment failed!' },
+              {data: process.env.PREVIEW_NAME},
+              {data: context.sha.substring(0, 7)},
+              {data: '<a href="' + previewLinks.build + '">Commit Preview URL</a>\n' + '\n<a href="' + previewLinks.preview + '">Branch Preview URL</a>'},
+            ]
             await core.summary
-              .addHeading('Cloudflare Preview')
-              .addLink('Latest branch preview', links.preview)
-              .addEOL()
-              .addLink('This build', links.build)
-              .addEOL()
+              .addHeading('Deploying Preview to Cloudflare Workers')
+              .addTable([tableData])
               .write();
       - name: Upload Preview Links
         uses: actions/upload-artifact@v7
