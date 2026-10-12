@@ -48,6 +48,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
@@ -59,10 +60,13 @@ jobs:
           cache: 'npm'
       - name: Install Dependencies
         run: npm ci
+
       - name: Build
         run: npm run build
+
       - name: Validate Worker Deployment
         run: npm run cf-deploy -- --dry-run --config dist/server/wrangler.json
+
       - name: Upload Worker Build
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v7
@@ -84,11 +88,14 @@ jobs:
     environment:
       name: preview
       deployment: false
+
     steps:
-      - uses: actions/download-artifact@v8
+      - name: Download Worker Build
+        uses: actions/download-artifact@v8
         with:
           name: worker-build
           path: dist/
+
       - name: Deploy Worker Preview
         id: preview
         uses: cloudflare/wrangler-action@v4
@@ -96,6 +103,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: preview --config dist/server/wrangler.json
+
       - name: Add Preview Links to Summary
         uses: actions/github-script@v9
         env:
@@ -131,6 +139,7 @@ jobs:
               .addHeading('Deploying Preview to Cloudflare Workers')
               .addTable(tableData)
               .write();
+
       - name: Upload Preview Links
         uses: actions/upload-artifact@v7
         with:
