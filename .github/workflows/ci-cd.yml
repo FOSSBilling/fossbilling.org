@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  typecheck:
-    name: Typecheck
+  checks:
+    name: Code Checks
     runs-on: ubuntu-slim
     timeout-minutes: 15
     steps:
@@ -23,21 +23,14 @@ jobs:
         with:
           node-version: '24'
           cache: 'npm'
-      - run: npm ci --no-audit --no-fund
-      - run: npm run check
-
-  format:
-    name: Check Formatting
-    runs-on: ubuntu-slim
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '24'
-          cache: 'npm'
-      - run: npm ci --no-audit --no-fund
-      - run: npm run format:check
+      - name: Install Dependencies
+        id: dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Typecheck
+        run: npm run check
+      - name: Check Formatting
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: npm run format:check
 
   test:
     name: Run Tests
@@ -78,7 +71,7 @@ jobs:
 
   preview:
     name: Deploy Preview
-    needs: [typecheck, format, test, build]
+    needs: [checks, test, build]
     if: github.event_name == 'push' && github.ref_type == 'branch' && github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -110,25 +103,34 @@ jobs:
           PREVIEW_NAME: ${{ steps.preview.outputs.preview-name }}
           PREVIEW_URL: ${{ steps.preview.outputs.preview-url }}
           PREVIEW_BUILD_URL: ${{ steps.preview.outputs.preview-deployment-url }}
+          PREVIEW_STATUS: ${{ steps.preview.outcome }}
         with:
           script: |
+            const fs = require('node:fs');
+            const path = require('node:path');
             const previewLinks = {
+              sha: context.sha,
               preview: process.env.PREVIEW_URL,
               build: process.env.PREVIEW_BUILD_URL,
             };
+            fs.writeFileSync(path.join(process.env.RUNNER_TEMP, 'preview-links.json'), JSON.stringify(previewLinks));
             const tableData = [
-              {data: 'Status', header: true},
-              {data: 'Name', header: true},
-              {data: 'Commit', header: true},
-              {data: 'Preview URL', header: true},
-              {data: steps.preview.outcome === 'success' ? '✅ Deployment successful!' : ' ❌ Deployment failed!' },
-              {data: process.env.PREVIEW_NAME},
-              {data: context.sha.substring(0, 7)},
-              {data: '<a href="' + previewLinks.build + '">Commit Preview URL</a>\n' + '\n<a href="' + previewLinks.preview + '">Branch Preview URL</a>'},
-            ]
+              [
+                {data: 'Status', header: true},
+                {data: 'Name', header: true},
+                {data: 'Commit', header: true},
+                {data: 'Preview URL', header: true},
+              ],
+              [
+                {data: process.env.PREVIEW_STATUS === 'success' ? '✅ Deployment successful!' : '❌ Deployment failed!'},
+                {data: process.env.PREVIEW_NAME},
+                {data: context.sha.substring(0, 7)},
+                {data: '<a href="' + previewLinks.build + '">Commit Preview URL</a><br><a href="' + previewLinks.preview + '">Branch Preview URL</a>'},
+              ],
+            ];
             await core.summary
               .addHeading('Deploying Preview to Cloudflare Workers')
-              .addTable([tableData])
+              .addTable(tableData)
               .write();
       - name: Upload Preview Links
         uses: actions/upload-artifact@v7
@@ -140,7 +142,7 @@ jobs:
 
   deploy:
     name: Deploy Production
-    needs: [typecheck, format, test, build]
+    needs: [checks, test, build]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
