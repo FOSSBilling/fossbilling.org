@@ -27,15 +27,31 @@ This command starts a local development server at `http://localhost:4321`. Most 
 - `npm run build`: production build
 - `npm run preview`: preview the production build locally
 - `npm run check`: TypeScript & Astro diagnostics (CI uses this)
+- `npm test`: run the release metadata tests (CI uses this)
 - `npm run format`: format source with Prettier
 - `npm run format:check`: verify formatting without writing
 - `npm run cf-typegen`: generate Cloudflare env types in `worker-configuration.d.ts`
-- `npm run deploy`: deploy to Cloudflare Workers and promote to production traffic (requires Wrangler auth)
-- `npm run upload`: upload a new Worker version to Cloudflare without promoting it to production traffic (requires Wrangler auth)
+- `npm run cf-deploy`: deploy to Cloudflare Workers and promote to production traffic (requires Wrangler auth)
+- `npm run cf-preview`: deploy a Worker Preview for the current branch (requires Wrangler auth)
 
 ## Deployment Notes
 
-The site is built by Astro into `dist/` and deployed to Cloudflare Workers using Wrangler. The site uses `output: 'static'` with Server Islands for dynamic content (GitHub star count, release version info). Redirects and security headers are configured via `public/_redirects` and `public/_headers`, which are served as static assets. Cloudflare Workers Builds runs `npm run deploy` on the production branch and `npm run upload` on preview branches; use the same commands locally after configuring Wrangler for your Cloudflare account.
+The site is built by Astro into `dist/` and deployed to Cloudflare Workers using Wrangler. The site uses `output: 'static'` with Server Islands for dynamic content (GitHub star count, release version info). Redirects and security headers are configured via `public/_redirects` and `public/_headers`, which are served as static assets.
+
+[GitHub Actions](.github/workflows/ci.yml) runs typechecking, formatting checks, tests, and a build on every branch push and on pull requests targeting `main`. The build also validates the generated Worker configuration with a Wrangler deployment dry run. Deployment jobs wait for all four checks and reuse that build, including Astro's generated `dist/server/wrangler.json` and static assets in `dist/client/`.
+
+- Pushes to `main` deploy to production at `https://fossbilling.org`, using the GitHub `production` environment.
+- Pushes to other branches deploy a [Worker Preview](https://developers.cloudflare.com/workers/previews/) named after the branch. The Wrangler action records the preview URL as a GitHub Deployment and in the job summary.
+- Pull requests validate the proposed merge without deploying. Fork pull requests run the same checks without Cloudflare credentials.
+
+To configure the migration:
+
+1. Add the repository Actions secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Use a Cloudflare API token scoped to the target account with Workers deployment permissions, including the permissions required by this Worker's custom domain and Images binding. See [Cloudflare's GitHub Actions setup](https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/).
+2. Configure the GitHub `production` environment to allow deployments from `main` and apply any desired protection rules.
+3. Configure any runtime secrets needed by previews in Cloudflare's Previews Base settings. Production runtime secrets remain managed in Cloudflare; the Actions `GITHUB_TOKEN` is used to record GitHub Deployments and is not passed to the Worker.
+4. Disable automatic Cloudflare Workers Builds for this Worker when enabling these workflows, so each push is deployed by GitHub Actions alone.
+
+For a local deployment, run `npm run build` followed by `npm run cf-deploy` or `npm run cf-preview` after configuring Wrangler authentication. Local commands use Astro's `.wrangler/deploy/config.json` redirect; CI passes the generated configuration explicitly because only `dist/` is transferred between jobs. Wrangler is a direct development dependency, so CI and local commands use the version in `package-lock.json`.
 
 ### OpenGraph Image Generation
 
