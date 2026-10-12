@@ -136,7 +136,7 @@ jobs:
               ],
             ];
             await core.summary
-              .addHeading('Deploying Preview to Cloudflare Workers, '2')
+              .addHeading('Deploying Preview to Cloudflare Workers', 2)
               .addTable(tableData)
               .write();
 
