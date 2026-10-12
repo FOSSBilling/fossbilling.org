@@ -17,4 +17,5 @@ export default defineConfig({
       external: ['@resvg/resvg-js'],
     },
   },
+  session: false,
 });
