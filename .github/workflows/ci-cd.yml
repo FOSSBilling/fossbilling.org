@@ -13,50 +13,53 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  checks:
-    name: Code Checks
+  validation:
+    name: Validation
     runs-on: ubuntu-slim
     timeout-minutes: 15
+    
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
         with:
           node-version: '24'
           cache: 'npm'
+
       - name: Install Dependencies
         id: dependencies
-        run: npm ci --no-audit --no-fund
+        run: npm ci
+
       - name: Typecheck
         run: npm run check
+
       - name: Check Formatting
         if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
         run: npm run format:check
 
-  test:
-    name: Run Tests
-    runs-on: ubuntu-slim
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '24'
-          cache: 'npm'
-      - run: npm ci --no-audit --no-fund
-      - run: npm test
+      - name: Run Tests
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: npm test
 
   build:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
         with:
           node-version: '24'
           cache: 'npm'
-      - run: npm ci --no-audit --no-fund
-      - run: npm run build
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
       - name: Validate Worker Deployment
         run: npm run cf-deploy -- --dry-run --config dist/server/wrangler.json
       - name: Upload Worker Build
@@ -71,7 +74,7 @@ jobs:
 
   preview:
     name: Deploy Preview
-    needs: [checks, test, build]
+    needs: [validation, build]
     if: github.event_name == 'push' && github.ref_type == 'branch' && github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -117,7 +120,7 @@ jobs:
                 {data: process.env.PREVIEW_STATUS === 'success' ? '✅ Deployment successful!' : '❌ Deployment failed!'},
                 {data: process.env.PREVIEW_NAME},
                 {data: context.sha.substring(0, 7)},
-                {data: '<a href="' + previewLinks.build + '">Commit Preview URL</a><br><a href="' + previewLinks.preview + '">Branch Preview URL</a>'},
+                {data: '<a href="' + previewLinks.build + '">Commit Preview URL</a><br><br><a href="' + previewLinks.preview + '">Branch Preview URL</a>'},
               ],
             ];
             await core.summary
@@ -134,22 +137,11 @@ jobs:
 
   deploy:
     name: Deploy Production
-    needs: [checks, test, build]
+    needs: [validation, build]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    environment:
-      name: production
-      url: https://fossbilling.org
     steps:
-      - uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '24'
-          cache: 'npm'
-      - run: npm ci --no-audit --no-fund
       - uses: actions/download-artifact@v8
         with:
           name: worker-build
