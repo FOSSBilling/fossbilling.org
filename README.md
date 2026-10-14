@@ -39,7 +39,7 @@ The site is built by Astro into `dist/` and deployed to Cloudflare Workers using
 
 ### OpenGraph Image Generation
 
-Social preview images are generated at build time using [satori](https://github.com/vercel/satori) and [@resvg/resvg-js](https://github.com/yisibl/resvg-js) in `src/pages/og-image/[route].png.ts`. Fonts in `src/assets/fonts/` and the logo in `src/assets/og-logo.svg` are used exclusively by this pipeline. The `prerenderEnvironment: 'node'` adapter option enables Node-only APIs (`node:fs`, `node:path`) during prerendering.
+Social preview images are generated at build time using [satori](https://github.com/vercel/satori) and [@resvg/resvg-js](https://github.com/yisibl/resvg-js) in `src/pages/og-image/[route].png.ts`. Fonts in `src/assets/fonts/` are used exclusively by this pipeline. The `prerenderEnvironment: 'node'` adapter option enables Node-only APIs (`node:fs`, `node:path`) during prerendering.
 
 ### Code Review
 
