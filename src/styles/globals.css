@@ -40,14 +40,14 @@
   display: block;
   width: 161.5px;
   aspect-ratio: 266.29333 / 54;
-  background-image: url('src/assets/logo-light.svg');
+  background-image: url('../assets/logo-light.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .dark .logo {
-  background-image: url('src/assets/logo-dark.svg');
+  background-image: url('../assets/logo-dark.svg');
 }
 
 .headline {
