@@ -21,7 +21,7 @@ async function loadAsset(path: string): Promise<Buffer> {
 
 const regularFontPromise = loadAsset('src/assets/fonts/Inter-Regular.ttf');
 const boldFontPromise = loadAsset('src/assets/fonts/Inter-Bold.ttf');
-const logoDataUrlPromise = loadAsset('src/assets/og-logo.svg').then(
+const logoDataUrlPromise = loadAsset('src/assets/logo-dark.svg').then(
   (bytes) => `data:image/svg+xml;base64,${bytes.toString('base64')}`,
 );
 
@@ -56,7 +56,7 @@ export const GET: APIRoute = async ({ params }) => {
             props: {
               src: logoDataUrl,
               width: 240,
-              height: 51,
+              height: 49,
               style: { objectFit: 'contain' },
             },
           },

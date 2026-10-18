@@ -47,10 +47,23 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:domain" content="fossbilling.org" />
     <meta name="twitter:url" content={canonicalUrl} />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <ClientRouter />
-    <script is:inline src="/js/theme-init.js"></script>
+    <!-- Apply the theme before rendering to avoid a flash of light mode. -->
+    <script is:inline>
+      (() => {
+        try {
+          const theme = localStorage.getItem('theme');
+          if (
+            theme === 'dark' ||
+            (!theme && window.matchMedia('(prefers-color-scheme:dark)').matches)
+          ) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch {}
+      })();
+    </script>
   </head>
   <body class="min-h-screen bg-white dark:bg-[#111111] text-gray-900 dark:text-gray-100 antialiased">
     <div class="sticky top-0 z-30">

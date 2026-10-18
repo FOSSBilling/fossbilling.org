@@ -12,9 +12,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node --test tests/*.test.mjs",
-    "format": "prettier --write \"{src,public}/**/*.{astro,css,js,json,mjs,ts}\" \"*.{json,mjs,ts}\" \".github/**/*.{yml,yaml}\" \"*.yaml\"",
-    "format:check": "prettier --check \"{src,public}/**/*.{astro,css,js,json,mjs,ts}\" \"*.{json,mjs,ts}\" \".github/**/*.{yml,yaml}\" \"*.yaml\""
+    "test": "node --test tests/*.test.ts",
+    "format": "prettier --write \"{src,public,tests}/**/*.{astro,css,js,json,mjs,ts}\" \"*.{json,mjs,ts}\" \".github/**/*.{yml,yaml}\" \"*.yaml\"",
+    "format:check": "prettier --check \"{src,public,tests}/**/*.{astro,css,js,json,mjs,ts}\" \"*.{json,mjs,ts}\" \".github/**/*.{yml,yaml}\" \"*.yaml\""
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
@@ -24,7 +24,7 @@
     "@tailwindcss/vite": "^4.3.2",
     "astro": "^7.0.7",
     "date-fns": "^4.4.0",
-    "satori": "^0.47.0",
+    "satori": "^0.57.0",
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
