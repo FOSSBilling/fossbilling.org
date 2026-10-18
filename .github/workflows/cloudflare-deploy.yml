@@ -28,8 +28,7 @@ on:
         default: ''
         type: string
       wrangler-version:
-        description: Wrangler version (previews require 4.136.3 or later).
-        default: '4.149.0'
+        description: Optional Wrangler version; omit to use the wrangler-action default value.
         type: string
       preview-artifact-name:
         description: Preview metadata artifact name; use a unique name for each Worker in a run.
