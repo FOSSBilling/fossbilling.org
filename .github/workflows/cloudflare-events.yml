@@ -1,4 +1,4 @@
-name: Cloudflare Preview Comments
+name: Cloudflare Events
 
 on:
   workflow_run:
@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   comment:
-    uses: ./.github/workflows/cloudflare.yml
+    uses: ./.github/workflows/cloudflare-workers.yml
     with:
       operation: sync-pr-comment
       build-workflow: ci-cd.yml
