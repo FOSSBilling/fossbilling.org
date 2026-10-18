@@ -1,0 +1,397 @@
+name: Cloudflare
+
+on:
+  workflow_call:
+    inputs:
+      operation:
+        description: Operation to perform (deploy or sync-pr-comment).
+        default: deploy
+        type: string
+      build-workflow:
+        description: Deployment workflow filename or ID; required for sync-pr-comment.
+        default: ''
+        type: string
+      mode:
+        description: Deployment mode (preview or production).
+        type: string
+      environment:
+        description: GitHub environment for secrets and protection rules.
+        type: string
+      artifact-name:
+        description: Build artifact uploaded by the caller in this run.
+        type: string
+      artifact-path:
+        description: Directory in which to restore the build artifact.
+        default: dist/
+        type: string
+      config-path:
+        description: Wrangler configuration path relative to the workspace.
+        type: string
+      wrangler-environment:
+        description: Optional named environment in the Wrangler configuration.
+        default: ''
+        type: string
+      wrangler-version:
+        description: Optional Wrangler version; omit to use the wrangler-action default value.
+        type: string
+      pr-comment:
+        description: >-
+          Comment on matching same-repository PRs after a preview deployment
+          (requires actions: read and pull-requests: write in the caller).
+        default: false
+        type: boolean
+      pr-base-branch:
+        description: PR target branch; defaults to the calling repository's default branch.
+        default: ''
+        type: string
+      worker-name:
+        description: Worker label and comment identity; use a distinct value for each Worker and match the sync-pr-comment call.
+        default: ''
+        type: string
+      preview-artifact-name:
+        description: Preview metadata artifact name; use a unique name for each Worker in a run.
+        default: preview-links
+        type: string
+      preview-retention-days:
+        description: Retention period for preview metadata used by PR comments.
+        default: 7
+        type: number
+    secrets:
+      CLOUDFLARE_API_TOKEN:
+        description: Required for deploy; may be supplied by the selected GitHub environment.
+        required: false
+      CLOUDFLARE_ACCOUNT_ID:
+        description: Required for deploy; may be supplied by the selected GitHub environment.
+        required: false
+    outputs:
+      deployment-url:
+        description: URL reported by Wrangler for the deployment.
+        value: ${{ jobs.deploy.outputs.deployment-url }}
+      preview-url:
+        description: Stable branch preview URL (preview mode only).
+        value: ${{ jobs.deploy.outputs.preview-url }}
+      preview-build-url:
+        description: Immutable preview build URL (preview mode only).
+        value: ${{ jobs.deploy.outputs.preview-build-url }}
+      preview-name:
+        description: Preview name (preview mode only).
+        value: ${{ jobs.deploy.outputs.preview-name }}
+
+# Deployment uses Cloudflare credentials and the artifact service, not repository-token permissions.
+# Commenting inherits the caller's actions: read and pull-requests: write permissions.
+jobs:
+  validate:
+    name: Validate Cloudflare Operation
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Validate Inputs
+        uses: actions/github-script@v9
+        env:
+          OPERATION: ${{ inputs.operation }}
+          MODE: ${{ inputs.mode }}
+          DEPLOY_ENVIRONMENT: ${{ inputs.environment }}
+          ARTIFACT_NAME: ${{ inputs.artifact-name }}
+          CONFIG_PATH: ${{ inputs.config-path }}
+          BUILD_WORKFLOW: ${{ inputs.build-workflow }}
+          WORKER_NAME: ${{ inputs.worker-name }}
+        with:
+          script: |
+            const operation = process.env.OPERATION;
+            if (!['deploy', 'sync-pr-comment'].includes(operation)) {
+              throw new Error('operation must be deploy or sync-pr-comment');
+            }
+            if (process.env.WORKER_NAME && !/^[a-zA-Z0-9_-]+$/.test(process.env.WORKER_NAME)) {
+              throw new Error('worker-name must contain only letters, numbers, underscores, or hyphens');
+            }
+            if (operation === 'deploy') {
+              if (!['preview', 'production'].includes(process.env.MODE)) {
+                throw new Error('mode must be preview or production for deploy');
+              }
+              for (const name of ['DEPLOY_ENVIRONMENT', 'ARTIFACT_NAME', 'CONFIG_PATH']) {
+                if (!process.env[name]?.trim()) throw new Error(`${name} is required for deploy`);
+              }
+            } else {
+              if (!['workflow_run', 'pull_request_target'].includes(context.eventName)) {
+                throw new Error('sync-pr-comment requires a workflow_run or pull_request_target event');
+              }
+              if (!process.env.BUILD_WORKFLOW.trim()) throw new Error('build-workflow is required for sync-pr-comment');
+            }
+
+  deploy:
+    name: Cloudflare ${{ inputs.mode }}
+    needs: validate
+    if: inputs.operation == 'deploy'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions: {}
+    environment:
+      name: ${{ inputs.environment }}
+      deployment: false
+    outputs:
+      deployment-url: ${{ steps.wrangler.outputs.deployment-url }}
+      preview-url: ${{ steps.wrangler.outputs.preview-url }}
+      preview-build-url: ${{ steps.wrangler.outputs.preview-deployment-url }}
+      preview-name: ${{ steps.wrangler.outputs.preview-name }}
+    steps:
+      - name: Validate Deployment Inputs
+        id: command
+        uses: actions/github-script@v9
+        env:
+          MODE: ${{ inputs.mode }}
+          CONFIG_PATH: ${{ inputs.config-path }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        with:
+          script: |
+            const mode = process.env.MODE;
+            for (const name of ['CLOUDFLARE_API_TOKEN', 'CLOUDFLARE_ACCOUNT_ID']) {
+              if (!process.env[name]?.trim()) throw new Error(`${name} is required for deploy`);
+            }
+            const config = process.env.CONFIG_PATH;
+            if (!config || /["`$\\\r\n]/.test(config)) {
+              throw new Error('config-path must be a path without shell metacharacters');
+            }
+            core.setOutput('command', `${mode === 'preview' ? 'preview' : 'deploy'} --config "${config}"`);
+
+      - name: Download Worker Build
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-path }}
+
+      - name: Deploy Worker
+        id: wrangler
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: ${{ inputs.wrangler-version }}
+          environment: ${{ inputs.wrangler-environment }}
+          command: ${{ steps.command.outputs.command }}
+
+      - name: Write Preview Links
+        if: inputs.mode == 'preview'
+        uses: actions/github-script@v9
+        env:
+          PREVIEW_URL: ${{ steps.wrangler.outputs.preview-url }}
+          PREVIEW_BUILD_URL: ${{ steps.wrangler.outputs.preview-deployment-url }}
+          PR_COMMENT: ${{ inputs.pr-comment }}
+          WORKER_NAME: ${{ inputs.worker-name }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const path = require('node:path');
+            const links = {
+              sha: context.sha,
+              preview: process.env.PREVIEW_URL,
+              build: process.env.PREVIEW_BUILD_URL,
+              comment: process.env.PR_COMMENT === 'true',
+              worker: process.env.WORKER_NAME,
+            };
+            for (const value of [links.preview, links.build]) {
+              const url = new URL(value);
+              if (url.protocol !== 'https:' || url.username || url.password) {
+                throw new Error('Invalid preview URL');
+              }
+            }
+            fs.writeFileSync(path.join(process.env.RUNNER_TEMP, 'preview-links.json'), JSON.stringify(links));
+
+      - name: Upload Preview Links
+        if: inputs.mode == 'preview'
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ inputs.preview-artifact-name }}
+          path: ${{ runner.temp }}/preview-links.json
+          if-no-files-found: error
+          retention-days: ${{ inputs.preview-retention-days }}
+
+      - name: Add Deployment Summary
+        if: ${{ !cancelled() && steps.wrangler.outcome != 'skipped' }}
+        uses: actions/github-script@v9
+        env:
+          MODE: ${{ inputs.mode }}
+          DEPLOYMENT_STATUS: ${{ steps.wrangler.outcome }}
+          DEPLOYMENT_URL: ${{ steps.wrangler.outputs.deployment-url }}
+          PREVIEW_NAME: ${{ steps.wrangler.outputs.preview-name }}
+          PREVIEW_URL: ${{ steps.wrangler.outputs.preview-url }}
+          PREVIEW_BUILD_URL: ${{ steps.wrangler.outputs.preview-deployment-url }}
+        with:
+          script: |
+            const preview = process.env.MODE === 'preview';
+            const success = process.env.DEPLOYMENT_STATUS === 'success';
+            const escape = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;')
+              .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+            const link = (value, label) => {
+              if (!value) return 'Unavailable';
+              const url = new URL(value);
+              if (url.protocol !== 'https:' || url.username || url.password) {
+                throw new Error('Invalid deployment URL');
+              }
+              return `<a href="${escape(url.href)}">${label}</a>`;
+            };
+            const headers = ['Status', ...(preview ? ['Name'] : []), 'Commit', preview ? 'Preview URL' : 'Deployment URL'];
+            const row = [
+              success ? '✅ Deployment successful!' : '❌ Deployment failed!',
+              ...(preview ? [escape(process.env.PREVIEW_NAME)] : []),
+              context.sha.substring(0, 7),
+              preview
+                ? `${link(process.env.PREVIEW_BUILD_URL, 'Commit Preview URL')}<br><br>${link(process.env.PREVIEW_URL, 'Branch Preview URL')}`
+                : link(process.env.DEPLOYMENT_URL, 'Production URL'),
+            ];
+            await core.summary
+              .addHeading(`Deploying ${preview ? 'Preview' : 'Production'} to Cloudflare Workers`, 2)
+              .addTable([headers.map(data => ({data, header: true})), row.map(data => ({data}))])
+              .write();
+
+  comment:
+    name: Sync Cloudflare Preview Comment
+    needs: [validate, deploy]
+    if: >-
+      !cancelled() && needs.validate.result == 'success' &&
+      ((inputs.operation == 'sync-pr-comment' && needs.deploy.result == 'skipped') ||
+       (inputs.operation == 'deploy' && needs.deploy.result == 'success' &&
+        inputs.mode == 'preview' && inputs.pr-comment &&
+        github.event_name == 'push' && github.ref_type == 'branch'))
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    concurrency:
+      group: cloudflare-preview-comment-${{ github.repository }}-${{ inputs.worker-name }}-${{ github.event.pull_request.head.ref || github.event.workflow_run.head_branch || github.ref_name }}
+      cancel-in-progress: false
+    steps:
+      # Use only API calls and preview metadata. Never check out or execute PR code.
+      - name: Find Preview Build
+        id: build
+        uses: actions/github-script@v9
+        env:
+          OPERATION: ${{ inputs.operation }}
+          BUILD_WORKFLOW: ${{ inputs.build-workflow }}
+          PREVIEW_ARTIFACT_NAME: ${{ inputs.preview-artifact-name }}
+          PR_BASE_BRANCH: ${{ inputs.pr-base-branch }}
+        with:
+          script: |
+            const repo = context.repo;
+            const repository = context.payload.repository;
+            const base = process.env.PR_BASE_BRANCH || repository.default_branch;
+            const direct = process.env.OPERATION === 'deploy';
+            const eventRun = context.payload.workflow_run;
+            const pr = context.payload.pull_request;
+            if (direct) {
+              if (!context.ref.startsWith('refs/heads/')) return;
+            } else if (context.eventName === 'workflow_run') {
+              if (!eventRun || eventRun.event !== 'push' || eventRun.status !== 'completed' ||
+                  eventRun.head_repository?.full_name !== repository.full_name) return;
+            } else if (!pr || pr.state !== 'open' || pr.base.ref !== base ||
+                       pr.head.repo?.full_name !== repository.full_name) {
+              return;
+            }
+            let workflow;
+            let candidates;
+            if (direct) {
+              // The deployment job has uploaded metadata; the overall CI run may still be in progress.
+              const { data: run } = await github.rest.actions.getWorkflowRun({ ...repo, run_id: context.runId });
+              if (run.head_sha !== context.sha || run.head_branch !== context.ref.slice('refs/heads/'.length)) return;
+              workflow = { id: run.workflow_id };
+              candidates = [run];
+            } else {
+              ({ data: workflow } = await github.rest.actions.getWorkflow({
+                ...repo, workflow_id: process.env.BUILD_WORKFLOW,
+              }));
+              if (eventRun) {
+                candidates = [eventRun];
+              } else {
+                candidates = await github.paginate(github.rest.actions.listWorkflowRuns, {
+                  ...repo, workflow_id: workflow.id, event: 'push',
+                  branch: pr.head.ref, head_sha: pr.head.sha, status: 'completed', per_page: 100,
+                });
+                candidates.sort((a, b) => b.run_number - a.run_number || b.run_attempt - a.run_attempt);
+              }
+            }
+            const runs = candidates.filter(run =>
+              run.workflow_id === workflow.id && run.event === 'push' && (direct || run.status === 'completed') &&
+              run.head_repository?.full_name === repository.full_name &&
+              (!pr || (run.head_sha === pr.head.sha && run.head_branch === pr.head.ref))
+            );
+            for (const run of runs) {
+              const prs = await github.paginate(github.rest.pulls.list, {
+                ...repo, state: 'open', base,
+                head: `${repo.owner}:${run.head_branch}`, per_page: 100,
+              });
+              const numbers = prs.filter(pr =>
+                pr.state === 'open' && pr.base.ref === base &&
+                pr.head.repo?.full_name === repository.full_name && pr.head.sha === run.head_sha
+              ).map(pr => pr.number);
+              if (!numbers.length) continue;
+              const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
+                ...repo, run_id: run.id, per_page: 100,
+              });
+              if (!artifacts.some(artifact => artifact.name === process.env.PREVIEW_ARTIFACT_NAME && !artifact.expired)) continue;
+              core.setOutput('run-id', String(run.id));
+              core.setOutput('sha', run.head_sha);
+              core.setOutput('prs', JSON.stringify(numbers));
+              return;
+            }
+      - name: Download Preview Links
+        if: steps.build.outputs.run-id
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ inputs.preview-artifact-name }}
+          path: ${{ runner.temp }}/preview-links
+          run-id: ${{ steps.build.outputs.run-id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update PR Comment
+        if: steps.build.outputs.run-id
+        uses: actions/github-script@v9
+        env:
+          PREVIEW_RUN_ID: ${{ steps.build.outputs.run-id }}
+          PREVIEW_SHA: ${{ steps.build.outputs.sha }}
+          PREVIEW_PRS: ${{ steps.build.outputs.prs }}
+          PR_BASE_BRANCH: ${{ inputs.pr-base-branch }}
+          WORKER_NAME: ${{ inputs.worker-name }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const path = require('node:path');
+            const links = JSON.parse(fs.readFileSync(path.join(process.env.RUNNER_TEMP, 'preview-links/preview-links.json'), 'utf8'));
+            if (links.sha !== process.env.PREVIEW_SHA) throw new Error('Preview commit does not match the build');
+            if (links.comment === false) return;
+            if (links.worker !== undefined && links.worker !== process.env.WORKER_NAME) {
+              throw new Error('Preview Worker does not match the Cloudflare integration configuration');
+            }
+            const safeUrl = value => {
+              const url = new URL(value);
+              if (url.protocol !== 'https:' || url.username || url.password) throw new Error('Invalid preview URL');
+              return url.href.replaceAll('(', '%28').replaceAll(')', '%29');
+            };
+            const worker = process.env.WORKER_NAME;
+            const marker = worker ? `<!-- cloudflare-preview:${worker} -->` : '<!-- cloudflare-preview -->';
+            const title = worker ? `Cloudflare preview for ${worker} is ready` : 'Cloudflare preview is ready';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${process.env.PREVIEW_RUN_ID}`;
+            const body = [
+              marker,
+              `**${title}**`,
+              '',
+              `- [Latest branch preview](${safeUrl(links.preview)})`,
+              `- [This build](${safeUrl(links.build)}) · commit \`${links.sha.slice(0, 7)}\``,
+              `- [CI run and job summaries](${runUrl})`,
+            ].join('\n');
+            for (const issue_number of JSON.parse(process.env.PREVIEW_PRS)) {
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                ...context.repo, issue_number, per_page: 100,
+              });
+              const existing = comments.find(comment =>
+                comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker)
+              );
+              if (existing?.body === body) continue;
+              // Recheck after reading comments, immediately before writing.
+              const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: issue_number });
+              const base = process.env.PR_BASE_BRANCH || context.payload.repository.default_branch;
+              if (pr.state !== 'open' || pr.base.ref !== base || pr.head.sha !== links.sha ||
+                  pr.head.repo?.full_name !== context.payload.repository.full_name) continue;
+              if (existing) {
+                await github.rest.issues.updateComment({ ...context.repo, comment_id: existing.id, body });
+              } else {
+                await github.rest.issues.createComment({ ...context.repo, issue_number, body });
+              }
+            }

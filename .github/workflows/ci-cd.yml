@@ -92,9 +92,15 @@ jobs:
     name: Deploy Preview
     needs: [validation, build]
     if: github.event_name == 'push' && github.ref_type == 'branch' && github.ref != 'refs/heads/main'
-    uses: ./.github/workflows/cloudflare-deploy.yml
+    permissions:
+      actions: read
+      pull-requests: write
+    uses: ./.github/workflows/cloudflare.yml
     with:
+      operation: deploy
       mode: preview
+      pr-comment: true
+      pr-base-branch: main
       environment: preview
       artifact-name: worker-build
       artifact-path: dist/
@@ -108,8 +114,9 @@ jobs:
     name: Deploy Production
     needs: [validation, build]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/cloudflare-deploy.yml
+    uses: ./.github/workflows/cloudflare.yml
     with:
+      operation: deploy
       mode: production
       environment: production
       artifact-name: worker-build
