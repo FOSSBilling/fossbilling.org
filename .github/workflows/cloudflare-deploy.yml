@@ -36,7 +36,7 @@ on:
         type: string
       preview-retention-days:
         description: Retention period for preview metadata used by PR comments.
-        default: 30
+        default: 7
         type: number
     secrets:
       CLOUDFLARE_API_TOKEN:
