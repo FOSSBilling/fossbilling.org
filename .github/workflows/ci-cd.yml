@@ -81,90 +81,28 @@ jobs:
     name: Deploy Preview
     needs: [validation, build]
     if: github.event_name == 'push' && github.ref_type == 'branch' && github.ref != 'refs/heads/main'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-    environment:
-      name: preview
-      deployment: false
-
-    steps:
-      - name: Download Worker Build
-        uses: actions/download-artifact@v8
-        with:
-          name: worker-build
-          path: dist/
-
-      - name: Deploy Worker Preview
-        id: preview
-        uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: preview --config dist/server/wrangler.json
-
-      - name: Add Preview Links to Summary
-        uses: actions/github-script@v9
-        env:
-          PREVIEW_NAME: ${{ steps.preview.outputs.preview-name }}
-          PREVIEW_URL: ${{ steps.preview.outputs.preview-url }}
-          PREVIEW_BUILD_URL: ${{ steps.preview.outputs.preview-deployment-url }}
-          PREVIEW_STATUS: ${{ steps.preview.outcome }}
-        with:
-          script: |
-            const fs = require('node:fs');
-            const path = require('node:path');
-            const previewLinks = {
-              sha: context.sha,
-              preview: process.env.PREVIEW_URL,
-              build: process.env.PREVIEW_BUILD_URL,
-            };
-            fs.writeFileSync(path.join(process.env.RUNNER_TEMP, 'preview-links.json'), JSON.stringify(previewLinks));
-            const tableData = [
-              [
-                {data: 'Status', header: true},
-                {data: 'Name', header: true},
-                {data: 'Commit', header: true},
-                {data: 'Preview URL', header: true},
-              ],
-              [
-                {data: process.env.PREVIEW_STATUS === 'success' ? '✅ Deployment successful!' : '❌ Deployment failed!'},
-                {data: process.env.PREVIEW_NAME},
-                {data: context.sha.substring(0, 7)},
-                {data: '<a href="' + previewLinks.build + '">Commit Preview URL</a><br><br><a href="' + previewLinks.preview + '">Branch Preview URL</a>'},
-              ],
-            ];
-            await core.summary
-              .addHeading('Deploying Preview to Cloudflare Workers', 2)
-              .addTable(tableData)
-              .write();
-
-      - name: Upload Preview Links
-        uses: actions/upload-artifact@v7
-        with:
-          name: preview-links
-          path: ${{ runner.temp }}/preview-links.json
-          if-no-files-found: error
-          retention-days: 30
+    uses: ./.github/workflows/cloudflare-deploy.yml
+    with:
+      mode: preview
+      environment: preview
+      artifact-name: worker-build
+      artifact-path: dist/
+      config-path: dist/server/wrangler.json
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
   deploy:
     name: Deploy Production
     needs: [validation, build]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    environment:
-      name: production
-      deployment: false
-    steps:
-      - uses: actions/download-artifact@v8
-        with:
-          name: worker-build
-          path: dist/
-      - name: Deploy Worker
-        uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --config dist/server/wrangler.json
+    uses: ./.github/workflows/cloudflare-deploy.yml
+    with:
+      mode: production
+      environment: production
+      artifact-name: worker-build
+      artifact-path: dist/
+      config-path: dist/server/wrangler.json
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
