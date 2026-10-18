@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
 import { getLatestStableRelease } from '../src/lib/releases.ts';
+import type { Release } from '../src/lib/releases.ts';
 
 const originalFetch = globalThis.fetch;
 afterEach(() => {
@@ -8,7 +9,10 @@ afterEach(() => {
 });
 const version = '0.8.8';
 const github = `https://github.com/FOSSBilling/FOSSBilling/releases/download/${version}`;
-const fixture = (download_url, overrides = {}) => ({
+const fixture = (
+  download_url: string,
+  overrides: Partial<Release> = {},
+): Release => ({
   version,
   released_on: '2026-01-01',
   minimum_php_version: '8.2',
@@ -17,14 +21,12 @@ const fixture = (download_url, overrides = {}) => ({
   is_prerelease: false,
   ...overrides,
 });
-function mockReleases(...releases) {
-  globalThis.fetch = async () => ({
-    ok: true,
-    json: async () => ({
+function mockReleases(...releases: Release[]) {
+  globalThis.fetch = async () =>
+    Response.json({
       error_code: 0,
       result: Object.fromEntries(releases.map((r, i) => [i, r])),
-    }),
-  });
+    });
 }
 
 for (const url of [
@@ -121,11 +123,9 @@ for (const unsafeVersion of [
 }
 
 test('retains API error semantics', async () => {
-  globalThis.fetch = async () => ({
-    ok: true,
-    json: async () => ({ error_code: 7, result: {} }),
-  });
+  globalThis.fetch = async () => Response.json({ error_code: 7, result: {} });
   const result = await getLatestStableRelease();
   assert.equal(result.release, null);
+  assert.ok(result.error);
   assert.equal(result.error.message, 'API returned error code: 7');
 });
