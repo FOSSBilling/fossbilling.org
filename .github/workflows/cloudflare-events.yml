@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   comment:
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@f18365988842dc13681da488f75574a0d25654c3 # main
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@60b8d571c21b960e740cec32d684abdc5253665b # main
     with:
       operation: sync-pr-comment
       build-workflow: ci-cd.yml
