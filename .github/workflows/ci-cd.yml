@@ -83,15 +83,16 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: worker-build
+          overwrite: true
           path: dist/
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 1
 
   preview:
-    name: Deploy Preview
+    name: Cloudflare Preview
     needs: [validation, build]
-    if: github.event_name == 'push' && github.ref_type == 'branch' && github.ref != 'refs/heads/main'
+    if: ${{ !cancelled() && github.event_name == 'push' && github.ref_type == 'branch' && github.ref != 'refs/heads/main' }}
     permissions:
       actions: read
       pull-requests: write
@@ -99,6 +100,8 @@ jobs:
     with:
       operation: deploy
       mode: preview
+      build-result: ${{ needs.build.result }}
+      checks-result: ${{ needs.validation.result }}
       pr-comment: true
       pr-base-branch: main
       environment: preview

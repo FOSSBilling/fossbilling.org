@@ -14,6 +14,14 @@ on:
       mode:
         description: Deployment mode (preview or production).
         type: string
+      build-result:
+        description: Result of the caller's build job; failed builds are recorded without deploying.
+        default: success
+        type: string
+      checks-result:
+        description: Result of the caller's validation job; deployment requires success.
+        default: success
+        type: string
       environment:
         description: GitHub environment for secrets and protection rules.
         type: string
@@ -36,7 +44,7 @@ on:
         type: string
       pr-comment:
         description: >-
-          Comment on matching same-repository PRs after a preview deployment
+          Maintain comments on matching same-repository PRs for preview build and deployment attempts
           (requires actions: read and pull-requests: write in the caller).
         default: false
         type: boolean
@@ -49,7 +57,7 @@ on:
         default: ''
         type: string
       preview-artifact-name:
-        description: Preview metadata artifact name; use a unique name for each Worker in a run.
+        description: Preview metadata artifact base name; each attempt adds a suffix. Use a unique base for each Worker.
         default: preview-links
         type: string
       preview-retention-days:
@@ -91,6 +99,8 @@ jobs:
         env:
           OPERATION: ${{ inputs.operation }}
           MODE: ${{ inputs.mode }}
+          BUILD_RESULT: ${{ inputs.build-result }}
+          CHECKS_RESULT: ${{ inputs.checks-result }}
           DEPLOY_ENVIRONMENT: ${{ inputs.environment }}
           ARTIFACT_NAME: ${{ inputs.artifact-name }}
           CONFIG_PATH: ${{ inputs.config-path }}
@@ -106,6 +116,11 @@ jobs:
               throw new Error('worker-name must contain only letters, numbers, underscores, or hyphens');
             }
             if (operation === 'deploy') {
+              for (const name of ['BUILD_RESULT', 'CHECKS_RESULT']) {
+                if (!['success', 'failure', 'skipped', 'cancelled'].includes(process.env[name])) {
+                  throw new Error(`${name} must be success, failure, skipped, or cancelled`);
+                }
+              }
               if (!['preview', 'production'].includes(process.env.MODE)) {
                 throw new Error('mode must be preview or production for deploy');
               }
@@ -122,7 +137,7 @@ jobs:
   deploy:
     name: Cloudflare ${{ inputs.mode }}
     needs: validate
-    if: inputs.operation == 'deploy'
+    if: inputs.operation == 'deploy' && inputs.build-result == 'success' && inputs.checks-result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions: {}
@@ -130,6 +145,7 @@ jobs:
       name: ${{ inputs.environment }}
       deployment: false
     outputs:
+      wrangler-result: ${{ steps.wrangler.outcome }}
       deployment-url: ${{ steps.wrangler.outputs.deployment-url }}
       preview-url: ${{ steps.wrangler.outputs.preview-url }}
       preview-build-url: ${{ steps.wrangler.outputs.preview-deployment-url }}
@@ -171,42 +187,6 @@ jobs:
           environment: ${{ inputs.wrangler-environment }}
           command: ${{ steps.command.outputs.command }}
 
-      - name: Write Preview Links
-        if: inputs.mode == 'preview'
-        uses: actions/github-script@v9
-        env:
-          PREVIEW_URL: ${{ steps.wrangler.outputs.preview-url }}
-          PREVIEW_BUILD_URL: ${{ steps.wrangler.outputs.preview-deployment-url }}
-          PR_COMMENT: ${{ inputs.pr-comment }}
-          WORKER_NAME: ${{ inputs.worker-name }}
-        with:
-          script: |
-            const fs = require('node:fs');
-            const path = require('node:path');
-            const links = {
-              sha: context.sha,
-              preview: process.env.PREVIEW_URL,
-              build: process.env.PREVIEW_BUILD_URL,
-              comment: process.env.PR_COMMENT === 'true',
-              worker: process.env.WORKER_NAME,
-            };
-            for (const value of [links.preview, links.build]) {
-              const url = new URL(value);
-              if (url.protocol !== 'https:' || url.username || url.password) {
-                throw new Error('Invalid preview URL');
-              }
-            }
-            fs.writeFileSync(path.join(process.env.RUNNER_TEMP, 'preview-links.json'), JSON.stringify(links));
-
-      - name: Upload Preview Links
-        if: inputs.mode == 'preview'
-        uses: actions/upload-artifact@v7
-        with:
-          name: ${{ inputs.preview-artifact-name }}
-          path: ${{ runner.temp }}/preview-links.json
-          if-no-files-found: error
-          retention-days: ${{ inputs.preview-retention-days }}
-
       - name: Add Deployment Summary
         if: ${{ !cancelled() && steps.wrangler.outcome != 'skipped' }}
         uses: actions/github-script@v9
@@ -245,15 +225,68 @@ jobs:
               .addTable([headers.map(data => ({data, header: true})), row.map(data => ({data}))])
               .write();
 
-  comment:
-    name: Sync Cloudflare Preview Comment
+  preview:
+    name: Record Cloudflare Preview Attempt
     needs: [validate, deploy]
     if: >-
       !cancelled() && needs.validate.result == 'success' &&
-      ((inputs.operation == 'sync-pr-comment' && needs.deploy.result == 'skipped') ||
-       (inputs.operation == 'deploy' && needs.deploy.result == 'success' &&
-        inputs.mode == 'preview' && inputs.pr-comment &&
-        github.event_name == 'push' && github.ref_type == 'branch'))
+      inputs.operation == 'deploy' && inputs.mode == 'preview' &&
+      github.event_name == 'push' && github.ref_type == 'branch'
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Write Preview Metadata
+        uses: actions/github-script@v9
+        env:
+          PREVIEW_URL: ${{ needs.deploy.outputs.preview-url }}
+          PREVIEW_BUILD_URL: ${{ needs.deploy.outputs.preview-build-url }}
+          BUILD_RESULT: ${{ inputs.build-result }}
+          CHECKS_RESULT: ${{ inputs.checks-result }}
+          DEPLOY_RESULT: ${{ needs.deploy.outputs.wrangler-result == 'success' && 'success' || needs.deploy.result }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          PR_COMMENT: ${{ inputs.pr-comment }}
+          WORKER_NAME: ${{ inputs.worker-name }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const path = require('node:path');
+            const success = process.env.DEPLOY_RESULT === 'success';
+            const links = {
+              sha: context.sha,
+              preview: success ? process.env.PREVIEW_URL : null,
+              build: success ? process.env.PREVIEW_BUILD_URL : null,
+              buildResult: process.env.BUILD_RESULT,
+              checksResult: process.env.CHECKS_RESULT,
+              deploymentResult: process.env.DEPLOY_RESULT,
+              attempt: Number(process.env.RUN_ATTEMPT),
+              comment: process.env.PR_COMMENT === 'true',
+              worker: process.env.WORKER_NAME,
+              updatedAt: new Date().toISOString(),
+            };
+            for (const value of success ? [links.preview, links.build] : []) {
+              const url = new URL(value);
+              if (url.protocol !== 'https:' || url.username || url.password) {
+                throw new Error('Invalid preview URL');
+              }
+            }
+            fs.writeFileSync(path.join(process.env.RUNNER_TEMP, 'preview-links.json'), JSON.stringify(links));
+
+      - name: Upload Preview Metadata
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ inputs.preview-artifact-name }}-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/preview-links.json
+          if-no-files-found: error
+          retention-days: ${{ inputs.preview-retention-days }}
+
+  comment:
+    name: Sync Cloudflare Preview Comment
+    needs: [validate, deploy, preview]
+    if: >-
+      !cancelled() && needs.validate.result == 'success' &&
+      ((inputs.operation == 'sync-pr-comment' && needs.preview.result == 'skipped') ||
+       (inputs.operation == 'deploy' && needs.preview.result == 'success' && inputs.pr-comment))
     runs-on: ubuntu-slim
     timeout-minutes: 10
     concurrency:
@@ -289,7 +322,7 @@ jobs:
             let workflow;
             let candidates;
             if (direct) {
-              // The deployment job has uploaded metadata; the overall CI run may still be in progress.
+              // The preview attempt has published metadata; the overall CI run may still be in progress.
               const { data: run } = await github.rest.actions.getWorkflowRun({ ...repo, run_id: context.runId });
               if (run.head_sha !== context.sha || run.head_branch !== context.ref.slice('refs/heads/'.length)) return;
               workflow = { id: run.workflow_id };
@@ -303,13 +336,13 @@ jobs:
               } else {
                 candidates = await github.paginate(github.rest.actions.listWorkflowRuns, {
                   ...repo, workflow_id: workflow.id, event: 'push',
-                  branch: pr.head.ref, head_sha: pr.head.sha, status: 'completed', per_page: 100,
+                  branch: pr.head.ref, head_sha: pr.head.sha, per_page: 100,
                 });
                 candidates.sort((a, b) => b.run_number - a.run_number || b.run_attempt - a.run_attempt);
               }
             }
             const runs = candidates.filter(run =>
-              run.workflow_id === workflow.id && run.event === 'push' && (direct || run.status === 'completed') &&
+              run.workflow_id === workflow.id && run.event === 'push' &&
               run.head_repository?.full_name === repository.full_name &&
               (!pr || (run.head_sha === pr.head.sha && run.head_branch === pr.head.ref))
             );
@@ -326,7 +359,19 @@ jobs:
               const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
                 ...repo, run_id: run.id, per_page: 100,
               });
-              if (!artifacts.some(artifact => artifact.name === process.env.PREVIEW_ARTIFACT_NAME && !artifact.expired)) continue;
+              const artifactName = process.env.PREVIEW_ARTIFACT_NAME;
+              const prefix = `${artifactName}-attempt-`;
+              // Delayed events must not read a later attempt; comment-only reruns may reuse earlier metadata.
+              const available = artifacts.filter(artifact => !artifact.expired).map(artifact => ({
+                artifact,
+                attempt: artifact.name === artifactName ? 0 :
+                  (artifact.name.startsWith(prefix) ? Number(artifact.name.slice(prefix.length)) : NaN),
+              })).filter(entry => Number.isInteger(entry.attempt) && entry.attempt >= 0 && entry.attempt <= run.run_attempt);
+              available.sort((a, b) => b.attempt - a.attempt);
+              const selected = available[0];
+              if (!selected) continue;
+              core.setOutput('artifact-id', String(selected.artifact.id));
+              core.setOutput('attempt', selected.attempt ? String(selected.attempt) : '');
               core.setOutput('run-id', String(run.id));
               core.setOutput('sha', run.head_sha);
               core.setOutput('prs', JSON.stringify(numbers));
@@ -336,7 +381,7 @@ jobs:
         if: steps.build.outputs.run-id
         uses: actions/download-artifact@v8
         with:
-          name: ${{ inputs.preview-artifact-name }}
+          artifact-ids: ${{ steps.build.outputs.artifact-id }}
           path: ${{ runner.temp }}/preview-links
           run-id: ${{ steps.build.outputs.run-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -346,6 +391,7 @@ jobs:
         env:
           PREVIEW_RUN_ID: ${{ steps.build.outputs.run-id }}
           PREVIEW_SHA: ${{ steps.build.outputs.sha }}
+          PREVIEW_ATTEMPT: ${{ steps.build.outputs.attempt }}
           PREVIEW_PRS: ${{ steps.build.outputs.prs }}
           PR_BASE_BRANCH: ${{ inputs.pr-base-branch }}
           WORKER_NAME: ${{ inputs.worker-name }}
@@ -362,20 +408,48 @@ jobs:
             const safeUrl = value => {
               const url = new URL(value);
               if (url.protocol !== 'https:' || url.username || url.password) throw new Error('Invalid preview URL');
-              return url.href.replaceAll('(', '%28').replaceAll(')', '%29');
+              return url.href.replaceAll('(', '%28').replaceAll(')', '%29').replaceAll('|', '%7C');
             };
             const worker = process.env.WORKER_NAME;
             const marker = worker ? `<!-- cloudflare-preview:${worker} -->` : '<!-- cloudflare-preview -->';
-            const title = worker ? `Cloudflare preview for ${worker} is ready` : 'Cloudflare preview is ready';
+            const title = `🚀 Deploying Preview to Cloudflare${worker ? ` (${worker})` : ''} 🚀`;
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${process.env.PREVIEW_RUN_ID}`;
-            const body = [
-              marker,
-              `**${title}**`,
-              '',
-              `- [Latest branch preview](${safeUrl(links.preview)})`,
-              `- [This build](${safeUrl(links.build)}) · commit \`${links.sha.slice(0, 7)}\``,
-              `- [CI run and job summaries](${runUrl})`,
-            ].join('\n');
+            const buildResult = links.buildResult ?? 'success';
+            const checksResult = links.checksResult ?? 'success';
+            const deploymentResult = links.deploymentResult ?? 'success';
+            for (const result of [buildResult, checksResult, deploymentResult]) {
+              if (!['success', 'failure', 'skipped', 'cancelled'].includes(result)) throw new Error('Invalid preview result');
+            }
+            const success = deploymentResult === 'success';
+            if (success && (buildResult !== 'success' || checksResult !== 'success')) {
+              throw new Error('A successful deployment requires successful build and checks');
+            }
+            const branchUrl = success ? safeUrl(links.preview) : null;
+            const buildUrl = success ? safeUrl(links.build) : null;
+            const repoUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}`;
+            const timestamp = links.updatedAt;
+            const updatedAt = timestamp === undefined ? '—' : new Date(timestamp).toISOString();
+            const attempt = links.attempt ?? 1;
+            if (!Number.isInteger(attempt) || attempt < 1) throw new Error('Invalid run attempt');
+            if (process.env.PREVIEW_ATTEMPT && attempt !== Number(process.env.PREVIEW_ATTEMPT)) {
+              throw new Error('Preview attempt does not match its metadata artifact');
+            }
+            const attemptKey = `<!-- cloudflare-preview-run:${process.env.PREVIEW_RUN_ID}:${attempt} -->`;
+            const logsUrl = links.attempt === undefined ? runUrl : `${runUrl}/attempts/${attempt}`;
+            const status = result => ({success: 'Success ✅', failure: 'Failed ❌', skipped: 'Not run ⏭️', cancelled: 'Cancelled ⏹️'})[result];
+            const rowFor = (sha, build, run, updated = '—', results = {}, key = '') => {
+              const buildStatus = results.build ?? 'success';
+              const checksStatus = results.checks ?? 'success';
+              const deploymentStatus = results.deployment ?? 'success';
+              const state = `**Build:** ${status(buildStatus)}` +
+                (checksStatus === 'success' ? '' : `<br>**Checks:** ${status(checksStatus)}`) +
+                `<br>**Deployment:** ${status(deploymentStatus)}`;
+              const url = build ? safeUrl(build) : null;
+              return `| ${state} | ${url ? `[${url}](${url})` : '—'} | [\`${sha.slice(0, 7)}\`](${repoUrl}/commit/${sha}) | ${updated} | [View logs ↗](${safeUrl(run)}) ${key} |`;
+            };
+            const latestRow = rowFor(links.sha, buildUrl, logsUrl, updatedAt,
+              {build: buildResult, checks: checksResult, deployment: deploymentResult}, attemptKey);
+            const omittedNotice = 'Older deployments omitted to fit the comment size limit.';
             for (const issue_number of JSON.parse(process.env.PREVIEW_PRS)) {
               const comments = await github.paginate(github.rest.issues.listComments, {
                 ...context.repo, issue_number, per_page: 100,
@@ -383,7 +457,53 @@ jobs:
               const existing = comments.find(comment =>
                 comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker)
               );
-              if (existing?.body === body) continue;
+              const previous = existing?.body || '';
+              const rows = previous.split('\n').filter(line => line.startsWith('| **Build:**') && line.endsWith(' |'));
+              // Preserve the previous build when migrating from the original bullet-list comment.
+              const legacyBuild = previous.match(/^- \[This build\]\((https:\/\/[^)\s]+)\) · commit `([a-f0-9]{7,40})`$/m);
+              const legacyRun = previous.match(/^- \[CI run and job summaries\]\((https:\/\/[^)\s]+)\)$/m);
+              if (legacyBuild && legacyRun) {
+                rows.push(rowFor(legacyBuild[2], legacyBuild[1], legacyRun[1]));
+              }
+              const index = rows.findIndex(row => row.includes(attemptKey) ||
+                (buildUrl && !row.includes('<!-- cloudflare-preview-run:') &&
+                 row.includes(`](${buildUrl})`) && row.includes(`](${runUrl})`) && attempt === 1));
+              if (index === -1) rows.unshift(latestRow);
+              else rows[index] = latestRow;
+              const rowTime = row => Date.parse(row.split(' | ')[3]) || 0;
+              rows.sort((a, b) => rowTime(b) - rowTime(a));
+              let previewHeader = previous.split('\n').find(line => line.startsWith('### Preview URL: ['));
+              if (success) {
+                previewHeader = `### Preview URL: [${branchUrl}](${branchUrl}) (commit [\`${links.sha.slice(0, 7)}\`](${repoUrl}/commit/${links.sha}))`;
+              }
+              if (!previewHeader && !success) {
+                const legacyPreview = previous.match(/^(?:- )?\[Latest branch preview\]\((https:\/\/[^)\s]+)\)$/m);
+                if (legacyPreview) previewHeader = `### Preview URL: [${safeUrl(legacyPreview[1])}](${safeUrl(legacyPreview[1])})`;
+              }
+              let omitted = previous.includes(omittedNotice);
+              const render = () => [
+                marker,
+                `## ${title}`,
+                '',
+                previewHeader || '### No successful preview deployment recorded yet',
+                '',
+                previewHeader ? 'This URL reflects your latest successful Preview deployment.' : 'Build and deployment attempts are listed below.',
+                '',
+                '### Preview Deployments by commit',
+                '',
+                '| Status | Deployment URL | Commit | Updated (UTC) | Details |',
+                '| --- | --- | --- | --- | --- |',
+                ...rows,
+                ...(omitted ? ['', omittedNotice] : []),
+              ].join('\n');
+              let body = render();
+              // Keep the latest builds within GitHub's comment size limit.
+              while (body.length > 60000 && rows.length > 1) {
+                rows.pop();
+                omitted = true;
+                body = render();
+              }
+              if (previous === body) continue;
               // Recheck after reading comments, immediately before writing.
               const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: issue_number });
               const base = process.env.PR_BASE_BRANCH || context.payload.repository.default_branch;
