@@ -1,4 +1,5 @@
 # fossbilling.org
+
 [![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling.org/main)](https://github.com/fossbilling/fossbilling.org/actions/workflows)
 
 FOSSBilling's website. Built with Astro, deployed to Cloudflare Workers, and available at [fossbilling.org](https://fossbilling.org).
@@ -27,15 +28,26 @@ This command starts a local development server at `http://localhost:4321`. Most 
 - `npm run build`: production build
 - `npm run preview`: preview the production build locally
 - `npm run check`: TypeScript & Astro diagnostics (CI uses this)
+- `npm test`: run the release metadata tests (CI uses this)
 - `npm run format`: format source with Prettier
 - `npm run format:check`: verify formatting without writing
 - `npm run cf-typegen`: generate Cloudflare env types in `worker-configuration.d.ts`
-- `npm run deploy`: deploy to Cloudflare Workers and promote to production traffic (requires Wrangler auth)
-- `npm run upload`: upload a new Worker version to Cloudflare without promoting it to production traffic (requires Wrangler auth)
+- `npm run cf-deploy`: deploy to Cloudflare Workers and promote to production traffic (requires Wrangler auth)
+- `npm run cf-preview`: deploy a Worker Preview for the current branch (requires Wrangler auth)
 
-## Deployment Notes
+## Deployment
 
-The site is built by Astro into `dist/` and deployed to Cloudflare Workers using Wrangler. The site uses `output: 'static'` with Server Islands for dynamic content (GitHub star count, release version info). Redirects and security headers are configured via `public/_redirects` and `public/_headers`, which are served as static assets. Cloudflare Workers Builds runs `npm run deploy` on the production branch and `npm run upload` on preview branches; use the same commands locally after configuring Wrangler for your Cloudflare account.
+[CI](.github/workflows/ci-cd.yml) runs formatting, Astro/TypeScript checks, tests, and a build on branch pushes and PRs targeting `main`. Deployment requires checks and build to pass.
+
+- `main` deploys to production at [fossbilling.org](https://fossbilling.org).
+- Other branches deploy previews. Matching PRs receive a comment with preview links and build/deployment history.
+- PR runs validate changes without deploying; forks receive no deployment credentials.
+
+Deployments use the shared workflow in [FOSSBilling/.workflows](https://github.com/FOSSBilling/.workflows). The local [Cloudflare Events](.github/workflows/cloudflare-events.yml) workflow keeps PR comments in sync. Renovate updates the pinned workflow references together.
+
+Configure the `production` and `preview` GitHub environments and the Actions secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Manage runtime secrets in Cloudflare, including Previews Base settings. Keep Cloudflare Workers Builds disabled to avoid duplicate deployments.
+
+To deploy locally, authenticate Wrangler, run `npm run build`, then `npm run cf-deploy` or `npm run cf-preview`.
 
 ### OpenGraph Image Generation
 

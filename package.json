@@ -6,8 +6,8 @@
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "cf-typegen": "wrangler types",
-    "deploy": "wrangler deploy",
-    "upload": "wrangler versions upload",
+    "cf-deploy": "wrangler deploy",
+    "cf-preview": "wrangler preview",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
@@ -32,7 +32,8 @@
     "@types/node": "^24.13.3",
     "prettier": "^3.9.5",
     "prettier-plugin-astro": "^1.0.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "wrangler": "^4.149.0"
   },
   "allowScripts": {
     "esbuild": true,

@@ -1,0 +1,131 @@
+name: CI/CD
+
+on:
+  push:
+  pull_request:
+    branches: main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  validation:
+    name: Validation
+    runs-on: ubuntu-slim
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        id: dependencies
+        run: npm ci
+
+      - name: Check Formatting
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: npm run format:check
+
+      - name: Astro Checks
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: npm run check
+
+      - name: Run Tests
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: npm test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      wrangler-version: ${{ steps.wrangler-version.outputs.version }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Read Wrangler Version
+        id: wrangler-version
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const { version } = require('./node_modules/wrangler/package.json');
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `version=${version}\n`);
+          NODE
+
+      - name: Build
+        run: npm run build
+
+      - name: Validate Worker Deployment
+        run: npm run cf-deploy -- --dry-run --config dist/server/wrangler.json
+
+      - name: Upload Worker Build
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v7
+        with:
+          name: worker-build
+          overwrite: true
+          path: dist/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+
+  preview:
+    name: Cloudflare Preview
+    needs: [validation, build]
+    if: ${{ !cancelled() && github.event_name == 'push' && github.ref_type == 'branch' && github.ref != 'refs/heads/main' }}
+    permissions:
+      actions: read
+      pull-requests: write
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@728ec77eefcd5407e6ad4388f8fa9e550b2e38b1 # main
+    with:
+      operation: deploy
+      mode: preview
+      build-result: ${{ needs.build.result }}
+      checks-result: ${{ needs.validation.result }}
+      pr-comment: true
+      pr-base-branch: main
+      environment: preview
+      artifact-name: worker-build
+      artifact-path: dist/
+      config-path: dist/server/wrangler.json
+      wrangler-version: ${{ needs.build.outputs.wrangler-version }}
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  deploy:
+    name: Deploy Production
+    needs: [validation, build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@728ec77eefcd5407e6ad4388f8fa9e550b2e38b1 # main
+    with:
+      operation: deploy
+      mode: production
+      environment: production
+      artifact-name: worker-build
+      artifact-path: dist/
+      config-path: dist/server/wrangler.json
+      wrangler-version: ${{ needs.build.outputs.wrangler-version }}
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

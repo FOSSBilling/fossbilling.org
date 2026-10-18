@@ -15,10 +15,12 @@ reviews:
   architecture_diagrams: false
   external_contributors_require_manual_review: true
   resolve_threads_when_addressed: true
+  merge_confidence_summary: false
   auto_approve_behavior: live
   auto_approve: low_risk_only
   auto_approve_rules:
     exclude_external_contributors: true
+    allow_open_issues: none
   auto_ultrareview: disabled
   ignore:
     head_branches:
@@ -37,5 +39,4 @@ issues:
   fix_with_cubic_buttons: true
   pr_comment_fixes: true
   fix_commits_to_pr: true
-  auto_fix_sign_commits: true
   coding_agent_provider: cubic

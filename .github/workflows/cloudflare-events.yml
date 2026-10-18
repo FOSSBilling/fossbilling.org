@@ -1,0 +1,21 @@
+name: Cloudflare Events
+
+on:
+  workflow_run:
+    workflows: ['CI/CD']
+    types: [completed]
+  pull_request_target:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  actions: read
+  pull-requests: write
+
+jobs:
+  comment:
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@728ec77eefcd5407e6ad4388f8fa9e550b2e38b1 # main
+    with:
+      operation: sync-pr-comment
+      build-workflow: ci-cd.yml
+      pr-base-branch: main
