@@ -9,12 +9,13 @@ on:
     types: [opened, reopened, synchronize]
 
 permissions:
+  contents: read
   actions: read
   pull-requests: write
 
 jobs:
   comment:
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@99d34fa9d93cf55d46adaa3babc715e9c76957ec # main
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@384ecc11e315c77cf3d6abb947e859ce62b38cf5 # main
     with:
       operation: sync-pr-comment
       build-workflow: ci-cd.yml
