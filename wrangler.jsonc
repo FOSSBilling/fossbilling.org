@@ -30,5 +30,6 @@
     "directory": "./dist",
     "binding": "ASSETS",
     "html_handling": "force-trailing-slash"
-  }
+  },
+  "previews": {}
 }
