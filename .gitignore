@@ -28,8 +28,9 @@ pnpm-debug.log*
 .claude/
 .opencode/
 
-# wrangler files
+# cloudflare cli files
 .wrangler/
+.cloudflare/
 
 # typecheck
 tsconfig.tsbuildinfo
