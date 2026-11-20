@@ -5,9 +5,8 @@
   "author": "FOSSBilling",
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
-    "cf-typegen": "wrangler types",
-    "cf-deploy": "wrangler deploy",
-    "cf-preview": "wrangler preview",
+    "cf-deploy": "cf deploy",
+    "cf-preview": "cf previews deploy",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
@@ -18,7 +17,6 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
-    "@astrojs/cloudflare": "^14.1.2",
     "@astrojs/sitemap": "^3.7.3",
     "@lucide/astro": "^1.24.0",
     "@tailwindcss/vite": "^4.3.2",
@@ -28,12 +26,14 @@
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
+    "@astrojs/cloudflare": "^15.0.0-beta.6",
+    "@cloudflare/vite-plugin": "^2.0.0-rc.3",
     "@resvg/resvg-js": "2.6.2",
     "@types/node": "26.6.6",
+    "cf": "^1.0.0-rc.2",
     "prettier": "3.10.1",
     "prettier-plugin-astro": "1.1.2",
-    "typescript": "6.0.3",
-    "wrangler": "4.158.0"
+    "typescript": "6.0.3"
   },
   "allowScripts": {
     "esbuild": true,

@@ -31,9 +31,8 @@ This command starts a local development server at `http://localhost:4321`. Most 
 - `npm test`: run the release metadata tests (CI uses this)
 - `npm run format`: format source with Prettier
 - `npm run format:check`: verify formatting without writing
-- `npm run cf-typegen`: generate Cloudflare env types in `worker-configuration.d.ts`
-- `npm run cf-deploy`: deploy to Cloudflare Workers and promote to production traffic (requires Wrangler auth)
-- `npm run cf-preview`: deploy a Worker Preview for the current branch (requires Wrangler auth)
+- `npm run cf-deploy`: deploy to Cloudflare Workers and promote to production traffic with the Cloudflare CLI (`cf auth login`)
+- `npm run cf-preview`: deploy a Worker Preview for the current branch with `cf previews deploy` (`cf auth login`)
 
 ## Deployment
 
@@ -47,7 +46,7 @@ Deployments use the shared workflow in [FOSSBilling/.workflows](https://github.c
 
 Configure the `production` and `preview` GitHub environments and the Actions secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Manage runtime secrets in Cloudflare, including Previews Base settings. Keep Cloudflare Workers Builds disabled to avoid duplicate deployments.
 
-To deploy locally, authenticate Wrangler, run `npm run build`, then `npm run cf-deploy` or `npm run cf-preview`.
+The Worker is configured in [`cloudflare.config.ts`](./cloudflare.config.ts), managed with the Cloudflare CLI (`cf`); builds write Build Output to `.cloudflare/output/`. To deploy locally, run `cf auth login`, then `npm run cf-deploy` or `npm run cf-preview`.
 
 ### OpenGraph Image Generation
 
