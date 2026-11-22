@@ -20,7 +20,9 @@
     {
       "customType": "regex",
       "managerFilePatterns": ["/^\\.github/workflows/[^/]+\\.ya?ml$/"],
-      "matchStrings": ["gh extension install (?<depName>\\S+) --pin (?<currentValue>\\S+)"],
+      "matchStrings": [
+        "gh extension install (?<depName>\\S+) --pin (?<currentValue>\\S+)"
+      ],
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver"
     }
