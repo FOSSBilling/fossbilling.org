@@ -25,8 +25,8 @@ jobs:
   cleanup:
     name: Delete Cloudflare Preview
     if: >-
-      github.event_name == 'pull_request_target' && github.event.action == 'closed' &&
-      github.event.pull_request.merged && github.event.pull_request.head.repo.full_name == github.repository
+      github.event.action == 'closed' && github.event.pull_request.merged &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-slim
     timeout-minutes: 10
     permissions: {}
@@ -36,7 +36,6 @@ jobs:
     # Share the branch's push CI group so cleanup waits for its preview deployment.
     concurrency:
       group: CI/CD-push-refs/heads/${{ github.event.pull_request.head.ref }}
-      cancel-in-progress: false
 
     steps:
       - name: Delete Preview
@@ -45,14 +44,11 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           CF_SEND_TELEMETRY: 'false'
+          npm_config_ignore_scripts: 'true'
         shell: bash
         run: |
           : "${CLOUDFLARE_API_TOKEN:?Cloudflare API token is required}" "${CLOUDFLARE_ACCOUNT_ID:?Cloudflare account ID is required}"
-          if output=$(npx --yes --ignore-scripts cf@1.0.0-rc.2 previews delete "$PREVIEW_NAME" --worker fossbilling-org --force 2>&1); then
-            echo "Deleted Cloudflare preview $PREVIEW_NAME."
-          elif [[ "$output" == *'[10025] '* && "$output" == *'404 Not Found'* ]]; then
-            echo "Cloudflare preview $PREVIEW_NAME is already absent."
-          else
+          if ! output=$(npx cf previews delete "$PREVIEW_NAME" --worker fossbilling-org --force 2>&1) && [[ "$output" != *'[10025] '* ]]; then
             printf '%s\n' "$output" >&2
             exit 1
           fi
