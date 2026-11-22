@@ -5,11 +5,8 @@ const releaseDateFormatter = new Intl.DateTimeFormat('en-GB', {
   timeZone: 'UTC',
 });
 
-export function formatDate(isoDate: string): string {
-  const date = new Date(isoDate);
-  return Number.isFinite(date.getTime())
-    ? releaseDateFormatter.format(date)
-    : 'Unknown date';
+export function formatDate(date: Date): string {
+  return releaseDateFormatter.format(date);
 }
 
 export function formatBytes(bytes: number): string {

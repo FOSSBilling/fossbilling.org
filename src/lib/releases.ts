@@ -1,4 +1,4 @@
-export interface Release {
+export interface ReleasePayload {
   version: string;
   released_on: string;
   minimum_php_version: string;
@@ -6,6 +6,8 @@ export interface Release {
   size_bytes: number;
   is_prerelease: boolean;
 }
+
+type Release = Omit<ReleasePayload, 'released_on'> & { released_on: Date };
 
 export const releaseNotesUrl =
   'https://github.com/FOSSBilling/FOSSBilling/releases/latest';
@@ -26,12 +28,12 @@ function isValidDownloadUrl(url: string, version: string): boolean {
   );
 }
 
-function isRelease(value: unknown): value is Release {
+function isReleasePayload(value: unknown): value is ReleasePayload {
   if (!value || typeof value !== 'object') {
     return false;
   }
 
-  const release = value as Partial<Release>;
+  const release = value as Partial<ReleasePayload>;
   return (
     typeof release.version === 'string' &&
     typeof release.released_on === 'string' &&
@@ -43,6 +45,23 @@ function isRelease(value: unknown): value is Release {
     typeof release.is_prerelease === 'boolean' &&
     isValidDownloadUrl(release.download_url, release.version)
   );
+}
+
+function parseReleaseDate(value: string): Date | null {
+  const day = /^\d{4}-\d{2}-\d{2}(?=T|$)/.exec(value)?.[0];
+  if (!day) return null;
+
+  // Check the calendar day separately so timezone offsets can cross midnight.
+  const midnight = new Date(`${day}T00:00:00Z`);
+  if (
+    !Number.isFinite(midnight.getTime()) ||
+    midnight.toISOString().slice(0, 10) !== day
+  ) {
+    return null;
+  }
+
+  const date = new Date(value);
+  return Number.isFinite(date.getTime()) ? date : null;
 }
 
 export async function getLatestStableRelease(): Promise<Release | null> {
@@ -88,15 +107,13 @@ export async function getLatestStableRelease(): Promise<Release | null> {
     }
 
     let release: Release | null = null;
-    let latestDate = -Infinity;
 
     for (const candidate of Object.values(data.result)) {
-      if (!isRelease(candidate) || candidate.is_prerelease) continue;
+      if (!isReleasePayload(candidate) || candidate.is_prerelease) continue;
 
-      const date = Date.parse(candidate.released_on);
-      if (date > latestDate) {
-        release = candidate;
-        latestDate = date;
+      const date = parseReleaseDate(candidate.released_on);
+      if (date && (!release || date > release.released_on)) {
+        release = { ...candidate, released_on: date };
       }
     }
 
