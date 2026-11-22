@@ -29,8 +29,7 @@ jobs:
       github.event.pull_request.merged && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-slim
     timeout-minutes: 10
-    permissions:
-      contents: read
+    permissions: {}
     environment:
       name: preview
       deployment: false
@@ -40,21 +39,6 @@ jobs:
       cancel-in-progress: false
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v7.0.1
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v7.1.0
-        with:
-          node-version: '26'
-          package-manager-cache: false
-
-      - name: Install Dependencies
-        run: npm ci --ignore-scripts --no-audit --no-fund
-
       - name: Delete Preview
         env:
           PREVIEW_NAME: ${{ github.event.pull_request.head.ref }}
@@ -64,7 +48,7 @@ jobs:
         shell: bash
         run: |
           : "${CLOUDFLARE_API_TOKEN:?Cloudflare API token is required}" "${CLOUDFLARE_ACCOUNT_ID:?Cloudflare account ID is required}"
-          if output=$(./node_modules/.bin/cf previews delete "$PREVIEW_NAME" --worker fossbilling-org --force 2>&1); then
+          if output=$(npx --yes --ignore-scripts cf@1.0.0-rc.2 previews delete "$PREVIEW_NAME" --worker fossbilling-org --force 2>&1); then
             echo "Deleted Cloudflare preview $PREVIEW_NAME."
           elif [[ "$output" == *'[10025] '* && "$output" == *'404 Not Found'* ]]; then
             echo "Cloudflare preview $PREVIEW_NAME is already absent."
