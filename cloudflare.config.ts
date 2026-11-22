@@ -6,7 +6,7 @@ export default defineConfig({
     compatibilityDate: '2026-10-01',
     compatibilityFlags: ['global_fetch_strictly_public'],
     workersDev: false,
-    previewUrls: true,
+    previewUrls: false,
     observability: {
       logs: {
         enabled: true,
@@ -22,7 +22,14 @@ export default defineConfig({
     assets: {
       htmlHandling: 'force-trailing-slash',
     },
-    domains: ['fossbilling.org'],
+    domains: [
+      'fossbilling.org',
+      {
+        hostname: 'website.fossbilling.foo',
+        production: false,
+        previews: true,
+      },
+    ],
     env: {
       ASSETS: bindings.assets(),
     },

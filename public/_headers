@@ -8,3 +8,6 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+
+https://:preview.website.fossbilling.foo/*
+  X-Robots-Tag: noindex
