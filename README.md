@@ -8,6 +8,8 @@ Documentation is hosted separately at [docs.fossbilling.org](https://docs.fossbi
 
 ## Installation
 
+Requires Node.js 26 (the version pinned in CI).
+
 ```
 $ npm ci
 ```
@@ -20,7 +22,7 @@ Use `npm install` instead if you are not working from a clean install.
 $ npm run dev
 ```
 
-This command starts a local development server at `http://localhost:4321`. Most changes are reflected live without having to restart the server.
+This command starts a local development server at `http://localhost:4321`.
 
 ## Scripts
 
@@ -44,7 +46,7 @@ This command starts a local development server at `http://localhost:4321`. Most 
 
 Deployments use the shared workflow in [FOSSBilling/.workflows](https://github.com/FOSSBilling/.workflows). The local [Cloudflare Events](.github/workflows/cloudflare-events.yml) workflow keeps PR comments in sync. Renovate updates the pinned workflow references together.
 
-Configure the `production` and `preview` GitHub environments and the Actions secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Manage runtime secrets in Cloudflare, including Previews Base settings. Keep Cloudflare Workers Builds disabled to avoid duplicate deployments.
+Configure the `production` and `preview` GitHub environments, the Actions secret `CLOUDFLARE_API_TOKEN`, and the repository variable `CLOUDFLARE_ACCOUNT_ID`. Manage runtime secrets in Cloudflare, including Previews Base settings. Keep Cloudflare Workers Builds disabled to avoid duplicate deployments.
 
 The Worker is configured in [`cloudflare.config.ts`](./cloudflare.config.ts), managed with the Cloudflare CLI (`cf`); builds write Build Output to `.cloudflare/output/`. To deploy locally, run `cf auth login`, then `npm run cf-deploy` or `npm run cf-preview`.
 
