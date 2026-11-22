@@ -15,5 +15,15 @@
     ":npm",
     ":rebaseStalePrs"
   ],
-  "postUpdateOptions": ["npmDedupe"]
+  "postUpdateOptions": ["npmDedupe"],
+  "regexManagers": [
+    {
+      "fileMatch": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
+      "matchStrings": [
+        "gh extension install (?<depName>\\S+) --pin (?<currentValue>\\S+)"
+      ],
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
+    }
+  ]
 }
