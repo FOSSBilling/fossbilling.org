@@ -42,7 +42,7 @@ This command starts a local development server at `http://localhost:4321`.
 - Other branches deploy previews. Matching PRs receive a comment with preview links and build/deployment history.
 - PR runs validate changes without deploying; forks receive no deployment credentials.
 
-Deployments use the shared workflow in [FOSSBilling/.workflows](https://github.com/FOSSBilling/.workflows). The local [Cloudflare Events](.github/workflows/cloudflare-events.yml) workflow keeps PR comments in sync. Renovate updates the pinned workflow references together.
+Deployments use the shared workflow in [FOSSBilling/.workflows](https://github.com/FOSSBilling/.workflows). The local [Cloudflare Events](.github/workflows/cloudflare-events.yml) workflow syncs PR comments and deletes previews when same-repository PRs merge into `main`. Renovate updates the pinned workflow references together.
 
 Configure the `production` and `preview` GitHub environments, the Actions secret `CLOUDFLARE_API_TOKEN`, and the repository variable `CLOUDFLARE_ACCOUNT_ID`. Manage runtime secrets in Cloudflare, including Previews Base settings. Keep Cloudflare Workers Builds disabled to avoid duplicate deployments.
 
