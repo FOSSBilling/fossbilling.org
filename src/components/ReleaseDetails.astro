@@ -1,0 +1,64 @@
+---
+import { Calendar, HardDrive } from '@lucide/astro';
+import { formatDate, formatBytes } from '@/lib/format';
+import { getLatestStableRelease } from '@/lib/releases';
+
+const release = await getLatestStableRelease();
+---
+
+{release && (
+  <stable-release-details data-download-url={release.download_url}>
+    <div class="download-card-version">v{release.version}</div>
+    <div class="download-card-meta">
+      <span>
+        <Calendar />
+        {formatDate(release.released_on)}
+      </span>
+      <span>
+        <HardDrive />
+        {formatBytes(release.size_bytes)}
+      </span>
+    </div>
+    <div class="download-card-php">
+      Requires PHP {release.minimum_php_version}+
+    </div>
+  </stable-release-details>
+)}
+
+<style>
+  stable-release-details {
+    display: block;
+  }
+
+  .download-card-version {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--card-heading);
+    margin-bottom: 0.75rem;
+  }
+
+  .download-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 1.25rem;
+    font-size: 0.875rem;
+    color: var(--card-copy);
+    margin-bottom: 0.5rem;
+  }
+
+  .download-card-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .download-card-php {
+    font-size: 0.8rem;
+    color: #9ca3af;
+  }
+
+  :global(.dark) .download-card-php {
+    color: #6b7280;
+  }
+</style>

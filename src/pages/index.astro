@@ -1,8 +1,604 @@
 ---
 import Base from '../layouts/Base.astro';
-import HomePageContent from '../components/HomePageContent.astro';
+import {
+  Receipt,
+  Server,
+  Globe,
+  Headset,
+  Puzzle,
+  ShieldCheck,
+  Code,
+  Heart,
+  ArrowRight,
+  Lock,
+  Users,
+  Languages,
+} from '@lucide/astro';
+import LogoSlider from '../components/LogoSlider.astro';
+import Button from '../components/Button.astro';
+import BrandIcon from '../components/BrandIcon.astro';
+
+interface FeatureCardData {
+  icon: typeof Server;
+  title: string;
+  description: string;
+  href: string;
+}
+
+const features: FeatureCardData[] = [
+  {
+    icon: Receipt,
+    title: 'Automated Billing',
+    description:
+      'Generate invoices automatically, send payment reminders, and support multiple currencies with automatic exchange rate syncing.',
+    href: 'https://docs.fossbilling.org/support/features/#currency-support',
+  },
+  {
+    icon: Server,
+    title: 'Hosting Provisioning',
+    description:
+      'Automatically provision hosting accounts on cPanel, Plesk, DirectAdmin, HestiaCP, and more.',
+    href: 'https://docs.fossbilling.org/admin-guide/product-types/hosting/',
+  },
+  {
+    icon: Globe,
+    title: 'Domain Management',
+    description:
+      'Register, transfer, and manage domains with support for multiple registrars and experimental support for EPP-based registries.',
+    href: 'https://docs.fossbilling.org/admin-guide/product-types/domains/',
+  },
+  {
+    icon: Headset,
+    title: 'Support Ticketing',
+    description:
+      'Built-in helpdesk with email notifications, automatic ticket closure, and support for both clients and guests.',
+    href: 'https://docs.fossbilling.org/support/features/#tickets--helpdesk',
+  },
+  {
+    icon: Puzzle,
+    title: 'Extensible Architecture',
+    description:
+      'Install themes, modules, payment gateways, server managers, and domain registrars from the extension directory.',
+    href: 'https://docs.fossbilling.org/extensions-and-development/extensions/',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Security First',
+    description:
+      'IP blocking, reCAPTCHA, spam protection, CSRF prevention, and activity logging to keep your business safe.',
+    href: 'https://docs.fossbilling.org/security/best-practices/',
+  },
+];
+
+const pillars = [
+  {
+    icon: Code,
+    title: '100% Open Source',
+    description:
+      'Licensed under Apache 2.0. Audit the code, contribute features, or fork it for your needs. No encoded files, no secrets.',
+  },
+  {
+    icon: Lock,
+    title: 'Self-Hosted',
+    description:
+      'Your data stays on your server. Full control over your infrastructure, backups, and security policies.',
+  },
+  {
+    icon: Users,
+    title: 'Community Driven',
+    description:
+      'Active development with contributions from developers worldwide. Join our Discord server to get involved.',
+  },
+];
+
+const community = [
+  {
+    label: 'GitHub',
+    href: 'https://github.com/FOSSBilling/FOSSBilling',
+    description: 'Star the repo, report issues, or contribute code',
+    brand: 'github',
+  },
+  {
+    label: 'Discord',
+    href: '/discord',
+    description: 'Chat with the community and get real-time help',
+    brand: 'discord',
+  },
+  {
+    icon: Languages,
+    label: 'Translate',
+    href: 'https://translate.fossbilling.org',
+    description: 'Help bring FOSSBilling to more languages',
+  },
+  {
+    icon: Heart,
+    label: 'Donate',
+    href: 'https://opencollective.com/fossbilling',
+    description: 'Help fund development and infrastructure',
+  },
+];
 ---
 
 <Base title="Free and open source hosting automation">
-  <HomePageContent />
+  <div class="home-content">
+    {/* Hero Section */}
+    <div class="content-container hero-section">
+      <h1 class="headline">
+        Free and open source
+        <br class="sm:block hidden" /> hosting automation.
+      </h1>
+      <p class="subtitle mt-6">
+        Run your hosting business with FOSSBilling, the free
+        <br class="sm:block hidden" />
+        and open source solution for billing and client management.
+      </p>
+      <div class="mt-6 mb-4 flex max-w-xs flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:gap-4">
+        <Button
+          text="Get Started"
+          href="https://docs.fossbilling.org/getting-started/"
+        />
+        <Button text="Download FOSSBilling" href="/downloads/" />
+      </div>
+      <div>
+        <a href="https://docs.fossbilling.org/getting-started/installation/">
+          <span class="text-blue-700 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-400 hover:underline hover:underline-offset-2">
+            Installation Instructions
+          </span>
+        </a>
+      </div>
+    </div>
+
+    {/* Integrations Section */}
+    <div class="features-container">
+      <LogoSlider />
+
+      {/* Feature Cards Grid */}
+      <div class="content-container">
+        <div class="section-header">
+          <h2>Everything you need to run your hosting business</h2>
+          <p>
+            FOSSBilling provides all the tools you need to manage clients,
+            automate billing, and provision services.
+          </p>
+        </div>
+
+        <div class="feature-cards-grid">
+          {features.map((feature) => (
+            <a href={feature.href} class="feature-card">
+              <div class="feature-card-icon">
+                <feature.icon />
+              </div>
+              <h3>{feature.title}</h3>
+              <p>{feature.description}</p>
+              <span class="feature-card-link">
+                Learn more <ArrowRight class="arrow" />
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Why FOSSBilling Section */}
+      <div class="content-container why-section">
+        <div class="section-header">
+          <h2>Why choose FOSSBilling?</h2>
+          <p>
+            Built by the community, for the community. No hidden costs, no
+            vendor lock-in.
+          </p>
+        </div>
+
+        <div class="pillars-grid">
+          {pillars.map((pillar) => (
+            <div class="pillar-card">
+              <div class="pillar-icon">
+                <pillar.icon />
+              </div>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div class="content-container cta-section">
+        <div class="cta-content">
+          <h2>Ready to get started?</h2>
+          <p>
+            Download FOSSBilling today and start managing your hosting business.
+          </p>
+          <div class="cta-buttons">
+            <Button text="Download FOSSBilling" href="/downloads/" />
+            <a href="/demo/">
+              <span class="cta-secondary">
+                Try the demo <ArrowRight class="ml-2" />
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Community Section */}
+      <div class="content-container community-section">
+        <div class="section-header">
+          <h2>Join the community</h2>
+          <p>Get help, share ideas, and contribute to FOSSBilling.</p>
+        </div>
+
+        <div class="community-grid">
+          {community.map((item) => (
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="community-card"
+            >
+              {item.brand === 'github' && (
+                <BrandIcon name="github" class="h-8 w-8" />
+              )}
+              {item.brand === 'discord' && (
+                <BrandIcon name="discord" class="h-8 w-8" />
+              )}
+              {item.icon && <item.icon width="32" height="32" />}
+              <h3>{item.label}</h3>
+              <p>{item.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
 </Base>
+
+<style>
+  .hero-section {
+    padding-bottom: 2rem;
+  }
+
+  /* Section Headers */
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-top: 2rem;
+  }
+
+  .section-header h2 {
+    font-size: min(2.5rem, max(5vw, 1.75rem));
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    color: #111827;
+  }
+
+  :global(.dark) .section-header h2 {
+    color: #f9fafb;
+  }
+
+  .section-header p {
+    font-size: 1.125rem;
+    color: #6b7280;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  :global(.dark) .section-header p {
+    color: #9ca3af;
+  }
+
+  /* Feature Cards Grid */
+  .feature-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .feature-cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .feature-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .feature-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.75rem;
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+  }
+
+  :global(.dark) .feature-card {
+    background: #18181b;
+    border-color: #27272a;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+  }
+
+  :global(.dark) .feature-card:hover {
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
+  }
+
+  .feature-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #111827;
+  }
+
+  :global(.dark) .feature-card h3 {
+    color: #f9fafb;
+  }
+
+  .feature-card p {
+    font-size: 0.95rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+  }
+
+  :global(.dark) .feature-card p {
+    color: #9ca3af;
+  }
+
+  .feature-card-link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #2563eb;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .feature-card-link :global(.arrow) {
+    transition: transform 0.2s ease;
+    font-size: 0.75rem;
+  }
+
+  .feature-card:hover .feature-card-link :global(.arrow) {
+    transform: translateX(4px);
+  }
+
+  /* Why Section / Pillars */
+  .why-section {
+    padding: 3rem 0;
+  }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    .pillars-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .pillar-card {
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .pillar-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dbeafe;
+    color: #2563eb;
+    margin: 0 auto 1.25rem;
+  }
+
+  :global(.dark) .pillar-icon {
+    background: #1e3a5f;
+    color: #60a5fa;
+  }
+
+  .pillar-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #111827;
+  }
+
+  :global(.dark) .pillar-card h3 {
+    color: #f9fafb;
+  }
+
+  .pillar-card p {
+    font-size: 0.95rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  :global(.dark) .pillar-card p {
+    color: #9ca3af;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 2rem 0;
+  }
+
+  .cta-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+    border-radius: 1.5rem;
+    color: white;
+  }
+
+  .cta-content h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: white;
+  }
+
+  .cta-content > p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+    color: white;
+  }
+
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-secondary {
+    font-weight: 500;
+    color: white;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .cta-secondary:hover {
+    opacity: 1;
+  }
+
+  /* Community Section */
+  .community-section {
+    padding: 2rem 0 4rem;
+  }
+
+  .community-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .community-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .community-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .community-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 1.75rem;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  :global(.dark) .community-card {
+    background: #18181b;
+    border-color: #27272a;
+  }
+
+  .community-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+    border-color: #2563eb;
+  }
+
+  :global(.dark) .community-card:hover {
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
+    border-color: #2563eb;
+  }
+
+  .community-card :global(svg) {
+    color: #6b7280;
+    margin-bottom: 1rem;
+    transition: color 0.2s ease;
+  }
+
+  :global(.dark) .community-card :global(svg) {
+    color: #9ca3af;
+  }
+
+  .community-card:hover :global(svg) {
+    color: #2563eb;
+  }
+
+  .community-card h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #111827;
+  }
+
+  :global(.dark) .community-card h3 {
+    color: #f9fafb;
+  }
+
+  .community-card p {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  :global(.dark) .community-card p {
+    color: #9ca3af;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feature-card,
+    .community-card {
+      transition: none;
+    }
+
+    .feature-card:hover,
+    .community-card:hover {
+      transform: none;
+    }
+
+    .feature-card-link :global(.arrow) {
+      transition: none;
+    }
+
+    .feature-card:hover .feature-card-link :global(.arrow) {
+      transform: none;
+    }
+  }
+</style>

@@ -9,7 +9,10 @@ export default defineConfig({
   site: 'https://fossbilling.org',
   trailingSlash: 'always',
   output: 'static',
-  adapter: cloudflare({ prerenderEnvironment: 'node' }),
+  adapter: cloudflare({
+    prerenderEnvironment: 'node',
+    imageService: 'passthrough',
+  }),
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

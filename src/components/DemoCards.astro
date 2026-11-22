@@ -1,5 +1,5 @@
 ---
-import { UserCog, User, Copy, ExternalLink } from '@lucide/astro';
+import { UserCog, User, Copy, Check, ExternalLink } from '@lucide/astro';
 
 interface DemoCredentials {
   email: string;
@@ -47,32 +47,25 @@ const cards: DemoCardData[] = [
       <p class="demo-card-description">{card.description}</p>
 
       <div class="demo-credentials">
-        <div class="demo-credential-row">
-          <span class="demo-credential-label">Email</span>
-          <div class="demo-credential-value">
-            <code>{card.credentials.email}</code>
-            <button
-              class="demo-copy-button"
-              title="Copy to clipboard"
-              data-copy={card.credentials.email}
-            >
-              <Copy />
-            </button>
+        {Object.entries(card.credentials).map(([label, value]) => (
+          <div class="demo-credential-row">
+            <span class="demo-credential-label">{label}</span>
+            <div class="demo-credential-value">
+              <code>{value}</code>
+              <button
+                type="button"
+                hidden
+                class="demo-copy-button group"
+                aria-label={`Copy ${label}`}
+                data-copy={value}
+              >
+                <Copy class="group-data-copied:hidden" />
+                <Check class="hidden group-data-copied:block" />
+              </button>
+              <span role="status" class="sr-only"></span>
+            </div>
           </div>
-        </div>
-        <div class="demo-credential-row">
-          <span class="demo-credential-label">Password</span>
-          <div class="demo-credential-value">
-            <code>{card.credentials.password}</code>
-            <button
-              class="demo-copy-button"
-              title="Copy to clipboard"
-              data-copy={card.credentials.password}
-            >
-              <Copy />
-            </button>
-          </div>
-        </div>
+        ))}
       </div>
 
       <a
@@ -87,3 +80,188 @@ const cards: DemoCardData[] = [
     </div>
   ))}
 </div>
+
+<script>
+  for (const button of document.querySelectorAll<HTMLButtonElement>(
+    'button[data-copy]',
+  )) {
+    if (!navigator.clipboard) break;
+
+    button.hidden = false;
+    const status = button.parentElement?.querySelector('[role="status"]');
+    let reset: ReturnType<typeof setTimeout>;
+
+    button.addEventListener('click', async () => {
+      clearTimeout(reset);
+      button.removeAttribute('data-copied');
+
+      if (status) status.textContent = '';
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy!);
+        button.setAttribute('data-copied', '');
+        if (status) status.textContent = 'Copied to clipboard.';
+        reset = setTimeout(() => button.removeAttribute('data-copied'), 2000);
+      } catch {
+        if (status) status.textContent = 'Could not copy to clipboard.';
+      }
+    });
+  }
+</script>
+
+<style>
+  .demo-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 700px) {
+    .demo-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .demo-card {
+    background: var(--card-bg);
+    border-radius: 1rem;
+    border: 1px solid var(--card-border);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .demo-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .demo-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .demo-card-admin .demo-card-icon {
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    color: white;
+  }
+
+  .demo-card-client .demo-card-icon {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+  }
+
+  .demo-card-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--card-heading);
+  }
+
+  .demo-card-description {
+    font-size: 0.9rem;
+    color: var(--card-copy);
+    line-height: 1.5;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .demo-credentials {
+    background: #f9fafb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  :global(.dark) .demo-credentials {
+    background: #27272a;
+  }
+
+  .demo-credential-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .demo-credential-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--card-copy);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  .demo-credential-value {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .demo-credential-value code {
+    font-size: 0.875rem;
+    color: var(--card-heading);
+    background: none;
+    padding: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .demo-copy-button {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    color: #9ca3af;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .demo-copy-button:hover {
+    color: #2563eb;
+  }
+
+  :global(.dark) .demo-copy-button:hover {
+    color: #60a5fa;
+  }
+
+  .demo-card-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    margin-top: auto;
+    color: white;
+  }
+
+  .demo-card-admin .demo-card-button {
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  }
+
+  .demo-card-client .demo-card-button {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  }
+
+  .demo-card-button:hover {
+    opacity: 0.9;
+    color: white;
+  }
+</style>

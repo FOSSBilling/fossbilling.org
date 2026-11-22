@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
+import { formatDate } from '../src/lib/format.ts';
 import { getLatestStableRelease } from '../src/lib/releases.ts';
-import type { Release } from '../src/lib/releases.ts';
+import type { ReleasePayload } from '../src/lib/releases.ts';
+import { GET as redirectToStable } from '../src/pages/downloads/stable.ts';
 
 const originalFetch = globalThis.fetch;
 afterEach(() => {
@@ -11,8 +13,8 @@ const version = '0.8.8';
 const github = `https://github.com/FOSSBilling/FOSSBilling/releases/download/${version}`;
 const fixture = (
   download_url: string,
-  overrides: Partial<Release> = {},
-): Release => ({
+  overrides: Partial<ReleasePayload> = {},
+): ReleasePayload => ({
   version,
   released_on: '2026-01-01',
   minimum_php_version: '8.2',
@@ -21,7 +23,7 @@ const fixture = (
   is_prerelease: false,
   ...overrides,
 });
-function mockReleases(...releases: Release[]) {
+function mockReleases(...releases: ReleasePayload[]) {
   globalThis.fetch = async () =>
     Response.json({
       error_code: 0,
@@ -37,7 +39,10 @@ for (const url of [
   test(`accepts official release asset: ${url}`, async () => {
     const release = fixture(url);
     mockReleases(release);
-    assert.deepEqual(await getLatestStableRelease(), { release, error: null });
+    assert.deepEqual(await getLatestStableRelease(), {
+      ...release,
+      released_on: new Date(release.released_on),
+    });
   });
 }
 
@@ -69,10 +74,7 @@ for (const url of [
 ]) {
   test(`rejects untrusted release asset: ${JSON.stringify(url)}`, async () => {
     mockReleases(fixture(url));
-    assert.deepEqual(await getLatestStableRelease(), {
-      release: null,
-      error: null,
-    });
+    assert.equal(await getLatestStableRelease(), null);
   });
 }
 
@@ -94,8 +96,8 @@ test('filters an attacker release and a prerelease while preserving the legitima
     stable,
   );
   assert.deepEqual(await getLatestStableRelease(), {
-    release: stable,
-    error: null,
+    ...stable,
+    released_on: new Date(stable.released_on),
   });
 });
 
@@ -115,17 +117,79 @@ for (const unsafeVersion of [
         { version: unsafeVersion },
       ),
     );
-    assert.deepEqual(await getLatestStableRelease(), {
-      release: null,
-      error: null,
-    });
+    assert.equal(await getLatestStableRelease(), null);
   });
 }
 
-test('retains API error semantics', async () => {
-  globalThis.fetch = async () => Response.json({ error_code: 7, result: {} });
-  const result = await getLatestStableRelease();
-  assert.equal(result.release, null);
-  assert.ok(result.error);
-  assert.equal(result.error.message, 'API returned error code: 7');
+test('logs API errors and returns no release', async (t) => {
+  const logError = t.mock.method(console, 'error', () => {});
+  globalThis.fetch = async () => Response.json({ error_code: 7, result: null });
+
+  assert.equal(await getLatestStableRelease(), null);
+  assert.equal(logError.mock.callCount(), 1);
+  assert.match(
+    String(logError.mock.calls[0].arguments[1]),
+    /API returned error code: 7/,
+  );
+});
+
+test('selects the newest published stable release from an unordered feed', async () => {
+  const oldest = fixture(`${github}/FOSSBilling.zip`);
+  const newest = fixture(
+    'https://github.com/FOSSBilling/FOSSBilling/releases/download/0.8.9/FOSSBilling-0.8.9.zip',
+    { version: '0.8.9', released_on: '2026-02-01T00:00:00Z' },
+  );
+  const undated = fixture(`${github}/FOSSBilling.zip`, {
+    released_on: 'unknown',
+  });
+
+  mockReleases(undated, newest, oldest);
+  assert.deepEqual(await getLatestStableRelease(), {
+    ...newest,
+    released_on: new Date(newest.released_on),
+  });
+});
+
+test('skips impossible calendar dates and formats the selected release in UTC', async () => {
+  const valid = fixture(`${github}/FOSSBilling.zip`, {
+    released_on: '2024-02-29T23:30:00-01:00',
+  });
+
+  for (const released_on of ['2024-02-31', '2024-02-31T12:00:00Z']) {
+    mockReleases(
+      valid,
+      fixture(
+        'https://github.com/FOSSBilling/FOSSBilling/releases/download/0.8.9/FOSSBilling.zip',
+        { version: '0.8.9', released_on },
+      ),
+    );
+
+    const release = await getLatestStableRelease();
+    assert.ok(release);
+    assert.equal(release.version, valid.version);
+    assert.equal(formatDate(release.released_on), '1 March 2024');
+  }
+});
+
+test('redirects stable downloads to the validated release asset', async () => {
+  const release = fixture(`${github}/FOSSBilling.zip`);
+  mockReleases(release);
+  const response = await redirectToStable();
+
+  assert.equal(response.status, 302);
+  assert.equal(response.headers.get('Location'), release.download_url);
+  assert.equal(response.headers.get('Cache-Control'), 'no-store');
+});
+
+test('redirects to the GitHub release page when release metadata is unavailable', async (t) => {
+  t.mock.method(console, 'error', () => {});
+  globalThis.fetch = async () =>
+    Response.json({ error_code: 503, result: null }, { status: 503 });
+  const response = await redirectToStable();
+
+  assert.equal(response.status, 302);
+  assert.equal(
+    response.headers.get('Location'),
+    'https://github.com/FOSSBilling/FOSSBilling/releases/latest',
+  );
 });

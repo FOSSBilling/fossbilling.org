@@ -145,7 +145,6 @@ export const GET: APIRoute = async ({ params }) => {
   return new Response(new Uint8Array(png), {
     headers: {
       'content-type': 'image/png',
-      'cache-control': 'public, max-age=31536000, immutable',
     },
   });
 };

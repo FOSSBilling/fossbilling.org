@@ -1,10 +1,12 @@
-import { parseISO, format, isValid } from 'date-fns';
-import { enUS } from 'date-fns/locale';
+const releaseDateFormatter = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
 
-export function formatDate(isoDate: string): string {
-  const date = parseISO(isoDate);
-  if (!isValid(date)) return 'Unknown date';
-  return format(date, 'd LLLL yyyy', { locale: enUS });
+export function formatDate(date: Date): string {
+  return releaseDateFormatter.format(date);
 }
 
 export function formatBytes(bytes: number): string {
