@@ -1,10 +1,11 @@
 ---
 import { Star } from '@lucide/astro';
-import { getGitHubStarCount, formatCompactNumber } from '@/lib/releases';
+import { getGitHubStarCount } from '@/lib/github';
+import { formatCompactNumber } from '@/lib/releases';
 import BrandIcon from './BrandIcon.astro';
 
 const { env } = await import('cloudflare:workers');
-const stars = await getGitHubStarCount(env.GITHUB_TOKEN);
+const stars = await getGitHubStarCount(env);
 ---
 
 <a

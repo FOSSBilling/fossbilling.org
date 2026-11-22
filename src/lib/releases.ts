@@ -124,67 +124,6 @@ export async function getLatestStableRelease(): Promise<Release | null> {
   }
 }
 
-export async function getGitHubStarCount(
-  githubToken?: string,
-): Promise<number | null> {
-  try {
-    const headers: Record<string, string> = {
-      Accept: 'application/vnd.github+json',
-      'User-Agent': 'fossbilling-website',
-    };
-
-    if (githubToken) {
-      headers['Authorization'] = `Bearer ${githubToken}`;
-    }
-
-    const res = await fetch(
-      'https://api.github.com/repos/FOSSBilling/FOSSBilling',
-      {
-        headers,
-        signal: AbortSignal.timeout(5000),
-        cf: {
-          cacheTtl: 300,
-          cacheEverything: true,
-          cacheTtlByStatus: {
-            '200-299': 300,
-            '500-599': 0,
-            429: 0,
-          },
-        },
-      },
-    );
-
-    if (!res.ok) {
-      const errorBody = await res.text().catch((bodyError) => {
-        console.error('Error reading error response body:', bodyError);
-        return '';
-      });
-      const message =
-        `Failed to fetch stars: HTTP ${res.status} ${res.statusText}` +
-        (errorBody ? ` - ${errorBody}` : '');
-      throw new Error(message);
-    }
-
-    const data: unknown = await res.json();
-    if (
-      typeof data === 'object' &&
-      data !== null &&
-      'stargazers_count' in data &&
-      typeof (data as { stargazers_count: unknown }).stargazers_count ===
-        'number'
-    ) {
-      return (data as { stargazers_count: number }).stargazers_count;
-    }
-
-    throw new Error(
-      'Invalid GitHub API response: missing or non-numeric stargazers_count',
-    );
-  } catch (error) {
-    console.error('Error fetching star count:', error);
-    return null;
-  }
-}
-
 const compactNumberFormatter = new Intl.NumberFormat('en', {
   notation: 'compact',
 });

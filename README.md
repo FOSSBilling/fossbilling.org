@@ -22,6 +22,8 @@ $ npm run dev
 
 This command starts a local development server at `http://localhost:4321`.
 
+For authenticated GitHub star counts during local development, copy `.dev.vars.example` to `.dev.vars` and fill in the GitHub App credentials described below. The website can also read the public star count without credentials.
+
 ## Scripts
 
 - `npm run dev`: local development server
@@ -50,7 +52,13 @@ The Worker is configured in [`cloudflare.config.ts`](./cloudflare.config.ts), ma
 
 Branch previews use `<preview-slug>.website.fossbilling.foo`. The production deployment applies the preview-only domain to the parent Worker. Its Cloudflare API token needs Workers Routes Write access to the `fossbilling.foo` zone. Cloudflare provisions wildcard DNS and TLS for the preview hostnames.
 
-Set `CF_GITHUB_APP_CLIENT_ID` and `CF_GITHUB_APP_INSTALLATION_ID` as Actions variables for production builds. For a local production deploy, export `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_INSTALLATION_ID` before building. Cloudflare manages the private key as a runtime secret and supplies preview credentials through Previews Base.
+### GitHub App authentication
+
+The star counter uses the **FOSSBilling Integrations** GitHub App, as used by `FOSSBilling/api`. Install the App on `FOSSBilling/FOSSBilling` with read-only Metadata access. The site requests short-lived installation tokens scoped to that repository.
+
+For production builds, set the `CF_GITHUB_APP_CLIENT_ID` and `CF_GITHUB_APP_INSTALLATION_ID` Actions variables. For a local production deploy, export `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_INSTALLATION_ID` before building. Store the PEM from GitHub as the `GITHUB_APP_PRIVATE_KEY` runtime secret on the `website` Worker.
+
+In Previews Base, set `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_INSTALLATION_ID` and add `GITHUB_APP_PRIVATE_KEY` as a secret. Use distinct private keys for local development, previews, and production.
 
 ### OpenGraph Image Generation
 
