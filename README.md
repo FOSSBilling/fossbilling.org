@@ -1,6 +1,6 @@
 # fossbilling.org
 
-[![GitHub branch checks state](https://img.shields.io/github/checks-status/fossbilling/fossbilling.org/main)](https://github.com/fossbilling/fossbilling.org/actions/workflows)
+[![CI/CD](https://github.com/FOSSBilling/fossbilling.org/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/FOSSBilling/fossbilling.org/actions/workflows/ci-cd.yml)
 
 FOSSBilling's website. Built with Astro, deployed to Cloudflare Workers, and available at [fossbilling.org](https://fossbilling.org).
 
@@ -8,13 +8,11 @@ Documentation is hosted separately at [docs.fossbilling.org](https://docs.fossbi
 
 ## Installation
 
-Requires Node.js 26 (the version pinned in CI).
+Requires Node.js 26.
 
 ```
 $ npm ci
 ```
-
-Use `npm install` instead if you are not working from a clean install.
 
 ## Local Development
 
@@ -29,8 +27,8 @@ This command starts a local development server at `http://localhost:4321`.
 - `npm run dev`: local development server
 - `npm run build`: production build
 - `npm run preview`: preview the production build locally
-- `npm run check`: TypeScript & Astro diagnostics (CI uses this)
-- `npm test`: run the release metadata tests (CI uses this)
+- `npm run check`: TypeScript & Astro diagnostics
+- `npm test`: run the release metadata tests
 - `npm run format`: format source with Prettier
 - `npm run format:check`: verify formatting without writing
 - `npm run cf-deploy`: deploy to Cloudflare Workers and promote to production traffic with the Cloudflare CLI (`cf auth login`)
