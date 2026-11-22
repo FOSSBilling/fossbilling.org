@@ -49,3 +49,58 @@ const features = [
     </div>
   </div>
 </Base>
+
+<style>
+  .demo-features-section {
+    max-width: 900px;
+    margin: 2rem auto 0;
+  }
+
+  .demo-features-section h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--card-heading);
+    text-align: center;
+  }
+
+  .demo-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media screen and (max-width: 700px) {
+    .demo-features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .demo-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #4b5563;
+    padding: 0.5rem 0.75rem;
+    background: var(--card-bg);
+    border-radius: 0.5rem;
+    border: 1px solid var(--card-border);
+  }
+
+  :global(.dark) .demo-feature-item {
+    color: #d1d5db;
+  }
+
+  .demo-feature-item :global(svg) {
+    color: #2563eb;
+    flex-shrink: 0;
+  }
+
+  :global(.dark) .demo-feature-item :global(svg) {
+    color: #60a5fa;
+  }
+</style>

@@ -8,9 +8,10 @@ import {
   Code,
 } from '@lucide/astro';
 import Base from '../layouts/Base.astro';
-import DownloadCards from '../components/DownloadCards.astro';
+import ReleaseDetails from '../components/ReleaseDetails.astro';
 import Callout from '../components/Callout.astro';
 import BrandIcon from '../components/BrandIcon.astro';
+import { releaseNotesUrl } from '../lib/releases';
 ---
 
 <Base title="Downloads">
@@ -25,10 +26,7 @@ import BrandIcon from '../components/BrandIcon.astro';
         <p>
           If you're running a version before 0.8, we recommend updating to the
           latest release as soon as possible. See the{' '}
-          <a href="https://github.com/FOSSBilling/FOSSBilling/releases/latest">
-            release notes
-          </a>{' '}
-          for details.
+          <a href={releaseNotesUrl}>release notes</a> for details.
         </p>
       </Callout>
     </div>
@@ -38,26 +36,45 @@ import BrandIcon from '../components/BrandIcon.astro';
         class="content-container"
         style="padding-top: 2rem; padding-bottom: 2rem;"
       >
-        <DownloadCards server:defer>
-          <div slot="fallback" class="download-cards-grid">
-            <div class="download-card">
-              <div class="download-card-header">
-                <Download class="download-card-icon" />
-                <h2>Latest Release</h2>
-              </div>
-              <div class="download-card-empty">Loading…</div>
+        <div class="download-cards-grid">
+          <div class="download-card" data-stable-release>
+            <div class="download-card-header">
+              <Download class="text-blue-600" />
+              <h2>Latest Release</h2>
             </div>
-            <div class="download-card">
-              <div class="download-card-header">
-                <Code class="download-card-icon" />
-                <h2>Preview Build</h2>
-              </div>
-              <p class="download-card-description">
-                Latest development build from the main branch.
-              </p>
+            <p class="download-card-description">
+              Recommended for regular use.
+            </p>
+            <a
+              href="/downloads/stable/"
+              class="download-card-button"
+              data-stable-download
+            >
+              <Download />
+              Download Latest Release
+            </a>
+            <div class="release-details-slot">
+              <ReleaseDetails server:defer />
             </div>
           </div>
-        </DownloadCards>
+          <div class="download-card">
+            <div class="download-card-header">
+              <Code class="text-blue-600" />
+              <h2>Preview Build</h2>
+            </div>
+            <p class="download-card-description">
+              Latest development build from the main branch. May contain
+              experimental features and bugs.
+            </p>
+            <a
+              href="/downloads/preview/"
+              class="download-card-button download-card-button-secondary"
+            >
+              <Code />
+              Download Preview Build
+            </a>
+          </div>
+        </div>
 
         <div class="quick-links">
           <a
@@ -116,3 +133,233 @@ import BrandIcon from '../components/BrandIcon.astro';
     </div>
   </div>
 </Base>
+
+<script>
+  class StableReleaseDetails extends HTMLElement {
+    connectedCallback() {
+      const link = this.closest(
+        '[data-stable-release]',
+      )?.querySelector<HTMLAnchorElement>('[data-stable-download]');
+      const url = this.dataset.downloadUrl;
+      if (link && url) link.href = url;
+    }
+  }
+
+  customElements.define('stable-release-details', StableReleaseDetails);
+</script>
+
+<style>
+  .download-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 640px) {
+    .download-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Base card style to avoid duplicating common card properties */
+  .download-card {
+    background: var(--card-bg);
+    border-radius: 1rem;
+    border: 1px solid var(--card-border);
+    padding: 1.75rem;
+    text-align: center;
+    min-width: 0;
+  }
+
+  .download-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .download-card-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--card-heading);
+  }
+
+  .download-card-description {
+    font-size: 0.875rem;
+    color: var(--card-copy);
+    margin: 0 0 1.25rem 0;
+    line-height: 1.5;
+  }
+
+  .release-details-slot {
+    /* Allow the date and size to wrap without moving the preview card. */
+    min-block-size: 9rem;
+    margin-block-start: 1rem;
+  }
+
+  .download-card-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .download-card-button:hover {
+    opacity: 0.9;
+    color: white;
+  }
+
+  .download-card-button-secondary {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  }
+
+  /* Quick Links */
+  .quick-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .quick-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  :global(.dark) .quick-link {
+    color: #d1d5db;
+    background: #18181b;
+    border-color: #27272a;
+  }
+
+  .quick-link:hover {
+    color: #2563eb;
+    border-color: #2563eb;
+  }
+
+  :global(.dark) .quick-link:hover {
+    color: #60a5fa;
+    border-color: #60a5fa;
+  }
+
+  /* Need Help Section */
+  .need-help-section {
+    text-align: center;
+    padding: 3rem 0;
+  }
+
+  .need-help-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #111827;
+  }
+
+  :global(.dark) .need-help-section h2 {
+    color: #f9fafb;
+  }
+
+  .need-help-section > p {
+    color: #6b7280;
+    margin: 0 0 1.5rem 0;
+  }
+
+  :global(.dark) .need-help-section > p {
+    color: #9ca3af;
+  }
+
+  .need-help-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .need-help-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    min-width: 200px;
+    color: inherit;
+  }
+
+  :global(.dark) .need-help-link {
+    background: #18181b;
+    border-color: #27272a;
+  }
+
+  .need-help-link:hover {
+    border-color: #2563eb;
+    color: inherit;
+  }
+
+  :global(.dark) .need-help-link:hover {
+    border-color: #60a5fa;
+  }
+
+  .need-help-link :global(svg) {
+    color: #6b7280;
+  }
+
+  :global(.dark) .need-help-link :global(svg) {
+    color: #9ca3af;
+  }
+
+  .need-help-link:hover :global(svg) {
+    color: #2563eb;
+  }
+
+  :global(.dark) .need-help-link:hover :global(svg) {
+    color: #60a5fa;
+  }
+
+  .need-help-link div {
+    text-align: left;
+  }
+
+  .need-help-link strong {
+    display: block;
+    font-size: 0.925rem;
+    color: #111827;
+  }
+
+  :global(.dark) .need-help-link strong {
+    color: #f9fafb;
+  }
+
+  .need-help-link span {
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
+
+  :global(.dark) .need-help-link span {
+    color: #9ca3af;
+  }
+</style>

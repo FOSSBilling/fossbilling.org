@@ -1,6 +1,5 @@
 ---
 import '@/styles/globals.css';
-import { ClientRouter } from 'astro:transitions';
 import Navbar from '@/components/Navbar.astro';
 import Banner from '@/components/Banner.astro';
 import GitHubStarButton from '@/components/GitHubStarButton.astro';
@@ -48,8 +47,13 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
     <meta name="twitter:domain" content="fossbilling.org" />
     <meta name="twitter:url" content={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon-dark.svg"
+      media="(prefers-color-scheme: dark)"
+    />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <ClientRouter />
     <!-- Apply the theme before rendering to avoid a flash of light mode. -->
     <script is:inline>
       (() => {
@@ -68,6 +72,30 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
   <body class="min-h-screen bg-white dark:bg-[#111111] text-gray-900 dark:text-gray-100 antialiased">
     <div class="sticky top-0 z-30">
       <Banner server:defer />
+      <script>
+        class ReleaseBanner extends HTMLElement {
+          connectedCallback() {
+            const key = this.dataset.storageKey!;
+            try {
+              if (localStorage.getItem(key) === '1') return;
+            } catch {}
+
+            this.hidden = false;
+            this.querySelector('[data-banner-dismiss]')?.addEventListener(
+              'click',
+              () => {
+                this.remove();
+                try {
+                  localStorage.setItem(key, '1');
+                } catch {}
+              },
+            );
+          }
+        }
+
+        customElements.define('release-banner', ReleaseBanner);
+      </script>
+
       <Navbar>
         <GitHubStarButton slot="extras" server:defer />
       </Navbar>
@@ -87,7 +115,8 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
         </div>
         <SocialLinks />
         <p class="mt-6 text-xs text-gray-500 dark:text-gray-400">
-          &copy; {year}, The FOSSBilling project. Code licensed under the{' '}
+          &copy; {year}, The FOSSBilling project. Website code licensed under
+          the{' '}
           <a
             href="https://github.com/FOSSBilling/fossbilling.org/blob/main/LICENSE"
             target="_blank"
@@ -107,9 +136,5 @@ const ogImage = ogImageUrlFor(Astro.url.pathname, Astro.url.origin);
         </p>
       </div>
     </footer>
-
-    <script>
-      import '@/scripts/app.ts';
-    </script>
   </body>
 </html>

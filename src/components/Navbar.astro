@@ -1,12 +1,7 @@
 ---
+import { ChevronDown, Menu, X } from '@lucide/astro';
 import ThemeToggle from './ThemeToggle.astro';
 import BrandIcon from './BrandIcon.astro';
-
-interface Props {
-  class?: string;
-}
-
-const { class: className = '' } = Astro.props;
 
 const navItems = [
   {
@@ -21,193 +16,179 @@ const navItems = [
     href: 'https://translate.fossbilling.org/',
     external: true,
   },
+];
+
+const mobileNavItems = [
+  ...navItems,
   {
-    title: 'Donate',
-    items: [
-      {
-        title: 'Open Collective',
-        href: 'https://opencollective.com/FOSSBilling',
-      },
-      {
-        title: 'GitHub Sponsors',
-        href: 'https://github.com/sponsors/FOSSBilling',
-      },
-    ],
+    title: 'GitHub',
+    href: 'https://github.com/FOSSBilling/FOSSBilling',
+    external: true,
+  },
+  { title: 'Discord', href: '/discord', external: true },
+];
+
+const donationLinks = [
+  {
+    title: 'Open Collective',
+    href: 'https://opencollective.com/FOSSBilling',
+  },
+  {
+    title: 'GitHub Sponsors',
+    href: 'https://github.com/sponsors/FOSSBilling',
   },
 ];
+
+const currentPath = Astro.url.pathname;
 ---
 
-<header class:list={['z-30 w-full print:hidden', className]}>
+<header class="relative z-30 w-full print:hidden">
   <div class="absolute inset-0 -z-1 border-b border-gray-200 dark:border-gray-800 backdrop-blur-md bg-white/70 dark:bg-[#111111]/70"></div>
   <nav
-    class="mx-auto flex max-w-[90rem] items-center justify-between gap-4 pl-[max(env(safe-area-inset-left),1.5rem)] pr-[max(env(safe-area-inset-right),1.5rem)]"
-    style="height: 64px;"
+    class="mx-auto flex h-16 max-w-[90rem] items-center justify-between gap-4 pl-[max(env(safe-area-inset-left),1.5rem)] pr-[max(env(safe-area-inset-right),1.5rem)]"
+    aria-label="Main navigation"
   >
     <a href="/" class="flex items-center" aria-label="Home page">
-      <span class="logo block"></span>
+      <span class="logo"></span>
     </a>
 
-    <div class="flex items-center gap-2 md:gap-4">
-      <div class="hidden md:flex items-center gap-4" data-desktop-nav>
-        {navItems.map((item) =>
-          item.items ? (
-            <div class="relative" data-dropdown>
-              <button
-                type="button"
-                data-dropdown-toggle
-                aria-expanded="false"
-                aria-haspopup="menu"
-                class="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1 cursor-pointer whitespace-nowrap transition-colors"
-              >
-                {item.title}
-                <svg
-                  width="10"
-                  height="6"
-                  viewBox="0 0 10 6"
-                  class="transition-transform"
-                  data-dropdown-chevron
-                >
-                  <path
-                    d="M1 1l4 4 4-4"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    fill="none"
-                  />
-                </svg>
-              </button>
-              <div
-                role="menu"
-                class="absolute right-0 mt-2 w-48 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-lg py-1 z-50 hidden"
-                data-dropdown-menu
-              >
-                {item.items.map((sub) => (
+    <div class="flex items-center gap-2 lg:gap-4">
+      <ul class="hidden lg:flex items-center gap-4">
+        {navItems.map(({ title, href, external }) => (
+          <li>
+            <a
+              href={href}
+              target={external ? '_blank' : undefined}
+              rel={external ? 'noopener noreferrer' : undefined}
+              aria-current={href === currentPath ? 'page' : undefined}
+              class="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 whitespace-nowrap transition-colors"
+            >
+              {title}
+            </a>
+          </li>
+        ))}
+        <li>
+          <details class="group relative" data-nav-disclosure>
+            <summary class="flex cursor-pointer list-none items-center gap-1 whitespace-nowrap text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 transition-colors [&::-webkit-details-marker]:hidden">
+              Donate
+              <ChevronDown class="size-3 transition-transform group-open:rotate-180" />
+            </summary>
+            <ul class="absolute right-0 mt-2 w-48 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-lg py-1 z-50">
+              {donationLinks.map(({ title, href }) => (
+                <li>
                   <a
-                    href={sub.href}
+                    href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    role="menuitem"
                     class="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
-                    {sub.title}
+                    {title}
                   </a>
-                ))}
-              </div>
-            </div>
-          ) : item.external ? (
-            <a
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 whitespace-nowrap transition-colors"
-            >
-              {item.title}
-            </a>
-          ) : (
-            <a
-              href={item.href}
-              class="text-sm text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 whitespace-nowrap transition-colors"
-            >
-              {item.title}
-            </a>
-          ),
-        )}
-      </div>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </li>
+      </ul>
 
-      <slot name="extras" />
+      <div class="hidden lg:block empty:hidden">
+        <slot name="extras" />
+      </div>
 
       <a
         href="/discord"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Discord"
-        class="p-2 md:p-0 text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+        class="hidden lg:block text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
       >
         <BrandIcon name="discord" class="h-5 w-5" />
       </a>
 
       <ThemeToggle />
 
-      <button
-        type="button"
-        data-mobile-toggle
-        aria-label="Menu"
-        aria-expanded="false"
-        aria-controls="mobile-navigation-menu"
-        class="p-2 md:hidden text-gray-600 dark:text-gray-400"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          data-mobile-icon-open
+      <details class="group lg:hidden" data-nav-disclosure>
+        <summary
+          aria-label="Menu"
+          class="block cursor-pointer list-none p-2 text-gray-600 dark:text-gray-400 [&::-webkit-details-marker]:hidden"
         >
-          <path d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          data-mobile-icon-close
-          class="hidden"
-        >
-          <path d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
+          <Menu class="size-6 group-open:hidden" />
+          <X class="hidden size-6 group-open:block" />
+        </summary>
+        <ul class="absolute inset-x-0 top-full flex max-h-[50dvh] flex-col gap-2 overflow-y-auto border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111111] p-4">
+          {mobileNavItems.map(({ title, href, external }) => (
+            <li>
+              <a
+                href={href}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener noreferrer' : undefined}
+                aria-current={href === currentPath ? 'page' : undefined}
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1"
+              >
+                {title}
+              </a>
+            </li>
+          ))}
+          <li>
+            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">
+              Donate
+            </span>
+            <ul class="ml-4 flex flex-col gap-1 mt-1">
+              {donationLinks.map(({ title, href }) => (
+                <li>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="block text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1"
+                  >
+                    {title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </li>
+        </ul>
+      </details>
     </div>
   </nav>
-
-  <div
-    id="mobile-navigation-menu"
-    class="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111111] hidden"
-    data-mobile-menu
-  >
-    <div class="flex flex-col gap-2 p-4" role="menu">
-      {navItems.map((item) =>
-        item.items ? (
-          <div role="none">
-            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">
-              {item.title}
-            </span>
-            <div class="ml-4 flex flex-col gap-1 mt-1">
-              {item.items.map((sub) => (
-                <a
-                  href={sub.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  role="menuitem"
-                  class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1"
-                >
-                  {sub.title}
-                </a>
-              ))}
-            </div>
-          </div>
-        ) : item.external ? (
-          <a
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            role="menuitem"
-            class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1"
-          >
-            {item.title}
-          </a>
-        ) : (
-          <a
-            href={item.href}
-            role="menuitem"
-            class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 py-1"
-          >
-            {item.title}
-          </a>
-        ),
-      )}
-    </div>
-  </div>
 </header>
+
+<script>
+  const disclosures = document.querySelectorAll<HTMLDetailsElement>(
+    '[data-nav-disclosure]',
+  );
+
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Node)) return;
+    const target = event.target;
+    for (const disclosure of disclosures) {
+      if (!disclosure.contains(target)) disclosure.open = false;
+    }
+  });
+
+  for (const disclosure of disclosures) {
+    disclosure.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && disclosure.open) {
+        disclosure.open = false;
+        disclosure.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .logo {
+    display: block;
+    width: 161.5px;
+    aspect-ratio: 266.29333 / 54;
+    background-image: url('../assets/logo-light.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  :global(.dark) .logo {
+    background-image: url('../assets/logo-dark.svg');
+  }
+</style>

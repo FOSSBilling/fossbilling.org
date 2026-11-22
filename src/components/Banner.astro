@@ -1,23 +1,23 @@
 ---
 import { ArrowRight } from '@lucide/astro';
-import { getLatestStableReleaseCached } from '@/lib/releases';
+import { getLatestStableRelease, releaseNotesUrl } from '@/lib/releases';
 
-const { release } = await getLatestStableReleaseCached();
+const release = await getLatestStableRelease();
 const version = release?.version ?? null;
 const storageKey = version ? `${version}-release` : null;
 ---
 
 {version && storageKey && (
-  <div
-    class="z-40 bg-black text-white text-center text-sm py-2 px-4"
-    data-banner
-    data-banner-key={storageKey}
+  <release-banner
+    hidden
+    class="block z-40 bg-black text-white text-center text-sm py-2 px-4"
+    data-storage-key={storageKey}
   >
     <span class="font-semibold">FOSSBilling {version} is now available!</span>{' '}
     If you're on a version before 0.8, we recommend updating for important
     security improvements.{' '}
     <a
-      href="https://github.com/FOSSBilling/FOSSBilling/releases/latest"
+      href={releaseNotesUrl}
       target="_blank"
       rel="noopener noreferrer"
       class="underline hover:text-gray-300 inline-flex items-center gap-1"
@@ -32,5 +32,5 @@ const storageKey = version ? `${version}-release` : null;
     >
       &times;
     </button>
-  </div>
+  </release-banner>
 )}

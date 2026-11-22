@@ -1,53 +1,39 @@
 ---
-interface Props {
-  class?: string;
-}
-
-const { class: className = '' } = Astro.props;
+import { Moon, Sun } from '@lucide/astro';
 ---
 
 <button
   type="button"
   data-theme-toggle
-  aria-label="Switch to dark mode"
-  class:list={[
-    'p-2 text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 transition-colors',
-    className,
-  ]}
+  hidden
+  aria-label="Dark mode"
+  aria-pressed="false"
+  class="p-2 text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
 >
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    data-theme-icon-moon
-  >
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-  </svg>
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    data-theme-icon-sun
-    class="hidden"
-  >
-    <circle cx="12" cy="12" r="5"></circle>
-    <line x1="12" y1="1" x2="12" y2="3"></line>
-    <line x1="12" y1="21" x2="12" y2="23"></line>
-    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-    <line x1="1" y1="12" x2="3" y2="12"></line>
-    <line x1="21" y1="12" x2="23" y2="12"></line>
-    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-  </svg>
+  <Moon size={20} class="dark:hidden" />
+  <Sun size={20} class="hidden dark:block" />
 </button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>(
+    '[data-theme-toggle]',
+  );
+  const root = document.documentElement;
+
+  if (button) {
+    button.setAttribute(
+      'aria-pressed',
+      String(root.classList.contains('dark')),
+    );
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const dark = root.classList.toggle('dark');
+      button.setAttribute('aria-pressed', String(dark));
+      try {
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+      } catch {
+        // The current page can still switch themes when storage is unavailable.
+      }
+    });
+  }
+</script>
