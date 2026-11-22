@@ -56,7 +56,7 @@ Branch previews use `<preview-slug>.website.fossbilling.foo`. The production dep
 
 The star counter uses the **FOSSBilling Integrations** GitHub App, as used by `FOSSBilling/api`. Install the App on `FOSSBilling/FOSSBilling` with read-only Metadata access. The site requests short-lived installation tokens scoped to that repository.
 
-For production builds, set the `CF_GITHUB_APP_CLIENT_ID` and `CF_GITHUB_APP_INSTALLATION_ID` Actions variables. For a local production deploy, export `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_INSTALLATION_ID` before building. Store the PEM from GitHub as the `GITHUB_APP_PRIVATE_KEY` runtime secret on the `website` Worker.
+On the production `website` Worker, store `GITHUB_APP_CLIENT_ID`, `GITHUB_APP_INSTALLATION_ID`, and `GITHUB_APP_PRIVATE_KEY` as Cloudflare runtime secrets. Use the PEM from GitHub for the private key. The Cloudflare CLI preserves these bindings when it deploys a new version.
 
 In Previews Base, set `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_INSTALLATION_ID` and add `GITHUB_APP_PRIVATE_KEY` as a secret. Use distinct private keys for local development, previews, and production.
 
