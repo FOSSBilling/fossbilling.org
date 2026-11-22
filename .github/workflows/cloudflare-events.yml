@@ -58,19 +58,11 @@ jobs:
       - name: Delete Preview
         env:
           PREVIEW_NAME: ${{ github.event.pull_request.head.ref }}
-          MERGED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           CF_SEND_TELEMETRY: 'false'
         shell: bash
         run: |
-          # Keep the preview if the branch has moved since the merge.
-          current_sha=$(git ls-remote --branches origin "refs/heads/$PREVIEW_NAME" | cut -f1)
-          if [[ -n "$current_sha" && "$current_sha" != "$MERGED_HEAD_SHA" ]]; then
-            echo 'The source branch has moved since the merge. Skipping preview cleanup.'
-            exit 0
-          fi
-
           : "${CLOUDFLARE_API_TOKEN:?Cloudflare API token is required}" "${CLOUDFLARE_ACCOUNT_ID:?Cloudflare account ID is required}"
           if output=$(./node_modules/.bin/cf previews delete "$PREVIEW_NAME" --worker fossbilling-org --force 2>&1); then
             echo "Deleted Cloudflare preview $PREVIEW_NAME."
