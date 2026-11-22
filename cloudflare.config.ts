@@ -1,9 +1,6 @@
 import { bindings, defineConfig } from 'cf/config';
 
-const githubAppClientId = process.env.GITHUB_APP_CLIENT_ID;
-const githubAppInstallationId = process.env.GITHUB_APP_INSTALLATION_ID;
-
-export default defineConfig(({ isPreview }) => ({
+export default defineConfig({
   worker: {
     name: 'website',
     compatibilityDate: '2026-10-01',
@@ -35,14 +32,6 @@ export default defineConfig(({ isPreview }) => ({
     ],
     env: {
       ASSETS: bindings.assets(),
-      GITHUB_APP_CLIENT_ID:
-        !isPreview && githubAppClientId
-          ? bindings.text(githubAppClientId)
-          : undefined,
-      GITHUB_APP_INSTALLATION_ID:
-        !isPreview && githubAppInstallationId
-          ? bindings.text(githubAppInstallationId)
-          : undefined,
     },
   },
-}));
+});
