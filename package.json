@@ -34,7 +34,7 @@
     "cf": "1.0.0-rc.2",
     "prettier": "3.10.1",
     "prettier-plugin-astro": "1.1.2",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   },
   "allowScripts": {
     "esbuild": true,
