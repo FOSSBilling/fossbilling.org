@@ -15,7 +15,6 @@
     ":rebaseStalePrs"
   ],
   "automergeSchedule": ["at any time"],
-  "automergeStrategy": "squash",
   "postUpdateOptions": ["npmDedupe"],
   "customManagers": [
     {
