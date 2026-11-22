@@ -1,14 +1,5 @@
-name: Actions Lockfile
-
-on:
-  pull_request:
-    paths:
-      - '.github/workflows/**'
-      - '.github/actions/**'
-      - '**/action.yml'
-      - '**/action.yaml'
-  workflow_dispatch:
-
+name: Verify Actions Lockfile
+on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
 
@@ -17,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  verify:
+  verify-lockfile:
     name: Verify actions.lock
     runs-on: ubuntu-slim
     timeout-minutes: 10
