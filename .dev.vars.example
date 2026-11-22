@@ -1,3 +1,4 @@
-# GitHub personal access token for the star count button (optional)
-# Without this, the GitHub API is used unauthenticated (lower rate limit)
-GITHUB_TOKEN=
+# Optional GitHub App credentials for the star count. Leave unset for public access.
+GITHUB_APP_CLIENT_ID="your-client-id"
+GITHUB_APP_INSTALLATION_ID="your-installation-id"
+GITHUB_APP_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"

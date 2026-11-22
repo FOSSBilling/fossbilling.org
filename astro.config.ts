@@ -16,6 +16,7 @@ export default defineConfig({
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: { exclude: ['@resvg/resvg-js'] },
     ssr: {
       external: ['@resvg/resvg-js'],
     },

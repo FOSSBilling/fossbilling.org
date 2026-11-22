@@ -22,6 +22,8 @@ $ npm run dev
 
 This command starts a local development server at `http://localhost:4321`.
 
+For authenticated GitHub star counts during local development, copy `.dev.vars.example` to `.dev.vars` and fill in the GitHub App credentials described below. The website can also read the public star count without credentials.
+
 ## Scripts
 
 - `npm run dev`: local development server
@@ -47,6 +49,14 @@ Deployments use the shared workflow in [FOSSBilling/.workflows](https://github.c
 Configure the `production` and `preview` GitHub environments, the Actions secret `CLOUDFLARE_API_TOKEN`, and the repository variable `CLOUDFLARE_ACCOUNT_ID`. Manage runtime secrets in Cloudflare, including Previews Base settings. Keep Cloudflare Workers Builds disabled to avoid duplicate deployments.
 
 The Worker is configured in [`cloudflare.config.ts`](./cloudflare.config.ts), managed with the Cloudflare CLI (`cf`); builds write Build Output to `.cloudflare/output/`. To deploy locally, run `cf auth login`, then `npm run cf-deploy` or `npm run cf-preview`.
+
+Branch previews use `<preview-slug>.website.fossbilling.foo`. The production deployment applies the preview-only domain to the parent Worker. Its Cloudflare API token needs Workers Routes Write access to the `fossbilling.foo` zone. Cloudflare provisions wildcard DNS and TLS for the preview hostnames.
+
+### GitHub App authentication
+
+The star counter uses the **FOSSBilling Integrations** GitHub App, as used by `FOSSBilling/api`. The App must be installed on `FOSSBilling/FOSSBilling`. The website requests short-lived installation tokens scoped to that repository with read-only Metadata access.
+
+Set `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_INSTALLATION_ID` as runtime bindings on the `fossbilling-org` Worker and in Previews Base. Store `GITHUB_APP_PRIVATE_KEY` as a runtime secret using the PEM downloaded from GitHub. Use distinct App private keys for local development, Previews Base, and production. After verifying authenticated star requests in production, remove the old `GITHUB_TOKEN` Worker secret.
 
 ### OpenGraph Image Generation
 
