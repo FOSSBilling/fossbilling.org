@@ -16,12 +16,11 @@
     ":rebaseStalePrs"
   ],
   "postUpdateOptions": ["npmDedupe"],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
-      "matchStrings": [
-        "gh extension install (?<depName>\\S+) --pin (?<currentValue>\\S+)"
-      ],
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/[^/]+\\.ya?ml$/"],
+      "matchStrings": ["gh extension install (?<depName>\\S+) --pin (?<currentValue>\\S+)"],
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver"
     }
