@@ -48,6 +48,8 @@ Configure the `production` and `preview` GitHub environments, the Actions secret
 
 The Worker is configured in [`cloudflare.config.ts`](./cloudflare.config.ts), managed with the Cloudflare CLI (`cf`); builds write Build Output to `.cloudflare/output/`. To deploy locally, run `cf auth login`, then `npm run cf-deploy` or `npm run cf-preview`.
 
+Branch previews use `<preview-slug>.website.fossbilling.foo`. The production deployment applies the preview-only domain to the parent Worker. Its Cloudflare API token needs Workers Routes Write access to the `fossbilling.foo` zone. Cloudflare provisions wildcard DNS and TLS for the preview hostnames.
+
 ### OpenGraph Image Generation
 
 Social preview images are generated at build time using [satori](https://github.com/vercel/satori) and [@resvg/resvg-js](https://github.com/yisibl/resvg-js) in `src/pages/og-image/[route].png.ts`. Fonts in `src/assets/fonts/` are used exclusively by this pipeline. The `prerenderEnvironment: 'node'` adapter option enables Node-only APIs (`node:fs`, `node:path`) during prerendering.
