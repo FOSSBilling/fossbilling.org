@@ -2,7 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices",
-    "schedule:automergeDaily",
     "schedule:daily",
     ":automergeBranch",
     ":automergeDigest",
@@ -15,6 +14,7 @@
     ":npm",
     ":rebaseStalePrs"
   ],
+  "automergeSchedule": ["at any time"],
   "postUpdateOptions": ["npmDedupe"],
   "customManagers": [
     {
