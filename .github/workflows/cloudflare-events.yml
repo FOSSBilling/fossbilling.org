@@ -47,7 +47,6 @@ jobs:
           npm_config_ignore_scripts: 'true'
         shell: bash
         run: |
-          : "${CLOUDFLARE_API_TOKEN:?Cloudflare API token is required}" "${CLOUDFLARE_ACCOUNT_ID:?Cloudflare account ID is required}"
           if ! output=$(npx cf previews delete "$PREVIEW_NAME" --worker fossbilling-org --force 2>&1) && [[ "$output" != *'[10025] '* ]]; then
             printf '%s\n' "$output" >&2
             exit 1
