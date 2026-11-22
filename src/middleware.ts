@@ -16,12 +16,15 @@ const SECURITY_HEADERS: Record<string, string> = {
     'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
 };
 
-export const onRequest = defineMiddleware(async (_context, next) => {
+export const onRequest = defineMiddleware(async ({ url }, next) => {
   const response = await next();
 
   response.headers.set('Content-Security-Policy', CONTENT_SECURITY_POLICY);
   for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
     response.headers.set(key, value);
+  }
+  if (url.hostname.endsWith('.website.fossbilling.foo')) {
+    response.headers.set('X-Robots-Tag', 'noindex');
   }
 
   return response;
