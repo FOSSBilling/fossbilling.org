@@ -28,7 +28,7 @@ This command starts a local development server at `http://localhost:4321`.
 - `npm run build`: production build
 - `npm run preview`: preview the production build locally
 - `npm run check`: TypeScript & Astro diagnostics
-- `npm test`: run the release metadata tests=
+- `npm test`: run the release metadata tests
 - `npm run format`: format source with Prettier
 - `npm run format:check`: verify formatting without writing
 - `npm run cf-deploy`: deploy to Cloudflare Workers and promote to production traffic with the Cloudflare CLI (`cf auth login`)
