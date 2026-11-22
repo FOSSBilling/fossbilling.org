@@ -47,7 +47,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         shell: bash
         run: |
-          if ! output=$(npx --ignore-scripts "cf@$CF_VERSION" previews delete "$PREVIEW_NAME" --worker fossbilling-org --force 2>&1) && [[ "$output" != *'[10025] '* ]]; then
+          if ! output=$(npx --ignore-scripts "cf@$CF_VERSION" previews delete "$PREVIEW_NAME" --worker website --force 2>&1) && [[ "$output" != *'[10025] '* ]]; then
             printf '%s\n' "$output" >&2
             exit 1
           fi

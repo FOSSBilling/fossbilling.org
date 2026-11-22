@@ -1,8 +1,11 @@
 import { bindings, defineConfig } from 'cf/config';
 
-export default defineConfig({
+const githubAppClientId = process.env.GITHUB_APP_CLIENT_ID;
+const githubAppInstallationId = process.env.GITHUB_APP_INSTALLATION_ID;
+
+export default defineConfig(({ isPreview }) => ({
   worker: {
-    name: 'fossbilling-org',
+    name: 'website',
     compatibilityDate: '2026-10-01',
     compatibilityFlags: ['global_fetch_strictly_public'],
     workersDev: false,
@@ -32,6 +35,14 @@ export default defineConfig({
     ],
     env: {
       ASSETS: bindings.assets(),
+      GITHUB_APP_CLIENT_ID:
+        !isPreview && githubAppClientId
+          ? bindings.text(githubAppClientId)
+          : undefined,
+      GITHUB_APP_INSTALLATION_ID:
+        !isPreview && githubAppInstallationId
+          ? bindings.text(githubAppInstallationId)
+          : undefined,
     },
   },
-});
+}));

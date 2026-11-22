@@ -1,6 +1,6 @@
-# fossbilling.org
+# FOSSBilling Website
 
-[![CI/CD](https://github.com/FOSSBilling/fossbilling.org/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/FOSSBilling/fossbilling.org/actions/workflows/ci-cd.yml)
+[![CI/CD](https://github.com/FOSSBilling/website/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/FOSSBilling/website/actions/workflows/ci-cd.yml)
 
 FOSSBilling's website. Built with Astro, deployed to Cloudflare Workers, and available at [fossbilling.org](https://fossbilling.org).
 
@@ -49,6 +49,8 @@ Configure the `production` and `preview` GitHub environments, the Actions secret
 The Worker is configured in [`cloudflare.config.ts`](./cloudflare.config.ts), managed with the Cloudflare CLI (`cf`); builds write Build Output to `.cloudflare/output/`. To deploy locally, run `cf auth login`, then `npm run cf-deploy` or `npm run cf-preview`.
 
 Branch previews use `<preview-slug>.website.fossbilling.foo`. The production deployment applies the preview-only domain to the parent Worker. Its Cloudflare API token needs Workers Routes Write access to the `fossbilling.foo` zone. Cloudflare provisions wildcard DNS and TLS for the preview hostnames.
+
+Set `CF_GITHUB_APP_CLIENT_ID` and `CF_GITHUB_APP_INSTALLATION_ID` as Actions variables for production builds. For a local production deploy, export `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_INSTALLATION_ID` before building. Cloudflare manages the private key as a runtime secret and supplies preview credentials through Previews Base.
 
 ### OpenGraph Image Generation
 
