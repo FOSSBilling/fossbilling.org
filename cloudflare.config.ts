@@ -14,12 +14,10 @@ export default defineConfig(({ isPreview }) => ({
         enabled: true,
         headSamplingRate: 1,
         invocationLogs: true,
-        persist: true,
       },
       traces: {
         enabled: true,
         headSamplingRate: isPreview ? 1 : 0.05,
-        persist: true,
       },
       issues: {
         enabled: true,
