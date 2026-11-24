@@ -27,7 +27,7 @@ Worker settings live in [cloudflare.config.ts](./cloudflare.config.ts). Keep Clo
 
 ### GitHub App authentication
 
-The star counter uses the **FOSSBilling Integrations** GitHub App with read-only Metadata access to `FOSSBilling/FOSSBilling`. In the production Worker and Previews Base, set `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_INSTALLATION_ID` as variables and `GITHUB_APP_PRIVATE_KEY` as a secret. Use separate PEM keys from the same App for local development, previews, and production.
+The star counter uses the **FOSSBilling Integrations** GitHub App with read-only Metadata access to `FOSSBilling/FOSSBilling`. In the production Worker and Previews Base, set `GITHUB_APP_CLIENT_ID`, `GITHUB_APP_INSTALLATION_ID`, and `GITHUB_APP_PRIVATE_KEY` as secrets. Use separate PEM keys from the same App for local development, previews, and production.
 
 ## Licensing
 
