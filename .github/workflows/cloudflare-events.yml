@@ -24,7 +24,7 @@ jobs:
 
   cleanup:
     name: Delete Cloudflare Preview
-    if: github.event.action == 'closed' && github.event.pull_request.merged && github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-slim
     timeout-minutes: 10
     permissions: {}
