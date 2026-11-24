@@ -9,12 +9,14 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  # A deleted push can run at the default branch SHA. Keep it out of deployment queues.
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.deleted && github.run_id || github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   validation:
     name: Validation
+    if: ${{ !github.event.deleted }}
     runs-on: ubuntu-slim
     timeout-minutes: 15
 
@@ -46,6 +48,7 @@ jobs:
 
   build:
     name: Build
+    if: ${{ !github.event.deleted }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -81,7 +84,7 @@ jobs:
   preview:
     name: Cloudflare Preview
     needs: [validation, build]
-    if: ${{ !cancelled() && github.event_name == 'push' && github.ref_type == 'branch' && github.ref != 'refs/heads/main' }}
+    if: ${{ !cancelled() && github.event_name == 'push' && !github.event.deleted && github.ref_type == 'branch' && github.ref != 'refs/heads/main' }}
     permissions:
       contents: read
       actions: read
