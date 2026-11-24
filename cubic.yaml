@@ -36,7 +36,8 @@ pr_descriptions:
   cubic_review_link: false
   skip_if_author_description: true
 issues:
-  fix_with_cubic_buttons: true
+  fix_with_cubic_buttons: false
   pr_comment_fixes: true
-  fix_commits_to_pr: true
+  fix_commits_to_pr: true  
   coding_agent_provider: cubic
+  auto_fix: off
