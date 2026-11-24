@@ -25,11 +25,12 @@ jobs:
   cleanup:
     name: Delete Cloudflare Preview
     if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
-    permissions: {}
+    permissions:
+      contents: read
     # Share the branch's push CI group so cleanup waits for its preview deployment.
     concurrency:
       group: CI/CD-push-refs/heads/${{ github.event.pull_request.head.ref }}
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@0ea785ecde67fa211d03c1e03e6d1a36cc6c7c77
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@c755962efc6008c8484e4c3d649c14e1f622abe7
     with:
       operation: delete-preview
       worker-name: website
