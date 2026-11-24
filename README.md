@@ -2,78 +2,37 @@
 
 [![CI/CD](https://github.com/FOSSBilling/website/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/FOSSBilling/website/actions/workflows/ci-cd.yml)
 
-FOSSBilling's website. Built with Astro, deployed to Cloudflare Workers, and available at [fossbilling.org](https://fossbilling.org).
+The Astro site for [fossbilling.org](https://fossbilling.org), hosted on Cloudflare Workers. Product documentation lives at [docs.fossbilling.org](https://docs.fossbilling.org).
 
-Documentation is hosted separately at [docs.fossbilling.org](https://docs.fossbilling.org).
+## Local development
 
-## Installation
+Use Node.js 26 to match CI.
 
-Requires Node.js 26.
-
-```
-$ npm ci
-```
-
-## Local Development
-
-```
-$ npm run dev
+```sh
+npm ci
+npm run dev
 ```
 
-This command starts a local development server at `http://localhost:4321`.
+Open `http://localhost:4321`. GitHub App credentials are optional for local development. To authenticate the star counter, copy [`.dev.vars.example`](./.dev.vars.example) to `.dev.vars` and fill in the three values.
 
-For authenticated GitHub star counts during local development, copy `.dev.vars.example` to `.dev.vars` and fill in the GitHub App credentials described below. The website can also read the public star count without credentials.
-
-## Scripts
-
-- `npm run dev`: local development server
-- `npm run build`: production build
-- `npm run preview`: preview the production build locally
-- `npm run check`: TypeScript & Astro diagnostics
-- `npm test`: run the release metadata tests
-- `npm run format`: format source with Prettier
-- `npm run format:check`: verify formatting without writing
-- `npm run cf-deploy`: deploy to Cloudflare Workers and promote to production traffic with the Cloudflare CLI (`cf auth login`)
-- `npm run cf-preview`: deploy a Worker Preview for the current branch with `cf previews deploy` (`cf auth login`)
+Run `npm run format:check`, `npm run check`, `npm test`, and `npm run build` to validate changes. See [package.json](./package.json) for all scripts.
 
 ## Deployment
 
-[CI](.github/workflows/ci-cd.yml) runs formatting, Astro/TypeScript checks, tests, and a build on branch pushes and PRs targeting `main`. Deployment requires checks and build to pass.
+[GitHub Actions](./.github/workflows/ci-cd.yml) validates pull requests targeting `main`. After checks pass, pushes to `main` deploy to production and pushes to other branches in this repository deploy public previews at `<preview-slug>.website.fossbilling.foo`. Previews send `X-Robots-Tag: noindex`. [Cloudflare Events](./.github/workflows/cloudflare-events.yml) syncs PR comments and deletes previews after same-repository PRs merge.
 
-- `main` deploys to production at [fossbilling.org](https://fossbilling.org).
-- Other branches deploy previews. Matching PRs receive a comment with preview links and build/deployment history.
-- PR runs validate changes without deploying; forks receive no deployment credentials.
+Configure the `production` and `preview` GitHub environments, the Actions secret `CLOUDFLARE_API_TOKEN`, and the repository variable `CLOUDFLARE_ACCOUNT_ID`. The production token needs Workers Routes Write access to the `fossbilling.foo` zone to configure the preview domain. Keep Cloudflare Workers Builds disabled to avoid duplicate deployments.
 
-Deployments use the shared workflow in [FOSSBilling/.workflows](https://github.com/FOSSBilling/.workflows). The local [Cloudflare Events](.github/workflows/cloudflare-events.yml) workflow syncs PR comments and deletes previews when same-repository PRs merge into `main`. Renovate updates the pinned workflow references together.
-
-Configure the `production` and `preview` GitHub environments, the Actions secret `CLOUDFLARE_API_TOKEN`, and the repository variable `CLOUDFLARE_ACCOUNT_ID`. Manage runtime secrets in Cloudflare, including Previews Base settings. Keep Cloudflare Workers Builds disabled to avoid duplicate deployments.
-
-The Worker is configured in [`cloudflare.config.ts`](./cloudflare.config.ts), managed with the Cloudflare CLI (`cf`); builds write Build Output to `.cloudflare/output/`. To deploy locally, run `cf auth login`, then `npm run cf-deploy` or `npm run cf-preview`.
-
-Branch previews use `<preview-slug>.website.fossbilling.foo`. The production deployment applies the preview-only domain to the parent Worker. Its Cloudflare API token needs Workers Routes Write access to the `fossbilling.foo` zone. Cloudflare provisions wildcard DNS and TLS for the preview hostnames.
+Worker settings live in [cloudflare.config.ts](./cloudflare.config.ts). Keep Cloudflare’s Previews Base observability settings in sync with the preview config. For manual deployments, sign in with `npm exec -- cf auth login`, then run `npm run cf-preview` for your branch or `npm run cf-deploy` for production.
 
 ### GitHub App authentication
 
-The star counter uses the **FOSSBilling Integrations** GitHub App, as used by `FOSSBilling/api`. Install the App on `FOSSBilling/FOSSBilling` with read-only Metadata access. The site requests short-lived installation tokens scoped to that repository.
-
-On the production `website` Worker, store `GITHUB_APP_CLIENT_ID`, `GITHUB_APP_INSTALLATION_ID`, and `GITHUB_APP_PRIVATE_KEY` as Cloudflare runtime secrets. Use the PEM from GitHub for the private key. The Cloudflare CLI preserves these bindings when it deploys a new version.
-
-In Previews Base, set `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_INSTALLATION_ID` and add `GITHUB_APP_PRIVATE_KEY` as a secret. Use distinct private keys for local development, previews, and production.
-
-### OpenGraph Image Generation
-
-Social preview images are generated at build time using [satori](https://github.com/vercel/satori) and [@resvg/resvg-js](https://github.com/yisibl/resvg-js) in `src/pages/og-image/[route].png.ts`. Fonts in `src/assets/fonts/` are used exclusively by this pipeline. The `prerenderEnvironment: 'node'` adapter option enables Node-only APIs (`node:fs`, `node:path`) during prerendering.
-
-### Code Review
-
-[Cubic](https://cubic.dev) provides automated AI code review, configured via `cubic.yaml` at the repository root. [Renovate](https://docs.renovatebot.com/) handles dependency updates, configured via `.github/renovate.json`.
+The star counter uses the **FOSSBilling Integrations** GitHub App with read-only Metadata access to `FOSSBilling/FOSSBilling`. In the production Worker and Previews Base, set `GITHUB_APP_CLIENT_ID` and `GITHUB_APP_INSTALLATION_ID` as variables and `GITHUB_APP_PRIVATE_KEY` as a secret. Use separate PEM keys from the same App for local development, previews, and production.
 
 ## Licensing
 
 Code, configuration, and build tooling in this repository are licensed under the GNU Affero General Public License v3.0 or later. See [LICENSE](./LICENSE).
 
-Website content is licensed under Creative Commons Attribution-ShareAlike 4.0 International. See [LICENSE-content](./LICENSE-content).
-
-Unless otherwise noted, the content license applies to the visible website text, graphics, and design assets.
+Unless otherwise noted, visible website text, graphics, and design assets are licensed under Creative Commons Attribution-ShareAlike 4.0 International. See [LICENSE-content](./LICENSE-content).
 
 Logos, wordmarks, trademarks, and other brand assets are not licensed under CC BY-SA 4.0. Third-party marks remain subject to their respective owners' rights.
