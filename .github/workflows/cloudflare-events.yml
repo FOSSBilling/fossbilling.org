@@ -30,7 +30,7 @@ jobs:
     # Share the branch's push CI group so cleanup waits for its preview deployment.
     concurrency:
       group: CI/CD-push-refs/heads/${{ github.event.pull_request.head.ref }}
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@1e45b1721385f26e8d42f536855cee207441d13d # main
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@6a7b114dc0e7e9fcebfea2987dc56cd8189b4e25 # main
     with:
       operation: delete-preview
       worker-name: website
