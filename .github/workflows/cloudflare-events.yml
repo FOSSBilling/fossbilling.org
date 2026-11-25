@@ -17,7 +17,7 @@ permissions:
 jobs:
   comment:
     if: github.event_name != 'delete' && github.event.action != 'closed'
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@df80416b9dc46298bb3486267060b6b7ecc743f7 # main
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@b6637a0dda8ccd8d54fb3c3fafbb3a0bbbc4f4fe # main
     with:
       operation: sync-pr-comment
       build-workflow: ci-cd.yml
@@ -33,7 +33,7 @@ jobs:
     # Share the branch's push CI group so cleanup waits for its preview deployment.
     concurrency:
       group: CI/CD-push-refs/heads/${{ github.event.pull_request.head.ref || github.event.ref }}
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@df80416b9dc46298bb3486267060b6b7ecc743f7 # main
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@b6637a0dda8ccd8d54fb3c3fafbb3a0bbbc4f4fe # main
     with:
       operation: delete-preview
       worker-name: website
