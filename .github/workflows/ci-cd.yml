@@ -102,7 +102,7 @@ jobs:
            (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository))
         uses: actions/upload-artifact@v7.0.2
         with:
-          name: worker-build
+          name: ${{ github.event_name == 'pull_request' && format('fork-preview-{0}', github.run_attempt) || 'worker-build' }}
           overwrite: true
           path: .cloudflare/output/
           include-hidden-files: true
@@ -117,7 +117,7 @@ jobs:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@d1ad98418d4b5861b73c389a3ef65106c18824de # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@6dea955a3e749330affc71e2a3bcc13c623ec38b # FOSSBilling/.workflows#63
     with:
       operation: deploy
       mode: preview
@@ -141,7 +141,7 @@ jobs:
     permissions:
       contents: read
       actions: read
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@d1ad98418d4b5861b73c389a3ef65106c18824de # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@6dea955a3e749330affc71e2a3bcc13c623ec38b # FOSSBilling/.workflows#63
     with:
       operation: deploy
       mode: production

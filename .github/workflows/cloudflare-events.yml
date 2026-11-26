@@ -33,7 +33,7 @@ jobs:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@d1ad98418d4b5861b73c389a3ef65106c18824de # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@6dea955a3e749330affc71e2a3bcc13c623ec38b # FOSSBilling/.workflows#63
     with:
       operation: sync-pr-comment
       build-workflow: ci-cd.yml
@@ -52,7 +52,7 @@ jobs:
     # Share the branch's push CI group so cleanup waits for its preview deployment.
     concurrency:
       group: CI/CD-push-refs/heads/${{ github.event.pull_request.head.ref || github.event.ref }}
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@d1ad98418d4b5861b73c389a3ef65106c18824de # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@6dea955a3e749330affc71e2a3bcc13c623ec38b # FOSSBilling/.workflows#63
     with:
       operation: delete-preview
       worker-name: ${{ github.event.repository.name }}
@@ -62,57 +62,16 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
 
-  prepare-fork-preview:
-    if: >-
-      github.repository == 'FOSSBilling/website' &&
-      github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_repository.id != github.event.repository.id
-    runs-on: ubuntu-slim
-    timeout-minutes: 5
-    permissions:
-      pull-requests: read
-    outputs:
-      pr-number: ${{ steps.pr.outputs.number }}
-      attempt: ${{ github.run_attempt }}
-    steps:
-      - name: Check the current fork PR
-        id: pr
-        uses: actions/github-script@v9.0.0
-        with:
-          script: |
-            const run = context.payload.workflow_run;
-            const match = /^PR ([1-9]\d*) (opened|reopened|synchronize)$/.exec(run.display_title);
-            if (!match || run.path !== '.github/workflows/ci-cd.yml') return;
-
-            const number = Number(match[1]);
-            const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: number });
-            if (pr.base.ref !== 'main' || pr.state !== 'open' || !pr.head.repo || pr.head.repo.id === pr.base.repo.id ||
-                run.head_repository?.id !== pr.head.repo.id || run.head_branch !== pr.head.ref ||
-                run.head_sha !== pr.head.sha) return;
-            core.setOutput('number', number);
-
   fork-preview:
-    needs: prepare-fork-preview
-    # Rerun all jobs to recheck the PR state on retries.
-    if: >-
-      needs.prepare-fork-preview.outputs.pr-number != '' &&
-      needs.prepare-fork-preview.outputs.attempt == github.run_attempt
+    if: github.repository == 'FOSSBilling/website' && github.event.workflow_run.event == 'pull_request'
     permissions:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@d1ad98418d4b5861b73c389a3ef65106c18824de # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@6dea955a3e749330affc71e2a3bcc13c623ec38b # FOSSBilling/.workflows#63
     with:
-      operation: deploy
-      preview-name: pr-${{ needs.prepare-fork-preview.outputs.pr-number }}
-      pr-comment: true
-      fork-pr-number: ${{ needs.prepare-fork-preview.outputs.pr-number }}
-      worker-name: ${{ github.event.repository.name }}
-      environment: preview
-      mode: preview
-      node-version: '26'
-      artifact-name: worker-build
-      artifact-run-id: ${{ format('{0}', github.event.workflow_run.id) }}
+      preview-type: static
+      build-workflow: ci-cd.yml
     secrets:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
@@ -121,7 +80,7 @@ jobs:
     if: github.repository == 'FOSSBilling/website' && github.event_name == 'schedule'
     permissions:
       pull-requests: read
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview-cleanup.yml@d1ad98418d4b5861b73c389a3ef65106c18824de # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview-cleanup.yml@6dea955a3e749330affc71e2a3bcc13c623ec38b # FOSSBilling/.workflows#63
     with:
       worker-name: website
     secrets:
