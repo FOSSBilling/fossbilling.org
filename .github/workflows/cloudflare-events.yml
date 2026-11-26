@@ -6,17 +6,17 @@ on:
     types: [completed]
   pull_request:
     branches: [main]
-  pull_request_target:
-    branches: [main]
-    types: [closed]
+    types: [opened, reopened, synchronize, closed]
   delete:
+  schedule:
+    - cron: '17 3 * * *'
 
 # Serialize fork publication and cleanup before checking the current PR state.
 concurrency:
   group: >-
-    ${{ (github.event.workflow_run.event == 'pull_request' &&
-         github.event.workflow_run.head_repository.id != github.event.repository.id ||
-         github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.id != github.event.repository.id) &&
+    ${{ (github.event_name == 'schedule' ||
+         (github.event.workflow_run.event == 'pull_request' &&
+          github.event.workflow_run.head_repository.id != github.event.repository.id)) &&
         'cloudflare-fork-previews' || github.run_id }}
   queue: max
 
@@ -27,12 +27,13 @@ jobs:
     if: >-
       github.repository == 'FOSSBilling/website' &&
       (github.event.workflow_run.event == 'push' ||
-       (github.event_name == 'pull_request' && github.event.pull_request.head.repo.id == github.event.repository.id))
+       (github.event_name == 'pull_request' && github.event.action != 'closed' &&
+        github.event.pull_request.head.repo.id == github.event.repository.id))
     permissions:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@3cf4789d30ba7624541ce6243af03fa77ba285f3 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@bd70e28a4501dbaaa03e1c56578eb011e5ef41c3 # FOSSBilling/.workflows#63
     with:
       operation: sync-pr-comment
       build-workflow: ci-cd.yml
@@ -42,7 +43,8 @@ jobs:
     name: Delete Branch Preview
     if: >-
       github.repository == 'FOSSBilling/website' &&
-      ((github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.id == github.event.repository.id) ||
+      ((github.event_name == 'pull_request' && github.event.action == 'closed' &&
+        github.event.pull_request.head.repo.id == github.event.repository.id) ||
        (github.event_name == 'delete' && github.event.ref_type == 'branch'))
     permissions:
       contents: read
@@ -50,7 +52,7 @@ jobs:
     # Share the branch's push CI group so cleanup waits for its preview deployment.
     concurrency:
       group: CI/CD-push-refs/heads/${{ github.event.pull_request.head.ref || github.event.ref }}
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@3cf4789d30ba7624541ce6243af03fa77ba285f3 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@bd70e28a4501dbaaa03e1c56578eb011e5ef41c3 # FOSSBilling/.workflows#63
     with:
       operation: delete-preview
       worker-name: ${{ github.event.repository.name }}
@@ -63,9 +65,8 @@ jobs:
   prepare-fork-preview:
     if: >-
       github.repository == 'FOSSBilling/website' &&
-      ((github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' &&
-        github.event.workflow_run.head_repository.id != github.event.repository.id) ||
-       (github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.id != github.event.repository.id))
+      github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.id != github.event.repository.id
     runs-on: ubuntu-slim
     timeout-minutes: 5
     permissions:
@@ -80,19 +81,14 @@ jobs:
         with:
           script: |
             const run = context.payload.workflow_run;
-            const match = run && /^PR ([1-9]\d*) (opened|reopened|synchronize)$/.exec(run.display_title);
-            if (run && (!match || run.path !== '.github/workflows/ci-cd.yml')) return;
+            const match = /^PR ([1-9]\d*) (opened|reopened|synchronize)$/.exec(run.display_title);
+            if (!match || run.path !== '.github/workflows/ci-cd.yml') return;
 
-            const number = run ? Number(match[1]) : context.payload.number;
+            const number = Number(match[1]);
             const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: number });
-            if (pr.base.ref !== 'main' || pr.head.repo?.id === pr.base.repo.id) return;
-            if (run) {
-              if (pr.state !== 'open' || !pr.head.repo ||
-                  run.head_repository?.id !== pr.head.repo.id || run.head_branch !== pr.head.ref ||
-                  run.head_sha !== pr.head.sha) return;
-            } else if (pr.state !== 'closed') {
-              return;
-            }
+            if (pr.base.ref !== 'main' || pr.state !== 'open' || !pr.head.repo || pr.head.repo.id === pr.base.repo.id ||
+                run.head_repository?.id !== pr.head.repo.id || run.head_branch !== pr.head.ref ||
+                run.head_sha !== pr.head.sha) return;
             core.setOutput('number', number);
 
   fork-preview:
@@ -105,19 +101,30 @@ jobs:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@3cf4789d30ba7624541ce6243af03fa77ba285f3 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@bd70e28a4501dbaaa03e1c56578eb011e5ef41c3 # FOSSBilling/.workflows#63
     with:
-      operation: ${{ github.event_name == 'pull_request_target' && 'delete-preview' || 'deploy' }}
+      operation: deploy
       preview-name: pr-${{ needs.prepare-fork-preview.outputs.pr-number }}
-      pr-comment: ${{ github.event_name == 'workflow_run' }}
-      fork-pr-number: ${{ github.event_name == 'workflow_run' && needs.prepare-fork-preview.outputs.pr-number || '' }}
+      pr-comment: true
+      fork-pr-number: ${{ needs.prepare-fork-preview.outputs.pr-number }}
       worker-name: ${{ github.event.repository.name }}
       environment: preview
       mode: preview
       cli: cf
       node-version: '26'
       artifact-name: worker-build
-      artifact-run-id: ${{ github.event_name == 'workflow_run' && format('{0}', github.event.workflow_run.id) || '' }}
+      artifact-run-id: ${{ format('{0}', github.event.workflow_run.id) }}
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+
+  clean-fork-previews:
+    if: github.repository == 'FOSSBilling/website' && github.event_name == 'schedule'
+    permissions:
+      pull-requests: read
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview-cleanup.yml@bd70e28a4501dbaaa03e1c56578eb011e5ef41c3 # FOSSBilling/.workflows#63
+    with:
+      worker-name: website
     secrets:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
