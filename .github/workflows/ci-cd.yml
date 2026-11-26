@@ -117,11 +117,10 @@ jobs:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@4be99359a712b83df44a0e9410ce75866bfec6d0 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@5975a63a6914e31472d752b6f8d5538bf5485efb # FOSSBilling/.workflows#63
     with:
       operation: deploy
       mode: preview
-      cli: cf
       node-version: '26'
       prebuilt: true
       build-result: ${{ needs.build.result }}
@@ -142,11 +141,10 @@ jobs:
     permissions:
       contents: read
       actions: read
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@4be99359a712b83df44a0e9410ce75866bfec6d0 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@5975a63a6914e31472d752b6f8d5538bf5485efb # FOSSBilling/.workflows#63
     with:
       operation: deploy
       mode: production
-      cli: cf
       node-version: '26'
       prebuilt: true
       environment: production
