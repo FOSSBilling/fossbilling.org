@@ -33,7 +33,7 @@ jobs:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@13cc8f3e45a1f32c2adbfdb7cb122bbba1e125f4 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@4be99359a712b83df44a0e9410ce75866bfec6d0 # FOSSBilling/.workflows#63
     with:
       operation: sync-pr-comment
       build-workflow: ci-cd.yml
@@ -52,7 +52,7 @@ jobs:
     # Share the branch's push CI group so cleanup waits for its preview deployment.
     concurrency:
       group: CI/CD-push-refs/heads/${{ github.event.pull_request.head.ref || github.event.ref }}
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@13cc8f3e45a1f32c2adbfdb7cb122bbba1e125f4 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@4be99359a712b83df44a0e9410ce75866bfec6d0 # FOSSBilling/.workflows#63
     with:
       operation: delete-preview
       worker-name: ${{ github.event.repository.name }}
@@ -101,7 +101,7 @@ jobs:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@13cc8f3e45a1f32c2adbfdb7cb122bbba1e125f4 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@4be99359a712b83df44a0e9410ce75866bfec6d0 # FOSSBilling/.workflows#63
     with:
       operation: deploy
       preview-name: pr-${{ needs.prepare-fork-preview.outputs.pr-number }}
@@ -122,7 +122,7 @@ jobs:
     if: github.repository == 'FOSSBilling/website' && github.event_name == 'schedule'
     permissions:
       pull-requests: read
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview-cleanup.yml@13cc8f3e45a1f32c2adbfdb7cb122bbba1e125f4 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview-cleanup.yml@4be99359a712b83df44a0e9410ce75866bfec6d0 # FOSSBilling/.workflows#63
     with:
       worker-name: website
     secrets:
