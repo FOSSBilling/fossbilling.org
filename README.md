@@ -19,7 +19,9 @@ Run `npm run format:check`, `npm run check`, `npm test`, and `npm run build` to 
 
 ## Deployment
 
-[GitHub Actions](./.github/workflows/ci-cd.yml) validates pull requests targeting `main`. After checks pass, pushes to `main` deploy to production and pushes to other branches in this repository deploy public previews at `<preview-slug>.website.fossbilling.foo`. Previews send `X-Robots-Tag: noindex`. [Cloudflare Events](./.github/workflows/cloudflare-events.yml) syncs PR comments and deletes previews when same-repository PRs are closed, including when they are merged.
+[GitHub Actions](./.github/workflows/ci-cd.yml) validates pull requests targeting `main`. After checks pass, pushes to `main` deploy to production and pushes to other branches in this repository deploy public previews at `<preview-slug>.website.fossbilling.foo`. Deployments use the prebuilt output from the current branch head. [Cloudflare Events](./.github/workflows/cloudflare-events.yml) posts preview links on PRs and handles cleanup on PR close and branch deletion. Previews send `X-Robots-Tag: noindex`.
+
+Successful CI for a fork PR targeting `main` publishes its static pages at `pr-<number>.website.fossbilling.foo`. Use a same-repository branch preview to test Worker endpoints such as the GitHub star counter.
 
 Configure the `production` and `preview` GitHub environments, the Actions secret `CLOUDFLARE_API_TOKEN`, and the repository variable `CLOUDFLARE_ACCOUNT_ID`. The production token needs Workers Routes Write access to the `fossbilling.foo` zone to configure the preview domain. Keep Cloudflare Workers Builds disabled to avoid duplicate deployments.
 
