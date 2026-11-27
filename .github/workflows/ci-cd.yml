@@ -1,15 +1,16 @@
 name: CI/CD
+run-name: ${{ github.event.pull_request && format('PR {0} {1}', github.event.pull_request.number, github.event.action) || github.event.head_commit.message || github.ref_name }}
 
 on:
   push:
   pull_request:
-    branches: main
+    branches: [main]
 
 permissions:
   contents: read
 
 concurrency:
-  # A deleted push can run at the default branch SHA. Keep it out of deployment queues.
+  # Deleted pushes must not cancel a branch build or deployment.
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.deleted && github.run_id || github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
@@ -51,49 +52,77 @@ jobs:
     if: ${{ !github.event.deleted }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      branch-preview: ${{ steps.preview.outputs.result }}
+    env:
+      CLOUDFLARE_PREVIEW_BUILD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.id != github.event.repository.id }}
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7.0.1
+        with:
+          # The preview must contain the PR head recorded on the CI run.
+          ref: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && github.event.pull_request.head.sha || github.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v7.1.0
         with:
           node-version: '26'
           cache: 'npm'
+      - name: Select branch preview build
+        id: preview
+        if: github.repository == 'FOSSBilling/website' && github.event_name == 'push' && github.ref_type == 'branch' && github.ref != 'refs/heads/main'
+        uses: actions/github-script@v9.0.0
+        with:
+          script: |
+            const slug = process.env.GITHUB_REF_NAME.normalize('NFKD').replace(/\p{Mark}/gu, '').toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            const enabled = !/^pr-\d+$/.test(slug);
+            core.exportVariable('CLOUDFLARE_PREVIEW_BUILD', String(enabled));
+            return enabled;
+
       - name: Install Dependencies
         run: npm ci
 
       - name: Build
         run: npm run build
 
+      - name: Validate Preview Build Output
+        if: env.CLOUDFLARE_PREVIEW_BUILD == 'true'
+        run: jq -e '.buildContext.isPreview == true and .buildContext.mode == "production"' .cloudflare/output/v1/config.json
+
       - name: Validate Worker Deployment
+        if: env.CLOUDFLARE_PREVIEW_BUILD == 'false'
         run: npm run cf-deploy -- --prebuilt --dry-run --mode production
 
       - name: Upload Worker Build
-        if: github.event_name == 'push'
+        if: >-
+          github.repository == 'FOSSBilling/website' &&
+          ((github.event_name == 'push' && (github.ref == 'refs/heads/main' || steps.preview.outputs.result == 'true')) ||
+           (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository))
         uses: actions/upload-artifact@v7.0.2
         with:
-          name: worker-build
+          name: ${{ github.event_name == 'pull_request' && format('fork-preview-{0}', github.run_attempt) || 'worker-build' }}
           overwrite: true
           path: .cloudflare/output/
           include-hidden-files: true
           if-no-files-found: error
-          retention-days: 1
+          retention-days: ${{ github.event_name == 'pull_request' && 14 || 1 }}
 
   preview:
     name: Cloudflare Preview
     needs: [validation, build]
-    if: ${{ !cancelled() && github.event_name == 'push' && !github.event.deleted && github.ref_type == 'branch' && github.ref != 'refs/heads/main' }}
+    if: ${{ !cancelled() && needs.build.outputs.branch-preview == 'true' }}
     permissions:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@b6637a0dda8ccd8d54fb3c3fafbb3a0bbbc4f4fe # main
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@d29944796c4de40f1d26a81ecbc1a16fca2c9e5b # FOSSBilling/.workflows#63
     with:
       operation: deploy
       mode: preview
-      cli: cf
+      node-version: '26'
+      prebuilt: true
       build-result: ${{ needs.build.result }}
       checks-result: ${{ needs.validation.result }}
       pr-comment: true
@@ -108,12 +137,15 @@ jobs:
   deploy:
     name: Deploy Production
     needs: [validation, build]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@b6637a0dda8ccd8d54fb3c3fafbb3a0bbbc4f4fe # main
+    if: github.repository == 'FOSSBilling/website' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      actions: read
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@d29944796c4de40f1d26a81ecbc1a16fca2c9e5b # FOSSBilling/.workflows#63
     with:
       operation: deploy
       mode: production
-      cli: cf
+      node-version: '26'
       prebuilt: true
       environment: production
       artifact-name: worker-build
