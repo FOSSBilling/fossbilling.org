@@ -19,7 +19,7 @@ Run `npm run format:check`, `npm run check`, `npm test`, and `npm run build` to 
 
 ## Deployment
 
-[GitHub Actions](./.github/workflows/ci-cd.yml) validates pull requests targeting `main`. After checks pass, pushes to `main` deploy to production and pushes to other branches in this repository deploy public previews at `<preview-slug>.website.fossbilling.foo`. Deployments use the prebuilt output from the current branch head. [Cloudflare Events](./.github/workflows/cloudflare-events.yml) posts preview links on PRs and cleans up branch previews on same-repository PR close or branch deletion. Previews send `X-Robots-Tag: noindex`.
+[GitHub Actions](./.github/workflows/ci-cd.yml) validates pull requests targeting `main`. After checks pass, pushes to `main` deploy to production and pushes to other branches in this repository deploy public previews at `<preview-slug>.website.fossbilling.foo`. Slugs matching `pr-<number>` are reserved for fork previews, so branches that normalize to those slugs skip preview deployment. Deployments use the prebuilt output from the current branch head. [Cloudflare Events](./.github/workflows/cloudflare-events.yml) posts preview links on PRs and cleans up branch previews on same-repository PR close or branch deletion. Previews send `X-Robots-Tag: noindex`.
 
 After CI passes for a fork PR targeting `main`, a maintainer can approve its preview through **Review deployments** in the Cloudflare Events run. The GitHub deployment links to the preview, which includes the built pages and Worker code. A daily job removes previews for closed fork PRs.
 
