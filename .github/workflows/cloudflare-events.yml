@@ -23,7 +23,7 @@ jobs:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@131ec61d317c97edfe22194ac680bacca578bc76 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@e94866203e88c47b54ed98ca43a93d5e39b2ed81 # FOSSBilling/.workflows#63
     with:
       operation: sync-pr-comment
       build-workflow: ci-cd.yml
@@ -42,7 +42,7 @@ jobs:
     # Share the branch's push CI group so cleanup waits for its preview deployment.
     concurrency:
       group: CI/CD-push-refs/heads/${{ github.event.pull_request.head.ref || github.event.ref }}
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@131ec61d317c97edfe22194ac680bacca578bc76 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@e94866203e88c47b54ed98ca43a93d5e39b2ed81 # FOSSBilling/.workflows#63
     with:
       operation: delete-preview
       worker-name: ${{ github.event.repository.name }}
@@ -58,7 +58,7 @@ jobs:
       contents: read
       actions: read
       pull-requests: read
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@131ec61d317c97edfe22194ac680bacca578bc76 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@e94866203e88c47b54ed98ca43a93d5e39b2ed81 # FOSSBilling/.workflows#63
     with:
       build-workflow: ci-cd.yml
     secrets:
@@ -69,7 +69,7 @@ jobs:
     if: github.repository == 'FOSSBilling/website' && github.event_name == 'schedule'
     permissions:
       pull-requests: read
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview-cleanup.yml@131ec61d317c97edfe22194ac680bacca578bc76 # FOSSBilling/.workflows#63
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview-cleanup.yml@e94866203e88c47b54ed98ca43a93d5e39b2ed81 # FOSSBilling/.workflows#63
     with:
       worker-name: website
     secrets:
