@@ -31,7 +31,7 @@
     "@cloudflare/vite-plugin": "2.0.0-rc.4",
     "@resvg/resvg-js": "2.6.2",
     "@types/node": "26.6.6",
-    "cf": "1.0.0-rc.2",
+    "cf": "1.0.0-rc.4",
     "prettier": "3.10.1",
     "prettier-plugin-astro": "1.1.2",
     "typescript": "6.0.3"
