@@ -20,14 +20,11 @@ jobs:
       github.event_name == 'pull_request' && github.event.action != 'closed' &&
       github.event.pull_request.head.repo.id == github.event.repository.id
     permissions:
-      contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@9cc3a4a089406b569bd5999042ce029041151a9f # main
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-preview-comment.yml@e8f29762a4dfbd57e9c47c4b66620a628fad9951 # FOSSBilling/.workflows#66
     with:
-      operation: sync-pr-comment
       build-workflow: ci-cd.yml
-      pr-base-branch: main
 
   cleanup:
     name: Delete Branch Preview
@@ -58,7 +55,7 @@ jobs:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@9cc3a4a089406b569bd5999042ce029041151a9f # main
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@e8f29762a4dfbd57e9c47c4b66620a628fad9951 # FOSSBilling/.workflows#66
     with:
       build-workflow: ci-cd.yml
       pr-comment: true
