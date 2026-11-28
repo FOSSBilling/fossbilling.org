@@ -57,10 +57,11 @@ jobs:
     permissions:
       contents: read
       actions: read
-      pull-requests: read
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@3077af5813be77652a075aaee9e3bffb29406dac # main
+      pull-requests: write
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@2c931d373acb031d7414828baab981701bb2edfd # main
     with:
       build-workflow: ci-cd.yml
+      pr-comment: true
     secrets:
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
