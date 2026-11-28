@@ -23,7 +23,7 @@ jobs:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@24344bcecff7984a243f6147b4512a374835e9ee
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@24344bcecff7984a243f6147b4512a374835e9ee # main
     with:
       operation: sync-pr-comment
       build-workflow: ci-cd.yml
@@ -42,7 +42,7 @@ jobs:
     # Share the branch's push CI group so cleanup waits for its preview deployment.
     concurrency:
       group: CI/CD-push-refs/heads/${{ github.event.pull_request.head.ref || github.event.ref }}
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@24344bcecff7984a243f6147b4512a374835e9ee
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-workers.yml@24344bcecff7984a243f6147b4512a374835e9ee # main
     with:
       operation: delete-preview
       worker-name: ${{ github.event.repository.name }}
@@ -58,7 +58,7 @@ jobs:
       contents: read
       actions: read
       pull-requests: read
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@24344bcecff7984a243f6147b4512a374835e9ee
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@24344bcecff7984a243f6147b4512a374835e9ee # main
     with:
       build-workflow: ci-cd.yml
     secrets:
@@ -69,7 +69,7 @@ jobs:
     if: github.repository == 'FOSSBilling/website' && github.event_name == 'schedule'
     permissions:
       pull-requests: read
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview-cleanup.yml@24344bcecff7984a243f6147b4512a374835e9ee
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview-cleanup.yml@24344bcecff7984a243f6147b4512a374835e9ee # main
     with:
       worker-name: website
     secrets:
