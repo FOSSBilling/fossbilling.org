@@ -22,7 +22,7 @@ jobs:
     permissions:
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-preview-comment.yml@e8f29762a4dfbd57e9c47c4b66620a628fad9951 # FOSSBilling/.workflows#66
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-preview-comment.yml@2c16d23935a63d7a9a6d948c85dccc9cd91bc281 # main
     with:
       build-workflow: ci-cd.yml
 
@@ -55,7 +55,7 @@ jobs:
       contents: read
       actions: read
       pull-requests: write
-    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@e8f29762a4dfbd57e9c47c4b66620a628fad9951 # FOSSBilling/.workflows#66
+    uses: FOSSBilling/.workflows/.github/workflows/cloudflare-fork-preview.yml@2c16d23935a63d7a9a6d948c85dccc9cd91bc281 # main
     with:
       build-workflow: ci-cd.yml
       pr-comment: true
